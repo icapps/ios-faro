@@ -22,17 +22,7 @@ public class RequestController <BodyType: BaseModel> {
 		
 		let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
 		
-		
-		let URL = NSURL(string: "\(serviceParameters.serverUrl)GameScore")
-		let request = NSMutableURLRequest(URL: URL!)
-		request.HTTPMethod = "POST"
-		
-		// Headers
-		
-		request.addValue("oze24xbiOCeIdsM11C6MXK2RMLunOmoAWQ5VB6XZ", forHTTPHeaderField: "X-Parse-REST-API-Key")
-		request.addValue("Bd99hIeNb8sa0ZBIVLYWy9wpCz4Hb5Kvri3NiqBu", forHTTPHeaderField: "X-Parse-Application-Id")
-		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-		
+		let request = serviceParameters.request
 		// JSON Body -> Move to body class
 		
 		let bodyObject = [
