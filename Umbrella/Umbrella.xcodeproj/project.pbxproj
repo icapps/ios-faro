@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C04661911C0B22E90031DD22 /* TestWait.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04661901C0B22E90031DD22 /* TestWait.swift */; };
 		C04661931C0B23310031DD22 /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04661921C0B23310031DD22 /* Dispatch.swift */; };
+		C04661951C0B35350031DD22 /* ResponseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04661941C0B35350031DD22 /* ResponseController.swift */; };
 		C05F658A1C0B0BA900F7898F /* Umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C05F65891C0B0BA900F7898F /* Umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C05F65911C0B0BA900F7898F /* Umbrella.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C05F65861C0B0BA900F7898F /* Umbrella.framework */; };
 		C05F65961C0B0BA900F7898F /* UmbrellaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F65951C0B0BA900F7898F /* UmbrellaTests.swift */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		C04661901C0B22E90031DD22 /* TestWait.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestWait.swift; sourceTree = "<group>"; };
 		C04661921C0B23310031DD22 /* Dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
+		C04661941C0B35350031DD22 /* ResponseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResponseController.swift; path = Service/ResponseController.swift; sourceTree = "<group>"; };
 		C05F65861C0B0BA900F7898F /* Umbrella.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Umbrella.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05F65891C0B0BA900F7898F /* Umbrella.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Umbrella.h; sourceTree = "<group>"; };
 		C05F658B1C0B0BA900F7898F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				C05F65891C0B0BA900F7898F /* Umbrella.h */,
 				C05F658B1C0B0BA900F7898F /* Info.plist */,
 				C05F65A01C0B0C3C00F7898F /* RequestController.swift */,
+				C04661941C0B35350031DD22 /* ResponseController.swift */,
 				C05F65A31C0B1CC700F7898F /* BaseModel.swift */,
 				C05F65A51C0B1DB300F7898F /* ServiceParameter.swift */,
 				C05F65A21C0B0D2C00F7898F /* UmbrellaPlayground.playground */,
@@ -213,6 +216,7 @@
 			files = (
 				C05F65A41C0B1CC700F7898F /* BaseModel.swift in Sources */,
 				C05F65A11C0B0C3C00F7898F /* RequestController.swift in Sources */,
+				C04661951C0B35350031DD22 /* ResponseController.swift in Sources */,
 				C05F65A61C0B1DB300F7898F /* ServiceParameter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

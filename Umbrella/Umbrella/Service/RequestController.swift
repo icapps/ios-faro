@@ -1,17 +1,19 @@
 import Foundation
 
 
-enum UmbrellaErrors: ErrorType {
-	case badBody
-}
+/**
+* It is te task of this class to form a request and fire it off.
+*/
 
 public class RequestController <BodyType: BaseModel> {
 	private let serviceParameters: ServiceParameter
+	private let responseController: ResponseController
 	private let sessionConfig: NSURLSessionConfiguration
 	private let session: NSURLSession
 	
-	public init(serviceParameters: ServiceParameter) {
+	public init(serviceParameters: ServiceParameter, responseController: ResponseController = ResponseController()) {
 		self.serviceParameters = serviceParameters
+		self.responseController = responseController
 		sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
 		session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
 	}
@@ -25,18 +27,9 @@ public class RequestController <BodyType: BaseModel> {
 		}
 		
 		/* Start a new Task */
-		let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
-			if (error == nil) {
-				// Success
-				let statusCode = (response as! NSHTTPURLResponse).statusCode
-				print("--------------URL Session Task Succeeded: HTTP \(statusCode)---------------")
-				completion(response: response!)
-			}
-			else {
-				// Failure
-				print("URL Session Task Failed: %@", error!.localizedDescription);
-			}
-		}
+		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
+			self.responseController.handleResponse((data: data, urlResponse: response, error: error), completion: completion)
+		})
 		
 		task.resume()
 
