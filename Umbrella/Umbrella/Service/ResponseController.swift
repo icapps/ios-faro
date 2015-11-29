@@ -6,18 +6,22 @@ import Foundation
 
 public class ResponseController {
 	
-	public init() {
-		
+	private let transformController: TransfromController
+	
+	public init(transfromController: TransfromController = TransfromController()) {
+		self.transformController = transfromController
 	}
 	
-	func handleResponse(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), completion: (response: NSURLResponse)->()) {
+	func handleResponse<ResponseType: BaseModel>(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), completion: (ResponseType)->()) {
 		if (response.error == nil) {
 			// Success
 			let statusCode = (response.urlResponse as! NSHTTPURLResponse).statusCode
 			print("--------------URL Session Task Succeeded: HTTP \(statusCode)---------------")
-			completion(response: response.urlResponse!)
-		}
-		else {
+			transformController.objectDataToConcreteObject(response.data!, completion: { (concreteObject) -> () in
+				completion(concreteObject)
+			})
+			
+		}else {
 			// Failure
 			print("URL Session Task Failed: %@", response.error!.localizedDescription);
 		}

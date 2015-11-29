@@ -18,7 +18,7 @@ public class RequestController {
 		session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
 	}
 	
-	public func saveBody<BodyType: BaseModel>(body: BodyType, completion:(response: NSURLResponse)->()){
+	public func saveBody<BodyType: BaseModel, ResponseType: BaseModel>(body: BodyType, completion:(response: ResponseType)->()){
 		let request = serviceParameters.request
 		request.HTTPMethod = "POST"
 		

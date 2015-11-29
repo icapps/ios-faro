@@ -20,18 +20,33 @@ class UmbrellaPlaygroundServiceParameter<BodyType: BaseModel>: ServiceParameter 
 }
 
 class GameScore: BaseModel {
-	private let bodyObject = [
-		"score": 1337,
-		"cheatMode": false,
-		"playerName": "Sean Plott"
-	]
+	
+	var score: Int?
+	var cheatMode: Bool?
+	var playerName: String?
+	
+	required init(json: AnyObject) {
+		importFromJSON(json)
+	}
+	
 	
 	static func contextPath() -> String {
 		return "GameScore"
 	}
 	
 	func body()-> NSDictionary? {
-		 return bodyObject
+		return [
+			"score": score!,
+			"cheatMode": cheatMode!,
+			"playerName": playerName!
+		]
+	}
+	func importFromJSON(json: AnyObject) {
+		if let json = json as? NSDictionary {
+			score = json["score"] as? Int
+			cheatMode = json["cheatMode"] as? Bool
+			playerName = json["playerName"] as? String
+		}
 	}
 	
 }
@@ -39,12 +54,18 @@ class GameScore: BaseModel {
 let serviceParameters = UmbrellaPlaygroundServiceParameter<GameScore>()
 
 let test = RequestController(serviceParameters: serviceParameters)
-let gameScore = GameScore()
-test.saveBody(gameScore) { (response) -> () in
-	let responseData = response
-	print(response)
+let gameScore = GameScore(json: [
+	"score": 1337,
+	"cheatMode": false,
+	"playerName": "Sean Plott"
+	])
+
+let response: (response: GameScore) -> () = {(response: GameScore) -> () in
+	print(response.body())
 	XCPlaygroundPage.currentPage.finishExecution()
 }
+
+test.saveBody(gameScore, completion: response)
 
 //To let async code work
 XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
