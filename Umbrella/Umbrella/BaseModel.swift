@@ -8,8 +8,11 @@
 
 import Foundation
 
-public protocol BaseModel {
-	
+public protocol BaseModel: class {
+/**
+* Set all properties from the received JSON at initialization
+*/
+	init(json: AnyObject)
 /**
 * An url is formed from <ServiceParameter.serverURL+BaseModel.contextPath>.
 */
@@ -19,5 +22,10 @@ public protocol BaseModel {
 * Override if you want to POST objects as JSON
 */
 	func body()-> NSDictionary?
+	
+/**
+* Set all properties from the received JSON
+*/
+	func importFromJSON(json: AnyObject)
 	
 }
