@@ -24,16 +24,33 @@ class MockServerparameters: ServiceParameter {
 		return request
 	}
 }
+class GameScore: BaseModel {
+	private let bodyObject = [
+		"score": 1337,
+		"cheatMode": false,
+		"playerName": "Sean Plott"
+	]
+	
+	static func contextPath() -> String {
+		return "GameScore"
+	}
+	
+	func body()-> NSDictionary? {
+		return bodyObject
+	}
+	
+}
+
 class UmbrellaTests: XCTestCase {
     
 	
     func testExposedClassesInitializastions() {
-        let test = RequestController(serviceParameters: MockServerparameters())
+        let test = RequestController<GameScore>(serviceParameters: MockServerparameters())
 		let wait = TestWait()
 		let exp = "testExposedClassesInitializastions"
 		wait.expectations = [exp]
 		
-		test.sendRequest { (response) -> () in
+		test.saveBody(GameScore()) { (response) -> () in
 			wait.fulFillExpectation(exp)
 		}
 		wait.waitUntillFinishWithTimeout(2) { (success, unfulFilledExpectations) -> () in
