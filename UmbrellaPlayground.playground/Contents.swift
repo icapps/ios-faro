@@ -2,8 +2,21 @@
 
 import UIKit
 import Umbrella
+import XCPlayground
 
-let test = SwiftFrameworks()
+class UmbrellaPlaygroundServiceParameter: ServiceParameter {
+	var serverUrl = "https://api.parse.com/1/classes/"
+}
 
-test.doSomething()
+let serviceParameters = UmbrellaPlaygroundServiceParameter()
 
+let test = RequestController(serviceParameters: serviceParameters)
+
+test.sendRequest { (response) -> () in
+	let responseData = response
+	print(response)
+	XCPlaygroundPage.currentPage.finishExecution()
+}
+
+//To let async code work
+XCPlaygroundPage.currentPage.needsIndefiniteExecution = true

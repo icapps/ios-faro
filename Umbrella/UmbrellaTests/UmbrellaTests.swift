@@ -9,15 +9,25 @@
 import XCTest
 @testable import Umbrella
 
+class MockServerparameters: ServiceParameter {
+	var serverUrl = "https://api.parse.com/1/classes/"
+}
 class UmbrellaTests: XCTestCase {
     
 	
     func testExposedClassesInitializastions() {
-        let test = SwiftFrameworks()
+        let test = RequestController(serviceParameters: MockServerparameters())
+		let wait = TestWait()
+		let exp = "testExposedClassesInitializastions"
+		wait.expectations = [exp]
 		
-		test.doSomething()
+		test.sendRequest { (response) -> () in
+			wait.fulFillExpectation(exp)
+		}
+		wait.waitUntillFinishWithTimeout(2) { (success, unfulFilledExpectations) -> () in
+			XCTAssertTrue(success, "\(unfulFilledExpectations)")
+		}
 		
-		XCTAssertNotNil(test)
     }
     
 }
