@@ -9,6 +9,8 @@
 import Foundation
 
 public protocol BaseModel: class {
+	
+	var objectId: String? {get set}
 /**
 * Set all properties from the received JSON at initialization
 */
