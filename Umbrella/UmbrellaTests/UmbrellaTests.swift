@@ -24,19 +24,35 @@ class MockServerparameters: ServiceParameter {
 		return request
 	}
 }
+
 class GameScore: BaseModel {
-	private let bodyObject = [
-		"score": 1337,
-		"cheatMode": false,
-		"playerName": "Sean Plott"
-	]
+	
+	var score: Int?
+	var cheatMode: Bool?
+	var playerName: String?
+	
+	required init(json: AnyObject) {
+		importFromJSON(json)
+	}
+	
 	
 	static func contextPath() -> String {
 		return "GameScore"
 	}
 	
 	func body()-> NSDictionary? {
-		return bodyObject
+		return [
+			"score": score!,
+			"cheatMode": cheatMode!,
+			"playerName": playerName!
+		]
+	}
+	func importFromJSON(json: AnyObject) {
+		if let json = json as? NSDictionary {
+			score = json["score"] as? Int
+			cheatMode = json["cheatMode"] as? Bool
+			playerName = json["playerName"] as? String
+		}
 	}
 	
 }
@@ -44,19 +60,46 @@ class GameScore: BaseModel {
 class UmbrellaTests: XCTestCase {
     
 	
-    func testExposedClassesInitializastions() {
+    func testSave() {
         let test = RequestController(serviceParameters: MockServerparameters())
 		let wait = TestWait()
 		let exp = "testExposedClassesInitializastions"
 		wait.expectations = [exp]
 		
-		test.saveBody(GameScore()) { (response) -> () in
+		let gameScore = GameScore(json: [
+			"score": 1337,
+			"cheatMode": false,
+			"playerName": "Sean Plott"
+			])
+		let response: (response: GameScore) -> () = {(response: GameScore) -> () in
 			wait.fulFillExpectation(exp)
 		}
+		
+		test.save(gameScore, completion: response)
+		
 		wait.waitUntillFinishWithTimeout(2) { (success, unfulFilledExpectations) -> () in
 			XCTAssertTrue(success, "\(unfulFilledExpectations)")
 		}
-		
     }
+	
+	func testRetreive() {
+		let test = RequestController(serviceParameters: MockServerparameters())
+		let wait = TestWait()
+		let exp = "testExposedClassesInitializastions"
+		wait.expectations = [exp]
+		
+	
+		let response: (response: [GameScore]) -> () = {(response: [GameScore]) -> () in
+			XCTAssertGreaterThan(response.count, 1)
+		
+			wait.fulFillExpectation(exp)
+		}
+		
+		test.retrieve(response)
+		
+		wait.waitUntillFinishWithTimeout(2) { (success, unfulFilledExpectations) -> () in
+			XCTAssertTrue(success, "\(unfulFilledExpectations)")
+		}
+	}
     
 }
