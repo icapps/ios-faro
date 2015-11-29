@@ -31,6 +31,7 @@
 		C05F65951C0B0BA900F7898F /* UmbrellaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmbrellaTests.swift; sourceTree = "<group>"; };
 		C05F65971C0B0BA900F7898F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C05F65A01C0B0C3C00F7898F /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = File.swift; path = Service/File.swift; sourceTree = "<group>"; };
+		C05F65A21C0B0D2C00F7898F /* UmbrellaPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = UmbrellaPlayground.playground; path = ../../UmbrellaPlayground.playground; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +77,7 @@
 				C05F65891C0B0BA900F7898F /* Umbrella.h */,
 				C05F658B1C0B0BA900F7898F /* Info.plist */,
 				C05F65A01C0B0C3C00F7898F /* File.swift */,
+				C05F65A21C0B0D2C00F7898F /* UmbrellaPlayground.playground */,
 			);
 			path = Umbrella;
 			sourceTree = "<group>";
@@ -319,6 +321,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Umbrella/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = be.dooz.Umbrella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -337,6 +340,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Umbrella/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = be.dooz.Umbrella;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -383,6 +387,7 @@
 				C05F659C1C0B0BA900F7898F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C05F659D1C0B0BA900F7898F /* Build configuration list for PBXNativeTarget "UmbrellaTests" */ = {
 			isa = XCConfigurationList;
@@ -391,6 +396,7 @@
 				C05F659F1C0B0BA900F7898F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

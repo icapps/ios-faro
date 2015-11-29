@@ -4,7 +4,8 @@ public class SwiftFrameworks {
 		print("Class has been initialised")
 	}
 	
-	public func doSomething(){
-	print("Yeah, it works")
+	public func doSomething() -> Int{
+		print("Yeah, it works")
+		return 1
 	}
 }
