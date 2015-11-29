@@ -21,12 +21,18 @@ public class RequestController {
 /**
 * Save a single item
 */
-	public func save<BodyType: BaseModel, ResponseType: BaseModel>(body: BodyType, completion:(response: ResponseType)->()){
+	public func save<BodyType: BaseModel, ResponseType: BaseModel>(body: BodyType, completion:(response: ResponseType) ->()) throws{
 		let request = serviceParameters.request
 		request.HTTPMethod = "POST"
 		
 		if let bodyObject = body.body() {
-			request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(bodyObject, options: .PrettyPrinted)
+			do {
+				request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(bodyObject, options: .PrettyPrinted)
+			}catch {
+				try body.errorController.requestBodyError()
+			}
+		}else {
+			try body.errorController.requestBodyError()
 		}
 		
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in

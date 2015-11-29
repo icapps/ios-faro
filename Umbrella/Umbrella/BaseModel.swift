@@ -11,6 +11,13 @@ import Foundation
 public protocol BaseModel: class {
 	
 	var objectId: String? {get set}
+	
+/**
+* In your implementation create a general ErrorController and if needed an error controller that can handle
+* errors from 
+*/
+	var errorController: ErrorController {get set}
+	
 /**
 * Set all properties from the received JSON at initialization
 */

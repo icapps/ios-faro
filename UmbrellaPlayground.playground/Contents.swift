@@ -25,8 +25,10 @@ class GameScore: BaseModel {
 	var cheatMode: Bool?
 	var playerName: String?
 	var objectId: String?
+	var errorController: ErrorController
 	
 	required init(json: AnyObject) {
+		errorController = YourBaseErrorController()
 		importFromJSON(json)
 	}
 	
@@ -49,7 +51,12 @@ class GameScore: BaseModel {
 			playerName = json["playerName"] as? String
 		}
 	}
-	
+}
+
+class YourBaseErrorController: ErrorController {
+	func requestBodyBuildUpError() {
+		print("-----------Error building up body-----")
+	}
 }
 
 let serviceParameters = UmbrellaPlaygroundServiceParameter<GameScore>()
@@ -71,16 +78,20 @@ let retreiveResponse: (response: [GameScore]) -> () = {(response: [GameScore]) -
 
 
 
-test.save(gameScore, completion: saveResponse)
+//test.save(gameScore, completion: saveResponse)
 
-test.retrieve(retreiveResponse)
+//test.retrieve(retreiveResponse)
 
 //Retreive single instance
 let retreiveSingleInstanceResponse: (response: GameScore) -> () = {(response: GameScore) -> () in
 	let gameScore = response
 //	XCPlaygroundPage.currentPage.finishExecution()
 }
-test.retrieve("ta40DRgRAn", completion: retreiveSingleInstanceResponse)
+//test.retrieve("ta40DRgRAn", completion: retreiveSingleInstanceResponse)
+
+
+//Try some Error
+test.retrieve("non existing object ID", completion: retreiveSingleInstanceResponse)
 
 
 //To let async code work

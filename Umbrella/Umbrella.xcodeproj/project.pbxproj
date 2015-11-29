@@ -11,6 +11,7 @@
 		C04661931C0B23310031DD22 /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04661921C0B23310031DD22 /* Dispatch.swift */; };
 		C04661951C0B35350031DD22 /* ResponseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04661941C0B35350031DD22 /* ResponseController.swift */; };
 		C04661971C0B3A170031DD22 /* TransformController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04661961C0B3A170031DD22 /* TransformController.swift */; };
+		C04661991C0B5A310031DD22 /* ErrorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04661981C0B5A310031DD22 /* ErrorController.swift */; };
 		C05F658A1C0B0BA900F7898F /* Umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C05F65891C0B0BA900F7898F /* Umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C05F65911C0B0BA900F7898F /* Umbrella.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C05F65861C0B0BA900F7898F /* Umbrella.framework */; };
 		C05F65961C0B0BA900F7898F /* UmbrellaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F65951C0B0BA900F7898F /* UmbrellaTests.swift */; };
@@ -34,6 +35,7 @@
 		C04661921C0B23310031DD22 /* Dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		C04661941C0B35350031DD22 /* ResponseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResponseController.swift; path = Service/ResponseController.swift; sourceTree = "<group>"; };
 		C04661961C0B3A170031DD22 /* TransformController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformController.swift; sourceTree = "<group>"; };
+		C04661981C0B5A310031DD22 /* ErrorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorController.swift; sourceTree = "<group>"; };
 		C05F65861C0B0BA900F7898F /* Umbrella.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Umbrella.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05F65891C0B0BA900F7898F /* Umbrella.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Umbrella.h; sourceTree = "<group>"; };
 		C05F658B1C0B0BA900F7898F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				C04661941C0B35350031DD22 /* ResponseController.swift */,
 				C04661961C0B3A170031DD22 /* TransformController.swift */,
 				C05F65A31C0B1CC700F7898F /* BaseModel.swift */,
+				C04661981C0B5A310031DD22 /* ErrorController.swift */,
 				C05F65A51C0B1DB300F7898F /* ServiceParameter.swift */,
 			);
 			path = Umbrella;
@@ -218,6 +221,7 @@
 				C05F65A41C0B1CC700F7898F /* BaseModel.swift in Sources */,
 				C05F65A11C0B0C3C00F7898F /* RequestController.swift in Sources */,
 				C04661951C0B35350031DD22 /* ResponseController.swift in Sources */,
+				C04661991C0B5A310031DD22 /* ErrorController.swift in Sources */,
 				C04661971C0B3A170031DD22 /* TransformController.swift in Sources */,
 				C05F65A61C0B1DB300F7898F /* ServiceParameter.swift in Sources */,
 			);
