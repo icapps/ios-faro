@@ -6,13 +6,11 @@ import Foundation
 */
 
 public class RequestController {
-	private let serviceParameters: ServiceParameter
 	private let responseController: ResponseController
 	private let sessionConfig: NSURLSessionConfiguration
 	private let session: NSURLSession
 	
 	public init(serviceParameters: ServiceParameter, responseController: ResponseController = ResponseController()) {
-		self.serviceParameters = serviceParameters
 		self.responseController = responseController
 		sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
 		session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
@@ -22,7 +20,7 @@ public class RequestController {
 * Save a single item
 */
 	public func save<BodyType: BaseModel, ResponseType: BaseModel>(body: BodyType, completion:(response: ResponseType) ->()) throws{
-		let request = serviceParameters.request
+		let request = BodyType.serviceParameters().request
 		request.HTTPMethod = "POST"
 		
 		if let bodyObject = body.body() {
@@ -47,7 +45,7 @@ public class RequestController {
 * Retrieve a all item fram a concrete class of BaseModel
 */
 	public func retrieve<ResponseType: BaseModel>(completion:(response: [ResponseType])->()){
-		let request = serviceParameters.request
+		let request = ResponseType.serviceParameters().request
 		request.HTTPMethod = "GET"
 		
 		/* Start a new Task */
@@ -63,7 +61,7 @@ public class RequestController {
 	* Retrieve a single item fram a concrete class of BaseModel
 	*/
 	public func retrieve<ResponseType: BaseModel>(objectId:String, completion:(response: ResponseType)->()){
-		let request = serviceParameters.request
+		let request = ResponseType.serviceParameters().request
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 		request.HTTPMethod = "GET"
 		

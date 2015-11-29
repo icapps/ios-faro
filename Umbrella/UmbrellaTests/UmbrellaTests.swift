@@ -11,20 +11,28 @@ import XCTest
 
 class UmbrellaTests: XCTestCase {
 	
+	var test: RequestController!
+	var wait: TestWait!
+	
+	let gameScore = GameScore(json: [
+		"score": 1337,
+		"cheatMode": false,
+		"playerName": "Sean Plott"
+		])
+	
+	override func setUp() {
+		test = RequestController(serviceParameters: PlaygroundService<GameScore>())
+		wait = TestWait()
+		super.setUp()
+	}
     func testSave() {
-        let test = RequestController(serviceParameters: MockServerparameters())
-		let wait = TestWait()
-		let exp = "testExposedClassesInitializastions"
+		
+		let exp = "testSave"
 		wait.expectations = [exp]
 		
-		let gameScore = GameScore(json: [
-			"score": 1337,
-			"cheatMode": false,
-			"playerName": "Sean Plott"
-			])
-		let response: (response: GameScore) -> () = {(response: GameScore) -> () in
+		let response: (response: GameScore) -> () = {[unowned self](response: GameScore) -> () in
 			XCTAssertNotNil(response.objectId)
-			wait.fulFillExpectation(exp)
+			self.wait.fulFillExpectation(exp)
 		}
 		
 		try! test.save(gameScore, completion: response)
@@ -35,16 +43,14 @@ class UmbrellaTests: XCTestCase {
     }
 	
 	func testRetreive_Array() {
-		let test = RequestController(serviceParameters: MockServerparameters())
-		let wait = TestWait()
-		let exp = "testExposedClassesInitializastions"
+		let exp = "testRetreive_Array"
 		wait.expectations = [exp]
 		
 	
-		let response: (response: [GameScore]) -> () = {(response: [GameScore]) -> () in
+		let response: (response: [GameScore]) -> () = {[unowned self](response: [GameScore]) -> () in
 			XCTAssertGreaterThan(response.count, 1)
 		
-			wait.fulFillExpectation(exp)
+			self.wait.fulFillExpectation(exp)
 		}
 		
 		test.retrieve(response)
@@ -55,20 +61,18 @@ class UmbrellaTests: XCTestCase {
 	}
 	
 	func testRetreive_Object() {
-		let test = RequestController(serviceParameters: MockServerparameters())
 		let objectId = "ta40DRgRAn"
-		let wait = TestWait()
-		let exp = "testExposedClassesInitializastions"
+		let exp = "testRetreive_Object"
 		wait.expectations = [exp]
 		
 		
-		let response: (response: GameScore) -> () = {(response: GameScore) -> () in
+		let response: (response: GameScore) -> () = {[unowned self](response: GameScore) -> () in
 			XCTAssertNotNil(response.score)
 			XCTAssertNotNil(response.cheatMode)
 			XCTAssertNotNil(response.playerName)
 			XCTAssertEqual(response.objectId, objectId)
 			
-			wait.fulFillExpectation(exp)
+			self.wait.fulFillExpectation(exp)
 		}
 		
 		test.retrieve(objectId, completion: response)
@@ -79,9 +83,7 @@ class UmbrellaTests: XCTestCase {
 	}
 	
 	func testSave_Throws() {
-		let test = RequestController(serviceParameters: MockServerparameters())
-		let wait = TestWait()
-		let exp = "testExposedClassesInitializastions"
+		let exp = "testSave_Throws"
 		wait.expectations = [exp]
 		
 		let response: (response: GameScore) -> () = {(response: GameScore) -> () in
@@ -102,12 +104,11 @@ class UmbrellaTests: XCTestCase {
 
 //MARK: Mocks
 
-class MockServerparameters: ServiceParameter {
+class PlaygroundService <BodyType: BaseModel>: ServiceParameter {
 	var serverUrl = "https://api.parse.com/1/classes/"
 	var request: NSMutableURLRequest {
-		let URL = NSURL(string: "\(serverUrl)GameScore")
+		let URL = NSURL(string: "\(serverUrl)\(BodyType.contextPath())")
 		let request = NSMutableURLRequest(URL: URL!)
-		request.HTTPMethod = "POST"
 		
 		// Headers
 		
@@ -133,6 +134,7 @@ class GameScore: BaseModel {
 	var score: Int?
 	var cheatMode: Bool?
 	var playerName: String?
+	
 	var objectId: String?
 	var errorController: ErrorController
 	
@@ -141,11 +143,16 @@ class GameScore: BaseModel {
 		importFromJSON(json)
 	}
 	
-	
+	//MARK: BaseModel Protocol Type
 	static func contextPath() -> String {
 		return "GameScore"
 	}
 	
+	static func serviceParameters() -> ServiceParameter {
+		return PlaygroundService<GameScore>()
+	}
+	
+	//MARK: BaseModel Protocol Instance
 	func body()-> NSDictionary? {
 		return [
 			"score": score!,
@@ -161,7 +168,6 @@ class GameScore: BaseModel {
 			playerName = json["playerName"] as? String
 		}
 	}
-	
 }
 
 class MockUnsavableGame: BaseModel {
@@ -177,6 +183,10 @@ class MockUnsavableGame: BaseModel {
 	
 	static func contextPath() -> String {
 		return "Unsavable"
+	}
+	
+	static func serviceParameters() -> ServiceParameter {
+		return PlaygroundService<MockUnsavableGame>()
 	}
 	
 	func body()-> NSDictionary? {

@@ -12,6 +12,8 @@ public protocol BaseModel: class {
 	
 	var objectId: String? {get set}
 	
+	static func serviceParameters() ->  ServiceParameter
+	
 /**
 * In your implementation create a general ErrorController and if needed an error controller that can handle
 * errors from 
