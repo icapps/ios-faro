@@ -60,12 +60,17 @@ let gameScore = GameScore(json: [
 	"playerName": "Sean Plott"
 	])
 
-let response: (response: GameScore) -> () = {(response: GameScore) -> () in
+let saveResponse: (response: GameScore) -> () = {(response: GameScore) -> () in
 	print(response.body())
-	XCPlaygroundPage.currentPage.finishExecution()
 }
 
-test.saveBody(gameScore, completion: response)
+let retreiveResponse: (response: [GameScore]) -> () = {(response: [GameScore]) -> () in
+	print(response)
+}
+
+//test.save(gameScore, completion: saveResponse)
+
+test.retrieve(retreiveResponse)
 
 //To let async code work
 XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
