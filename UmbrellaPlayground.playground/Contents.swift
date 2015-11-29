@@ -1,10 +1,66 @@
-//Here you can play around with the Umbrella framework to see if it works
+//: # Swift generics used in service request
+//: Here you can play around with the Umbrella framework to see if it works
+/*: To start us Off we need to import some *frameworks*:
+	1. UIKit for some CGFloats we use in a dispatch framework (not important)
+	2. Umbrella -> this holds all the generic classes
+	3. XCPPlaygound -> Needed because we do async calls
+*/
 
 import UIKit
 import Umbrella
 import XCPlayground
 
-class UmbrellaPlaygroundServiceParameter<BodyType: BaseModel>: ServiceParameter {
+/*: 
+## How did we compose the different objects?
+	1. GameScore is a Type that conforms to protocol BaseModel. 
+		The base model protocol defines two basic kind of requirements for our model object:
+		1. Initialisation from json and some required properties
+		2. Service related stuff: Error handling/ Service parameters
+	2. 
+*/
+
+class GameScore: BaseModel {
+	
+	var score: Int?
+	var cheatMode: Bool?
+	var playerName: String?
+	
+	var objectId: String?
+	var errorController: ErrorController
+	
+	required init(json: AnyObject) {
+		errorController = PlayGroundErrorController()
+		importFromJSON(json)
+	}
+	
+	//MARK: BaseModel Protocol Type
+	static func contextPath() -> String {
+		return "GameScore"
+	}
+	
+	static func serviceParameters() -> ServiceParameter {
+		return PlaygroundService<GameScore>()
+	}
+	
+	//MARK: BaseModel Protocol Instance
+	func body()-> NSDictionary? {
+		return [
+			"score": score!,
+			"cheatMode": cheatMode!,
+			"playerName": playerName!
+		]
+	}
+	func importFromJSON(json: AnyObject) {
+		if let json = json as? NSDictionary {
+			objectId = json["objectId"] as? String
+			score = json["score"] as? Int
+			cheatMode = json["cheatMode"] as? Bool
+			playerName = json["playerName"] as? String
+		}
+	}
+}
+
+class PlaygroundService <BodyType: BaseModel>: ServiceParameter {
 	var serverUrl = "https://api.parse.com/1/classes/"
 	var request: NSMutableURLRequest {
 		let URL = NSURL(string: "\(serverUrl)\(BodyType.contextPath())")
@@ -19,47 +75,46 @@ class UmbrellaPlaygroundServiceParameter<BodyType: BaseModel>: ServiceParameter 
 	}
 }
 
-class GameScore: BaseModel {
+
+
+class UnsavableGame: BaseModel {
 	
-	var score: Int?
-	var cheatMode: Bool?
-	var playerName: String?
 	var objectId: String?
 	var errorController: ErrorController
 	
 	required init(json: AnyObject) {
-		errorController = YourBaseErrorController()
+		errorController = PlayGroundErrorController()
 		importFromJSON(json)
 	}
 	
 	
 	static func contextPath() -> String {
-		return "GameScore"
+		return "Unsavable"
+	}
+	
+	static func serviceParameters() -> ServiceParameter {
+		return PlaygroundService<UnsavableGame>()
 	}
 	
 	func body()-> NSDictionary? {
-		return [
-			"score": score!,
-			"cheatMode": cheatMode!,
-			"playerName": playerName!
-		]
+		return nil
 	}
 	func importFromJSON(json: AnyObject) {
-		if let json = json as? NSDictionary {
-			score = json["score"] as? Int
-			cheatMode = json["cheatMode"] as? Bool
-			playerName = json["playerName"] as? String
-		}
+		
 	}
+	
 }
-
-class YourBaseErrorController: ErrorController {
-	func requestBodyBuildUpError() {
+class PlayGroundErrorController: ErrorController {
+	required init() {
+		
+	}
+	func requestBodyError() throws {
 		print("-----------Error building up body-----")
+		throw RequestError.InvalidBody
 	}
 }
 
-let serviceParameters = UmbrellaPlaygroundServiceParameter<GameScore>()
+let serviceParameters = PlaygroundService <GameScore>()
 
 let test = RequestController(serviceParameters: serviceParameters)
 let gameScore = GameScore(json: [
@@ -77,9 +132,24 @@ let retreiveResponse: (response: [GameScore]) -> () = {(response: [GameScore]) -
 }
 
 
+//: #Save that succeeds
 
-//test.save(gameScore, completion: saveResponse)
+//do {
+//	try test.save(gameScore, completion: saveResponse)
+//}catch RequestError.InvalidBody {
+//	print(RequestError.InvalidBody)
+//	XCPlaygroundPage.currentPage.finishExecution()
+//}
 
+//Failed save
+do {
+	try test.save(UnsavableGame(json:[]), completion: saveResponse)
+}catch RequestError.InvalidBody {
+	print(RequestError.InvalidBody)
+	XCPlaygroundPage.currentPage.finishExecution()
+}
+
+//
 //test.retrieve(retreiveResponse)
 
 //Retreive single instance
@@ -91,7 +161,7 @@ let retreiveSingleInstanceResponse: (response: GameScore) -> () = {(response: Ga
 
 
 //Try some Error
-test.retrieve("non existing object ID", completion: retreiveSingleInstanceResponse)
+//test.retrieve("non existing object ID", completion: retreiveSingleInstanceResponse)
 
 
 //To let async code work
