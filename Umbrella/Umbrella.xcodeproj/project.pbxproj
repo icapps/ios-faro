@@ -39,7 +39,6 @@
 		C05F65951C0B0BA900F7898F /* UmbrellaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmbrellaTests.swift; sourceTree = "<group>"; };
 		C05F65971C0B0BA900F7898F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C05F65A01C0B0C3C00F7898F /* RequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestController.swift; path = Service/RequestController.swift; sourceTree = "<group>"; };
-		C05F65A21C0B0D2C00F7898F /* UmbrellaPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = UmbrellaPlayground.playground; path = ../../UmbrellaPlayground.playground; sourceTree = "<group>"; };
 		C05F65A31C0B1CC700F7898F /* BaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
 		C05F65A51C0B1DB300F7898F /* ServiceParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceParameter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,7 +89,6 @@
 				C04661941C0B35350031DD22 /* ResponseController.swift */,
 				C05F65A31C0B1CC700F7898F /* BaseModel.swift */,
 				C05F65A51C0B1DB300F7898F /* ServiceParameter.swift */,
-				C05F65A21C0B0D2C00F7898F /* UmbrellaPlayground.playground */,
 			);
 			path = Umbrella;
 			sourceTree = "<group>";
