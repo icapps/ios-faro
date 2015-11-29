@@ -23,6 +23,7 @@ public class RequestController <BodyType: BaseModel> {
 		let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
 		
 		let request = serviceParameters.request
+		request.HTTPMethod = "POST"
 		// JSON Body -> Move to body class
 		
 		let bodyObject = [

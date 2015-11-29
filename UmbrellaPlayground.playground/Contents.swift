@@ -9,7 +9,6 @@ class UmbrellaPlaygroundServiceParameter: ServiceParameter {
 	var request: NSMutableURLRequest {
 		let URL = NSURL(string: "\(serverUrl)GameScore")
 		let request = NSMutableURLRequest(URL: URL!)
-		request.HTTPMethod = "POST"
 		
 		// Headers
 		
