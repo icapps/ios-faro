@@ -24,6 +24,7 @@ class GameScore: BaseModel {
 	var score: Int?
 	var cheatMode: Bool?
 	var playerName: String?
+	var objectId: String?
 	
 	required init(json: AnyObject) {
 		importFromJSON(json)
@@ -61,16 +62,26 @@ let gameScore = GameScore(json: [
 	])
 
 let saveResponse: (response: GameScore) -> () = {(response: GameScore) -> () in
-	print(response.body())
+	let gameScore = response
 }
 
 let retreiveResponse: (response: [GameScore]) -> () = {(response: [GameScore]) -> () in
-	print(response)
+	let gameScores = response
 }
 
-//test.save(gameScore, completion: saveResponse)
+
+
+test.save(gameScore, completion: saveResponse)
 
 test.retrieve(retreiveResponse)
+
+//Retreive single instance
+let retreiveSingleInstanceResponse: (response: GameScore) -> () = {(response: GameScore) -> () in
+	let gameScore = response
+//	XCPlaygroundPage.currentPage.finishExecution()
+}
+test.retrieve("ta40DRgRAn", completion: retreiveSingleInstanceResponse)
+
 
 //To let async code work
 XCPlaygroundPage.currentPage.needsIndefiniteExecution = true

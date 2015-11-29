@@ -30,6 +30,7 @@ class GameScore: BaseModel {
 	var score: Int?
 	var cheatMode: Bool?
 	var playerName: String?
+	var objectId: String?
 	
 	required init(json: AnyObject) {
 		importFromJSON(json)
@@ -49,6 +50,7 @@ class GameScore: BaseModel {
 	}
 	func importFromJSON(json: AnyObject) {
 		if let json = json as? NSDictionary {
+			objectId = json["objectId"] as? String
 			score = json["score"] as? Int
 			cheatMode = json["cheatMode"] as? Bool
 			playerName = json["playerName"] as? String
@@ -72,6 +74,7 @@ class UmbrellaTests: XCTestCase {
 			"playerName": "Sean Plott"
 			])
 		let response: (response: GameScore) -> () = {(response: GameScore) -> () in
+			XCTAssertNotNil(response.objectId)
 			wait.fulFillExpectation(exp)
 		}
 		
@@ -82,7 +85,7 @@ class UmbrellaTests: XCTestCase {
 		}
     }
 	
-	func testRetreive() {
+	func testRetreive_Array() {
 		let test = RequestController(serviceParameters: MockServerparameters())
 		let wait = TestWait()
 		let exp = "testExposedClassesInitializastions"
@@ -96,6 +99,30 @@ class UmbrellaTests: XCTestCase {
 		}
 		
 		test.retrieve(response)
+		
+		wait.waitUntillFinishWithTimeout(2) { (success, unfulFilledExpectations) -> () in
+			XCTAssertTrue(success, "\(unfulFilledExpectations)")
+		}
+	}
+	
+	func testRetreive_Object() {
+		let test = RequestController(serviceParameters: MockServerparameters())
+		let objectId = "ta40DRgRAn"
+		let wait = TestWait()
+		let exp = "testExposedClassesInitializastions"
+		wait.expectations = [exp]
+		
+		
+		let response: (response: GameScore) -> () = {(response: GameScore) -> () in
+			XCTAssertNotNil(response.score)
+			XCTAssertNotNil(response.cheatMode)
+			XCTAssertNotNil(response.playerName)
+			XCTAssertEqual(response.objectId, objectId)
+			
+			wait.fulFillExpectation(exp)
+		}
+		
+		test.retrieve(objectId, completion: response)
 		
 		wait.waitUntillFinishWithTimeout(2) { (success, unfulFilledExpectations) -> () in
 			XCTAssertTrue(success, "\(unfulFilledExpectations)")
