@@ -7,32 +7,22 @@ enum UmbrellaErrors: ErrorType {
 
 public class RequestController <BodyType: BaseModel> {
 	private let serviceParameters: ServiceParameter
+	private let sessionConfig: NSURLSessionConfiguration
+	private let session: NSURLSession
 	
 	public init(serviceParameters: ServiceParameter) {
 		self.serviceParameters = serviceParameters
+		sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
+		session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
 	}
 	
-	public func saveBody(body: BodyType){
-		
-	}
-	
-	public func sendRequest(completion:(response: NSURLResponse)->()) {
-		
-		let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
-		
-		let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
-		
+	public func saveBody(body: BodyType, completion:(response: NSURLResponse)->()){
 		let request = serviceParameters.request
 		request.HTTPMethod = "POST"
-		// JSON Body -> Move to body class
 		
-		let bodyObject = [
-			"score": 1337,
-			"cheatMode": false,
-			"playerName": "Sean Plott"
-		]
-	
-		request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(bodyObject, options: .PrettyPrinted)
+		if let bodyObject = body.body() {
+			request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(bodyObject, options: .PrettyPrinted)
+		}
 		
 		/* Start a new Task */
 		let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
@@ -49,6 +39,6 @@ public class RequestController <BodyType: BaseModel> {
 		}
 		
 		task.resume()
+
 	}
-	
 }

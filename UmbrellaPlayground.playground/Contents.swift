@@ -4,10 +4,10 @@ import UIKit
 import Umbrella
 import XCPlayground
 
-class UmbrellaPlaygroundServiceParameter: ServiceParameter {
+class UmbrellaPlaygroundServiceParameter<BodyType: BaseModel>: ServiceParameter {
 	var serverUrl = "https://api.parse.com/1/classes/"
 	var request: NSMutableURLRequest {
-		let URL = NSURL(string: "\(serverUrl)GameScore")
+		let URL = NSURL(string: "\(serverUrl)\(BodyType.contextPath())")
 		let request = NSMutableURLRequest(URL: URL!)
 		
 		// Headers
@@ -19,11 +19,28 @@ class UmbrellaPlaygroundServiceParameter: ServiceParameter {
 	}
 }
 
-let serviceParameters = UmbrellaPlaygroundServiceParameter()
+class GameScore: BaseModel {
+	private let bodyObject = [
+		"score": 1337,
+		"cheatMode": false,
+		"playerName": "Sean Plott"
+	]
+	
+	static func contextPath() -> String {
+		return "GameScore"
+	}
+	
+	func body()-> NSDictionary? {
+		 return bodyObject
+	}
+	
+}
 
-let test = RequestController(serviceParameters: serviceParameters)
+let serviceParameters = UmbrellaPlaygroundServiceParameter<GameScore>()
 
-test.sendRequest { (response) -> () in
+let test = RequestController<GameScore>(serviceParameters: serviceParameters)
+let gameScore = GameScore()
+test.saveBody(gameScore) { (response) -> () in
 	let responseData = response
 	print(response)
 	XCPlaygroundPage.currentPage.finishExecution()
