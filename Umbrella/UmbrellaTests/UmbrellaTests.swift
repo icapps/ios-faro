@@ -92,8 +92,10 @@ class UmbrellaTests: XCTestCase {
 		
 		do {
 			try test.save(MockUnsavableGame(json: []), completion: response)
-		}catch  {
+		}catch RequestError.InvalidBody  {
 			wait.fulFillExpectation(exp)
+		}catch {
+			XCTFail("Should not throw anything else")
 		}
 		
 		wait.waitUntillFinishWithTimeout(2) { (success, unfulFilledExpectations) -> () in
