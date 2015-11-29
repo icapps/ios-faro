@@ -8,15 +8,16 @@
 
 import Foundation
 
-public class BaseModel {
+public protocol BaseModel {
+	
 /**
-* An url is formed from <ServiceParameter.Url.serverURL.rawValue+contextPath>.
+* An url is formed from <ServiceParameter.serverURL+BaseModel.contextPath>.
 */
-	let contextPath: String
+	static func contextPath() -> String
 	
-	public init (contextPath: String) {
-		self.contextPath = contextPath
-	}
-	
+/**
+* Override if you want to POST objects as JSON
+*/
+	func body()-> NSDictionary?
 	
 }
