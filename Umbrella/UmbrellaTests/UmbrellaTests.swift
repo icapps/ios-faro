@@ -45,7 +45,7 @@ class UmbrellaTests: XCTestCase {
     
 	
     func testExposedClassesInitializastions() {
-        let test = RequestController<GameScore>(serviceParameters: MockServerparameters())
+        let test = RequestController(serviceParameters: MockServerparameters())
 		let wait = TestWait()
 		let exp = "testExposedClassesInitializastions"
 		wait.expectations = [exp]

@@ -38,7 +38,7 @@ class GameScore: BaseModel {
 
 let serviceParameters = UmbrellaPlaygroundServiceParameter<GameScore>()
 
-let test = RequestController<GameScore>(serviceParameters: serviceParameters)
+let test = RequestController(serviceParameters: serviceParameters)
 let gameScore = GameScore()
 test.saveBody(gameScore) { (response) -> () in
 	let responseData = response

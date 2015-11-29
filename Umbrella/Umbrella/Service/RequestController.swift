@@ -5,7 +5,7 @@ import Foundation
 * It is te task of this class to form a request and fire it off.
 */
 
-public class RequestController <BodyType: BaseModel> {
+public class RequestController {
 	private let serviceParameters: ServiceParameter
 	private let responseController: ResponseController
 	private let sessionConfig: NSURLSessionConfiguration
@@ -18,7 +18,7 @@ public class RequestController <BodyType: BaseModel> {
 		session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
 	}
 	
-	public func saveBody(body: BodyType, completion:(response: NSURLResponse)->()){
+	public func saveBody<BodyType: BaseModel>(body: BodyType, completion:(response: NSURLResponse)->()){
 		let request = serviceParameters.request
 		request.HTTPMethod = "POST"
 		
