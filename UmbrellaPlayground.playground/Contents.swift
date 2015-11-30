@@ -264,7 +264,9 @@ try test.retrieve("ta40DRgRAn", completion: retreiveSingleInstanceResponse)
 
 //: #### Try some Error
 do {
-	try test.retrieve("non existing object ID", completion: retreiveSingleInstanceResponse)
+	try test.retrieve("non existing object ID", completion: retreiveSingleInstanceResponse) { error in
+		let error = error
+	}
 }catch {
 	RequestError.InvalidAuthentication
 }

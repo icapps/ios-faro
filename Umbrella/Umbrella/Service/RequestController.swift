@@ -3,6 +3,8 @@ import Foundation
 
 // It is te task of this class to fire of a request it gets from the Model Type
 
+//TODO: #6 remove duplication
+
 public class RequestController {
 	private let responseController: ResponseController
 	private let sessionConfig: NSURLSessionConfiguration
@@ -68,8 +70,10 @@ public class RequestController {
 					try self.responseController.handleResponse((data: data,urlResponse: response, error: error), completion: completion)
 				}catch RequestError.InvalidAuthentication {
 					print("---Error we could not Authenticate----")
+					failure?(RequestError.InvalidAuthentication)
 				}catch {
 					print("---Error we could not process the response----")
+					failure?(RequestError.General)
 				}
 			}
 		})
@@ -86,17 +90,19 @@ public class RequestController {
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 		request.HTTPMethod = "GET"
 		
-		/* Start a new Task */
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if error != nil {
 				print("---Error request failed with error: \(error)----")
 			}else {
 				do {
 					try self.responseController.handleResponse((data: data,urlResponse: response, error: error), completion: completion)
+					
 				}catch RequestError.InvalidAuthentication {
 					print("---Error we could not Authenticate----")
+					failure?(RequestError.InvalidAuthentication)
 				}catch {
 					print("---Error we could not process the response----")
+					failure?(RequestError.General)
 				}
 			}
 		})
