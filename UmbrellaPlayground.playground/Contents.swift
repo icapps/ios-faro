@@ -185,7 +185,7 @@ do {
 	try test.save(gameScore, completion: saveResponse)
 }catch RequestError.InvalidBody {
 	print(RequestError.InvalidBody)
-	XCPlaygroundPage.currentPage.finishExecution()
+//	XCPlaygroundPage.currentPage.finishExecution()
 }
 
 //: #### Failed save
@@ -221,8 +221,7 @@ class UnsavableGame: BaseModel {
 do {
 	try test.save(UnsavableGame(json:[]), completion: saveResponse)
 }catch RequestError.InvalidBody {
-	print(RequestError.InvalidBody)
-	XCPlaygroundPage.currentPage.finishExecution()
+//	XCPlaygroundPage.currentPage.finishExecution()
 }
 
 //: #### Retreive multiple instances
