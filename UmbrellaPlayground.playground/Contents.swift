@@ -83,25 +83,19 @@ When you do something on the network you tipically fire a request, respond and
 transfrom the result into your model objects, incase all goes well. 
 If it does not go well you try to handle the error case.
 
-	1. RequestController: 
-		Fire of a request it gets from the Model Type
-	2. ResponsController:
-		Dispatch the errors related to a response.
-	3. TransformController:
-		Transformations of data to concrete objects.
-	4. ErrorController:
-		Handle errors thown in a type specicic way
-	5. ServiceParameters:
-		Know where to fetch data for the model type.
-*/
-
-/*: 
-## How did we compose the different objects?
-	1. GameScore is a Type that conforms to protocol BaseModel. 
-		The base model protocol defines two basic kind of requirements for our model object:
-		1. Initialisation from json and some required properties
-		2. Service related stuff: Error handling/ Service parameters
-	2. 
+1. **RequestController:**
+	*Fire of a request it gets from the Model Type*
+2. **ResponsController:**
+	*Dispatch the errors related to a response.*
+3. **TransformController:**
+	*Transformations of data to concrete objects.*
+4. **ErrorController:**
+	*Handle errors thown in a type specicic way*
+5. **ServiceParameters:**
+	*Know where to fetch data for the model type.*
+6. **BaseModel:**
+	*A requestController should be able to build up*
+	*a request when your model object complies to this protocol.*
 */
 
 class GameScore: BaseModel {
@@ -123,7 +117,7 @@ class GameScore: BaseModel {
 		return "GameScore"
 	}
 	
-	static func serviceParameters() -> ServiceParameter {
+	static func serviceParameters() -> ServiceParameters {
 		return PlaygroundService<GameScore>()
 	}
 	
@@ -145,7 +139,7 @@ class GameScore: BaseModel {
 	}
 }
 
-class PlaygroundService <BodyType: BaseModel>: ServiceParameter {
+class PlaygroundService <BodyType: BaseModel>: ServiceParameters {
 	var serverUrl = "https://api.parse.com/1/classes/"
 	var request: NSMutableURLRequest {
 		let URL = NSURL(string: "\(serverUrl)\(BodyType.contextPath())")
@@ -160,35 +154,6 @@ class PlaygroundService <BodyType: BaseModel>: ServiceParameter {
 	}
 }
 
-
-
-class UnsavableGame: BaseModel {
-	
-	var objectId: String?
-	var errorController: ErrorController
-	
-	required init(json: AnyObject) {
-		errorController = PlayGroundErrorController()
-		importFromJSON(json)
-	}
-	
-	
-	static func contextPath() -> String {
-		return "Unsavable"
-	}
-	
-	static func serviceParameters() -> ServiceParameter {
-		return PlaygroundService<UnsavableGame>()
-	}
-	
-	func body()-> NSDictionary? {
-		return nil
-	}
-	func importFromJSON(json: AnyObject) {
-		
-	}
-	
-}
 class PlayGroundErrorController: ErrorController {
 	required init() {
 		
@@ -208,45 +173,77 @@ let gameScore = GameScore(json: [
 	"playerName": "Sean Plott"
 	])
 
+
+//: # Try some network calls
+
+//: #### Save that succeeds
 let saveResponse: (response: GameScore) -> () = {(response: GameScore) -> () in
 	let gameScore = response
 }
+
+do {
+	try test.save(gameScore, completion: saveResponse)
+}catch RequestError.InvalidBody {
+	print(RequestError.InvalidBody)
+	XCPlaygroundPage.currentPage.finishExecution()
+}
+
+//: #### Failed save
+class UnsavableGame: BaseModel {
+	
+	var objectId: String?
+	var errorController: ErrorController
+	
+	required init(json: AnyObject) {
+		errorController = PlayGroundErrorController()
+		importFromJSON(json)
+	}
+	
+	
+	static func contextPath() -> String {
+		return "Unsavable"
+	}
+	
+	static func serviceParameters() -> ServiceParameters {
+		return PlaygroundService<UnsavableGame>()
+	}
+	
+	func body()-> NSDictionary? {
+		return nil
+	}
+	func importFromJSON(json: AnyObject) {
+		
+	}
+	
+}
+
+
+do {
+	try test.save(UnsavableGame(json:[]), completion: saveResponse)
+}catch RequestError.InvalidBody {
+	print(RequestError.InvalidBody)
+	XCPlaygroundPage.currentPage.finishExecution()
+}
+
+//: #### Retreive multiple instances
 
 let retreiveResponse: (response: [GameScore]) -> () = {(response: [GameScore]) -> () in
 	let gameScores = response
 }
 
 
-//: #Save that succeeds
+test.retrieve(retreiveResponse)
 
-//do {
-//	try test.save(gameScore, completion: saveResponse)
-//}catch RequestError.InvalidBody {
-//	print(RequestError.InvalidBody)
+//: #### Retreive single instance
+let retreiveSingleInstanceResponse: (response: GameScore) -> () = {(response: GameScore) -> () in
+	let gameScore = response
 //	XCPlaygroundPage.currentPage.finishExecution()
-//}
-
-//Failed save
-//do {
-//	try test.save(UnsavableGame(json:[]), completion: saveResponse)
-//}catch RequestError.InvalidBody {
-//	print(RequestError.InvalidBody)
-//	XCPlaygroundPage.currentPage.finishExecution()
-//}
-
-//
-//test.retrieve(retreiveResponse)
-
-//Retreive single instance
-//let retreiveSingleInstanceResponse: (response: GameScore) -> () = {(response: GameScore) -> () in
-//	let gameScore = response
-////	XCPlaygroundPage.currentPage.finishExecution()
-//}
-//test.retrieve("ta40DRgRAn", completion: retreiveSingleInstanceResponse)
+}
+test.retrieve("ta40DRgRAn", completion: retreiveSingleInstanceResponse)
 
 
-//Try some Error
-//test.retrieve("non existing object ID", completion: retreiveSingleInstanceResponse)
+//: #### Try some Error
+test.retrieve("non existing object ID", completion: retreiveSingleInstanceResponse)
 
 
 //To let async code work
