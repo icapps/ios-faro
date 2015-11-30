@@ -106,7 +106,7 @@ class UmbrellaTests: XCTestCase {
 
 //MARK: Mocks
 
-class PlaygroundService <BodyType: BaseModel>: ServiceParameter {
+class PlaygroundService <BodyType: BaseModel>: ServiceParameters {
 	var serverUrl = "https://api.parse.com/1/classes/"
 	var request: NSMutableURLRequest {
 		let URL = NSURL(string: "\(serverUrl)\(BodyType.contextPath())")
@@ -150,7 +150,7 @@ class GameScore: BaseModel {
 		return "GameScore"
 	}
 	
-	static func serviceParameters() -> ServiceParameter {
+	static func serviceParameters() -> ServiceParameters {
 		return PlaygroundService<GameScore>()
 	}
 	
@@ -187,7 +187,7 @@ class MockUnsavableGame: BaseModel {
 		return "Unsavable"
 	}
 	
-	static func serviceParameters() -> ServiceParameter {
+	static func serviceParameters() -> ServiceParameters {
 		return PlaygroundService<MockUnsavableGame>()
 	}
 	

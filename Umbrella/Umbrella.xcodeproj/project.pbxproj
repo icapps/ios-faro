@@ -17,7 +17,7 @@
 		C05F65961C0B0BA900F7898F /* UmbrellaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F65951C0B0BA900F7898F /* UmbrellaTests.swift */; };
 		C05F65A11C0B0C3C00F7898F /* RequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F65A01C0B0C3C00F7898F /* RequestController.swift */; };
 		C05F65A41C0B1CC700F7898F /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F65A31C0B1CC700F7898F /* BaseModel.swift */; };
-		C05F65A61C0B1DB300F7898F /* ServiceParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F65A51C0B1DB300F7898F /* ServiceParameter.swift */; };
+		C05F65A61C0B1DB300F7898F /* ServiceParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F65A51C0B1DB300F7898F /* ServiceParameters.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +44,7 @@
 		C05F65971C0B0BA900F7898F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C05F65A01C0B0C3C00F7898F /* RequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestController.swift; path = Service/RequestController.swift; sourceTree = "<group>"; };
 		C05F65A31C0B1CC700F7898F /* BaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
-		C05F65A51C0B1DB300F7898F /* ServiceParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceParameter.swift; sourceTree = "<group>"; };
+		C05F65A51C0B1DB300F7898F /* ServiceParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceParameters.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,7 +94,7 @@
 				C04661961C0B3A170031DD22 /* TransformController.swift */,
 				C05F65A31C0B1CC700F7898F /* BaseModel.swift */,
 				C04661981C0B5A310031DD22 /* ErrorController.swift */,
-				C05F65A51C0B1DB300F7898F /* ServiceParameter.swift */,
+				C05F65A51C0B1DB300F7898F /* ServiceParameters.swift */,
 			);
 			path = Umbrella;
 			sourceTree = "<group>";
@@ -223,7 +223,7 @@
 				C04661951C0B35350031DD22 /* ResponseController.swift in Sources */,
 				C04661991C0B5A310031DD22 /* ErrorController.swift in Sources */,
 				C04661971C0B3A170031DD22 /* TransformController.swift in Sources */,
-				C05F65A61C0B1DB300F7898F /* ServiceParameter.swift in Sources */,
+				C05F65A61C0B1DB300F7898F /* ServiceParameters.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

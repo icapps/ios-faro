@@ -1,16 +1,14 @@
 import Foundation
 
 
-/**
-* It is te task of this class to form a request and fire it off.
-*/
+// It is te task of this class to fire of a request it gets from the Model Type
 
 public class RequestController {
 	private let responseController: ResponseController
 	private let sessionConfig: NSURLSessionConfiguration
 	private let session: NSURLSession
 	
-	public init(serviceParameters: ServiceParameter, responseController: ResponseController = ResponseController()) {
+	public init(serviceParameters: ServiceParameters, responseController: ResponseController = ResponseController()) {
 		self.responseController = responseController
 		sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
 		session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)

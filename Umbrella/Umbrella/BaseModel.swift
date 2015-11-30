@@ -12,7 +12,7 @@ public protocol BaseModel: class {
 	
 	var objectId: String? {get set}
 	
-	static func serviceParameters() ->  ServiceParameter
+	static func serviceParameters() ->  ServiceParameters
 	
 /**
 * In your implementation create a general ErrorController and if needed an error controller that can handle
