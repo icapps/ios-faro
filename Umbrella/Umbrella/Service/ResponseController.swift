@@ -12,34 +12,51 @@ public class ResponseController {
 		self.transformController = transfromController
 	}
 	
-	func handleResponse<ResponseType: BaseModel>(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), body: ResponseType? = nil, completion: (ResponseType)->()) {
-		if (response.error == nil) {
-			// Success
-			let statusCode = (response.urlResponse as! NSHTTPURLResponse).statusCode
-			print("--------------URL Session Task Succeeded: HTTP \(statusCode)---------------")
-			transformController.objectDataToConcreteObject(response.data!, body: body, completion: { (concreteObject) -> () in
+	func handleResponse<ResponseType: BaseModel>(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
+		let errorController = ResponseType.getErrorController()
+
+		try checkError(response, errorController: errorController)
+		if let data = try checkStatusCodeAndData(response, errorController: errorController){
+			transformController.objectDataToConcreteObject(data, body: body, completion: { (concreteObject) -> () in
 				completion(concreteObject)
 			})
-			
-		}else {
-			// Failure
-			print("URL Session Task Failed: %@", response.error!.localizedDescription);
 		}
 	}
 	
-	func handleResponse<ResponseType: BaseModel>(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), completion: ([ResponseType])->()) {
-		if (response.error == nil) {
-			// Success
-			let statusCode = (response.urlResponse as! NSHTTPURLResponse).statusCode
-			print("--------------URL Session Task Succeeded: HTTP \(statusCode)---------------")
-			transformController.objectsDataToConcreteObjects(response.data!, completion: { (responseArray) -> () in
+	func handleResponse<ResponseType: BaseModel>(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), completion: ([ResponseType])->()) throws{
+		let errorController = ResponseType.getErrorController()
+		
+		try checkError(response, errorController: errorController)
+		
+		if let data = try checkStatusCodeAndData(response, errorController: errorController) {
+			transformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
 				completion(responseArray)
 			})
-			
-		}else {
-			// Failure
-			print("URL Session Task Failed: %@", response.error!.localizedDescription);
 		}
+	}
+	
+	private func checkError(response: (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), errorController: ErrorController) throws{
+		if let error = response.error {
+			print("URL Session Task Failed: %@", response.error!.localizedDescription);
+			try errorController.requestResponseError(error)
+		}
+	}
+	private func checkStatusCodeAndData(response: (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), errorController: ErrorController) throws -> NSData? {
+		let statusCode = (response.urlResponse as! NSHTTPURLResponse).statusCode
+		print("--------------URL Response: statusCode \(statusCode)---------------")
+		if statusCode == 200 || statusCode == 201 {
+			
+		}else  if statusCode == 404{
+			try errorController.requestAuthenticationError()
+		}else {
+			try errorController.requestGeneralError()
+		}
+		if let data = response.data {
+			return data
+		}else {
+			try errorController.requestResponseDataEmpty()
+		}
+		return nil
 	}
 }
 

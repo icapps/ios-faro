@@ -16,8 +16,16 @@ public protocol ErrorController
 {
 	init()
 	func requestBodyError() throws -> ()
+	func requestAuthenticationError() throws -> ()
+	func requestGeneralError() throws -> ()
+	func requestResponseDataEmpty() throws -> ()
+	func requestResponseError(error: NSError) throws -> ()
 }
 
 public enum RequestError: ErrorType {
 	case InvalidBody
+	case InvalidAuthentication
+	case General
+	case InvalidResponseData
+	case ResponseError
 }

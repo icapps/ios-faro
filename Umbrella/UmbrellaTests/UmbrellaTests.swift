@@ -132,6 +132,26 @@ class MockErrorController: ErrorController {
 		print("-----------Error building up body-----")
 		throw RequestError.InvalidBody
 	}
+	
+	func requestAuthenticationError() throws {
+		print("-----------Authentication error-----")
+		throw RequestError.InvalidAuthentication
+	}
+	
+	func requestGeneralError() throws {
+		print("-----------General error-----")
+		throw RequestError.General
+	}
+	
+	func requestResponseDataEmpty() throws {
+		print("-----------Invalid response data-----")
+		throw RequestError.InvalidResponseData
+	}
+	
+	func requestResponseError(error: NSError) throws {
+		print("-----------Request failed with error-----")
+		throw RequestError.ResponseError
+	}
 }
 
 class GameScore: BaseModel {
@@ -148,6 +168,10 @@ class GameScore: BaseModel {
 		importFromJSON(json)
 	}
 	
+	static func getErrorController() -> ErrorController {
+		return MockErrorController()
+	}
+
 	//MARK: BaseModel Protocol Type
 	static func contextPath() -> String {
 		return "GameScore"
@@ -196,7 +220,10 @@ class MockUnsavableGame: BaseModel {
 		importFromJSON(json)
 	}
 	
-	
+	static func getErrorController() -> ErrorController {
+		return MockErrorController()
+	}
+
 	static func contextPath() -> String {
 		return "Unsavable"
 	}

@@ -16,12 +16,15 @@ public protocol BaseModel: class {
 	var objectId: String? {get set}
 	
 	static func serviceParameters() ->  ServiceParameters
-	
+
+//MARK: Respond to errors
 /**
 In your implementation create a general ErrorController.
 If needed an error controller that is type specific can be made.
 */
 	var errorController: ErrorController {get set}
+	
+	static func getErrorController() -> ErrorController
 	
 	
 //MARK: Initialisation from json

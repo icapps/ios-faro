@@ -17,7 +17,7 @@ public class RequestController {
 /**
 * Save a single item
 */
-	public func save<BodyType: BaseModel>(body: BodyType, completion:(response: BodyType) ->()) throws{
+	public func save<BodyType: BaseModel>(body: BodyType, completion:(response: BodyType)->()) throws {
 		let request = BodyType.serviceParameters().request
 		request.HTTPMethod = "POST"
 		
@@ -32,12 +32,21 @@ public class RequestController {
 		}
 		
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
-			print(body.objectId)
-			self.responseController.handleResponse((data: data,urlResponse: response, error: error), body: body, completion: completion)
+			if error != nil {
+				print("---Error request failed with error: \(error)----")
+			}else {
+				do {
+					try self.responseController.handleResponse((data: data,urlResponse: response, error: error), body: body, completion: completion)
+				}catch RequestError.InvalidAuthentication {
+					print("---Error we could not Authenticate----")
+				}catch {
+					print("---Error we could not process the response----")
+				}
+			}
+			
 		})
 		
 		task.resume()
-
 	}
 	
 /**
@@ -49,7 +58,17 @@ public class RequestController {
 		
 		/* Start a new Task */
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
-			self.responseController.handleResponse((data: data, urlResponse: response, error: error), completion: completion)
+			if error != nil {
+				print("---Error request failed with error: \(error)----")
+			}else {
+				do {
+					try self.responseController.handleResponse((data: data,urlResponse: response, error: error), completion: completion)
+				}catch RequestError.InvalidAuthentication {
+					print("---Error we could not Authenticate----")
+				}catch {
+					print("---Error we could not process the response----")
+				}
+			}
 		})
 		
 		task.resume()
@@ -66,8 +85,18 @@ public class RequestController {
 		
 		/* Start a new Task */
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
-			self.responseController.handleResponse((data: data, urlResponse: response, error: error), completion: completion)
-			})
+			if error != nil {
+				print("---Error request failed with error: \(error)----")
+			}else {
+				do {
+					try self.responseController.handleResponse((data: data,urlResponse: response, error: error), completion: completion)
+				}catch RequestError.InvalidAuthentication {
+					print("---Error we could not Authenticate----")
+				}catch {
+					print("---Error we could not process the response----")
+				}
+			}
+		})
 		
 		task.resume()
 		
