@@ -179,13 +179,16 @@ let gameScore = GameScore(json: [
 //: #### Save that succeeds
 let saveResponse: (response: GameScore) -> () = {(response: GameScore) -> () in
 	let gameScore = response
+	gameScore.score
+	gameScore.cheatMode
+	gameScore.playerName
 }
 
 do {
 	try test.save(gameScore, completion: saveResponse)
 }catch RequestError.InvalidBody {
 	print(RequestError.InvalidBody)
-//	XCPlaygroundPage.currentPage.finishExecution()
+	XCPlaygroundPage.currentPage.finishExecution()
 }
 
 //: #### Failed save
