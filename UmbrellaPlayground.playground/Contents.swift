@@ -108,8 +108,12 @@ class GameScore: BaseModel {
 	var errorController: ErrorController
 	
 	required init(json: AnyObject) {
-		errorController = PlayGroundErrorController()
+		errorController = ConcreteErrorController()
 		importFromJSON(json)
+	}
+	
+	static func getErrorController() -> ErrorController {
+		return ConcreteErrorController()
 	}
 	
 	//MARK: BaseModel Protocol Type
@@ -164,15 +168,6 @@ class PlaygroundService <BodyType: BaseModel>: ServiceParameters {
 	}
 }
 
-class PlayGroundErrorController: ErrorController {
-	required init() {
-		
-	}
-	func requestBodyError() throws {
-		print("-----------Error building up body-----")
-		throw RequestError.InvalidBody
-	}
-}
 
 let serviceParameters = PlaygroundService <GameScore>()
 
@@ -214,7 +209,7 @@ class UnsavableGame: BaseModel {
 	var errorController: ErrorController
 	
 	required init(json: AnyObject) {
-		errorController = PlayGroundErrorController()
+		errorController = ConcreteErrorController()
 		importFromJSON(json)
 	}
 	
@@ -223,6 +218,10 @@ class UnsavableGame: BaseModel {
 		return "Unsavable"
 	}
 	
+	static func getErrorController() -> ErrorController {
+		return ConcreteErrorController()
+	}
+
 	static func serviceParameters() -> ServiceParameters {
 		return PlaygroundService<UnsavableGame>()
 	}

@@ -124,91 +124,9 @@ class PlaygroundService <BodyType: BaseModel>: ServiceParameters {
 	}
 }
 
-class MockErrorController: ErrorController {
-	required init(){
-		
-	}
-	func requestBodyError() throws -> () {
-		print("-----------Error building up body-----")
-		throw RequestError.InvalidBody
-	}
-	
-	func requestAuthenticationError() throws {
-		print("-----------Authentication error-----")
-		throw RequestError.InvalidAuthentication
-	}
-	
-	func requestGeneralError() throws {
-		print("-----------General error-----")
-		throw RequestError.General
-	}
-	
-	func requestResponseDataEmpty() throws {
-		print("-----------Invalid response data-----")
-		throw RequestError.InvalidResponseData
-	}
-	
-	func requestResponseError(error: NSError) throws {
-		print("-----------Request failed with error-----")
-		throw RequestError.ResponseError
-	}
-}
 
-class GameScore: BaseModel {
-	
-	var score: Int?
-	var cheatMode: Bool?
-	var playerName: String?
-	
-	var objectId: String?
-	var errorController: ErrorController
-	
-	required init(json: AnyObject) {
-		errorController = MockErrorController()
-		importFromJSON(json)
-	}
-	
-	static func getErrorController() -> ErrorController {
-		return MockErrorController()
-	}
 
-	//MARK: BaseModel Protocol Type
-	static func contextPath() -> String {
-		return "GameScore"
-	}
-	
-	static func serviceParameters() -> ServiceParameters {
-		return PlaygroundService<GameScore>()
-	}
-	
-	//MARK: BaseModel Protocol Instance
-	func body()-> NSDictionary? {
-		return [
-			"score": score!,
-			"cheatMode": cheatMode!,
-			"playerName": playerName!
-		]
-	}
-	
-	func importFromJSON(json: AnyObject) {
-		if let json = json as? NSDictionary {
-			if let objectId = json["objectId"] as? String {
-				self.objectId = objectId
-			}
-			if let score = json["score"] as? Int {
-				self.score = score
-			}
-			if let cheatMode = json["cheatMode"] as? Bool {
-				self.cheatMode = cheatMode
-			}
-			
-			if let playerName = json["playerName"] as? String {
-				self.playerName = playerName
-			}
-		}
-	}
-	
-}
+
 
 class MockUnsavableGame: BaseModel {
 	
@@ -216,12 +134,12 @@ class MockUnsavableGame: BaseModel {
 	var errorController: ErrorController
 	
 	required init(json: AnyObject) {
-		errorController = MockErrorController()
+		errorController = ConcreteErrorController()
 		importFromJSON(json)
 	}
 	
 	static func getErrorController() -> ErrorController {
-		return MockErrorController()
+		return ConcreteErrorController()
 	}
 
 	static func contextPath() -> String {

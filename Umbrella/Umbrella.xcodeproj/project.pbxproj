@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C0101CA61C0C224B00EB7020 /* ConcreteErrorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0101CA51C0C224B00EB7020 /* ConcreteErrorController.swift */; };
+		C0101CA81C0C22E600EB7020 /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0101CA71C0C22E600EB7020 /* GameScore.swift */; };
 		C04661911C0B22E90031DD22 /* TestWait.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04661901C0B22E90031DD22 /* TestWait.swift */; };
 		C04661931C0B23310031DD22 /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04661921C0B23310031DD22 /* Dispatch.swift */; };
 		C04661951C0B35350031DD22 /* ResponseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04661941C0B35350031DD22 /* ResponseController.swift */; };
@@ -31,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C0101CA51C0C224B00EB7020 /* ConcreteErrorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcreteErrorController.swift; sourceTree = "<group>"; };
+		C0101CA71C0C22E600EB7020 /* GameScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScore.swift; sourceTree = "<group>"; };
 		C04661901C0B22E90031DD22 /* TestWait.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestWait.swift; sourceTree = "<group>"; };
 		C04661921C0B23310031DD22 /* Dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		C04661941C0B35350031DD22 /* ResponseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResponseController.swift; path = Service/ResponseController.swift; sourceTree = "<group>"; };
@@ -95,6 +99,7 @@
 				C05F65A31C0B1CC700F7898F /* BaseModel.swift */,
 				C04661981C0B5A310031DD22 /* ErrorController.swift */,
 				C05F65A51C0B1DB300F7898F /* ServiceParameters.swift */,
+				C0101CA51C0C224B00EB7020 /* ConcreteErrorController.swift */,
 			);
 			path = Umbrella;
 			sourceTree = "<group>";
@@ -106,6 +111,7 @@
 				C05F65971C0B0BA900F7898F /* Info.plist */,
 				C04661901C0B22E90031DD22 /* TestWait.swift */,
 				C04661921C0B23310031DD22 /* Dispatch.swift */,
+				C0101CA71C0C22E600EB7020 /* GameScore.swift */,
 			);
 			path = UmbrellaTests;
 			sourceTree = "<group>";
@@ -220,6 +226,7 @@
 			files = (
 				C05F65A41C0B1CC700F7898F /* BaseModel.swift in Sources */,
 				C05F65A11C0B0C3C00F7898F /* RequestController.swift in Sources */,
+				C0101CA61C0C224B00EB7020 /* ConcreteErrorController.swift in Sources */,
 				C04661951C0B35350031DD22 /* ResponseController.swift in Sources */,
 				C04661991C0B5A310031DD22 /* ErrorController.swift in Sources */,
 				C04661971C0B3A170031DD22 /* TransformController.swift in Sources */,
@@ -232,6 +239,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C04661931C0B23310031DD22 /* Dispatch.swift in Sources */,
+				C0101CA81C0C22E600EB7020 /* GameScore.swift in Sources */,
 				C04661911C0B22E90031DD22 /* TestWait.swift in Sources */,
 				C05F65961C0B0BA900F7898F /* UmbrellaTests.swift in Sources */,
 			);
