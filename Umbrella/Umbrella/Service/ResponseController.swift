@@ -17,7 +17,7 @@ public class ResponseController {
 
 		try checkError(response, errorController: errorController)
 		if let data = try checkStatusCodeAndData(response, errorController: errorController){
-			transformController.objectDataToConcreteObject(data, body: body, completion: { (concreteObject) -> () in
+			try transformController.objectDataToConcreteObject(data, body: body, completion: { (concreteObject) -> () in
 				completion(concreteObject)
 			})
 		}
@@ -29,7 +29,7 @@ public class ResponseController {
 		try checkError(response, errorController: errorController)
 		
 		if let data = try checkStatusCodeAndData(response, errorController: errorController) {
-			transformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
+			try transformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
 				completion(responseArray)
 			})
 		}

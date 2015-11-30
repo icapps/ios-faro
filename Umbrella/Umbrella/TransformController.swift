@@ -6,22 +6,22 @@ import Foundation
 
 public class TransfromController {
 	
-	public func objectDataToConcreteObject<ConcreteType: BaseModel>(data: NSData, body: ConcreteType? = nil, completion:(ConcreteType)->()){
+	public func objectDataToConcreteObject<ConcreteType: BaseModel>(data: NSData, body: ConcreteType? = nil, completion:(ConcreteType)->()) throws{
 		
-		let json = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
 		if let body = body {
-			body.importFromJSON(json!)
+			body.importFromJSON(json)
 			completion(body)
 		}else {
-			completion(ConcreteType(json: json!))
+			completion(ConcreteType(json: json))
 		}
 	}
 	
-	public func objectsDataToConcreteObjects<ConcreteType: BaseModel>(data: NSData, completion:([ConcreteType])->()){
+	public func objectsDataToConcreteObjects<ConcreteType: BaseModel>(data: NSData, completion:([ConcreteType])->()) throws{
 		
-		let json = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
 		
-		if let array = json!["results"] as? [NSDictionary] {
+		if let array = json["results"] as? [NSDictionary] {
 			var concreteObjectArray = [ConcreteType]()
 			for dict in array {
 				concreteObjectArray.append(ConcreteType(json: dict))
