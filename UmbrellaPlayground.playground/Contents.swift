@@ -242,6 +242,7 @@ let unsavableResponse: (response: UnsavableGame) -> () = {(response: UnsavableGa
 do {
 	try test.save(UnsavableGame(json:[]), completion: unsavableResponse)
 }catch RequestError.InvalidBody {
+	RequestError.InvalidBody
 //	XCPlaygroundPage.currentPage.finishExecution()
 }
 
@@ -251,18 +252,22 @@ let retreiveResponse: (response: [GameScore]) -> () = {(response: [GameScore]) -
 	let count = response.count
 }
 
-test.retrieve(retreiveResponse)
+try test.retrieve(retreiveResponse)
 
 //: #### Retreive single instance
 let retreiveSingleInstanceResponse: (response: GameScore) -> () = {(response: GameScore) -> () in
 	let gameScore = response
 //	XCPlaygroundPage.currentPage.finishExecution()
 }
-test.retrieve("ta40DRgRAn", completion: retreiveSingleInstanceResponse)
 
+try test.retrieve("ta40DRgRAn", completion: retreiveSingleInstanceResponse)
 
 //: #### Try some Error
-test.retrieve("non existing object ID", completion: retreiveSingleInstanceResponse)
+do {
+	try test.retrieve("non existing object ID", completion: retreiveSingleInstanceResponse)
+}catch {
+	RequestError.InvalidAuthentication
+}
 
 
 //To let async code work

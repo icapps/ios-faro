@@ -52,11 +52,10 @@ public class RequestController {
 /**
 * Retrieve a all item fram a concrete class of BaseModel
 */
-	public func retrieve<ResponseType: BaseModel>(completion:(response: [ResponseType])->()){
+	public func retrieve<ResponseType: BaseModel>(completion:(response: [ResponseType])->()) throws{
 		let request = ResponseType.serviceParameters().request
 		request.HTTPMethod = "GET"
 		
-		/* Start a new Task */
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if error != nil {
 				print("---Error request failed with error: \(error)----")
@@ -78,7 +77,7 @@ public class RequestController {
 	/**
 	* Retrieve a single item fram a concrete class of BaseModel
 	*/
-	public func retrieve<ResponseType: BaseModel>(objectId:String, completion:(response: ResponseType)->()){
+	public func retrieve<ResponseType: BaseModel>(objectId:String, completion:(response: ResponseType)->()) throws{
 		let request = ResponseType.serviceParameters().request
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 		request.HTTPMethod = "GET"
