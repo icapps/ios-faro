@@ -34,6 +34,6 @@ public class ConcreteErrorController: ErrorController {
 	
 	public func requestResponseError(error: NSError) throws {
 		print("-----------Request failed with error-----")
-		throw RequestError.ResponseError
+		throw RequestError.ResponseError(error: error)
 	}
 }

@@ -17,7 +17,7 @@ public class RequestController {
 /**
 * Save a single item
 */
-	public func save<BodyType: BaseModel>(body: BodyType, completion:(response: BodyType)->()) throws {
+	public func save<BodyType: BaseModel>(body: BodyType, completion:(response: BodyType)->(), failure:((RequestError)->())? = nil) throws {
 		let request = BodyType.serviceParameters().request
 		request.HTTPMethod = "POST"
 		
@@ -32,15 +32,18 @@ public class RequestController {
 		}
 		
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
-			if error != nil {
+			if let error = error {
 				print("---Error request failed with error: \(error)----")
+				failure?(RequestError.ResponseError(error: error))
 			}else {
 				do {
 					try self.responseController.handleResponse((data: data,urlResponse: response, error: error), body: body, completion: completion)
 				}catch RequestError.InvalidAuthentication {
 					print("---Error we could not Authenticate----")
+					failure?(RequestError.InvalidAuthentication)
 				}catch {
 					print("---Error we could not process the response----")
+					failure?(RequestError.General)
 				}
 			}
 			
@@ -52,13 +55,14 @@ public class RequestController {
 /**
 * Retrieve a all item fram a concrete class of BaseModel
 */
-	public func retrieve<ResponseType: BaseModel>(completion:(response: [ResponseType])->()) throws{
+	public func retrieve<ResponseType: BaseModel>(completion:(response: [ResponseType])->(), failure:((RequestError)->())? = nil) throws{
 		let request = ResponseType.serviceParameters().request
 		request.HTTPMethod = "GET"
 		
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
-			if error != nil {
+			if let error = error {
 				print("---Error request failed with error: \(error)----")
+				failure?(RequestError.ResponseError(error: error))
 			}else {
 				do {
 					try self.responseController.handleResponse((data: data,urlResponse: response, error: error), completion: completion)
@@ -77,7 +81,7 @@ public class RequestController {
 	/**
 	* Retrieve a single item fram a concrete class of BaseModel
 	*/
-	public func retrieve<ResponseType: BaseModel>(objectId:String, completion:(response: ResponseType)->()) throws{
+	public func retrieve<ResponseType: BaseModel>(objectId:String, completion:(response: ResponseType)->(),failure:((RequestError)->())? = nil) throws{
 		let request = ResponseType.serviceParameters().request
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 		request.HTTPMethod = "GET"

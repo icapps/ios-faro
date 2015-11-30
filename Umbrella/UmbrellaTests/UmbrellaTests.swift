@@ -56,7 +56,7 @@ class UmbrellaTests: XCTestCase {
 			self.wait.fulFillExpectation(exp)
 		}
 		
-		test.retrieve(response)
+		try! test.retrieve(response)
 		
 		wait.waitUntillFinishWithTimeout(2) { (success, unfulFilledExpectations) -> () in
 			XCTAssertTrue(success, "\(unfulFilledExpectations)")
@@ -78,7 +78,7 @@ class UmbrellaTests: XCTestCase {
 			self.wait.fulFillExpectation(exp)
 		}
 		
-		test.retrieve(objectId, completion: response)
+		try! test.retrieve(objectId, completion: response)
 		
 		wait.waitUntillFinishWithTimeout(2) { (success, unfulFilledExpectations) -> () in
 			XCTAssertTrue(success, "\(unfulFilledExpectations)")

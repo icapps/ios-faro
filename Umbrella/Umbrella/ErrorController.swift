@@ -27,5 +27,5 @@ public enum RequestError: ErrorType {
 	case InvalidAuthentication
 	case General
 	case InvalidResponseData
-	case ResponseError
+	case ResponseError(error: NSError)
 }
