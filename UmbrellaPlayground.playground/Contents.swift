@@ -129,12 +129,22 @@ class GameScore: BaseModel {
 			"playerName": playerName!
 		]
 	}
+	
 	func importFromJSON(json: AnyObject) {
 		if let json = json as? NSDictionary {
-			objectId = json["objectId"] as? String
-			score = json["score"] as? Int
-			cheatMode = json["cheatMode"] as? Bool
-			playerName = json["playerName"] as? String
+			if let objectId = json["objectId"] as? String {
+				self.objectId = objectId
+			}
+			if let score = json["score"] as? Int {
+				self.score = score
+			}
+			if let cheatMode = json["cheatMode"] as? Bool {
+				self.cheatMode = cheatMode
+			}
+			
+			if let playerName = json["playerName"] as? String {
+				self.playerName = playerName
+			}
 		}
 	}
 }
@@ -194,7 +204,7 @@ do {
 	
 }catch RequestError.InvalidBody {
 	print(RequestError.InvalidBody)
-	XCPlaygroundPage.currentPage.finishExecution()
+//	XCPlaygroundPage.currentPage.finishExecution()
 }
 
 //: #### Failed save
@@ -239,9 +249,8 @@ do {
 //: #### Retreive multiple instances
 
 let retreiveResponse: (response: [GameScore]) -> () = {(response: [GameScore]) -> () in
-	let gameScores = response
+	let count = response.count
 }
-
 
 test.retrieve(retreiveResponse)
 

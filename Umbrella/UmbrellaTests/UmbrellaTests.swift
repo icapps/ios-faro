@@ -165,6 +165,7 @@ class GameScore: BaseModel {
 			"playerName": playerName!
 		]
 	}
+	
 	func importFromJSON(json: AnyObject) {
 		if let json = json as? NSDictionary {
 			if let objectId = json["objectId"] as? String {
