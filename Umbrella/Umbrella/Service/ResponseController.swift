@@ -22,7 +22,7 @@ public class ResponseController {
 			})
 		}
 	}
-	
+	//TODO: #5 transformation of array results to existing objects.
 	func handleResponse<ResponseType: BaseModel>(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), completion: ([ResponseType])->()) throws{
 		let errorController = ResponseType.getErrorController()
 		

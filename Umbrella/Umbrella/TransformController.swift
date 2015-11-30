@@ -17,6 +17,7 @@ public class TransfromController {
 		}
 	}
 	
+	//TODO: #5 transformation of array results to existing objects.
 	public func objectsDataToConcreteObjects<ConcreteType: BaseModel>(data: NSData, completion:([ConcreteType])->()) throws{
 		
 		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
