@@ -179,13 +179,19 @@ let gameScore = GameScore(json: [
 //: #### Save that succeeds
 let saveResponse: (response: GameScore) -> () = {(response: GameScore) -> () in
 	let gameScore = response
+	gameScore.objectId
 	gameScore.score
 	gameScore.cheatMode
 	gameScore.playerName
 }
 
 do {
+	gameScore.objectId
+	gameScore.score
+	gameScore.cheatMode
+	gameScore.playerName
 	try test.save(gameScore, completion: saveResponse)
+	
 }catch RequestError.InvalidBody {
 	print(RequestError.InvalidBody)
 	XCPlaygroundPage.currentPage.finishExecution()
@@ -220,9 +226,12 @@ class UnsavableGame: BaseModel {
 	
 }
 
-
+let unsavableResponse: (response: UnsavableGame) -> () = {(response: UnsavableGame) -> () in
+	let gameScore = response
+	
+}
 do {
-	try test.save(UnsavableGame(json:[]), completion: saveResponse)
+	try test.save(UnsavableGame(json:[]), completion: unsavableResponse)
 }catch RequestError.InvalidBody {
 //	XCPlaygroundPage.currentPage.finishExecution()
 }

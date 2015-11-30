@@ -17,7 +17,7 @@ public class RequestController {
 /**
 * Save a single item
 */
-	public func save<BodyType: BaseModel, ResponseType: BaseModel>(body: BodyType, completion:(response: ResponseType) ->()) throws{
+	public func save<BodyType: BaseModel>(body: BodyType, completion:(response: BodyType) ->()) throws{
 		let request = BodyType.serviceParameters().request
 		request.HTTPMethod = "POST"
 		
@@ -32,7 +32,8 @@ public class RequestController {
 		}
 		
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
-			self.responseController.handleResponse((data: data, urlResponse: response, error: error), completion: completion)
+			print(body.objectId)
+			self.responseController.handleResponse((data: data,urlResponse: response, error: error), body: body, completion: completion)
 		})
 		
 		task.resume()

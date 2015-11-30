@@ -12,12 +12,12 @@ public class ResponseController {
 		self.transformController = transfromController
 	}
 	
-	func handleResponse<ResponseType: BaseModel>(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), completion: (ResponseType)->()) {
+	func handleResponse<ResponseType: BaseModel>(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), body: ResponseType? = nil, completion: (ResponseType)->()) {
 		if (response.error == nil) {
 			// Success
 			let statusCode = (response.urlResponse as! NSHTTPURLResponse).statusCode
 			print("--------------URL Session Task Succeeded: HTTP \(statusCode)---------------")
-			transformController.objectDataToConcreteObject(response.data!, completion: { (concreteObject) -> () in
+			transformController.objectDataToConcreteObject(response.data!, body: body, completion: { (concreteObject) -> () in
 				completion(concreteObject)
 			})
 			

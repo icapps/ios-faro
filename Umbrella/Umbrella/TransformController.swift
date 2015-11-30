@@ -6,11 +6,15 @@ import Foundation
 
 public class TransfromController {
 	
-	public func objectDataToConcreteObject<ConcreteType: BaseModel>(data: NSData, completion:(ConcreteType)->()){
+	public func objectDataToConcreteObject<ConcreteType: BaseModel>(data: NSData, body: ConcreteType? = nil, completion:(ConcreteType)->()){
 		
 		let json = try? NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-		completion(ConcreteType(json: json!))
-		
+		if let body = body {
+			body.importFromJSON(json!)
+			completion(body)
+		}else {
+			completion(ConcreteType(json: json!))
+		}
 	}
 	
 	public func objectsDataToConcreteObjects<ConcreteType: BaseModel>(data: NSData, completion:([ConcreteType])->()){

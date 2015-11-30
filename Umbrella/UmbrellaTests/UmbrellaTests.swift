@@ -32,6 +32,9 @@ class UmbrellaTests: XCTestCase {
 		
 		let response: (response: GameScore) -> () = {[unowned self](response: GameScore) -> () in
 			XCTAssertNotNil(response.objectId)
+			XCTAssertNotNil(response.score)
+			XCTAssertNotNil(response.cheatMode)
+			XCTAssertNotNil(response.playerName)
 			self.wait.fulFillExpectation(exp)
 		}
 		
@@ -86,7 +89,7 @@ class UmbrellaTests: XCTestCase {
 		let exp = "testSave_Throws"
 		wait.expectations = [exp]
 		
-		let response: (response: GameScore) -> () = {(response: GameScore) -> () in
+		let response: (response: MockUnsavableGame) -> () = {(response: MockUnsavableGame) -> () in
 			XCTFail("We should not complete but throw")
 		}
 		
@@ -164,12 +167,22 @@ class GameScore: BaseModel {
 	}
 	func importFromJSON(json: AnyObject) {
 		if let json = json as? NSDictionary {
-			objectId = json["objectId"] as? String
-			score = json["score"] as? Int
-			cheatMode = json["cheatMode"] as? Bool
-			playerName = json["playerName"] as? String
+			if let objectId = json["objectId"] as? String {
+				self.objectId = objectId
+			}
+			if let score = json["score"] as? Int {
+				self.score = score
+			}
+			if let cheatMode = json["cheatMode"] as? Bool {
+				self.cheatMode = cheatMode
+			}
+			
+			if let playerName = json["playerName"] as? String {
+				self.playerName = playerName
+			}
 		}
 	}
+	
 }
 
 class MockUnsavableGame: BaseModel {
