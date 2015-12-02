@@ -12,8 +12,9 @@ You should have some basic swift knowledge and know about closures before trying
 3. Saving 
 4. Retreiving
 5. Error handling
-6. Dummy service
-7. Mapping
+6. TODO:#7 Dummy service
+7. TODO:#8 Mapping
+8. TODO:#9 Use with Objective-C
 */
 //: ### 1. What are generics?
 
