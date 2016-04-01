@@ -9,6 +9,11 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+### Documentation
+
+* Of the example can be found in *<project root>/Example/docs*
+* Of the AirRivet pod in *<project root>/Example/Pods/docs*
+
 ## Requirements
 
 ## Installation
