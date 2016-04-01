@@ -5,7 +5,7 @@ import Foundation
 
 //TODO: #6 remove duplication
 
-public class RequestController {
+public class RequestController <Type: BaseModel> {
 	private let responseController: ResponseController
 	private let sessionConfig: NSURLSessionConfiguration
 	private let session: NSURLSession
@@ -19,8 +19,8 @@ public class RequestController {
 /**
  Save a single item
 */
-	public func save<BodyType: BaseModel>(body: BodyType, completion:(response: BodyType)->(), failure:((RequestError) ->())? = nil) throws {
-		let request = BodyType.serviceParameters().request
+	public func save(body: Type, completion:(response: Type)->(), failure:((RequestError) ->())? = nil) throws {
+		let request = Type.serviceParameters().request
 		request.HTTPMethod = "POST"
 
 		guard let bodyObject = body.body() else {
@@ -72,8 +72,8 @@ public class RequestController {
 /**
 * Retrieve a all item fram a concrete class of BaseModel
 */
-	public func retrieve<ResponseType: BaseModel>(completion:(response: [ResponseType])->(), failure:((RequestError)->())? = nil) throws{
-		let request = ResponseType.serviceParameters().request
+	public func retrieve(completion:(response: [Type])->(), failure:((RequestError)->())? = nil) throws{
+		let request = Type.serviceParameters().request
 		request.HTTPMethod = "GET"
 		
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
@@ -98,10 +98,10 @@ public class RequestController {
 	}
 	
 	/**
-	* Retrieve a single item fram a concrete class of BaseModel
+	* Retrieve a single item from a concrete class of BaseModel
 	*/
-	public func retrieve<ResponseType: BaseModel>(objectId:String, completion:(response: ResponseType)->(),failure:((RequestError)->())? = nil) throws{
-		let request = ResponseType.serviceParameters().request
+	public func retrieve(objectId:String, completion:(response: Type)->(),failure:((RequestError)->())? = nil) throws{
+		let request = Type.serviceParameters().request
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 		request.HTTPMethod = "GET"
 		
