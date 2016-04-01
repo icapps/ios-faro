@@ -4,7 +4,7 @@ import Foundation
 
 //Transformations of data to concrete objects.
 
-public class TransfromController {
+public class TransformController {
 	
 	public func objectDataToConcreteObject<ConcreteType: BaseModel>(data: NSData, body: ConcreteType? = nil, completion:(ConcreteType)->()) throws{
 		
