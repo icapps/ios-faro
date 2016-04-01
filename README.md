@@ -1,19 +1,29 @@
-# Umbrella
-A first step towards a generic webService framework made in swift. Any feedback welcome!
-This is a first start and not realy finished. Use this to learn and give comments about: 
-1. What are generics?
-2. Webservice stack
-3. Saving
-4. Retreiving
-5. Error handling
-6. TODO:#7 Dummy service
-7. TODO:#8 Mapping
-8. TODO:#9 Use with Objective-C
+# Rivet
 
-### QuickStart:
-* clone this repo
-* go to folder en open **workspace** > *UmbrellaWorkspace.xcworkspace*
-  * Be sure to upon the workspace and not the playground. The import Umbrella will not work then.
-* There is an Umbrella project in the workspace. Run it first once!
-* The go to the playground. I should work now
-* Also have a look at the unit tests to see how it all works.
+[![CI Status](http://img.shields.io/travis/StijnWillems/Rivet.svg?style=flat)](https://travis-ci.org/StijnWillems/Rivet)
+[![Version](https://img.shields.io/cocoapods/v/Rivet.svg?style=flat)](http://cocoapods.org/pods/Rivet)
+[![License](https://img.shields.io/cocoapods/l/Rivet.svg?style=flat)](http://cocoapods.org/pods/Rivet)
+[![Platform](https://img.shields.io/cocoapods/p/Rivet.svg?style=flat)](http://cocoapods.org/pods/Rivet)
+
+## Usage
+
+To run the example project, clone the repo, and run `pod install` from the Example directory first.
+
+## Requirements
+
+## Installation
+
+Rivet is available through [CocoaPods](http://cocoapods.org). To install
+it, simply add the following line to your Podfile:
+
+```ruby
+pod "Rivet"
+```
+
+## Author
+
+StijnWillems, stijn.willems@icapps.com
+
+## License
+
+Rivet is available under the MIT license. See the LICENSE file for more info.

@@ -1,0 +1,6 @@
+framework module Rivet {
+  umbrella header "Rivet-umbrella.h"
+
+  export *
+  module * { export * }
+}

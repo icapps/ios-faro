@@ -1,0 +1,25 @@
+{
+  "name": "Rivet",
+  "version": "0.1.0",
+  "summary": "A short description of Rivet.",
+  "description": "",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/Rivet",
+  "license": "MIT",
+  "authors": {
+    "StijnWillems": "stijn.willems@icapps.com"
+  },
+  "source": {
+    "git": "https://github.com/<GITHUB_USERNAME>/Rivet.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "requires_arc": true,
+  "source_files": "Pod/Classes/**/*",
+  "resource_bundles": {
+    "Rivet": [
+      "Pod/Assets/*.png"
+    ]
+  }
+}
