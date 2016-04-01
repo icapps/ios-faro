@@ -1,15 +1,25 @@
 import Foundation
 
 /**
-* It is te task of this class to handle the response of a url reqest.
-*/
+Deal with the errors of the response and interpret the respons.
 
+#Tasks
+
+## Handle errors in response
+Errors cause an throw
+## Pass response to the TransformController 
+Responses are interpretted in the TransFormController
+*/
 public class ResponseController {
 	
 	private let transformController: TransfromController
-	
-	public init(transfromController: TransfromController = TransfromController()) {
-		self.transformController = transfromController
+
+	/**
+	- parameter TransformController: a default implementation is given that transforms from JSON to your model object of `ResponseType`
+	- returns: Properly instantiated ResponseController
+	*/
+	public init(TransformController: TransfromController = TransfromController()) {
+		self.transformController = TransformController
 	}
 	
 	func handleResponse<ResponseType: BaseModel>(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {

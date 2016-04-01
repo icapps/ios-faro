@@ -1,34 +1,37 @@
 import AirRivet
 
-class GameScore: BaseModel {
+/**
+Model object that implements protocol `BaseModel` that can be fount in pod `AirRivet`.
+*/
+public class GameScore: BaseModel {
 
-	var score: Int?
-	var cheatMode: Bool?
-	var playerName: String?
+	public var score: Int?
+	public var cheatMode: Bool?
+	public var playerName: String?
 
-	var objectId: String?
-	var errorController: ErrorController
+	public var objectId: String?
+	public var errorController: ErrorController
 
-	required init(json: AnyObject) {
+	public required init(json: AnyObject) {
 		errorController = ConcreteErrorController()
 		importFromJSON(json)
 	}
 
-	static func getErrorController() -> ErrorController {
+	public static func getErrorController() -> ErrorController {
 		return ConcreteErrorController()
 	}
 
 	//MARK: BaseModel Protocol Type
-	static func contextPath() -> String {
+	public static func contextPath() -> String {
 		return "GameScore"
 	}
 
-	static func serviceParameters() -> ServiceParameters {
+	public static func serviceParameters() -> ServiceParameters {
 		return ParseExampleService<GameScore>()
 	}
 
 	//MARK: BaseModel Protocol Instance
-	func body()-> NSDictionary? {
+	public func body()-> NSDictionary? {
 		return [
 			"score": score!,
 			"cheatMode": cheatMode!,
@@ -36,7 +39,7 @@ class GameScore: BaseModel {
 		]
 	}
 
-	func importFromJSON(json: AnyObject) {
+	public func importFromJSON(json: AnyObject) {
 		if let json = json as? NSDictionary {
 			if let objectId = json["objectId"] as? String {
 				self.objectId = objectId

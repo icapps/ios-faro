@@ -23,9 +23,9 @@ override func viewDidLoad() {
 }
 ```
 */
-class ParseExampleService <BodyType: BaseModel>: ServiceParameters {
-	var serverUrl = "https://api.parse.com/1/classes/"
-	var request: NSMutableURLRequest {
+public class ParseExampleService <BodyType: BaseModel>: ServiceParameters {
+	public var serverUrl = "https://api.parse.com/1/classes/"
+	public var request: NSMutableURLRequest {
 		let URL = NSURL(string: "\(serverUrl)\(BodyType.contextPath())")
 		let request = NSMutableURLRequest(URL: URL!)
 

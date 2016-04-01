@@ -78,7 +78,17 @@
 
                 </div>
               </div>
-            
+            <p>Deal with the errors of the response and interpret the respons.</p>
+
+<p><a href='#tasks' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='tasks'>Tasks</h1>
+<a href='#handle_errors_in_response' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='handle_errors_in_response'>Handle errors in response</h2></p>
+
+<p>Errors cause an throw</p>
+
+<p><a href='#pass_response_to_the_transformcontroller' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='pass_response_to_the_transformcontroller'>Pass response to the TransformController</h2></p>
+
+<p>Responses are interpretted in the TransFormController</p>
+
           </section>
           <section class="section task-group-section">
             <div class="task-group">
@@ -86,9 +96,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC8AirRivet18ResponseControllercFT19transfromControllerCS_19TransfromController_S0_"></a>
-                    <a name="//apple_ref/swift/Method/init(transfromController:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC8AirRivet18ResponseControllercFT19transfromControllerCS_19TransfromController_S0_">init(transfromController:)</a>
+                    <a name="/s:FC8AirRivet18ResponseControllercFT19TransformControllerCS_19TransfromController_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(TransformController:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC8AirRivet18ResponseControllercFT19TransformControllerCS_19TransfromController_S0_">init(TransformController:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -96,16 +106,40 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">ResponseController</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="kt">TransformController</span><span class="p">:</span> <span class="kt">TransfromController</span> <span class="o">=</span> <span class="kt">TransfromController</span><span class="p">())</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>TransformController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>a default implementation is given that transforms from JSON to your model object of <code>ResponseType</code></p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Properly instantiated ResponseController</p>
+
                       </div>
                     </section>
                   </div>
