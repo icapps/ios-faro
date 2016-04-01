@@ -2,30 +2,41 @@
 import Foundation
 
 
-//Transformations of data to concrete objects.
-
+/**
+Transformations of data to concrete objects. This implementation expects data to be valid JSON.
+*/
 public class TransformController {
-	
-	public func objectDataToConcreteObject<ConcreteType: BaseModel>(data: NSData, body: ConcreteType? = nil, completion:(ConcreteType)->()) throws{
+
+	/**
+	- parameter data: valid JSON
+	- returns: via the completion block a parsed object of `Type` is returned.
+	*/
+	public func objectDataToConcreteObject<Type: BaseModel>(data: NSData, body: Type? = nil, completion:(Type)->()) throws{
 		
 		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
 		if let body = body {
 			body.importFromJSON(json)
 			completion(body)
 		}else {
-			completion(ConcreteType(json: json))
+			completion(Type(json: json))
 		}
 	}
-	
-	//TODO: #5 transformation of array results to existing objects.
-	public func objectsDataToConcreteObjects<ConcreteType: BaseModel>(data: NSData, completion:([ConcreteType])->()) throws{
+
+	/**
+	* TODO: #5 transformation of array results to existing objects.
+
+	- parameter data: valid JSON
+	- returns: via the completion block an array of parsed objects of `Type`.
+	*/
+
+	public func objectsDataToConcreteObjects<Type: BaseModel>(data: NSData, completion:([Type])->()) throws{
 		
 		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
 		
 		if let array = json["results"] as? [NSDictionary] {
-			var concreteObjectArray = [ConcreteType]()
+			var concreteObjectArray = [Type]()
 			for dict in array {
-				concreteObjectArray.append(ConcreteType(json: dict))
+				concreteObjectArray.append(Type(json: dict))
 			}
 			completion(concreteObjectArray)
 		}

@@ -15,7 +15,7 @@ public class ResponseController {
 	private let transformController: TransformController
 
 	/**
-	- parameter TransformController: a default implementation is given that transforms from JSON to your model object of `ResponseType`
+	- parameter transformController: a default implementation is given that transforms from JSON to your model object of `ResponseType`
 	- returns: Properly instantiated ResponseController
 	*/
 	public init(transformController: TransformController = TransformController()) {
