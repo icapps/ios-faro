@@ -8,23 +8,19 @@
 
 Pod::Spec.new do |s|
   s.name             = "AirRivet"
-  s.version          = "0.1.0"
-  s.summary          = "A short description of AirRivet."
+  s.version          = "0.0.1"
+  s.summary          = "AirRivet is a web service stack to genericly conver JSON from a webservice to model objects."
 
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!  
   s.description      = <<-DESC
+When you have a webservice to talk to parsing the data returned and handeling the errors can be a hassle. This is pod will help you build it more generic.
                        DESC
 
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/AirRivet"
+  s.homepage         = "https://github.com/icapps/AirRivet"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
   s.author           = { "StijnWillems" => "stijn.willems@icapps.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/AirRivet.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.source           = { :git => "https://github.com/icapps/AirRivet.git", :tag => s.version.to_s }
+  s.social_media_url = 'https://twitter.com/doozMen'
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true
