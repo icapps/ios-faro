@@ -1,6 +1,28 @@
 
 import AirRivet
 
+/**
+This is an example implementation of the protocol Service parameters. You can use this class in conjunction with a requestController like:
+
+```
+class ViewController: UIViewController {
+let requestController = RequestController<GameScore>(serviceParameters: ParseExampleService <GameScore>())
+
+override func viewDidLoad() {
+	super.viewDidLoad()
+
+	do {
+		try requestController.retrieve({ (response) in
+			print(response)
+		})
+	}catch {
+		print("-------Error with request------")
+	}
+
+	}
+}
+```
+*/
 class ParseExampleService <BodyType: BaseModel>: ServiceParameters {
 	var serverUrl = "https://api.parse.com/1/classes/"
 	var request: NSMutableURLRequest {

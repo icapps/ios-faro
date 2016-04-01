@@ -7,18 +7,22 @@
 //
 
 import UIKit
+import AirRivet
 
 class ViewController: UIViewController {
+	let requestController = RequestController<GameScore>(serviceParameters: ParseExampleService <GameScore>())
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+		do {
+			try requestController.retrieve({ (response) in
+				print(response)
+			})
+		}catch {
+			print("-------Error with request------")
+		}
 
+    }
 }
 

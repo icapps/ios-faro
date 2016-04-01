@@ -9,7 +9,7 @@ class RivetSpec: QuickSpec {
     override func spec() {
         describe("GameScore") {
 
-			let test = RequestController(serviceParameters: ParseExampleService<GameScore>())
+			let test = RequestController<GameScore>(serviceParameters: ParseExampleService<GameScore>())
 			let gameScore = GameScore(json: [
 				"score": 1000,
 				"cheatMode": false,
