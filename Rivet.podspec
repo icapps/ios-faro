@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = "Rivet"
-  s.version          = "0.1.0"
-  s.summary          = "A short description of Rivet."
+  s.version          = "0.0.1"
+  s.summary          = "Rivet is an webservice stack to handle network service requests"
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description      = <<-DESC
+  With revet you define service parameters and a model. Both implement the relative protocol. After you have done this you can save and retrieve objects from a webservice that can receive JSON.
                        DESC
 
   s.homepage         = "https://github.com/icapps/Rivet"
