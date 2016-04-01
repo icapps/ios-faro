@@ -1,15 +1,10 @@
-#
-# Be sure to run `pod lib lint AirRivet.podspec' to ensure this is a
-# valid spec before submitting.
-#
-# Any lines starting with a # are optional, but their use is encouraged
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
 
 Pod::Spec.new do |s|
   s.name             = "AirRivet"
-  s.version          = "0.0.1"
-  s.summary          = "AirRivet is a web service stack to genericly conver JSON from a webservice to model objects."
+  s.version          = "0.0.2"
+  s.summary          = "AirRivet is a web service stack to genericly convert JSON from a webservice to model objects."
 
   s.description      = <<-DESC
 When you have a webservice to talk to parsing the data returned and handeling the errors can be a hassle. This is pod will help you build it more generic.
