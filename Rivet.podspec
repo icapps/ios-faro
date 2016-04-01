@@ -7,9 +7,9 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = "Rivet"
+  s.name             = "AirRivet"
   s.version          = "0.0.1"
-  s.summary          = "Rivet is an webservice stack to handle network service requests"
+  s.summary          = "AirRivet is an webservice stack to handle network service requests"
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -17,14 +17,14 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description      = <<-DESC
-  With revet you define service parameters and a model. Both implement the relative protocol. After you have done this you can save and retrieve objects from a webservice that can receive JSON.
+  With AirRivet you define service parameters and a model. Both implement the a protocol. After you have done this you can save and retrieve objects from a webservice that can receive  and serve JSON.
                        DESC
 
-  s.homepage         = "https://github.com/icapps/Rivet"
+  s.homepage         = "https://github.com/icapps/AiRivet"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
   s.author           = { "StijnWillems" => "stijn.willems@icapps.com" }
-  s.source           = { :git => "https://github.com/icapps/Rivet.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/icapps/AirRivet.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/doozmen'
 
   s.platform     = :ios, '8.0'
