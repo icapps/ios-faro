@@ -1,15 +1,13 @@
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
-target 'Rivet_Example', :exclusive => true do
-  pod 'Rivet', :path => '../'
+target 'AirRivet_Example', :exclusive => true do
+  pod 'AirRivet', :path => '../'
 end
 
-target 'Rivet_Tests', :exclusive => true do
-  pod 'Rivet', :path => '../'
+target 'AirRivet_Tests', :exclusive => true do
+  pod 'AirRivet', :path => '../'
 
   pod 'Quick', '~> 0.8'
   pod 'Nimble', '~> 3.0'
-  pod 'FBSnapshotTestCase'
-  pod 'Nimble-Snapshots'
 end

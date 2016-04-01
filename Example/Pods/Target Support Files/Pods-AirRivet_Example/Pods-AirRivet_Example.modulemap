@@ -1,0 +1,6 @@
+framework module Pods_AirRivet_Example {
+  umbrella header "Pods-AirRivet_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

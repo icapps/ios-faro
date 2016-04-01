@@ -1,0 +1,6 @@
+framework module Pods_AirRivet_Tests {
+  umbrella header "Pods-AirRivet_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

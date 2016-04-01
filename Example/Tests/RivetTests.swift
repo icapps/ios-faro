@@ -2,7 +2,7 @@
 
 import Quick
 import Nimble
-import Rivet
+import AirRivet
 
 //TODO: Make this run with a dummy service
 class RivetSpec: QuickSpec {

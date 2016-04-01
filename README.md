@@ -1,9 +1,9 @@
 # AirRivet
 
-[![CI Status](http://img.shields.io/travis/StijnWillems/Rivet.svg?style=flat)](https://travis-ci.org/StijnWillems/Rivet)
-[![Version](https://img.shields.io/cocoapods/v/Rivet.svg?style=flat)](http://cocoapods.org/pods/Rivet)
-[![License](https://img.shields.io/cocoapods/l/Rivet.svg?style=flat)](http://cocoapods.org/pods/Rivet)
-[![Platform](https://img.shields.io/cocoapods/p/Rivet.svg?style=flat)](http://cocoapods.org/pods/Rivet)
+[![CI Status](http://img.shields.io/travis/StijnWillems/AirRivet.svg?style=flat)](https://travis-ci.org/StijnWillems/AirRivet)
+[![Version](https://img.shields.io/cocoapods/v/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet)
+[![License](https://img.shields.io/cocoapods/l/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet)
+[![Platform](https://img.shields.io/cocoapods/p/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet)
 
 ## Usage
 
@@ -13,7 +13,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-Rivet is available through [CocoaPods](http://cocoapods.org). To install
+AirRivet is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
@@ -26,4 +26,4 @@ StijnWillems, stijn.willems@icapps.com
 
 ## License
 
-Rivet is available under the MIT license. See the LICENSE file for more info.
+AirRivet is available under the MIT license. See the LICENSE file for more info.
