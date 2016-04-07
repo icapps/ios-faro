@@ -2,8 +2,10 @@ import AirRivet
 
 /**
 Model object that implements protocol `BaseModel` that can be fount in pod `AirRivet`.
+
+In this example GameScore has to inherit from NSObject to be usable in Objective-C. In a pure Swift project this is not needed.
 */
-public class GameScore: BaseModel {
+public class GameScore: NSObject, BaseModel {
 
 	public var score: Int?
 	public var cheatMode: Bool?
@@ -14,6 +16,7 @@ public class GameScore: BaseModel {
 
 	public required init(json: AnyObject) {
 		errorController = ConcreteErrorController()
+		super.init()
 		importFromJSON(json)
 	}
 

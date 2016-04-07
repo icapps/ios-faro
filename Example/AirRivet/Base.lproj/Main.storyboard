@@ -39,7 +39,7 @@
                             <constraint firstItem="005-b6-pqE" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="mVa-Ah-B1w"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Mth-24-QrS"/>
+                    <navigationItem key="navigationItem" title="Swift" id="Mth-24-QrS"/>
                     <connections>
                         <outlet property="label" destination="005-b6-pqE" id="de1-DE-uPE"/>
                     </connections>
@@ -69,7 +69,7 @@
         <!--Objective-C-->
         <scene sceneID="jyg-7Q-l2o">
             <objects>
-                <viewController title="Objective-C" id="Xkh-7v-cvp" customClass="ViewController" customModule="AirRivet_Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Objective-C" id="Xkh-7v-cvp" customClass="ICAOBJCViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ISi-fh-svl"/>
                         <viewControllerLayoutGuide type="bottom" id="QTu-78-T3z"/>
@@ -91,11 +91,11 @@
                             <constraint firstItem="mUx-ZP-HLJ" firstAttribute="centerX" secondItem="ttg-QK-i60" secondAttribute="centerX" id="Lcu-h9-OPB"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="hhF-Yy-ZI3"/>
+                    <navigationItem key="navigationItem" title="Objective-C" id="hhF-Yy-ZI3"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dd1-0c-BEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1728" y="1148"/>
+            <point key="canvasLocation" x="1733" y="1148"/>
         </scene>
     </scenes>
 </document>

@@ -7,7 +7,22 @@
 //
 
 #import "ICAOBJCViewController.h"
+/**
+ In build settings look at the Module Identifier. This is the one you should use to import swift files from the same target.
+ */
+#import "AirRivet_Example-Swift.h"
 
 @implementation ICAOBJCViewController
 
+- (void)viewDidLoad {
+	[ super viewDidLoad];
+	GameScoreController * controller = [[GameScoreController alloc] init];
+
+//	[controller retrieve:^(NSArray<GameScore *> * _Nonnull) {
+//		id<#code#>
+//	} failure:^(NSError * _Nonnull) {
+//		NSLog(<#NSString * _Nonnull format, ...#>)
+//	}];
+
+}
 @end
