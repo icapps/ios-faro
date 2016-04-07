@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>TransformController Class Reference</title>
+    <title>dispatch Class Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Class/TransformController" class="dashAnchor"></a>
-    <a title="TransformController Class Reference"></a>
+    <a name="//apple_ref/swift/Class/dispatch" class="dashAnchor"></a>
+    <a title="dispatch Class Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html"> Docs</a> (100% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" />
-        TransformController Class Reference
+        dispatch Class Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -74,14 +74,14 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>TransformController</h1>
+            <h1>dispatch</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TransformController</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="n">dispatch</span></code></pre>
 
                 </div>
               </div>
-            <p>Transformations of data to concrete objects. This implementation expects data to be valid JSON.</p>
+            <p>Use class functions to easily change queue&rsquo;s.</p>
 
           </section>
           <section class="section task-group-section">
@@ -90,9 +90,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC8AirRivet19TransformController26objectDataToConcreteObjectuRxS_9BaseModelrFzTCSo6NSData4bodyGSqx_10completionFxT__T_"></a>
-                    <a name="//apple_ref/swift/Method/objectDataToConcreteObject(_:body:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC8AirRivet19TransformController26objectDataToConcreteObjectuRxS_9BaseModelrFzTCSo6NSData4bodyGSqx_10completionFxT__T_">objectDataToConcreteObject(_:body:completion:)</a>
+                    <a name="/s:CC8AirRivet8dispatch5async"></a>
+                    <a name="//apple_ref/swift/Class/async" class="dashAnchor"></a>
+                    <a class="token" href="#/s:CC8AirRivet8dispatch5async">async</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -100,40 +100,17 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
+                        <p>Undocumented</p>
+
+                        <a href="../Classes/dispatch/async.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">objectDataToConcreteObject</span><span class="o">&lt;</span><span class="k">Type</span><span class="p">:</span> <span class="kt">BaseModel</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">NSData</span><span class="p">,</span> <span class="nv">body</span><span class="p">:</span> <span class="k">Type</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:(</span><span class="k">Type</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">())</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="n">dispatch</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>data</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>valid JSON</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>via the completion block a parsed object of <code>Type</code> is returned.</p>
-
                       </div>
                     </section>
                   </div>
@@ -141,9 +118,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC8AirRivet19TransformController28objectsDataToConcreteObjectsuRxS_9BaseModelrFzTCSo6NSData10completionFGSax_T__T_"></a>
-                    <a name="//apple_ref/swift/Method/objectsDataToConcreteObjects(_:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC8AirRivet19TransformController28objectsDataToConcreteObjectsuRxS_9BaseModelrFzTCSo6NSData10completionFGSax_T__T_">objectsDataToConcreteObjects(_:completion:)</a>
+                    <a name="/s:CC8AirRivet8dispatch4sync"></a>
+                    <a name="//apple_ref/swift/Class/sync" class="dashAnchor"></a>
+                    <a class="token" href="#/s:CC8AirRivet8dispatch4sync">sync</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -151,45 +128,44 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <div class="aside aside-todo">
-    <p class="aside-title">Todo</p>
-    <p>#5 transformation of array results to existing objects.</p>
+                        <p>Undocumented</p>
 
-</div>
+                        <a href="../Classes/dispatch/sync.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="n">dispatch</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC8AirRivet8dispatch5afterFTV12CoreGraphics7CGFloatbT_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/after(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC8AirRivet8dispatch5afterFTV12CoreGraphics7CGFloatbT_T__T_">after(_:_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">objectsDataToConcreteObjects</span><span class="o">&lt;</span><span class="k">Type</span><span class="p">:</span> <span class="kt">BaseModel</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">NSData</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:([</span><span class="k">Type</span><span class="p">])</span><span class="o">-&gt;</span><span class="p">())</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="n">dispatch</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>data</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>valid JSON</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>via the completion block an array of parsed objects of <code>Type</code>.</p>
-
                       </div>
                     </section>
                   </div>
