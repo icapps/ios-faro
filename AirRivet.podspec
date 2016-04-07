@@ -3,19 +3,20 @@
 
 Pod::Spec.new do |s|
   s.name             = "AirRivet"
-  s.version          = "0.0.3"
+  s.version          = "0.0.4"
   s.summary          = "AirRivet is a web service stack to genericly convert JSON from a webservice to model objects."
 
   s.description      = <<-DESC
 When you have a webservice to talk to parsing the data returned and handeling the errors can be a hassle. This is pod will help you build it more generic.
+We use a single principle to build the the Architecture of this service. Your projects model object are of a certain Type. This Type can conform to `BaseModel` protocol so it can be saved or retreived by a `RequestController`.
+
+The goal is to create a service layer for iCapps that is independent of any underlying frameworks or models you use (like pod `Argo` or `ObjectMapper`).
                        DESC
 
-  s.homepage         = "https://github.com/icapps/AirRivet"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
-  s.license          = 'MIT'
-  s.author           = { "StijnWillems" => "stijn.willems@icapps.com" }
-  s.source           = { :git => "https://github.com/icapps/AirRivet.git", :tag => s.version.to_s }
-  s.social_media_url = 'https://twitter.com/doozMen'
+  s.homepage         = "https://github.com/icapps/ios-air-rivet"
+  s.author           = { "Leroy" => "development@icapps.com" }
+  s.source           = { :git => "https://github.com/icapps/ios-air-rivet", :tag => s.version.to_s }
+  s.social_media_url = 'https://twitter.com/icapps'
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true
@@ -24,8 +25,4 @@ When you have a webservice to talk to parsing the data returned and handeling th
   s.resource_bundles = {
     'AirRivet' => ['Pod/Assets/*.png']
   }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end
