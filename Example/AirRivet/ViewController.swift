@@ -12,12 +12,17 @@ import AirRivet
 class ViewController: UIViewController {
 	let requestController = RequestController<GameScore>(serviceParameters: ParseExampleService <GameScore>())
 
+	@IBOutlet var label: UILabel!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
 		do {
 			try requestController.retrieve({ (response) in
 				print(response)
+				dispatch.async.main({ 
+					self.label.text = "Received \(response.count) objects"
+				})
 			})
 		}catch {
 			print("-------Error with request------")

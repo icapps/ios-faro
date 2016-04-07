@@ -39,7 +39,7 @@ public class RequestController <Type: BaseModel> {
 
 	//MARK: - Save
 /**
- Save a single item or `Type`
+ Save a single item or `Type`. Completion block return on a background queue!
 	
 	- parameter body: the Type object is converted to JSON and send to the server.
 	- parameter completion: closure is called when service request successfully returns
@@ -98,7 +98,7 @@ public class RequestController <Type: BaseModel> {
 
 	//MARK: - Retrieve
 	/**
- Retreive a all items of `Type`
+ Retreive a all items of `Type`. Completion block return on a background queue!
 	
 	- parameter response: closure is called when service request successfully returns
 	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
@@ -130,7 +130,7 @@ public class RequestController <Type: BaseModel> {
 	}
 	
 	/**
- Retreive a single item or `Type`
+ Retreive a single item or `Type`. Completion block return on a background queue!
 	
 	- parameter objectID: Something that uniquely defines the object you are asking for of `Type`
 	- parameter completion: closure is called when service request successfully returns

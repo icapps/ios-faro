@@ -14,6 +14,7 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		8267CF8A05CF0925DE7C4BFB /* Pods_AirRivet_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55D1E149225205C6E4B910A5 /* Pods_AirRivet_Tests.framework */; };
+		C052960D1CB6629E007E1111 /* ICAOBJCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C052960C1CB6629E007E1111 /* ICAOBJCViewController.m */; };
 		C0A3DB0D1CAEBBB200978DBD /* ParseExampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* ParseExampleService.swift */; };
 		C0A3DB0E1CAEBBB200978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
 		C0A3DB0F1CAEBBB600978DBD /* ParseExampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* ParseExampleService.swift */; };
@@ -48,6 +49,9 @@
 		6A2CB6D8A418713EAB4F9FF0 /* Pods-AirRivet_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirRivet_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AirRivet_Tests/Pods-AirRivet_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		714653C99B98D8A21123128F /* Pods-AirRivet_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirRivet_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AirRivet_Example/Pods-AirRivet_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		9B789678420428DC67D55427 /* Pods-AirRivet_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirRivet_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirRivet_Example/Pods-AirRivet_Example.release.xcconfig"; sourceTree = "<group>"; };
+		C052960A1CB6629E007E1111 /* AirRivet_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirRivet_Example-Bridging-Header.h"; sourceTree = "<group>"; };
+		C052960B1CB6629E007E1111 /* ICAOBJCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICAOBJCViewController.h; sourceTree = "<group>"; };
+		C052960C1CB6629E007E1111 /* ICAOBJCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICAOBJCViewController.m; sourceTree = "<group>"; };
 		C0A3DB0B1CAEBBB200978DBD /* ParseExampleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseExampleService.swift; sourceTree = "<group>"; };
 		C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScore.swift; sourceTree = "<group>"; };
 		C0A3DB111CAEBBCA00978DBD /* RivetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RivetTests.swift; sourceTree = "<group>"; };
@@ -103,10 +107,13 @@
 				C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				C052960B1CB6629E007E1111 /* ICAOBJCViewController.h */,
+				C052960C1CB6629E007E1111 /* ICAOBJCViewController.m */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
+				C052960A1CB6629E007E1111 /* AirRivet_Example-Bridging-Header.h */,
 			);
 			name = "Example for AirRivet";
 			path = AirRivet;
@@ -217,7 +224,7 @@
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
@@ -368,6 +375,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0A3DB0E1CAEBBB200978DBD /* GameScore.swift in Sources */,
+				C052960D1CB6629E007E1111 /* ICAOBJCViewController.m in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				C0A3DB0D1CAEBBB200978DBD /* ParseExampleService.swift in Sources */,
@@ -501,11 +509,14 @@
 			baseConfigurationReference = 714653C99B98D8A21123128F /* Pods-AirRivet_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = AirRivet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AirRivet/AirRivet_Example-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -514,11 +525,13 @@
 			baseConfigurationReference = 9B789678420428DC67D55427 /* Pods-AirRivet_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = AirRivet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AirRivet/AirRivet_Example-Bridging-Header.h";
 			};
 			name = Release;
 		};

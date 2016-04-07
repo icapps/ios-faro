@@ -77,6 +77,7 @@
 		B2736269E71FFEC977D9A0D5861DC280 /* QuickSpec.h in Headers */ = {isa = PBXBuildFile; fileRef = 3973F89F7C13EAD4855CFC68BCC8511E /* QuickSpec.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B43EDBC7DA15A429006C67B63D45ACFD /* ThrowError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E904D9C3B8ED32F61307B82AF1DE02 /* ThrowError.swift */; };
 		B9D2E426B5CA226D60A78A71FA289D4C /* AsyncMatcherWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9341EE27FCA41AD8B88193EC0C839859 /* AsyncMatcherWrapper.swift */; };
+		C052960F1CB66430007E1111 /* dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C052960E1CB66430007E1111 /* dispatch.swift */; };
 		C0A3DB041CAEBB7D00978DBD /* RequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DAFD1CAEBB7D00978DBD /* RequestController.swift */; };
 		C0A3DB051CAEBB7D00978DBD /* ResponseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DAFE1CAEBB7D00978DBD /* ResponseController.swift */; };
 		C0A3DB061CAEBB7D00978DBD /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DAFF1CAEBB7D00978DBD /* BaseModel.swift */; };
@@ -251,6 +252,7 @@
 		BBACEB31F87FDB2A294186DEFA980590 /* ExampleGroup.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExampleGroup.swift; path = Sources/Quick/ExampleGroup.swift; sourceTree = "<group>"; };
 		BE582507271FE02BA93C412C422D4ED8 /* Nimble.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Nimble.h; path = Sources/Nimble/Nimble.h; sourceTree = "<group>"; };
 		BEDAA753452F6B96DE24D2CF7D396628 /* AssertionRecorder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AssertionRecorder.swift; path = Sources/Nimble/Adapters/AssertionRecorder.swift; sourceTree = "<group>"; };
+		C052960E1CB66430007E1111 /* dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dispatch.swift; sourceTree = "<group>"; };
 		C0A3DAFD1CAEBB7D00978DBD /* RequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestController.swift; sourceTree = "<group>"; };
 		C0A3DAFE1CAEBB7D00978DBD /* ResponseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseController.swift; sourceTree = "<group>"; };
 		C0A3DAFF1CAEBB7D00978DBD /* BaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
@@ -493,6 +495,7 @@
 		AD5D5DBDB5C51D354953BF4AC96AE1F5 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C052960E1CB66430007E1111 /* dispatch.swift */,
 				C0A3DAFD1CAEBB7D00978DBD /* RequestController.swift */,
 				C0A3DAFE1CAEBB7D00978DBD /* ResponseController.swift */,
 				C0A3DAFF1CAEBB7D00978DBD /* BaseModel.swift */,
@@ -945,6 +948,7 @@
 				C0A3DB081CAEBB7D00978DBD /* ErrorController.swift in Sources */,
 				C0A3DB061CAEBB7D00978DBD /* BaseModel.swift in Sources */,
 				C0A3DB091CAEBB7D00978DBD /* ServiceParameters.swift in Sources */,
+				C052960F1CB66430007E1111 /* dispatch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
