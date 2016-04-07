@@ -12,10 +12,10 @@ We use a single principle to build the the Architecture of this service. Your pr
 
 The goal is to create a service layer for iCapps that is independent of any underlying frameworks or models you use (like pod `Argo` or `ObjectMapper`).
                        DESC
-
+ s.license          = 'MIT'
   s.homepage         = "https://github.com/icapps/ios-air-rivet"
   s.author           = { "Leroy" => "development@icapps.com" }
-  s.source           = { :git => "https://github.com/icapps/ios-air-rivet", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/icapps/ios-air-rivet.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/icapps'
 
   s.platform     = :ios, '8.0'
