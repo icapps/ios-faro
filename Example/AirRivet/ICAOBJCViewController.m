@@ -18,11 +18,10 @@
 	[ super viewDidLoad];
 	GameScoreController * controller = [[GameScoreController alloc] init];
 
-//	[controller retrieve:^(NSArray<GameScore *> * _Nonnull) {
-//		id<#code#>
-//	} failure:^(NSError * _Nonnull) {
-//		NSLog(<#NSString * _Nonnull format, ...#>)
-//	}];
-
+	[controller retrieve:^(NSArray<GameScore *> * _Nonnull response) {
+		NSLog(@"%@", response);
+	} failure:^(NSError * _Nonnull error) {
+		NSLog(@"%@", error);
+	}];
 }
 @end
