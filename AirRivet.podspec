@@ -3,7 +3,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "AirRivet"
-  s.version          = "0.0.4"
+  s.version          = "0.0.5"
   s.summary          = "AirRivet is a web service stack to genericly convert JSON from a webservice to model objects."
 
   s.description      = <<-DESC
