@@ -58,8 +58,8 @@ class ViewController: UIViewController {
 
 ### Documentation
 
-* Of the example can be found in [(project root)/Example/docs](http://htmlpreview.github.io/?https://github.com/icapps/ios-air-rivet/blob/feature/principles/Example/docs/index.html)
-* Of the AirRivet pod in [(project root)/Example/Pods/docs](http://htmlpreview.github.io/?https://github.com/icapps/ios-air-rivet/blob/feature/principles/Example/Pods/docs/index.html)
+* Of the example can be found in [(project root)/Example/docs](http://htmlpreview.github.io/?https://github.com/icapps/ios-air-rivet/blob/master/Example/docs/index.html)
+* Of the AirRivet pod in [(project root)/Example/Pods/docs](http://htmlpreview.github.io/?https://github.com/icapps/ios-air-rivet/blob/master/Example/Pods/docs/index.html)
 
 ## Requirements
 
