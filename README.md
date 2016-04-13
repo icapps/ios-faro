@@ -1,5 +1,7 @@
 # AirRivet
 
+For quick start follow the instructions below. For more in dept info on why and how we build this AirRivet stuff you are more then welcome on the [wiki](https://github.com/icapps/ios-air-rivet/wiki)
+
 ## Usage
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
