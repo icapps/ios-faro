@@ -61,7 +61,7 @@ class ViewController: UIViewController {
 
 ## Requirements
 
-ios 8 or higher
+iOS 8 or higher
 Because we use generics you can only use this pod in Swift only files. You can mix and Match with Objective-C but not with generic classes.  Types [More info](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithObjective-CAPIs.html#//apple_ref/doc/uid/TP40014216-CH4-ID53)
 
 ## Installation
@@ -72,7 +72,10 @@ it, simply add the following line to your Podfile:
 ```ruby
 pod "AirRivet"
 ```
+## Contribution
+> Don't think to hard, try hard!
 
+More info on the small wiki [3 step contribution guidelines](https://github.com/icapps/ios-air-rivet/wiki/Contribution)
 ## License
 
 AirRivet is available under the MIT license. See the LICENSE file for more info.
