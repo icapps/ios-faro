@@ -58,8 +58,8 @@ class ViewController: UIViewController {
 
 ### Documentation
 
-* Of the example can be found in ""(project root)/Example/docs"
-* Of the AirRivet pod in "(project root)/Example/Pods/docs"
+* Of the example can be found in [(project root)/Example/docs](Example/docs/index.html)
+* Of the AirRivet pod in [(project root)/Example/Pods/docs](Example/Pods/docs/index.html)
 
 ## Requirements
 
@@ -77,7 +77,7 @@ pod "AirRivet"
 ## Contribution
 > Don't think to hard, try hard!
 
-More info on the small wiki [3 step contribution guidelines](https://github.com/icapps/ios-air-rivet/wiki/Contribution)
+More info on [3 step contribution guidelines](https://github.com/icapps/ios-air-rivet/wiki/Contribution)
 ## License
 
 AirRivet is available under the MIT license. See the LICENSE file for more info.
