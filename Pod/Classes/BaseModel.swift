@@ -32,6 +32,7 @@ If needed an error controller that is type specific can be made.
 * Set all properties from the received JSON at initialization
 */
 	init(json: AnyObject)
+    
 /**
 * Set all properties from the received JSON
 */
@@ -47,7 +48,5 @@ If needed an error controller that is type specific can be made.
 * Override if you want to POST this as JSON
 */
 	func body()-> NSDictionary?
-	
 
-	
 }

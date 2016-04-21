@@ -27,7 +27,7 @@ public class ResponseController {
 
 		try checkError(response, errorController: errorController)
 		if let data = try checkStatusCodeAndData(response, errorController: errorController){
-			try transformController.objectDataToConcreteObject(data, body: body, completion: { (concreteObject) -> () in
+			try transformController.objectDataToConcreteObject(data, inputModel: body, completion: { (concreteObject) -> () in
 				completion(concreteObject)
 			})
 		}
