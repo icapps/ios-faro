@@ -495,12 +495,12 @@
 		AD5D5DBDB5C51D354953BF4AC96AE1F5 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				C052960E1CB66430007E1111 /* dispatch.swift */,
-				C0A3DAFD1CAEBB7D00978DBD /* RequestController.swift */,
-				C0A3DAFE1CAEBB7D00978DBD /* ResponseController.swift */,
 				C0A3DAFF1CAEBB7D00978DBD /* BaseModel.swift */,
 				C0A3DB001CAEBB7D00978DBD /* ConcreteErrorController.swift */,
+				C052960E1CB66430007E1111 /* dispatch.swift */,
 				C0A3DB011CAEBB7D00978DBD /* ErrorController.swift */,
+				C0A3DAFD1CAEBB7D00978DBD /* RequestController.swift */,
+				C0A3DAFE1CAEBB7D00978DBD /* ResponseController.swift */,
 				C0A3DB021CAEBB7D00978DBD /* ServiceParameters.swift */,
 				C0A3DB031CAEBB7D00978DBD /* TransformController.swift */,
 			);

@@ -14,6 +14,7 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		8267CF8A05CF0925DE7C4BFB /* Pods_AirRivet_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55D1E149225205C6E4B910A5 /* Pods_AirRivet_Tests.framework */; };
+		A4D85BC11CC8E00B0046AF29 /* ConcreteErrorControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BC01CC8E00B0046AF29 /* ConcreteErrorControllerTests.swift */; };
 		C052960D1CB6629E007E1111 /* ICAOBJCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C052960C1CB6629E007E1111 /* ICAOBJCViewController.m */; };
 		C05296121CB6661E007E1111 /* GameSoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05296111CB6661E007E1111 /* GameSoreController.swift */; };
 		C0A3DB0D1CAEBBB200978DBD /* ParseExampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* ParseExampleService.swift */; };
@@ -50,6 +51,7 @@
 		6A2CB6D8A418713EAB4F9FF0 /* Pods-AirRivet_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirRivet_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AirRivet_Tests/Pods-AirRivet_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		714653C99B98D8A21123128F /* Pods-AirRivet_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirRivet_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AirRivet_Example/Pods-AirRivet_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		9B789678420428DC67D55427 /* Pods-AirRivet_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirRivet_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirRivet_Example/Pods-AirRivet_Example.release.xcconfig"; sourceTree = "<group>"; };
+		A4D85BC01CC8E00B0046AF29 /* ConcreteErrorControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcreteErrorControllerTests.swift; sourceTree = "<group>"; };
 		C052960A1CB6629E007E1111 /* AirRivet_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirRivet_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		C052960B1CB6629E007E1111 /* ICAOBJCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICAOBJCViewController.h; sourceTree = "<group>"; };
 		C052960C1CB6629E007E1111 /* ICAOBJCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICAOBJCViewController.m; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				C0A3DB111CAEBBCA00978DBD /* RivetTests.swift */,
+				A4D85BC21CC8E0100046AF29 /* Classes */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -173,6 +176,14 @@
 				55D1E149225205C6E4B910A5 /* Pods_AirRivet_Tests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A4D85BC21CC8E0100046AF29 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A4D85BC01CC8E00B0046AF29 /* ConcreteErrorControllerTests.swift */,
+			);
+			name = Classes;
 			sourceTree = "<group>";
 		};
 		C05296101CB665F1007E1111 /* Objective-C */ = {
@@ -399,6 +410,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0A3DB121CAEBBCA00978DBD /* RivetTests.swift in Sources */,
+				A4D85BC11CC8E00B0046AF29 /* ConcreteErrorControllerTests.swift in Sources */,
 				C0A3DB0F1CAEBBB600978DBD /* ParseExampleService.swift in Sources */,
 				C0A3DB101CAEBBB600978DBD /* GameScore.swift in Sources */,
 			);
