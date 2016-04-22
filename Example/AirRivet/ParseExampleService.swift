@@ -6,7 +6,7 @@ This is an example implementation of the protocol Service parameters. You can us
 
 ```
 class ViewController: UIViewController {
-let requestController = RequestController<GameScore>(Host: ParseExampleService <GameScore>())
+let requestController = RequestController<GameScore>(Environment: ParseExampleService <GameScore>())
 
 override func viewDidLoad() {
 	super.viewDidLoad()
@@ -23,7 +23,7 @@ override func viewDidLoad() {
 }
 ```
 */
-public class ParseExampleService <BodyType: BaseModel>: Host {
+public class ParseExampleService <BodyType: BaseModel>: Environment {
 	public var serverUrl = "https://api.parse.com/1/classes/"
 	public var request: NSMutableURLRequest {
 		let URL = NSURL(string: "\(serverUrl)\(BodyType.contextPath())")

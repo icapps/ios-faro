@@ -15,8 +15,20 @@ A `RequestController` should be able to build up a request when your model objec
 public protocol BaseModel: class {
 	
 	var objectId: String? {get set}
+
+	//MARK: Environment
+/**
+The environmont where we should fetch the data from.
+
+Example environments:
+	* Pruduction
+	* Development
+	* Filesystem
+	* ...
 	
-	static func host() ->  Host
+	- returns : class or struct that complies to the `Environment` protocol.
+*/
+	static func environment() ->  Environment
 
 //MARK: Respond to errors
 /**

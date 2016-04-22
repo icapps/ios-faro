@@ -7,7 +7,7 @@ For quick start follow the instructions below. For more in dept info on why and 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 1. Create a Model object that complies to protocol `BaseModel`
-2. Create a class that complies to `Host`
+2. Create a class that complies to `Environment`
 3. Do a request like:
 
 ### Swift
