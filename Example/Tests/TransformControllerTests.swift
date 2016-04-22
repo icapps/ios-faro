@@ -26,7 +26,7 @@ class ExampleBaseModel: BaseModel {
         return "something"
     }
     
-    static func serviceParameters() -> ServiceParameters {
+    static func environment() -> Environment {
         return ParseExampleService<GameScore>()
     }
     

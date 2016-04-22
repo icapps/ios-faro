@@ -29,7 +29,7 @@ public class GameScore: NSObject, BaseModel {
 		return "GameScore"
 	}
 
-	public static func serviceParameters() -> ServiceParameters {
+	public static func environment()-> Environment {
 		return ParseExampleService<GameScore>()
 	}
 

@@ -4,12 +4,11 @@ import Quick
 import Nimble
 import AirRivet
 
-//TODO: Make this run with a dummy service
-class RivetSpec: QuickSpec {
+class GameScoreSpec: QuickSpec {
     override func spec() {
         describe("GameScore") {
 
-			let test = RequestController<GameScore>(serviceParameters: ParseExampleService<GameScore>())
+			let test = RequestController<GameScore>()
 			let gameScore = GameScore(json: [
 				"score": 1000,
 				"cheatMode": false,

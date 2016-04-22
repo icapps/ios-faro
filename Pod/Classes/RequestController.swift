@@ -27,11 +27,10 @@ public class RequestController <Type: BaseModel> {
 	/**
 	Initialization
 	
-	- parameter serviceParameters: a class that defines how to reach your server
 	- parameter responseController: a default repsonse controller is provided that can handle JSON responses and normal errors related to that. You can always provide your own for more complex cases.
 	- returns: A genericly typed Request controller that can handle task for the `Type` you provide.
 	*/
-	public init(serviceParameters: ServiceParameters, responseController: ResponseController = ResponseController()) {
+	public init(responseController: ResponseController = ResponseController()) {
 		self.responseController = responseController
 		sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
 		session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
@@ -47,7 +46,7 @@ public class RequestController <Type: BaseModel> {
 	- throws : TODO
 */
 	public func save(body: Type, completion:(response: Type)->(), failure:((RequestError) ->())? = nil) throws {
-		let request = Type.serviceParameters().request
+		let request = Type.environment().request
 		request.HTTPMethod = "POST"
 
 		guard let bodyObject = body.body() else {
@@ -105,7 +104,7 @@ public class RequestController <Type: BaseModel> {
 	- throws : TODO
 	*/
 	public func retrieve(completion:(response: [Type])->(), failure:((RequestError)->())? = nil) throws{
-		let request = Type.serviceParameters().request
+		let request = Type.environment().request
 		request.HTTPMethod = "GET"
 		
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
@@ -138,7 +137,7 @@ public class RequestController <Type: BaseModel> {
 	- throws : TODO
 	*/
 	public func retrieve(objectId:String, completion:(response: Type)->(),failure:((RequestError)->())? = nil) throws{
-		let request = Type.serviceParameters().request
+		let request = Type.environment().request
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 		request.HTTPMethod = "GET"
 		

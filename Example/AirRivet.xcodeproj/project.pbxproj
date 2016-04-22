@@ -25,7 +25,7 @@
 		C0A3DB0E1CAEBBB200978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
 		C0A3DB0F1CAEBBB600978DBD /* ParseExampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* ParseExampleService.swift */; };
 		C0A3DB101CAEBBB600978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
-		C0A3DB121CAEBBCA00978DBD /* RivetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB111CAEBBCA00978DBD /* RivetTests.swift */; };
+		C0A3DB121CAEBBCA00978DBD /* GameScoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB111CAEBBCA00978DBD /* GameScoreTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,7 +66,7 @@
 		C05296111CB6661E007E1111 /* GameSoreController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSoreController.swift; sourceTree = "<group>"; };
 		C0A3DB0B1CAEBBB200978DBD /* ParseExampleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseExampleService.swift; sourceTree = "<group>"; };
 		C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScore.swift; sourceTree = "<group>"; };
-		C0A3DB111CAEBBCA00978DBD /* RivetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RivetTests.swift; sourceTree = "<group>"; };
+		C0A3DB111CAEBBCA00978DBD /* GameScoreTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameScoreTest.swift; path = ../Tests/GameScoreTest.swift; sourceTree = "<group>"; };
 		EA42C35C6530567E38609B08 /* Pods_AirRivet_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AirRivet_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F28FE425E9CA20CB4C7DE52F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,6 +117,7 @@
 			children = (
 				C0A3DB0B1CAEBBB200978DBD /* ParseExampleService.swift */,
 				C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */,
+				C0A3DB111CAEBBCA00978DBD /* GameScoreTest.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				C05296101CB665F1007E1111 /* Objective-C */,
@@ -141,7 +142,6 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				C0A3DB111CAEBBCA00978DBD /* RivetTests.swift */,
 				A4D85BC21CC8E0100046AF29 /* Classes */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
@@ -432,7 +432,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0A3DB121CAEBBCA00978DBD /* RivetTests.swift in Sources */,
+				C0A3DB121CAEBBCA00978DBD /* GameScoreTest.swift in Sources */,
 				A4D85BC11CC8E00B0046AF29 /* ConcreteErrorControllerTests.swift in Sources */,
 				C0A3DB0F1CAEBBB600978DBD /* ParseExampleService.swift in Sources */,
 				A4D85BC41CC8FAB00046AF29 /* TransformControllerTests.swift in Sources */,

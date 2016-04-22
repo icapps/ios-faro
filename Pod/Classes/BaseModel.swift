@@ -9,18 +9,32 @@
 import Foundation
 
 
-//A requestController should be able to build up a request when your model object complies to this protocol.
-
+/**
+A `RequestController` should be able to build up a request when your model object complies to this protocol.
+*/
 public protocol BaseModel: class {
 	
 	var objectId: String? {get set}
+
+	//MARK: Environment
+/**
+The environmont where we should fetch the data from.
+
+Example environments:
+	* Pruduction
+	* Development
+	* Filesystem
+	* ...
 	
-	static func serviceParameters() ->  ServiceParameters
+	- returns : class or struct that complies to the `Environment` protocol.
+*/
+	static func environment() ->  Environment
 
 //MARK: Respond to errors
 /**
 In your implementation create a general ErrorController.
 If needed an error controller that is type specific can be made.
+The goal of this controller is to handle parsing errors that can be solve by you.
 */
 	var errorController: ErrorController {get set}
 	
