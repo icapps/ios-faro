@@ -15,9 +15,8 @@ You can retreive a single instance or an array of objects
 The response controllers does the actual parsing. In theory you can parse any kind of reponse, for now we only support JSON.
 
 ## Pass errors to the errorController of `Type`
-Any type can decide to handle error in a specific way that is suited for that `Type` via its `ErrorController`.
+Any type can decide to handle error in a specific way that is suited for that `Type` by conforming to protoco `ErrorControlable`.
 
-* TODO: remove duplication
 */
 
 public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurable, Parsable, ErrorControlable> > {
