@@ -12,16 +12,10 @@ public class GameScore: NSObject, UniqueAble, EnvironmentConfigurable,  ErrorCon
 	public var playerName: String?
 
 	public var objectId: String?
-	public var errorController: ErrorController
 
 	public required init(json: AnyObject) {
-		errorController = ConcreteErrorController()
 		super.init()
 		importFromJSON(json)
-	}
-
-	public static func getErrorController() -> ErrorController {
-		return ConcreteErrorController()
 	}
 
 	//MARK: BaseModel Protocol Type

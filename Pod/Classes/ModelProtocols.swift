@@ -60,6 +60,7 @@ public protocol Parsable {
 	func body()-> NSDictionary?
 }
 
+
 public protocol EnvironmentConfigurable {
 
 	static func environment() ->  Environment
