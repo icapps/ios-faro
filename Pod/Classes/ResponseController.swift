@@ -22,27 +22,27 @@ public class ResponseController {
 		self.transformController = transformController
 	}
 	
-	func handleResponse<ResponseType: protocol<Parsable> >(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
-//		let errorController = ResponseType.getErrorController()
+	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable> >(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
+		let errorController = ResponseType.getErrorController()
 
-//		try checkError(response, errorController: errorController)
-//		if let data = try checkStatusCodeAndData(response, errorController: errorController){
-//			try transformController.objectDataToConcreteObject(data, body: body, completion: { (concreteObject) -> () in
-//				completion(concreteObject)
-//			})
-//		}
+		try checkError(response, errorController: errorController)
+		if let data = try checkStatusCodeAndData(response, errorController: errorController){
+			try transformController.objectDataToConcreteObject(data, body: body, completion: { (concreteObject) -> () in
+				completion(concreteObject)
+			})
+		}
 	}
 
-	func handleResponse<ResponseType>(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), completion: ([ResponseType])->()) throws{
-//		let errorController = ResponseType.getErrorController()
+	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable> >(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), completion: ([ResponseType])->()) throws{
+		let errorController = ResponseType.getErrorController()
 
-//		try checkError(response, errorController: errorController)
+		try checkError(response, errorController: errorController)
 
-//		if let data = try checkStatusCodeAndData(response, errorController: errorController) {
-//			try transformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
-//				completion(responseArray)
-//			})
-//		}
+		if let data = try checkStatusCodeAndData(response, errorController: errorController) {
+			try transformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
+				completion(responseArray)
+			})
+		}
 	}
 	
 	private func checkError(response: (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), errorController: ErrorController) throws{
