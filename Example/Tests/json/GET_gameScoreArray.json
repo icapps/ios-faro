@@ -1,0 +1,27 @@
+[
+    {
+      "score": 985,
+      "cheatMode": true,
+      "playerName": "Bob"
+    },
+    {
+      "score": 985,
+      "cheatMode": true,
+      "playerName": "Daniel"
+    },
+    {
+      "score": 1,
+      "cheatMode": true,
+      "playerName": "Hans"
+    },
+    {
+      "score": 10,
+      "cheatMode": false,
+      "playerName": "Stijn"
+    },
+    {
+      "score": 1000,
+      "cheatMode": true,
+      "playerName": "Jelle"
+    }
+]

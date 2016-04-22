@@ -52,19 +52,31 @@
               <li class="nav-group-task">
                 <a href="Enums/RequestError.html">RequestError</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Enums/TransformError.html">TransformError</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a href="Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Protocols/BaseModel.html">BaseModel</a>
+                <a href="Protocols/Environment.html">Environment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/EnvironmentConfigurable.html">EnvironmentConfigurable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ErrorControlable.html">ErrorControlable</a>
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/ErrorController.html">ErrorController</a>
               </li>
               <li class="nav-group-task">
-                <a href="Protocols/ServiceParameters.html">ServiceParameters</a>
+                <a href="Protocols/Parsable.html">Parsable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/UniqueAble.html">UniqueAble</a>
               </li>
             </ul>
           </li>
@@ -115,9 +127,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:P8AirRivet9BaseModel"></a>
-                    <a name="//apple_ref/swift/Protocol/BaseModel" class="dashAnchor"></a>
-                    <a class="token" href="#/s:P8AirRivet9BaseModel">BaseModel</a>
+                    <a name="/s:P8AirRivet16ErrorControlable"></a>
+                    <a name="//apple_ref/swift/Protocol/ErrorControlable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8AirRivet16ErrorControlable">ErrorControlable</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -127,7 +139,67 @@
                       <div class="abstract">
                         <p>Undocumented</p>
 
-                        <a href="Protocols/BaseModel.html" class="slightly-smaller">See more</a>
+                        <a href="Protocols/ErrorControlable.html" class="slightly-smaller">See more</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:P8AirRivet8Parsable"></a>
+                    <a name="//apple_ref/swift/Protocol/Parsable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8AirRivet8Parsable">Parsable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Protocols/Parsable.html" class="slightly-smaller">See more</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:P8AirRivet23EnvironmentConfigurable"></a>
+                    <a name="//apple_ref/swift/Protocol/EnvironmentConfigurable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8AirRivet23EnvironmentConfigurable">EnvironmentConfigurable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Protocols/EnvironmentConfigurable.html" class="slightly-smaller">See more</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:P8AirRivet10UniqueAble"></a>
+                    <a name="//apple_ref/swift/Protocol/UniqueAble" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8AirRivet10UniqueAble">UniqueAble</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Protocols/UniqueAble.html" class="slightly-smaller">See more</a>
                       </div>
                     </section>
                   </div>
@@ -139,9 +211,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:P8AirRivet17ServiceParameters"></a>
-                    <a name="//apple_ref/swift/Protocol/ServiceParameters" class="dashAnchor"></a>
-                    <a class="token" href="#/s:P8AirRivet17ServiceParameters">ServiceParameters</a>
+                    <a name="/s:P8AirRivet11Environment"></a>
+                    <a name="//apple_ref/swift/Protocol/Environment" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8AirRivet11Environment">Environment</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -149,9 +221,23 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The environmont where we should fetch the data from.</p>
 
-                        <a href="Protocols/ServiceParameters.html" class="slightly-smaller">See more</a>
+<p>Example environments:
+* Pruduction
+* Development
+* Filesystem
+* &hellip;</p>
+
+                        <a href="Protocols/Environment.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Environment</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -161,7 +247,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-04-07)</p>
+          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-04-22)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

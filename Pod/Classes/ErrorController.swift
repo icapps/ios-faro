@@ -24,6 +24,7 @@ public protocol ErrorController
 
 public enum RequestError: ErrorType {
 	case InvalidBody
+	case InvalidUrl
 	case InvalidAuthentication
 	case General
 	case InvalidResponseData

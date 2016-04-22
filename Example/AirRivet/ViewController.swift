@@ -10,7 +10,7 @@ import UIKit
 import AirRivet
 
 class ViewController: UIViewController {
-	let requestController = RequestController<GameScore>(serviceParameters: ParseExampleService <GameScore>())
+	let requestController = RequestController<GameScore>()
 
 	@IBOutlet var label: UILabel!
 

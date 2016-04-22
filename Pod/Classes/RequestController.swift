@@ -1,6 +1,8 @@
 import Foundation
 
 
+public typealias ModelProtocol = protocol<UniqueAble, EnvironmentConfigurable, Parsable, ErrorControlable>
+
 /** 
 RequestController to handle interactions with a model of a specific Type.
 # Tasks
@@ -15,11 +17,14 @@ You can retreive a single instance or an array of objects
 The response controllers does the actual parsing. In theory you can parse any kind of reponse, for now we only support JSON.
 
 ## Pass errors to the errorController of `Type`
-Any type can decide to handle error in a specific way that is suited for that `Type` via its `ErrorController`.
+Any type can decide to handle error in a specific way that is suited for that `Type` by conforming to protoco `ErrorControlable`.
 
-* TODO: remove duplication
+# Mocking
+
+You can also mock this class via its Type. Take a look at the `GameScoreTest` in example to know how.
+
 */
-public class RequestController <Type: BaseModel> {
+public class RequestController <Type: ModelProtocol> {
 	private let responseController: ResponseController
 	private let sessionConfig: NSURLSessionConfiguration
 	private let session: NSURLSession
@@ -27,11 +32,10 @@ public class RequestController <Type: BaseModel> {
 	/**
 	Initialization
 	
-	- parameter serviceParameters: a class that defines how to reach your server
 	- parameter responseController: a default repsonse controller is provided that can handle JSON responses and normal errors related to that. You can always provide your own for more complex cases.
 	- returns: A genericly typed Request controller that can handle task for the `Type` you provide.
 	*/
-	public init(serviceParameters: ServiceParameters, responseController: ResponseController = ResponseController()) {
+	public init(responseController: ResponseController = ResponseController()) {
 		self.responseController = responseController
 		sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
 		session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
@@ -47,26 +51,36 @@ public class RequestController <Type: BaseModel> {
 	- throws : TODO
 */
 	public func save(body: Type, completion:(response: Type)->(), failure:((RequestError) ->())? = nil) throws {
-		let request = Type.serviceParameters().request
+		let entity = Type()
+		let environment = Type().environment()
+		let request = environment.request
+
 		request.HTTPMethod = "POST"
+		print("\(body)")
 
 		guard let bodyObject = body.body() else {
-			try body.errorController.requestBodyError()
+			try body.parsingErrorController().requestBodyError()
 			return
 		}
 
 		do {
 			request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(bodyObject, options: .PrettyPrinted)
 		}catch {
-			try body.errorController.requestBodyError()
+			try body.parsingErrorController().requestBodyError()
 		}
 
+		guard !environment.shouldMock() else {
+			print("🤔 Mocking (\(Type.self)) is mocking saves")
+			completion(response: body)
+			return
+		}
+		
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			guard error == nil else {
 				let taskError = error!
 				print("---Error request failed with error: \(taskError)----")
 				do {
-					try body.errorController.requestResponseError(taskError)
+					try body.parsingErrorController().requestResponseError(taskError)
 				}catch {
 					failure?(RequestError.ResponseError(error: taskError))
 				}
@@ -75,18 +89,18 @@ public class RequestController <Type: BaseModel> {
 			}
 
 			do {
-				try self.responseController.handleResponse((data: data,urlResponse: response, error: error), body: body, completion: completion)
+				try self.responseController.handleResponse(environment, response:(data: data,urlResponse: response, error: error), body: body, completion: completion)
 			}catch RequestError.InvalidAuthentication {
 				print("---Error we could not Authenticate----")
 				do {
-					try body.errorController.requestAuthenticationError()
+					try body.parsingErrorController().requestAuthenticationError()
 				}catch {
 					failure?(RequestError.InvalidAuthentication)
 				}
 			}catch {
 				print("---Error we could not process the response----")
 				do {
-					try body.errorController.requestGeneralError()
+					try body.parsingErrorController().requestGeneralError()
 				}catch {
 					failure?(RequestError.General)
 				}
@@ -105,21 +119,37 @@ public class RequestController <Type: BaseModel> {
 	- throws : TODO
 	*/
 	public func retrieve(completion:(response: [Type])->(), failure:((RequestError)->())? = nil) throws{
-		let request = Type.serviceParameters().request
-		request.HTTPMethod = "GET"
-		
-		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
+		let entity = Type()
+		let environment = Type().environment()
+		environment.request.HTTPMethod = "GET"
+
+		guard !environment.shouldMock() else {
+			let transformController = environment.transFormcontroller()
+			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
+			if let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue) {
+				let data = NSData(contentsOfURL: fileURL)!
+				try transformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
+					completion(response: responseArray)
+				})
+			}else {
+				throw RequestError.InvalidUrl
+			}
+			print("🤔 Mocking (\(Type.self)) with contextPath: \(entity.contextPath())")
+			return
+		}
+
+		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-				print("---Error request failed with error: \(error)----")
+				print("💣 Error request failed with error: \(error)💣")
 				failure?(RequestError.ResponseError(error: error))
 			}else {
 				do {
-					try self.responseController.handleResponse((data: data,urlResponse: response, error: error), completion: completion)
+					try self.responseController.handleResponse(environment, response:(data: data,urlResponse: response, error: error), completion: completion)
 				}catch RequestError.InvalidAuthentication {
-					print("---Error we could not Authenticate----")
+					print("💣Error we could not Authenticate💣")
 					failure?(RequestError.InvalidAuthentication)
 				}catch {
-					print("---Error we could not process the response----")
+					print("💣Error we could not process the response💣")
 					failure?(RequestError.General)
 				}
 			}
@@ -138,16 +168,33 @@ public class RequestController <Type: BaseModel> {
 	- throws : TODO
 	*/
 	public func retrieve(objectId:String, completion:(response: Type)->(),failure:((RequestError)->())? = nil) throws{
-		let request = Type.serviceParameters().request
-		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
+		let entity = Type()
+		let environment = Type().environment()
+		let request = environment.request
 		request.HTTPMethod = "GET"
-		
+
+		guard !environment.shouldMock() else {
+			print("🤔 Mocking (\(Type.self)) with objectID: \(objectId), contextPath: \(entity.contextPath())")
+			let transformController = environment.transFormcontroller()
+			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
+			if let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue) {
+				let data = NSData(contentsOfURL: fileURL)!
+				try transformController.objectDataToConcreteObject(data, completion: { (result) in
+					completion(response: result)
+				})
+			}else {
+				throw RequestError.InvalidUrl
+			}
+			return
+		}
+		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
+
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if error != nil {
 				print("---Error request failed with error: \(error)----")
 			}else {
 				do {
-					try self.responseController.handleResponse((data: data,urlResponse: response, error: error), completion: completion)
+					try self.responseController.handleResponse(environment, response:(data: data,urlResponse: response, error: error), completion: completion)
 					
 				}catch RequestError.InvalidAuthentication {
 					print("---Error we could not Authenticate----")

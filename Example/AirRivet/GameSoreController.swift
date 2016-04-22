@@ -24,7 +24,7 @@ public class GameScoreController: NSObject {
 		super.init()
 	}
 
-	private let requestController = RequestController<GameScore>(serviceParameters: ParseExampleService <GameScore>())
+	private let requestController = RequestController<GameScore>()
 	
 	public func retrieve(completion:(response: [GameScore])->(), failure:((error: NSError)->())? = nil) {
 		do {
