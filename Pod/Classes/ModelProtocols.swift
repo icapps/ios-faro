@@ -17,15 +17,32 @@ A `RequestController` should be able to build up a request when your model objec
 React and/or solve error that could arrise while
 */
 public protocol ErrorControlable {
-	/**
-	If needed an error controller that is type specific can be made.
-	The goal of this controller is to handle parsing/network errors that can be solve by you.
-	*/
-	var errorController: ErrorController {get set}
 
-	static func getErrorController() -> ErrorController
+	/**
+	By returning an error controller you can handle parsing errors.
+	- returns: By default an implementation of `ConcreteErrorController` is returned via a protocol extension
+	*/
+	func parsingErrorController() -> ErrorController
+	/**
+	If an error happens while constructing an entity this error controller could handle the error if needed.
+	 - returns: By default an implementation of `ConcreteErrorController` is returned via a protocol extension
+	*/
+	static func constructionErrorController() -> ErrorController
 }
 
+/**
+Default implementation for `ErrorControlalbe`
+*/
+public extension ErrorControlable {
+
+	func parsingErrorController () -> ErrorController {
+		return ConcreteErrorController()
+	}
+
+	static func constructionErrorController() -> ErrorController {
+		return ConcreteErrorController()
+	}
+}
 
 public protocol Parsable {
 	/**

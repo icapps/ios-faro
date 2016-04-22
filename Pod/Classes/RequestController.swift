@@ -50,14 +50,14 @@ public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurabl
 		request.HTTPMethod = "POST"
 
 		guard let bodyObject = body.body() else {
-			try body.errorController.requestBodyError()
+			try body.parsingErrorController().requestBodyError()
 			return
 		}
 
 		do {
 			request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(bodyObject, options: .PrettyPrinted)
 		}catch {
-			try body.errorController.requestBodyError()
+			try body.parsingErrorController().requestBodyError()
 		}
 
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
@@ -65,7 +65,7 @@ public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurabl
 				let taskError = error!
 				print("---Error request failed with error: \(taskError)----")
 				do {
-					try body.errorController.requestResponseError(taskError)
+					try body.parsingErrorController().requestResponseError(taskError)
 				}catch {
 					failure?(RequestError.ResponseError(error: taskError))
 				}
@@ -78,14 +78,14 @@ public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurabl
 			}catch RequestError.InvalidAuthentication {
 				print("---Error we could not Authenticate----")
 				do {
-					try body.errorController.requestAuthenticationError()
+					try body.parsingErrorController().requestAuthenticationError()
 				}catch {
 					failure?(RequestError.InvalidAuthentication)
 				}
 			}catch {
 				print("---Error we could not process the response----")
 				do {
-					try body.errorController.requestGeneralError()
+					try body.parsingErrorController().requestGeneralError()
 				}catch {
 					failure?(RequestError.General)
 				}

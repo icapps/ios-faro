@@ -23,7 +23,7 @@ public class ResponseController {
 	}
 	
 	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable> >(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
-		let errorController = ResponseType.getErrorController()
+		let errorController = ResponseType.constructionErrorController()
 
 		try checkError(response, errorController: errorController)
 		if let data = try checkStatusCodeAndData(response, errorController: errorController){
@@ -34,7 +34,7 @@ public class ResponseController {
 	}
 
 	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable> >(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), completion: ([ResponseType])->()) throws{
-		let errorController = ResponseType.getErrorController()
+		let errorController = ResponseType.constructionErrorController()
 
 		try checkError(response, errorController: errorController)
 

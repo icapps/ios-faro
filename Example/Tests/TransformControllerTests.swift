@@ -9,7 +9,7 @@
 import XCTest
 @testable import AirRivet
 
-class ExampleBaseModel: BaseModel {
+class ExampleBaseModel: UniqueAble, EnvironmentConfigurable,  ErrorControlable, Parsable {
     var objectId: String?
     var errorController: ErrorController
     
