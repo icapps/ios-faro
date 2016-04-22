@@ -45,6 +45,7 @@ public extension ErrorControlable {
 }
 
 public protocol Parsable {
+	init ()
 	/**
 	* Set all properties from the received JSON at initialization
 	*/
@@ -74,4 +75,13 @@ public protocol EnvironmentConfigurable {
 
 public protocol UniqueAble {
 	var objectId: String? {get set}
+}
+
+/**
+If you implement `Mockable` your entity can provide a default response. This can be handy for tests.
+You should only implement this protocol in unit tests or in your application while the service is not yet available.
+When a type conforms to Mockable the environment you provide by conforming to `EnvironmentConfigurable` will be ignored.
+*/
+public protocol Mockable {
+	func shouldMock() -> Bool
 }

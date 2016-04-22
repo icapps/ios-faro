@@ -11,15 +11,13 @@ import XCTest
 
 class ExampleBaseModel: UniqueAble, EnvironmentConfigurable,  ErrorControlable, Parsable {
     var objectId: String?
-    var errorController: ErrorController
-    
+
+	required init (){
+
+	}
+	
     required init(json: AnyObject) {
-        errorController = ConcreteErrorController()
         importFromJSON(json)
-    }
-    
-    static func getErrorController() -> ErrorController {
-        return ConcreteErrorController()
     }
     
     static func contextPath() -> String {
@@ -42,6 +40,11 @@ class ExampleBaseModel: UniqueAble, EnvironmentConfigurable,  ErrorControlable, 
             "identifier": objectId!,
         ]
     }
+}
+extension ExampleBaseModel: Mockable {
+	func shouldMock() -> Bool {
+		return true
+	}
 }
 
 class TransformControllerTests: XCTestCase {

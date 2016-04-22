@@ -5,13 +5,17 @@ Model object that implements protocol `BaseModel` that can be fount in pod `AirR
 
 In this example GameScore has to inherit from NSObject to be usable in Objective-C. In a pure Swift project this is not needed.
 */
-public class GameScore: NSObject, UniqueAble, EnvironmentConfigurable,  ErrorControlable, Parsable, Mockable {
+public class GameScore: NSObject, UniqueAble, EnvironmentConfigurable,  ErrorControlable, Parsable {
 
 	public var score: Int?
 	public var cheatMode: Bool?
 	public var playerName: String?
 
 	public var objectId: String?
+
+	public required override init() {
+		super.init()
+	}
 
 	public required init(json: AnyObject) {
 		super.init()
@@ -52,5 +56,12 @@ public class GameScore: NSObject, UniqueAble, EnvironmentConfigurable,  ErrorCon
 				self.playerName = playerName
 			}
 		}
+	}
+}
+
+extension GameScore: Mockable {
+
+	public func shouldMock() -> Bool {
+		return false
 	}
 }

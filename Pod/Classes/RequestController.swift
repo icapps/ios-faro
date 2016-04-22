@@ -1,20 +1,6 @@
 import Foundation
 
 
-/**
-If you implement `Mockable` your entity can provide a default response. This can be handy for tests.
-You should only implement this protocol in unit tests or in your application while the service is not yet available.
-When a type conforms to Mockable the environment you provide by conforming to `EnvironmentConfigurable` will be ignored.
-*/
-public protocol Mockable {
-	static func shouldMock() -> Bool
-}
-
-public extension Mockable {
-	static func shouldMock() -> Bool {
-		return false
-	}
-}
 /** 
 RequestController to handle interactions with a model of a specific Type.
 # Tasks
@@ -117,8 +103,9 @@ public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurabl
 	- throws : TODO
 	*/
 	public func retrieve(completion:(response: [Type])->(), failure:((RequestError)->())? = nil) throws{
-		guard !Type.shouldMock() else {
+		guard !Type().shouldMock() else {
 			//TODO return dummy result
+			print("Mocking")
 			return
 		}
 		let request = Type.environment().request
