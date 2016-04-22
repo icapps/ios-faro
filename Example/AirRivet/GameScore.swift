@@ -51,7 +51,7 @@ public class GameScore: NSObject, UniqueAble,  ErrorControlable, Parsable, Envir
 	}
 
 	//MARK: EnvironmentConfigurable
-	public static func contextPath() -> String {
+	public func contextPath() -> String {
 		return "GameScore"
 	}
 

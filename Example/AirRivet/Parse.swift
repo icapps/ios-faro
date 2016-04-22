@@ -26,7 +26,7 @@ override func viewDidLoad() {
 public class Parse <BodyType: EnvironmentConfigurable>: Environment {
 	public var serverUrl = "https://api.parse.com/1/classes/"
 	public var request: NSMutableURLRequest {
-		let URL = NSURL(string: "\(serverUrl)\(BodyType.contextPath())")
+		let URL = NSURL(string: "\(serverUrl)\(BodyType().contextPath())")
 		let request = NSMutableURLRequest(URL: URL!)
 
 		// Headers
@@ -36,9 +36,7 @@ public class Parse <BodyType: EnvironmentConfigurable>: Environment {
 		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 		return request
 	}
-}
 
-extension Parse: Mockable {
 	public func shouldMock() -> Bool {
 		return false
 	}

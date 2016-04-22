@@ -64,12 +64,14 @@ public protocol Parsable {
 
 public protocol EnvironmentConfigurable {
 
+	init ()
+	
 	func environment() ->  Environment
 
 	/**
 	* An url is formed from <ServiceParameter.serverURL+BaseModel.contextPath>.
 	*/
-	static func contextPath() -> String
+	func contextPath() -> String
 }
 
 

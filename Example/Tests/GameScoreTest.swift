@@ -13,9 +13,15 @@ class Mock: Environment {
 		return true
 	}
 }
+
 class MockGameScore: GameScore {
+
+	override func contextPath() -> String {
+		return "gameScoreArray"
+	}
+
 	override func environment() -> Environment {
-		return Mock()
+		return Mock ()
 	}
 }
 
@@ -24,11 +30,7 @@ class GameScoreSpec: QuickSpec {
         describe("GameScore") {
 
 			let test = RequestController<MockGameScore>()
-			let gameScore = MockGameScore(json: [
-				"score": 1000,
-				"cheatMode": false,
-				"playerName": "Sean Plott"
-				])
+
 
 			it ("Should be synchronous because we implement the Mockable protocol") {
 				var result = [MockGameScore]()

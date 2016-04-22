@@ -19,11 +19,12 @@
 		A4D85BC91CC9106A0046AF29 /* exampleBaseModel.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */; };
 		A4D85BCB1CCA150F0046AF29 /* exampleBaseModelResultsArray.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */; };
 		A4D85BCD1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */; };
+		C012EA4D1CCA5E2700B298D7 /* GET_gameScoreArray.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */; };
 		C052960D1CB6629E007E1111 /* ICAOBJCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C052960C1CB6629E007E1111 /* ICAOBJCViewController.m */; };
 		C05296121CB6661E007E1111 /* GameSoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05296111CB6661E007E1111 /* GameSoreController.swift */; };
-		C0A3DB0D1CAEBBB200978DBD /* ParseExampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* ParseExampleService.swift */; };
+		C0A3DB0D1CAEBBB200978DBD /* Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* Parse.swift */; };
 		C0A3DB0E1CAEBBB200978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
-		C0A3DB0F1CAEBBB600978DBD /* ParseExampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* ParseExampleService.swift */; };
+		C0A3DB0F1CAEBBB600978DBD /* Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* Parse.swift */; };
 		C0A3DB101CAEBBB600978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
 		C0A3DB121CAEBBCA00978DBD /* GameScoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB111CAEBBCA00978DBD /* GameScoreTest.swift */; };
 /* End PBXBuildFile section */
@@ -60,11 +61,12 @@
 		A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModel.json; sourceTree = "<group>"; };
 		A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArray.json; sourceTree = "<group>"; };
 		A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArrayCustomRootKey.json; sourceTree = "<group>"; };
+		C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray.json; sourceTree = "<group>"; };
 		C052960A1CB6629E007E1111 /* AirRivet_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirRivet_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		C052960B1CB6629E007E1111 /* ICAOBJCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICAOBJCViewController.h; sourceTree = "<group>"; };
 		C052960C1CB6629E007E1111 /* ICAOBJCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICAOBJCViewController.m; sourceTree = "<group>"; };
 		C05296111CB6661E007E1111 /* GameSoreController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSoreController.swift; sourceTree = "<group>"; };
-		C0A3DB0B1CAEBBB200978DBD /* ParseExampleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseExampleService.swift; sourceTree = "<group>"; };
+		C0A3DB0B1CAEBBB200978DBD /* Parse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parse.swift; sourceTree = "<group>"; };
 		C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScore.swift; sourceTree = "<group>"; };
 		C0A3DB111CAEBBCA00978DBD /* GameScoreTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameScoreTest.swift; path = ../Tests/GameScoreTest.swift; sourceTree = "<group>"; };
 		EA42C35C6530567E38609B08 /* Pods_AirRivet_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AirRivet_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,7 +117,7 @@
 		607FACD21AFB9204008FA782 /* Example for AirRivet */ = {
 			isa = PBXGroup;
 			children = (
-				C0A3DB0B1CAEBBB200978DBD /* ParseExampleService.swift */,
+				C0A3DB0B1CAEBBB200978DBD /* Parse.swift */,
 				C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */,
 				C0A3DB111CAEBBCA00978DBD /* GameScoreTest.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
@@ -199,6 +201,7 @@
 		A4D85BC71CC9106A0046AF29 /* json */ = {
 			isa = PBXGroup;
 			children = (
+				C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */,
 				A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */,
 				A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */,
 				A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */,
@@ -307,6 +310,7 @@
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				A4D85BC91CC9106A0046AF29 /* exampleBaseModel.json in Resources */,
 				A4D85BCD1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json in Resources */,
+				C012EA4D1CCA5E2700B298D7 /* GET_gameScoreArray.json in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
@@ -424,7 +428,7 @@
 				C05296121CB6661E007E1111 /* GameSoreController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
-				C0A3DB0D1CAEBBB200978DBD /* ParseExampleService.swift in Sources */,
+				C0A3DB0D1CAEBBB200978DBD /* Parse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,7 +438,7 @@
 			files = (
 				C0A3DB121CAEBBCA00978DBD /* GameScoreTest.swift in Sources */,
 				A4D85BC11CC8E00B0046AF29 /* ConcreteErrorControllerTests.swift in Sources */,
-				C0A3DB0F1CAEBBB600978DBD /* ParseExampleService.swift in Sources */,
+				C0A3DB0F1CAEBBB600978DBD /* Parse.swift in Sources */,
 				A4D85BC41CC8FAB00046AF29 /* TransformControllerTests.swift in Sources */,
 				C0A3DB101CAEBBB600978DBD /* GameScore.swift in Sources */,
 			);

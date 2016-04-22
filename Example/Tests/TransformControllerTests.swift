@@ -35,7 +35,7 @@ class ExampleBaseModel: UniqueAble, ErrorControlable, Parsable {
 }
 extension ExampleBaseModel: EnvironmentConfigurable {
 
-	static func contextPath() -> String {
+	func contextPath() -> String {
 		return "something"
 	}
 	

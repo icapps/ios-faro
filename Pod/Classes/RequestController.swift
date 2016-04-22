@@ -1,6 +1,8 @@
 import Foundation
 
 
+public typealias ModelProtocol = protocol<UniqueAble, EnvironmentConfigurable, Parsable, ErrorControlable>
+
 /** 
 RequestController to handle interactions with a model of a specific Type.
 # Tasks
@@ -18,7 +20,7 @@ The response controllers does the actual parsing. In theory you can parse any ki
 Any type can decide to handle error in a specific way that is suited for that `Type` by conforming to protoco `ErrorControlable`.
 
 */
-public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurable, Parsable, ErrorControlable> > {
+public class RequestController <Type: ModelProtocol> {
 	private let responseController: ResponseController
 	private let sessionConfig: NSURLSessionConfiguration
 	private let session: NSURLSession
@@ -103,13 +105,27 @@ public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurabl
 	- throws : TODO
 	*/
 	public func retrieve(completion:(response: [Type])->(), failure:((RequestError)->())? = nil) throws{
+		let entity = Type()
 		let environment = Type().environment()
-		guard environment.shouldMock() else {
-			//TODO return dummy result
-			print("Mocking")
+		environment.request.HTTPMethod = "GET"
+
+		guard !environment.shouldMock() else {
+
+			//load from file get_contextpath
+			//TODO: Let the environment define the transformer
+			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
+			if let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: "json") {
+				let data = NSData(contentsOfURL: fileURL)!
+				let tranformController = TransformController()
+				try tranformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
+					completion(response: responseArray)
+				})
+			}else {
+				throw RequestError.InvalidResponseData
+			}
+			print("🤔 Mocking (\(Type.self)) with contextPath: \(entity.contextPath())")
 			return
 		}
-		environment.request.HTTPMethod = "GET"
 
 		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
