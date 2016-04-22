@@ -21,6 +21,10 @@ class DummyErrorController: ConcreteErrorController {
     override func requestAuthenticationError() throws {
         throw RequestError.InvalidAuthentication
     }
+    
+    override func requestGeneralError() throws {
+        throw RequestError.General
+    }
 }
 
 class ResponseControllerUtilsTests: XCTestCase {
@@ -48,6 +52,64 @@ class ResponseControllerUtilsTests: XCTestCase {
             XCTAssertTrue(true)
         } catch {
             XCTFail("wrong error type")
+        }
+    }
+    
+    func testGeneralError() {
+        let url = NSURL(string: "https://some.url")
+        let response = NSHTTPURLResponse(URL:url!, statusCode: 310, HTTPVersion: nil, headerFields: nil)
+        do {
+            try ResponseControllerUtils.checkStatusCodeAndData((data:nil, urlResponse:response, error:nil), errorController: errorController)
+            XCTFail("call should fail")
+        } catch RequestError.General {
+            XCTAssertTrue(true)
+        } catch {
+            XCTFail("wrong error type")
+        }
+    }
+    
+    func testValidResponseNoData() {
+        let url = NSURL(string: "https://some.url")
+        let response = NSHTTPURLResponse(URL:url!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+        do {
+            try ResponseControllerUtils.checkStatusCodeAndData((data:nil, urlResponse:response, error:nil), errorController: errorController)
+            XCTFail("call should fail")
+        } catch ResponseError.InvalidResponseData {
+            XCTAssertTrue(true)
+        } catch {
+            XCTFail("wrong error type")
+        }
+    }
+    
+    func testValidResponse200WithData() {
+        let url = NSURL(string: "https://some.url")
+        
+        //Some random data
+        var random = NSInteger(arc4random_uniform(99) + 1)
+        let data = NSData(bytes: &random, length: 3)
+        
+        let response = NSHTTPURLResponse(URL:url!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+        do {
+            try ResponseControllerUtils.checkStatusCodeAndData((data:data, urlResponse:response, error:nil), errorController: errorController)
+            XCTAssertTrue(true)
+        } catch {
+            XCTFail("call should not fail")
+        }
+    }
+    
+    func testValidResponse201WithData() {
+        let url = NSURL(string: "https://some.url")
+        
+        //Some random data
+        var random = NSInteger(arc4random_uniform(99) + 1)
+        let data = NSData(bytes: &random, length: 3)
+        
+        let response = NSHTTPURLResponse(URL:url!, statusCode: 201, HTTPVersion: nil, headerFields: nil)
+        do {
+            try ResponseControllerUtils.checkStatusCodeAndData((data:data, urlResponse:response, error:nil), errorController: errorController)
+            XCTAssertTrue(true)
+        } catch {
+            XCTFail("call should not fail")
         }
     }
 }
