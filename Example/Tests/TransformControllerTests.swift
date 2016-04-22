@@ -9,7 +9,7 @@
 import XCTest
 @testable import AirRivet
 
-class ExampleBaseModel: UniqueAble, EnvironmentConfigurable,  ErrorControlable, Parsable {
+class ExampleBaseModel: UniqueAble, ErrorControlable, Parsable {
     var objectId: String?
 
 	required init (){
@@ -18,14 +18,6 @@ class ExampleBaseModel: UniqueAble, EnvironmentConfigurable,  ErrorControlable, 
 	
     required init(json: AnyObject) {
         importFromJSON(json)
-    }
-    
-    static func contextPath() -> String {
-        return "something"
-    }
-    
-    static func environment() -> Environment {
-        return ParseExampleService<GameScore>()
     }
     
     func importFromJSON(json: AnyObject) {
@@ -41,9 +33,14 @@ class ExampleBaseModel: UniqueAble, EnvironmentConfigurable,  ErrorControlable, 
         ]
     }
 }
-extension ExampleBaseModel: Mockable {
-	func shouldMock() -> Bool {
-		return true
+extension ExampleBaseModel: EnvironmentConfigurable {
+
+	static func contextPath() -> String {
+		return "something"
+	}
+	
+	func environment() -> Environment {
+		return Parse<GameScore>() //TODO make this a mock
 	}
 }
 

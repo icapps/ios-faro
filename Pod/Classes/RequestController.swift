@@ -18,7 +18,7 @@ The response controllers does the actual parsing. In theory you can parse any ki
 Any type can decide to handle error in a specific way that is suited for that `Type` by conforming to protoco `ErrorControlable`.
 
 */
-public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurable, Parsable, ErrorControlable, Mockable> > {
+public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurable, Parsable, ErrorControlable> > {
 	private let responseController: ResponseController
 	private let sessionConfig: NSURLSessionConfiguration
 	private let session: NSURLSession
@@ -45,7 +45,7 @@ public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurabl
 	- throws : TODO
 */
 	public func save(body: Type, completion:(response: Type)->(), failure:((RequestError) ->())? = nil) throws {
-		let request = Type.environment().request
+		let request = Type().environment().request
 		request.HTTPMethod = "POST"
 
 		guard let bodyObject = body.body() else {
@@ -103,15 +103,15 @@ public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurabl
 	- throws : TODO
 	*/
 	public func retrieve(completion:(response: [Type])->(), failure:((RequestError)->())? = nil) throws{
-		guard !Type().shouldMock() else {
+		let environment = Type().environment()
+		guard environment.shouldMock() else {
 			//TODO return dummy result
 			print("Mocking")
 			return
 		}
-		let request = Type.environment().request
-		request.HTTPMethod = "GET"
+		environment.request.HTTPMethod = "GET"
 
-		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
+		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
 				print("---Error request failed with error: \(error)----")
 				failure?(RequestError.ResponseError(error: error))
@@ -141,7 +141,7 @@ public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurabl
 	- throws : TODO
 	*/
 	public func retrieve(objectId:String, completion:(response: Type)->(),failure:((RequestError)->())? = nil) throws{
-		let request = Type.environment().request
+		let request = Type().environment().request
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 		request.HTTPMethod = "GET"
 		

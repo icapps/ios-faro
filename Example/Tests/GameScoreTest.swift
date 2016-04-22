@@ -3,10 +3,19 @@
 import Quick
 import Nimble
 import AirRivet
+import Foundation
 
-class MockGameScore: GameScore {
-	override func shouldMock() -> Bool {
+class Mock: Environment {
+	var serverUrl = ""
+	var request = NSMutableURLRequest()
+
+	func shouldMock() -> Bool {
 		return true
+	}
+}
+class MockGameScore: GameScore {
+	override func environment() -> Environment {
+		return Mock()
 	}
 }
 
