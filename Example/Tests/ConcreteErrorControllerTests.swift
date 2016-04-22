@@ -56,15 +56,32 @@ class ConcreteErrorControllerTests: XCTestCase {
         }
     }
     
-    func testRequestResponseError() {
-        let error = NSError(domain: "com.icapps.test", code: 123, userInfo: [NSLocalizedDescriptionKey:"some error"])
-        do {
-            try errorController.requestResponseError(error)
-            XCTFail("method should throw error")
-        } catch RequestError.ResponseError(error) {
-            XCTAssertTrue(true)
-        } catch {
-            XCTFail("wrong error type")
+//    func testRequestResponseError() {
+//        let error = NSError(domain: "com.icapps.test", code: 123, userInfo: [NSLocalizedDescriptionKey:"some error"])
+//        do {
+//            try errorController.requestResponseError(error)
+//            XCTFail("method should throw error")
+//        } catch RequestError.ResponseError(error) {
+//            XCTAssertTrue(true)
+//        } catch {
+//            XCTFail("wrong error type")
+//        }
+//    }
+
+        func testRequestResponseError() {
+            let expectedError = NSError(domain: "com.icapps.test", code: 123, userInfo: [NSLocalizedDescriptionKey:"some error"])
+            XCTAssertThrowsError(try errorController.requestResponseError(expectedError), "method should trow correct error") { error in
+                guard let thrownError = error as? RequestError else {
+                    XCTFail("wrong error type")
+                    return
+                }
+                switch thrownError {
+                case .ResponseError(let responseError):
+                    XCTAssertEqual(responseError, expectedError)
+                default:
+                    XCTFail("wrong error type")
+                }
+            }
         }
-    }
+
 }
