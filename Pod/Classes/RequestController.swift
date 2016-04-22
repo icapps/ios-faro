@@ -19,7 +19,8 @@ Any type can decide to handle error in a specific way that is suited for that `T
 
 * TODO: remove duplication
 */
-public class RequestController <Type: BaseModel> {
+
+public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurable, Parsable, ErrorControlable> > {
 	private let responseController: ResponseController
 	private let sessionConfig: NSURLSessionConfiguration
 	private let session: NSURLSession

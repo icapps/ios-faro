@@ -3,7 +3,14 @@
 import Foundation
 
 /**
-The host for your data. Used in `BaseModel` protocol.
+The environmont where we should fetch the data from.
+
+Example environments:
+* Pruduction
+* Development
+* Filesystem
+* ...
+
 */
 public protocol Environment {
 	var serverUrl: String { get }

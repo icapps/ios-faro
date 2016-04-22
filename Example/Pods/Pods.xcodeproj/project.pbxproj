@@ -80,7 +80,7 @@
 		C052960F1CB66430007E1111 /* dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C052960E1CB66430007E1111 /* dispatch.swift */; };
 		C0A3DB041CAEBB7D00978DBD /* RequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DAFD1CAEBB7D00978DBD /* RequestController.swift */; };
 		C0A3DB051CAEBB7D00978DBD /* ResponseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DAFE1CAEBB7D00978DBD /* ResponseController.swift */; };
-		C0A3DB061CAEBB7D00978DBD /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DAFF1CAEBB7D00978DBD /* BaseModel.swift */; };
+		C0A3DB061CAEBB7D00978DBD /* ModelProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DAFF1CAEBB7D00978DBD /* ModelProtocols.swift */; };
 		C0A3DB071CAEBB7D00978DBD /* ConcreteErrorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB001CAEBB7D00978DBD /* ConcreteErrorController.swift */; };
 		C0A3DB081CAEBB7D00978DBD /* ErrorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB011CAEBB7D00978DBD /* ErrorController.swift */; };
 		C0A3DB091CAEBB7D00978DBD /* ServiceParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB021CAEBB7D00978DBD /* ServiceParameters.swift */; };
@@ -255,7 +255,7 @@
 		C052960E1CB66430007E1111 /* dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dispatch.swift; sourceTree = "<group>"; };
 		C0A3DAFD1CAEBB7D00978DBD /* RequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestController.swift; sourceTree = "<group>"; };
 		C0A3DAFE1CAEBB7D00978DBD /* ResponseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseController.swift; sourceTree = "<group>"; };
-		C0A3DAFF1CAEBB7D00978DBD /* BaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
+		C0A3DAFF1CAEBB7D00978DBD /* ModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelProtocols.swift; sourceTree = "<group>"; };
 		C0A3DB001CAEBB7D00978DBD /* ConcreteErrorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcreteErrorController.swift; sourceTree = "<group>"; };
 		C0A3DB011CAEBB7D00978DBD /* ErrorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorController.swift; sourceTree = "<group>"; };
 		C0A3DB021CAEBB7D00978DBD /* ServiceParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceParameters.swift; sourceTree = "<group>"; };
@@ -495,7 +495,7 @@
 		AD5D5DBDB5C51D354953BF4AC96AE1F5 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				C0A3DAFF1CAEBB7D00978DBD /* BaseModel.swift */,
+				C0A3DAFF1CAEBB7D00978DBD /* ModelProtocols.swift */,
 				C0A3DB001CAEBB7D00978DBD /* ConcreteErrorController.swift */,
 				C052960E1CB66430007E1111 /* dispatch.swift */,
 				C0A3DB011CAEBB7D00978DBD /* ErrorController.swift */,
@@ -946,7 +946,7 @@
 				921B99EC785687985A4B553948B4E1A4 /* AirRivet-dummy.m in Sources */,
 				C0A3DB051CAEBB7D00978DBD /* ResponseController.swift in Sources */,
 				C0A3DB081CAEBB7D00978DBD /* ErrorController.swift in Sources */,
-				C0A3DB061CAEBB7D00978DBD /* BaseModel.swift in Sources */,
+				C0A3DB061CAEBB7D00978DBD /* ModelProtocols.swift in Sources */,
 				C0A3DB091CAEBB7D00978DBD /* ServiceParameters.swift in Sources */,
 				C052960F1CB66430007E1111 /* dispatch.swift in Sources */,
 			);

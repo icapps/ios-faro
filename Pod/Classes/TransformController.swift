@@ -11,7 +11,7 @@ public class TransformController {
 	- parameter data: valid JSON
 	- returns: via the completion block a parsed object of `Type` is returned.
 	*/
-	public func objectDataToConcreteObject<Type: BaseModel>(data: NSData, body: Type? = nil, completion:(Type)->()) throws{
+	public func objectDataToConcreteObject<Type: Parsable>(data: NSData, body: Type? = nil, completion:(Type)->()) throws{
 		
 		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
 		if let body = body {
@@ -29,7 +29,7 @@ public class TransformController {
 	- returns: via the completion block an array of parsed objects of `Type`.
 	*/
 
-	public func objectsDataToConcreteObjects<Type: BaseModel>(data: NSData, completion:([Type])->()) throws{
+	public func objectsDataToConcreteObjects<Type: Parsable>(data: NSData, completion:([Type])->()) throws{
 		
 		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
 		
