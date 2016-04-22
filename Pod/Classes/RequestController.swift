@@ -132,7 +132,7 @@ public class RequestController <Type: ModelProtocol> {
 					completion(response: responseArray)
 				})
 			}else {
-				throw RequestError.InvalidResponseData
+				throw RequestError.InvalidUrl
 			}
 			print("🤔 Mocking (\(Type.self)) with contextPath: \(entity.contextPath())")
 			return
@@ -175,7 +175,16 @@ public class RequestController <Type: ModelProtocol> {
 
 		guard !environment.shouldMock() else {
 			print("🤔 Mocking (\(Type.self)) with objectID: \(objectId), contextPath: \(entity.contextPath())")
-			//TODO load from data
+			let transformController = environment.transFormcontroller()
+			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
+			if let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue) {
+				let data = NSData(contentsOfURL: fileURL)!
+				try transformController.objectDataToConcreteObject(data, completion: { (result) in
+					completion(response: result)
+				})
+			}else {
+				throw RequestError.InvalidUrl
+			}
 			return
 		}
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
