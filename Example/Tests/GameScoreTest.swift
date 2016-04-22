@@ -4,16 +4,30 @@ import Quick
 import Nimble
 import AirRivet
 
+class MockGameScore: GameScore {
+	func shouldMock() -> Bool {
+		return true
+	}
+}
+
 class GameScoreSpec: QuickSpec {
     override func spec() {
         describe("GameScore") {
 
-			let test = RequestController<GameScore>()
-			let gameScore = GameScore(json: [
+			let test = RequestController<MockGameScore>()
+			let gameScore = MockGameScore(json: [
 				"score": 1000,
 				"cheatMode": false,
 				"playerName": "Sean Plott"
 				])
+
+			it ("Should be synchronous because we implement the Mockable protocol") {
+				var result = [MockGameScore]()
+				try! test.retrieve({ (response) in
+					result = response
+				})
+				expect(result).to(haveCount(5))
+			}
 
             it("save succeeds") {
 

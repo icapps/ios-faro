@@ -1,6 +1,20 @@
 import Foundation
 
 
+/**
+If you implement `Mockable` your entity can provide a default response. This can be handy for tests.
+You should only implement this protocol in unit tests or in your application while the service is not yet available.
+When a type conforms to Mockable the environment you provide by conforming to `EnvironmentConfigurable` will be ignored.
+*/
+public protocol Mockable {
+	static func shouldMock() -> Bool
+}
+
+public extension Mockable {
+	static func shouldMock() -> Bool {
+		return false
+	}
+}
 /** 
 RequestController to handle interactions with a model of a specific Type.
 # Tasks
@@ -18,8 +32,7 @@ The response controllers does the actual parsing. In theory you can parse any ki
 Any type can decide to handle error in a specific way that is suited for that `Type` by conforming to protoco `ErrorControlable`.
 
 */
-
-public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurable, Parsable, ErrorControlable> > {
+public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurable, Parsable, ErrorControlable, Mockable> > {
 	private let responseController: ResponseController
 	private let sessionConfig: NSURLSessionConfiguration
 	private let session: NSURLSession
@@ -104,9 +117,13 @@ public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurabl
 	- throws : TODO
 	*/
 	public func retrieve(completion:(response: [Type])->(), failure:((RequestError)->())? = nil) throws{
+		guard !Type.shouldMock() else {
+			//TODO return dummy result
+			return
+		}
 		let request = Type.environment().request
 		request.HTTPMethod = "GET"
-		
+
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
 				print("---Error request failed with error: \(error)----")

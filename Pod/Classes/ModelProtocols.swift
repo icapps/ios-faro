@@ -71,6 +71,7 @@ public protocol EnvironmentConfigurable {
 	static func contextPath() -> String
 }
 
+
 public protocol UniqueAble {
 	var objectId: String? {get set}
 }
