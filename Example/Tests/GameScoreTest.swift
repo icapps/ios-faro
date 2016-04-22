@@ -5,7 +5,7 @@ import Nimble
 import AirRivet
 import Foundation
 
-class Mock: Environment {
+class Mock: Environment, Mockable, Transformable {
 	var serverUrl = ""
 	var request = NSMutableURLRequest()
 
@@ -20,7 +20,7 @@ class MockGameScore: GameScore {
 		return "gameScoreArray"
 	}
 
-	override func environment() -> Environment {
+	override func environment() -> protocol<Environment, Mockable, Transformable> {
 		return Mock ()
 	}
 }
@@ -31,7 +31,6 @@ class GameScoreSpec: QuickSpec {
 
 			let test = RequestController<MockGameScore>()
 
-
 			it ("Should be synchronous because we implement the Mockable protocol") {
 				var result = [MockGameScore]()
 				try! test.retrieve({ (response) in
@@ -40,6 +39,13 @@ class GameScoreSpec: QuickSpec {
 				expect(result).to(haveCount(5))
 			}
 
+//			it("gamescores should be parsed", closure: {
+//				var result = [MockGameScore]()
+//				try! test.retrieve({ (response) in
+//					result = response
+//				})
+//				expect(result).to(haveCount(100))
+//			})
 //            it("save succeeds") {
 //
 //				var success = false
@@ -48,15 +54,9 @@ class GameScoreSpec: QuickSpec {
 //					})
 //				expect(success).toEventually(equal(true))
 //            }
-//
-//			it("retreive array of gamescores", closure: {
-//				var result = [GameScore]()
-//				try! test.retrieve({ (response) in
-//					result = response
-//				})
-//				expect(result).toEventually(haveCount(100))
-//			})
-//
+
+
+
 //			it("retreive object with a specific id", closure: { 
 //				var result = gameScore
 //				let objectId = "ta40DRgRAn"

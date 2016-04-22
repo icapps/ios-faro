@@ -11,34 +11,32 @@ Errors cause an throw
 Responses are interpretted in the TransFormController
 */
 public class ResponseController {
-	
-	private let transformController: TransformController
 
 	/**
 	- parameter transformController: a default implementation is given that transforms from JSON to your model object of `ResponseType`
 	- returns: Properly instantiated ResponseController
 	*/
-	public init(transformController: TransformController = TransformController()) {
-		self.transformController = transformController
+	public init() {
 	}
 	
-	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable> >(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
+	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable> >(environment: Transformable,response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
 		let errorController = ResponseType.constructionErrorController()
         try errorController.requestResponseError(response.error)
-        
-		if let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: errorController){
-			try transformController.objectDataToConcreteObject(data, inputModel: body, completion: { (concreteObject) -> () in
+		
+        if let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: errorController){
+			try environment.transFormcontroller().objectDataToConcreteObject(data, inputModel: body, completion: { (concreteObject) -> () in
+
 				completion(concreteObject)
 			})
 		}
 	}
 
-	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable> >(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), completion: ([ResponseType])->()) throws{
+	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), completion: ([ResponseType])->()) throws{
 		let errorController = ResponseType.constructionErrorController()
-        try errorController.requestResponseError(response.error)
-        
+		try errorController.requestResponseError(response.error)
+
 		if let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: errorController) {
-			try transformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
+			try environment.transFormcontroller().objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
 				completion(responseArray)
 			})
 		}

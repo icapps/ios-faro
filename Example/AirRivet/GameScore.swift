@@ -55,7 +55,7 @@ public class GameScore: NSObject, UniqueAble,  ErrorControlable, Parsable, Envir
 		return "GameScore"
 	}
 
-	public func environment()-> Environment {
+	public func environment()-> protocol<Environment, Mockable, Transformable> {
 		return Parse<GameScore>()
 	}
 

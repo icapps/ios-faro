@@ -1,10 +1,16 @@
 import Foundation
 
+public enum TransformType: String {
+	case JSON = "json"
+}
+
 /**
 Transformations of data to concrete objects. This implementation expects data to be valid JSON.
 */
 public class TransformController {
 
+	public init() {
+	}
 	/**
 	- parameter data: valid JSON
     - parameter inputModel: optional input object of `Type`. If no input object is provided, a new object of `Type` is created based on the JSON.
@@ -25,6 +31,10 @@ public class TransformController {
         catch {
             throw TransformError.JSONError
         }
+	}
+
+	public func type () -> TransformType {
+		return .JSON
 	}
 
 	/**
