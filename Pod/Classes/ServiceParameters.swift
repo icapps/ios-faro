@@ -2,9 +2,10 @@
 
 import Foundation
 
-//Know where to fetch data for the model type.
-
-public protocol ServiceParameters {
+/**
+The host for your data. Used in `BaseModel` protocol.
+*/
+public protocol Host {
 	var serverUrl: String { get }
 	var request: NSMutableURLRequest { get}
 }

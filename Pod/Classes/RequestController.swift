@@ -46,7 +46,7 @@ public class RequestController <Type: BaseModel> {
 	- throws : TODO
 */
 	public func save(body: Type, completion:(response: Type)->(), failure:((RequestError) ->())? = nil) throws {
-		let request = Type.serviceParameters().request
+		let request = Type.host().request
 		request.HTTPMethod = "POST"
 
 		guard let bodyObject = body.body() else {
@@ -104,7 +104,7 @@ public class RequestController <Type: BaseModel> {
 	- throws : TODO
 	*/
 	public func retrieve(completion:(response: [Type])->(), failure:((RequestError)->())? = nil) throws{
-		let request = Type.serviceParameters().request
+		let request = Type.host().request
 		request.HTTPMethod = "GET"
 		
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
@@ -137,7 +137,7 @@ public class RequestController <Type: BaseModel> {
 	- throws : TODO
 	*/
 	public func retrieve(objectId:String, completion:(response: Type)->(),failure:((RequestError)->())? = nil) throws{
-		let request = Type.serviceParameters().request
+		let request = Type.host().request
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 		request.HTTPMethod = "GET"
 		
