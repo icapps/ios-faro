@@ -39,34 +39,42 @@ class GameScoreSpec: QuickSpec {
 				expect(result).to(haveCount(5))
 			}
 
-//			it("gamescores should be parsed", closure: {
-//				var result = [MockGameScore]()
-//				try! test.retrieve({ (response) in
-//					result = response
-//				})
-//				expect(result).to(haveCount(100))
-//			})
-//            it("save succeeds") {
-//
-//				var success = false
-//				try! test.save(gameScore, completion: { (response) in
-//					success = true
-//					})
-//				expect(success).toEventually(equal(true))
-//            }
+			it("all gamescores should be parsed", closure: {
+				var result = [MockGameScore]()
+				let expected = ["Bob", "Daniel", "Hans", "Stijn", "Jelle"]
+				try! test.retrieve({ (response) in
+					result = response
 
+				})
+				for i in 0..<result.count {
+					let gameScore = result[i]
+					expect(gameScore.playerName).to(equal(expected[i]))
+				}
+			})
+            it("save succeeds by mocking") {
 
+				var success = false
+				let gameScore = MockGameScore()
+				gameScore.score = 1
+				gameScore.cheatMode = false
+				gameScore.playerName = "Foo"
+				
+				try! test.save(gameScore, completion: { (response) in
+					success = true
+					})
+				expect(success).to(equal(true))
+            }
 
-//			it("retreive object with a specific id", closure: { 
-//				var result = gameScore
-//				let objectId = "ta40DRgRAn"
-//				try! test.retrieve(objectId, completion: { (response) in
-//					result = response
-//				})
-//
-//				expect(result.score).toEventually(equal(1337))
-//				expect(result.playerName).toNot(beNil())
-//			})
+			it("retrieve a single gamescore by objectID"){
+
+				var result = MockGameScore()
+				let objectId = "1275"
+				try! test.retrieve(objectId, completion: { (response) in
+					result = response
+				})
+				expect(result.objectId).to(equal(objectId))
+			}
+
         }
     }
 }
