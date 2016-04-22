@@ -47,7 +47,10 @@ public class RequestController <Type: ModelProtocol> {
 	- throws : TODO
 */
 	public func save(body: Type, completion:(response: Type)->(), failure:((RequestError) ->())? = nil) throws {
-		let request = Type().environment().request
+		let entity = Type()
+		let environment = Type().environment()
+		let request = environment.request
+
 		request.HTTPMethod = "POST"
 
 		guard let bodyObject = body.body() else {
@@ -75,7 +78,7 @@ public class RequestController <Type: ModelProtocol> {
 			}
 
 			do {
-				try self.responseController.handleResponse((data: data,urlResponse: response, error: error), body: body, completion: completion)
+				try self.responseController.handleResponse(environment, response:(data: data,urlResponse: response, error: error), body: body, completion: completion)
 			}catch RequestError.InvalidAuthentication {
 				print("---Error we could not Authenticate----")
 				do {
@@ -110,14 +113,11 @@ public class RequestController <Type: ModelProtocol> {
 		environment.request.HTTPMethod = "GET"
 
 		guard !environment.shouldMock() else {
-
-			//load from file get_contextpath
-			//TODO: Let the environment define the transformer
+			let transformController = environment.transFormcontroller()
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
-			if let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: "json") {
+			if let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue) {
 				let data = NSData(contentsOfURL: fileURL)!
-				let tranformController = TransformController()
-				try tranformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
+				try transformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
 					completion(response: responseArray)
 				})
 			}else {
@@ -133,7 +133,7 @@ public class RequestController <Type: ModelProtocol> {
 				failure?(RequestError.ResponseError(error: error))
 			}else {
 				do {
-					try self.responseController.handleResponse((data: data,urlResponse: response, error: error), completion: completion)
+					try self.responseController.handleResponse(environment, response:(data: data,urlResponse: response, error: error), completion: completion)
 				}catch RequestError.InvalidAuthentication {
 					print("---Error we could not Authenticate----")
 					failure?(RequestError.InvalidAuthentication)
@@ -157,7 +157,9 @@ public class RequestController <Type: ModelProtocol> {
 	- throws : TODO
 	*/
 	public func retrieve(objectId:String, completion:(response: Type)->(),failure:((RequestError)->())? = nil) throws{
-		let request = Type().environment().request
+		let entity = Type()
+		let environment = Type().environment()
+		let request = environment.request
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 		request.HTTPMethod = "GET"
 		
@@ -166,7 +168,7 @@ public class RequestController <Type: ModelProtocol> {
 				print("---Error request failed with error: \(error)----")
 			}else {
 				do {
-					try self.responseController.handleResponse((data: data,urlResponse: response, error: error), completion: completion)
+					try self.responseController.handleResponse(environment, response:(data: data,urlResponse: response, error: error), completion: completion)
 					
 				}catch RequestError.InvalidAuthentication {
 					print("---Error we could not Authenticate----")

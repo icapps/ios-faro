@@ -66,7 +66,7 @@ public protocol EnvironmentConfigurable {
 
 	init ()
 	
-	func environment() ->  Environment
+	func environment() ->  protocol<Environment, Mockable, Transformable>
 
 	/**
 	* An url is formed from <ServiceParameter.serverURL+BaseModel.contextPath>.

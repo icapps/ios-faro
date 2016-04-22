@@ -12,7 +12,7 @@ Example environments:
 * ...
 
 */
-public protocol Environment: Mockable {
+public protocol Environment {
 	var serverUrl: String { get }
 	var request: NSMutableURLRequest { get}
 }
@@ -24,4 +24,18 @@ When a type conforms to Mockable the environment you provide by conforming to `E
 */
 public protocol Mockable {
 	func shouldMock() -> Bool
+}
+
+/**
+	Handle the data that you receive. Data can be anything you want
+	- returns: By default a `TransformController` is returned that does data ~> JSON ~> entities of your type.
+*/
+public protocol Transformable {
+	func transFormcontroller() -> TransformController
+}
+
+public extension Transformable {
+	func transFormcontroller() -> TransformController {
+		return TransformController()
+	}
 }
