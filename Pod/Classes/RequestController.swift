@@ -27,11 +27,10 @@ public class RequestController <Type: BaseModel> {
 	/**
 	Initialization
 	
-	- parameter serviceParameters: a class that defines how to reach your server
 	- parameter responseController: a default repsonse controller is provided that can handle JSON responses and normal errors related to that. You can always provide your own for more complex cases.
 	- returns: A genericly typed Request controller that can handle task for the `Type` you provide.
 	*/
-	public init(serviceParameters: ServiceParameters, responseController: ResponseController = ResponseController()) {
+	public init(responseController: ResponseController = ResponseController()) {
 		self.responseController = responseController
 		sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
 		session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
