@@ -45,6 +45,7 @@ public extension ErrorControlable {
 }
 
 public protocol Parsable {
+	init ()
 	/**
 	* Set all properties from the received JSON at initialization
 	*/
@@ -63,14 +64,18 @@ public protocol Parsable {
 
 public protocol EnvironmentConfigurable {
 
-	static func environment() ->  Environment
+	init ()
+	
+	func environment() ->  Environment
 
 	/**
 	* An url is formed from <ServiceParameter.serverURL+BaseModel.contextPath>.
 	*/
-	static func contextPath() -> String
+	func contextPath() -> String
 }
+
 
 public protocol UniqueAble {
 	var objectId: String? {get set}
 }
+

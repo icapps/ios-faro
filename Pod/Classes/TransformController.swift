@@ -39,16 +39,14 @@ public class TransformController {
         do {
             let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
             if let array = json[rootKey] as? [[String:AnyObject]] {
-                var concreteObjectArray = [Type]()
-                for dict in array {
-                    concreteObjectArray.append(Type(json: dict))
-                }
-                completion(concreteObjectArray)
+				completion(dictToArray(array))
             }
             else if let dict = json as? [String:AnyObject] {
                 let model = Type(json: dict)
                 completion([model])
-            }
+			}else if let array = json as? [[String:AnyObject]] {
+				completion(dictToArray(array))
+			}
             else {
                 throw TransformError.InvalidObject
             }
@@ -56,5 +54,13 @@ public class TransformController {
         catch {
             throw TransformError.JSONError
         }
+	}
+
+	private func dictToArray<Type: Parsable>(array: [[String:AnyObject]]) -> [Type] {
+		var concreteObjectArray = [Type]()
+		for dict in array {
+			concreteObjectArray.append(Type(json: dict))
+		}
+		return concreteObjectArray
 	}
 }

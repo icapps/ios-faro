@@ -1,6 +1,8 @@
 import Foundation
 
 
+public typealias ModelProtocol = protocol<UniqueAble, EnvironmentConfigurable, Parsable, ErrorControlable>
+
 /** 
 RequestController to handle interactions with a model of a specific Type.
 # Tasks
@@ -18,8 +20,7 @@ The response controllers does the actual parsing. In theory you can parse any ki
 Any type can decide to handle error in a specific way that is suited for that `Type` by conforming to protoco `ErrorControlable`.
 
 */
-
-public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurable, Parsable, ErrorControlable> > {
+public class RequestController <Type: ModelProtocol> {
 	private let responseController: ResponseController
 	private let sessionConfig: NSURLSessionConfiguration
 	private let session: NSURLSession
@@ -46,7 +47,7 @@ public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurabl
 	- throws : TODO
 */
 	public func save(body: Type, completion:(response: Type)->(), failure:((RequestError) ->())? = nil) throws {
-		let request = Type.environment().request
+		let request = Type().environment().request
 		request.HTTPMethod = "POST"
 
 		guard let bodyObject = body.body() else {
@@ -104,10 +105,29 @@ public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurabl
 	- throws : TODO
 	*/
 	public func retrieve(completion:(response: [Type])->(), failure:((RequestError)->())? = nil) throws{
-		let request = Type.environment().request
-		request.HTTPMethod = "GET"
-		
-		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
+		let entity = Type()
+		let environment = Type().environment()
+		environment.request.HTTPMethod = "GET"
+
+		guard !environment.shouldMock() else {
+
+			//load from file get_contextpath
+			//TODO: Let the environment define the transformer
+			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
+			if let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: "json") {
+				let data = NSData(contentsOfURL: fileURL)!
+				let tranformController = TransformController()
+				try tranformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
+					completion(response: responseArray)
+				})
+			}else {
+				throw ResponseError.InvalidResponseData
+			}
+			print("🤔 Mocking (\(Type.self)) with contextPath: \(entity.contextPath())")
+			return
+		}
+
+		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
 				print("---Error request failed with error: \(error)----")
 				failure?(RequestError.ResponseError(error: error))
@@ -137,7 +157,7 @@ public class RequestController <Type:protocol<UniqueAble, EnvironmentConfigurabl
 	- throws : TODO
 	*/
 	public func retrieve(objectId:String, completion:(response: Type)->(),failure:((RequestError)->())? = nil) throws{
-		let request = Type.environment().request
+		let request = Type().environment().request
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 		request.HTTPMethod = "GET"
 		

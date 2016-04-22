@@ -9,25 +9,15 @@
 import XCTest
 @testable import AirRivet
 
-class ExampleBaseModel: UniqueAble, EnvironmentConfigurable,  ErrorControlable, Parsable {
+class ExampleBaseModel: UniqueAble, ErrorControlable, Parsable {
     var objectId: String?
-    var errorController: ErrorController
-    
+
+	required init (){
+
+	}
+	
     required init(json: AnyObject) {
-        errorController = ConcreteErrorController()
         importFromJSON(json)
-    }
-    
-    static func getErrorController() -> ErrorController {
-        return ConcreteErrorController()
-    }
-    
-    static func contextPath() -> String {
-        return "something"
-    }
-    
-    static func environment() -> Environment {
-        return ParseExampleService<GameScore>()
     }
     
     func importFromJSON(json: AnyObject) {
@@ -42,6 +32,16 @@ class ExampleBaseModel: UniqueAble, EnvironmentConfigurable,  ErrorControlable, 
             "identifier": objectId!,
         ]
     }
+}
+extension ExampleBaseModel: EnvironmentConfigurable {
+
+	func contextPath() -> String {
+		return "something"
+	}
+	
+	func environment() -> Environment {
+		return Parse<GameScore>() //TODO make this a mock
+	}
 }
 
 class TransformControllerTests: XCTestCase {
