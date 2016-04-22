@@ -9,23 +9,44 @@
 import Foundation
 
 /**
-* This class is responsible to handle errors in general and in a type specific way.
-*/
+ * This class is responsible to handle errors in general and in a type specific way.
+ */
 
-public protocol ErrorController
+public protocol RequestErrorController {
+    func requestBodyError() throws -> ()
+    func requestAuthenticationError() throws -> ()
+    func requestGeneralError() throws -> ()
+    func requestResponseError(error: NSError?) throws -> ()
+}
+
+public protocol ResponseErrorController {
+    func responseDataEmptyError() throws -> ()
+    func responseInvalidError() throws -> ()
+}
+
+public protocol TransformErrorController {
+//    func transformInvalidObjectERror() throws -> ()
+//    func transformJSONError() throws -> ()
+}
+
+public protocol ErrorController:RequestErrorController, ResponseErrorController, TransformErrorController
 {
-	init()
-	func requestBodyError() throws -> ()
-	func requestAuthenticationError() throws -> ()
-	func requestGeneralError() throws -> ()
-	func requestResponseDataEmpty() throws -> ()
-	func requestResponseError(error: NSError) throws -> ()
+    
 }
 
 public enum RequestError: ErrorType {
 	case InvalidBody
 	case InvalidAuthentication
 	case General
+	case ResponseError(error: NSError?)
+}
+
+public enum ResponseError:ErrorType {
+    case InvalidResponse
 	case InvalidResponseData
-	case ResponseError(error: NSError)
+}
+
+public enum TransformError:ErrorType {
+    case InvalidObject
+    case JSONError
 }

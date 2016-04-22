@@ -1,10 +1,5 @@
 import Foundation
 
-public enum TransformError:ErrorType {
-    case InvalidObject
-    case JSONError
-}
-
 /**
 Transformations of data to concrete objects. This implementation expects data to be valid JSON.
 */

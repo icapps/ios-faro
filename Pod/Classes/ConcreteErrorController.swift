@@ -9,9 +9,9 @@
 import Foundation
 
 public class ConcreteErrorController: ErrorController {
-	required public init(){
-		
-	}
+    
+    //MARK: RequestErrorController
+    
 	public func requestBodyError() throws -> () {
 		print("-----------Error building up body-----")
 		throw RequestError.InvalidBody
@@ -27,13 +27,32 @@ public class ConcreteErrorController: ErrorController {
 		throw RequestError.General
 	}
 	
-	public func requestResponseDataEmpty() throws {
-		print("-----------Invalid response data-----")
-		throw RequestError.InvalidResponseData
-	}
-	
-	public func requestResponseError(error: NSError) throws {
+	public func requestResponseError(error: NSError?) throws {
 		print("-----------Request failed with error-----")
-		throw RequestError.ResponseError(error: error)
+        if let error = error {
+            throw RequestError.ResponseError(error: error)
+        }
 	}
+    
+    //MARK: ResponseErrorController
+    
+    public func responseDataEmptyError() throws {
+        print("-----------Invalid response data-----")
+        throw ResponseError.InvalidResponseData
+    }
+    
+    public func responseInvalidError() throws {
+        print("-----------Invalid response type-----")
+        throw ResponseError.InvalidResponse
+    }
+    
+    //MARK: TransformErrorController
+
+//    public func transformJSONError() throws {
+//        //
+//    }
+//    
+//    public func transformInvalidObjectERror() throws {
+//        //
+//    }
 }

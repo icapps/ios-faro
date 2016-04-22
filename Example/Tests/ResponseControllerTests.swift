@@ -9,10 +9,48 @@
 import XCTest
 @testable import AirRivet
 
+//class DummyClass:ErrorControlable, Parsable {
+//    
+//    //MARK: Parsable
+//    
+//    required init(json: AnyObject) {
+//        
+//    }
+//    
+//    func importFromJSON(json: AnyObject) {
+//        
+//    }
+//    
+//    func body() -> NSDictionary? {
+//        return [:]
+//    }
+//    
+//    //MARK: ErrorControlable
+//    func parsingErrorController() -> ErrorController {
+//        return ConcreteErrorController()
+//    }
+//}
+
+//class DummyTransformController:TransformController {
+//    
+//}
+
 class ResponseControllerTests: XCTestCase {
     
-    func testExample() {
-        XCTFail()
-    }
+//    lazy var responseController:ResponseController = {
+//        let transformController = DummyTransformController()
+//        return ResponseController(transformController: transformController)
+//    }()
+    
+//    func testhandleResponse() {
+//        do {
+//            try responseController.handleResponse((data: nil,urlResponse: nil, error: nil),  completion: { (result:DummyClass) in
+//                XCTFail("implement this!")
+//            })
+//        }
+//        catch {
+//            XCTFail("should not fail")
+//        }
+//    }
     
 }
