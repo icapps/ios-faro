@@ -104,17 +104,17 @@ public class RequestController <Type: ModelProtocol> {
 		environment.request.HTTPMethod = "GET"
 
 		guard !environment.shouldMock() else {
+			print("🤔 Mocking (\(Type.self)) with contextPath: \(entity.contextPath())")
 			let transformController = environment.transFormcontroller()
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
-			if let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue) {
-				let data = NSData(contentsOfURL: fileURL)!
-				try transformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
-					completion(response: responseArray)
-				})
-			}else {
+			guard let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue)  else {
 				throw RequestError.InvalidUrl
 			}
-			print("🤔 Mocking (\(Type.self)) with contextPath: \(entity.contextPath())")
+
+			let data = NSData(contentsOfURL: fileURL)!
+			try transformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
+				completion(response: responseArray)
+			})
 			return
 		}
 
@@ -149,14 +149,16 @@ public class RequestController <Type: ModelProtocol> {
 			print("🤔 Mocking (\(Type.self)) with objectID: \(objectId), contextPath: \(entity.contextPath())")
 			let transformController = environment.transFormcontroller()
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
-			if let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue) {
-				let data = NSData(contentsOfURL: fileURL)!
-				try transformController.objectDataToConcreteObject(data, completion: { (result) in
-					completion(response: result)
-				})
-			}else {
+
+			guard let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue) else {
 				throw RequestError.InvalidUrl
 			}
+
+			let data = NSData(contentsOfURL: fileURL)!
+			try transformController.objectDataToConcreteObject(data, completion: { (result) in
+				completion(response: result)
+			})
+
 			return
 		}
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
