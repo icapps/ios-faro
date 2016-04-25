@@ -23,7 +23,7 @@ class ConcreteErrorControllerSpec: QuickSpec {
 				}))
 
 				expect { try errorController.requestAuthenticationError() }.to(throwError(closure: { (error) in
-					expect(error).to(matchError(RequestError.InvalidAuthentication))
+					expect(error).to(matchError(ResponseError.InvalidAuthentication))
 				}))
 
 				expect { try errorController.requestGeneralError()}.to(throwError(closure: { (error) in

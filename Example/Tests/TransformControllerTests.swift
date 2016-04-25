@@ -106,16 +106,8 @@ class TransformControllerTests: XCTestCase {
         XCTAssertThrowsError(try transformController.transform(data, completion: { (model:ExampleBaseModel) in
             XCTFail("transformation of invalid json data should not result in a model object")
         }), "transformation of invalid json data should throw an error") { (error) in
-            guard let thrownError = error as? TransformError else {
-                XCTFail("wrong error type")
-                return
-            }
-            switch thrownError {
-            case .JSONError:
-                XCTAssertTrue(true)
-            default:
-                XCTFail("wrong error type")
-            }
+			let nsError = error as NSError
+			XCTAssertEqual(nsError.code, 3840)
         }
     }
     
@@ -186,16 +178,10 @@ class TransformControllerTests: XCTestCase {
         XCTAssertThrowsError(try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
             XCTFail("transformation of invalid json data should not result in a model object")
         }), "transformation of invalid json data should throw an error") { (error) in
-            guard let thrownError = error as? TransformError else {
-                XCTFail("wrong error type")
-                return
-            }
-            switch thrownError {
-            case .JSONError:
-                XCTAssertTrue(true)
-            default:
-                XCTFail("wrong error type")
-            }
+
+			let nsError = error as NSError
+
+            XCTAssertEqual(nsError.code, 3840)
         }
     }
 }

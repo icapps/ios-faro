@@ -50,7 +50,7 @@ public class RequestController <Type: ModelProtocol> {
 	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
 	- throws : TODO
 */
-	public func save(body: Type, completion:(response: Type)->(), failure:((RequestError) ->())? = nil) throws {
+	public func save(body: Type, completion:(response: Type)->(), failure:((ResponseError) ->())? = nil) throws {
 		let entity = Type()
 		let environment = Type().environment()
 		let request = environment.request
@@ -98,7 +98,7 @@ public class RequestController <Type: ModelProtocol> {
 	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
 	- throws :
 	*/
-	public func retrieve(completion:(response: [Type])->(), failure:((RequestError)->())? = nil) throws{
+	public func retrieve(completion:(response: [Type])->(), failure:((ResponseError)->())? = nil) throws{
 		let entity = Type()
 		let environment = Type().environment()
 		environment.request.HTTPMethod = "GET"
@@ -134,7 +134,7 @@ public class RequestController <Type: ModelProtocol> {
 	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
 	- throws : TODO
 	*/
-	public func retrieve(objectId:String, completion:(response: Type)->(),failure:((RequestError)->())? = nil) throws{
+	public func retrieve(objectId:String, completion:(response: Type)->(),failure:((ResponseError)->())? = nil) throws{
 		let entity = Type()
 		let environment = Type().environment()
 		let request = environment.request
@@ -182,7 +182,7 @@ public class RequestController <Type: ModelProtocol> {
 	We have to do this until apple provides a data task that can handle throws in its closures.
 	*/
 
-	func success(data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: Type)->(), failure:((RequestError) ->())?) {
+	func success(data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: Type)->(), failure:((ResponseError) ->())?) {
 		let entity  = Type()
 		let environment = entity.environment()
 		let errorController = entity.responseErrorController()
@@ -194,7 +194,7 @@ public class RequestController <Type: ModelProtocol> {
 		}
 	}
 
-	func success(data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: [Type])->(), failure:((RequestError) ->())?) {
+	func success(data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: [Type])->(), failure:((ResponseError) ->())?) {
 		let entity  = Type()
 		let environment = entity.environment()
 		let errorController = entity.responseErrorController()
@@ -206,32 +206,38 @@ public class RequestController <Type: ModelProtocol> {
 		}
 	}
 
-	func failureWithError(taskError: NSError ,failure:((RequestError) ->())?, errorController: ErrorController) {
+	func failureWithError(taskError: NSError ,failure:((ResponseError) ->())?, errorController: ErrorController) {
 		print("---Error request failed with error: \(taskError)----")
 		do {
 			try errorController.requestResponseError(taskError)
 		}catch {
-			failure?(RequestError.ResponseError(error: taskError))
+			failure?(ResponseError.ResponseError(error: taskError))
 		}
-		failure?(RequestError.ResponseError(error: taskError))
+		failure?(ResponseError.ResponseError(error: taskError))
 	}
 
-	private func splitErrorType(error: ErrorType, failure: ((RequestError) ->())?, errorController: ErrorController) {
+	private func splitErrorType(error: ErrorType, failure: ((ResponseError) ->())?, errorController: ErrorController) {
 
 		switch error {
-		case RequestError.InvalidAuthentication:
-			print("---Error we could not Authenticate----")
+		case ResponseError.InvalidAuthentication:
 			do {
 				try errorController.requestAuthenticationError()
 			}catch {
-				failure?(RequestError.InvalidAuthentication)
+				failure?(ResponseError.InvalidAuthentication)
+			}
+		case ResponseError.InvalidDictionary(dictionary: let dictionary):
+			do {
+				try errorController.responseInvalidDictionary(dictionary)
+			}catch {
+				let responsError = error as! ResponseError
+				failure?(responsError)
 			}
 		default:
 			print("---Error we could not process the response----")
 			do {
 				try errorController.requestGeneralError()
 			}catch {
-				failure?(RequestError.General)
+				failure?(ResponseError.General)
 			}
 		}
 	}

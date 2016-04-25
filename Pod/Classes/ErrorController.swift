@@ -22,11 +22,15 @@ public protocol RequestErrorController {
 public protocol ResponseErrorController {
     func responseDataEmptyError() throws -> ()
     func responseInvalidError() throws -> ()
+	/**
+	Your chance to intercept dictionary data that cannot is irregular. You can fix it and don't trow.
+	*/
+	func responseInvalidDictionary(dictionary: AnyObject) throws -> ()
 }
 
 public protocol TransformErrorController {
 //    func transformInvalidObjectERror() throws -> ()
-//    func transformJSONError() throws -> ()
+//    func transformDictionayError(diction) throws -> ()
 }
 
 public protocol ErrorController:RequestErrorController, ResponseErrorController, TransformErrorController
@@ -37,17 +41,14 @@ public protocol ErrorController:RequestErrorController, ResponseErrorController,
 public enum RequestError: ErrorType {
 	case InvalidBody
 	case InvalidUrl
-	case InvalidAuthentication
 	case General
-	case ResponseError(error: NSError?)
 }
 
 public enum ResponseError:ErrorType {
     case InvalidResponse
 	case InvalidResponseData
-}
-
-public enum TransformError:ErrorType {
-    case InvalidObject
-    case JSONError
+	case InvalidDictionary(dictionary: AnyObject)
+	case ResponseError(error: NSError?)
+	case InvalidAuthentication
+	case General
 }

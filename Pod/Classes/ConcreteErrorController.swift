@@ -22,7 +22,7 @@ public class ConcreteErrorController: ErrorController {
 	
 	public func requestAuthenticationError() throws {
 		print("-----------Authentication error-----")
-		throw RequestError.InvalidAuthentication
+		throw ResponseError.InvalidAuthentication
 	}
 	
 	public func requestGeneralError() throws {
@@ -33,7 +33,7 @@ public class ConcreteErrorController: ErrorController {
 	public func requestResponseError(error: NSError?) throws {
 		print("-----------Request failed with error-----")
         if let error = error {
-            throw RequestError.ResponseError(error: error)
+            throw ResponseError.ResponseError(error: error)
         }
 	}
     
@@ -47,8 +47,12 @@ public class ConcreteErrorController: ErrorController {
     public func responseInvalidError() throws {
         print("-----------Invalid response type-----")
         throw ResponseError.InvalidResponse
-    }
-    
+	}
+	public func responseInvalidDictionary(dictionary: AnyObject) throws {
+		print("-------- Received invalid dictionary \(dictionary)-------")
+		throw ResponseError.InvalidDictionary(dictionary: dictionary)
+	}
+
     //MARK: TransformErrorController
 
 //    public func transformJSONError() throws {

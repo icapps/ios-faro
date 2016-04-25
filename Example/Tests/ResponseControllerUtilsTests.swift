@@ -19,7 +19,7 @@ class DummyErrorController: ConcreteErrorController {
     }
     
     override func requestAuthenticationError() throws {
-        throw RequestError.InvalidAuthentication
+        throw ResponseError.InvalidAuthentication
     }
     
     override func requestGeneralError() throws {
@@ -46,7 +46,7 @@ class ResponseControllerUtilsTests: XCTestCase {
         do {
             try ResponseControllerUtils.checkStatusCodeAndData((data:nil, urlResponse:response), errorController: errorController)
             XCTFail("call should fail")
-        } catch RequestError.InvalidAuthentication {
+        } catch ResponseError.InvalidAuthentication {
             XCTAssertTrue(true)
         } catch {
             XCTFail("wrong error type")

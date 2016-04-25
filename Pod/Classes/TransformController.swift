@@ -19,21 +19,16 @@ public class TransformController {
 	- throws:
 	*/
 	public func transform<Type: Parsable>(data: NSData, body: Type? = nil, completion:(Type)->()) throws {
-        do {
-            let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-            if var model = body {
-                try model.parseFromDict(json)
-                completion(model)
-            }
-            else {
-				let model = Type()
-				try model.parseFromDict(json)
-                completion(model)
-            }
-        }
-        catch {
-            throw TransformError.JSONError
-        }
+		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+		if var model = body {
+			try model.parseFromDict(json)
+			completion(model)
+		}
+		else {
+			let model = Type()
+			try model.parseFromDict(json)
+			completion(model)
+		}
 	}
 
 	public func type () -> TransformType {
@@ -48,27 +43,21 @@ public class TransformController {
 	*/
 
     public func transform<Type: Parsable>(data: NSData, body: Type? = nil, completion:([Type])->()) throws{
-        do {
-            let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-			print(json)
-            if let rootKey = Type.rootKey(), let array = json[rootKey] as? [[String:AnyObject]] {
-				print(array)
-				completion(try dictToArray(array))
-            }
-            else if let dict = json as? [String:AnyObject] {
-                let model = Type()
-				try model.parseFromDict(dict)
-                completion([model])
-			}else if let array = json as? [[String:AnyObject]] {
-				completion(try dictToArray(array))
-			}
-            else {
-                throw TransformError.InvalidObject
-            }
-        }
-        catch {
-            throw TransformError.JSONError
-        }
+		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+		if let rootKey = Type.rootKey(), let array = json[rootKey] as? [[String:AnyObject]] {
+			print(array)
+			completion(try dictToArray(array))
+		}
+		else if let dict = json as? [String:AnyObject] {
+			let model = Type()
+			try model.parseFromDict(dict)
+			completion([model])
+		}else if let array = json as? [[String:AnyObject]] {
+			completion(try dictToArray(array))
+		}
+		else {
+			throw ResponseError.InvalidDictionary(dictionary: json)
+		}
 	}
 
 	private func dictToArray<Type: Parsable>(array: [[String:AnyObject]]) throws -> [Type] {

@@ -25,7 +25,9 @@ class MockEntity: GameScore {
 		guard let
 			dict = json as? [String: AnyObject],
 			_ = dict["playername"] else  {
-			throw ResponseError.InvalidResponseData
+
+		throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
+
 		}
 
 		try super.parseFromDict(json)
@@ -33,17 +35,16 @@ class MockEntity: GameScore {
 }
 
 class RequestControllerSpec: QuickSpec {
+
 	override func spec() {
 		describe("Error cases") {
-
-
 
 			let requestController = RequestController<MockEntity>()
 
 			let failingCompletion = { (response: [MockEntity]) in
 				XCTFail() // we should not complete
 			}
-			let successFailure = { (error: RequestError) in
+			let successFailure = { (error: ResponseError) in
 				//Success no assert
 			}
 
@@ -55,10 +56,21 @@ class RequestControllerSpec: QuickSpec {
 
 			it("should fail when JSON is invalid") {
 
-				let data = try! NSJSONSerialization.dataWithJSONObject(["wrong": "json"], options: .PrettyPrinted)
+				let invalidDict = ["wrong": "json"]
+				let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
+
+				//TODO: Test errorController handling
 
 				requestController.success(data, completion: failingCompletion, failure: { (error) in
-					expect(error).to(matchError(ResponseError.InvalidResponseData))
+
+					switch error {
+					case ResponseError.InvalidDictionary(let anyThing):
+						let dictionary = anyThing as! [String: String]
+						let key = dictionary["wrong"]
+						expect(key).to(equal("json"))
+					default:
+						XCTFail("Wrong type of error")
+					}
 				})
 
 			}
