@@ -9,7 +9,10 @@
 import Foundation
 
 public class ConcreteErrorController: ErrorController {
-    
+
+	public init () {
+		
+	}
     //MARK: RequestErrorController
     
 	public func requestBodyError() throws -> () {
