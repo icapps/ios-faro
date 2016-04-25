@@ -19,7 +19,7 @@ public class ResponseController {
 	public init() {
 	}
 	
-	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable> >(environment: Transformable,response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
+	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable, UniqueAble> >(environment: Transformable,response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
 		let errorController = ResponseType.constructionErrorController()
         try errorController.requestResponseError(response.error)
 		

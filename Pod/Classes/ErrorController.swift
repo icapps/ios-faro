@@ -36,6 +36,7 @@ public protocol ErrorController:RequestErrorController, ResponseErrorController,
 
 public enum RequestError: ErrorType {
 	case InvalidBody
+	case InvalidUrl
 	case InvalidAuthentication
 	case General
 	case ResponseError(error: NSError?)
