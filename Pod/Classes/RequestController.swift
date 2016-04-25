@@ -75,28 +75,15 @@ public class RequestController <Type: ModelProtocol> {
 		}
 		
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
+
+			let errorController = body.responseErrorController()
+
 			guard error == nil else {
-				self.handleTaksError(error!, failure: failure, errorController: body.responseErrorController())
+				self.handleTaksError(error!, failure: failure, errorController: errorController)
 				return
 			}
+			self.handleTaksSuccess(environment, errorController: errorController, data: data, response: response, body: body, completion: completion, failure: failure)
 
-			do {
-				try self.responseController.handleResponse(environment, response:(data: data,urlResponse: response, error: error), body: body, completion: completion)
-			}catch RequestError.InvalidAuthentication {
-				print("---Error we could not Authenticate----")
-				do {
-					try body.responseErrorController().requestAuthenticationError()
-				}catch {
-					failure?(RequestError.InvalidAuthentication)
-				}
-			}catch {
-				print("---Error we could not process the response----")
-				do {
-					try body.responseErrorController().requestGeneralError()
-				}catch {
-					failure?(RequestError.General)
-				}
-			}
 		})
 
 		task.resume()
@@ -132,18 +119,11 @@ public class RequestController <Type: ModelProtocol> {
 		}
 
 		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
+			let errorController = Type.requestErrorController()
 			if let error = error {
-				self.handleTaksError(error, failure: failure, errorController: Type.requestErrorController())
+				self.handleTaksError(error, failure: failure, errorController: errorController)
 			}else {
-				do {
-					try self.responseController.handleResponse(environment, response:(data: data,urlResponse: response, error: error), completion: completion)
-				}catch RequestError.InvalidAuthentication {
-					print("💣Error we could not Authenticate💣")
-					failure?(RequestError.InvalidAuthentication)
-				}catch {
-					print("💣Error we could not process the response💣")
-					failure?(RequestError.General)
-				}
+				self.handleTaksSuccess(environment, errorController: errorController, data: data, response: response, body: nil, completion: completion, failure: failure)
 			}
 		})
 		
@@ -182,25 +162,60 @@ public class RequestController <Type: ModelProtocol> {
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
+			let errorController = Type.requestErrorController()
 			if let error = error {
-				self.handleTaksError(error, failure: failure, errorController: Type.requestErrorController())
+				self.handleTaksError(error, failure: failure, errorController: errorController)
 			}else {
-				do {
-					try self.responseController.handleResponse(environment, response:(data: data,urlResponse: response, error: error), completion: completion)
-					
-				}catch RequestError.InvalidAuthentication {
-					print("---Error we could not Authenticate----")
-					failure?(RequestError.InvalidAuthentication)
-				}catch {
-					print("---Error we could not process the response----")
-					failure?(RequestError.General)
-				}
+				self.handleTaksSuccess(environment, errorController: errorController, data: data, response: response, body: nil, completion: completion, failure: failure)
 			}
 		})
 		
 		task.resume()
 	}
 
+	//MARK: Mocking
+
+	//MARK: Functions to split throws into failure closure
+	/**
+	We have to do this until apple provides a data task that can handle throws in its closures.
+	*/
+
+	private func handleTaksSuccess(environment: Transformable, errorController: ErrorController, data: NSData?, response: NSURLResponse?, body: Type?,  completion:(response: Type)->(), failure:((RequestError) ->())?) {
+		do {
+			try self.responseController.handleResponse(environment, response:(data: data,urlResponse: response), body: body, completion: completion)
+		}catch {
+			splitErrorType(error, failure: failure, errorController: errorController)
+		}
+	}
+
+	private func handleTaksSuccess(environment: Transformable, errorController: ErrorController, data: NSData?, response: NSURLResponse?, body: Type?,  completion:(response: [Type])->(), failure:((RequestError) ->())?) {
+		do {
+			try self.responseController.handleResponse(environment, response: (data: data, urlResponse: response), completion: completion)
+		}catch {
+			splitErrorType(error, failure: failure, errorController: errorController)
+		}
+	}
+
+	private func splitErrorType(error: ErrorType, failure: ((RequestError) ->())?, errorController: ErrorController) {
+
+		switch error {
+		case RequestError.InvalidAuthentication:
+			print("---Error we could not Authenticate----")
+			do {
+				try errorController.requestAuthenticationError()
+			}catch {
+				failure?(RequestError.InvalidAuthentication)
+			}
+		default:
+			print("---Error we could not process the response----")
+			do {
+				try errorController.requestGeneralError()
+			}catch {
+				failure?(RequestError.General)
+			}
+		}
+	}
+	
 	private func handleTaksError(taskError: NSError ,failure:((RequestError) ->())?, errorController: ErrorController) {
 		print("---Error request failed with error: \(taskError)----")
 		do {

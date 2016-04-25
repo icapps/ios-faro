@@ -19,10 +19,9 @@ public class ResponseController {
 	public init() {
 	}
 	
-	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable, UniqueAble> >(environment: Transformable,response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
+	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable, UniqueAble> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
 		let errorController = ResponseType.requestErrorController()
-        try errorController.requestResponseError(response.error)
-		
+
         if let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: errorController){
 			try environment.transFormcontroller().objectDataToConcreteObject(data, inputModel: body, completion: { (concreteObject) -> () in
 
@@ -31,9 +30,8 @@ public class ResponseController {
 		}
 	}
 
-	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), completion: ([ResponseType])->()) throws{
+	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), completion: ([ResponseType])->()) throws{
 		let errorController = ResponseType.requestErrorController()
-		try errorController.requestResponseError(response.error)
 
 		if let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: errorController) {
 			try environment.transFormcontroller().objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
@@ -44,7 +42,7 @@ public class ResponseController {
 }
 
 internal class ResponseControllerUtils {
-    class func checkStatusCodeAndData(response: (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), errorController: ErrorController) throws -> NSData? {
+    class func checkStatusCodeAndData(response: (data: NSData?, urlResponse: NSURLResponse?), errorController: ErrorController) throws -> NSData? {
         if let httpResponse = response.urlResponse as? NSHTTPURLResponse {
             
             let statusCode = httpResponse.statusCode
