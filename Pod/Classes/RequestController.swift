@@ -155,7 +155,7 @@ public class RequestController <Type: ModelProtocol> {
 			}
 
 			let data = NSData(contentsOfURL: fileURL)!
-			try transformController.objectDataToConcreteObject(data, completion: { (result) in
+			try transformController.transform(data, completion: { (result) in
 				completion(response: result)
 			})
 

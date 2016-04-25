@@ -17,7 +17,7 @@ public class TransformController {
      If an existing object of `Type` is passed, the object properties are filled in based on the JSON.
 	- returns: via the completion block a parsed object of `Type` is returned.
 	*/
-	public func objectDataToConcreteObject<Type: protocol<Parsable, UniqueAble>>(data: NSData, inputModel: Type? = nil, completion:(Type)->()) throws {
+	public func transform<Type: protocol<Parsable, UniqueAble>>(data: NSData, inputModel: Type? = nil, completion:(Type)->()) throws {
         do {
             let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
             if var model = inputModel {
