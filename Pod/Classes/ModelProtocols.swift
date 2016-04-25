@@ -46,14 +46,11 @@ public extension ErrorControlable {
 
 public protocol Parsable {
 	init ()
-	/**
-	* Set all properties from the received JSON at initialization
-	*/
-	init(json: AnyObject)
+	
 	/**
 	* Set all properties from the received JSON
 	*/
-	func importFromJSON(json: AnyObject)
+	func importFromJSON(json: AnyObject) throws
 
 	/**
 	* Override if you want to POST this as JSON

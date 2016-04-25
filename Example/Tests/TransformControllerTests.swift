@@ -9,6 +9,7 @@
 import XCTest
 @testable import AirRivet
 
+//TODO: convert to Nimble
 class ExampleBaseModel: UniqueAble, ErrorControlable, Parsable {
     var objectId: String?
 
@@ -16,15 +17,13 @@ class ExampleBaseModel: UniqueAble, ErrorControlable, Parsable {
 
 	}
 	
-    required init(json: AnyObject) {
-        importFromJSON(json)
-    }
-    
-    func importFromJSON(json: AnyObject) {
+    func importFromJSON(json: AnyObject) throws {
         if let json = json as? NSDictionary,
             identifier = json["identifier"] as? String {
                 self.objectId = identifier
-        }
+		}else {
+			throw ResponseError.InvalidResponseData
+		}
     }
     
     func body()-> NSDictionary? {
@@ -80,7 +79,8 @@ class TransformControllerTests: XCTestCase {
     
     func testObjectDataToConcreteObjectWithExistingModel() {
         let transformController = TransformController()
-        let inputModel:ExampleBaseModel = ExampleBaseModel(json: ["identifier":"test123"])
+        let inputModel:ExampleBaseModel = ExampleBaseModel()
+		try! inputModel.importFromJSON( ["identifier":"test123"])
         
 		guard let data = loadDataFromUrl("exampleBaseModel") else {
 			return
@@ -140,29 +140,23 @@ class TransformControllerTests: XCTestCase {
             XCTFail("transformation should not throw an error")
         }
     }
-    
-//    func testObjectDataToConcreteObjectsCustomRootKey() {
-//        let transformController = TransformController()
-//        
-//        guard
-//            let path = NSBundle.mainBundle().pathForResource("exampleBaseModelResultsArrayCustomRootKey", ofType: "json"),
-//            let data = NSData(contentsOfFile: path) else {
-//                XCTFail("problem loading json")
-//                return
-//        }
-//        
-//        do {
-//            try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
-//                XCTAssertTrue(results.count == 3)
-//                XCTAssertEqual(results[0].objectId, "123a")
-//                XCTAssertEqual(results[1].objectId, "456b")
-//                XCTAssertEqual(results[2].objectId, "789c")
-//            })
-//        }
-//        catch {
-//            XCTFail("transformation should not throw an error")
-//        }
-//    }
+
+    func testObjectDataToConcreteObjectsCustomRootKey() {
+        let transformController = TransformController()
+        
+		guard let data = loadDataFromUrl("exampleBaseModelResultsArrayCustomRootKey") else {
+			return
+		}
+
+        do {
+            try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
+				XCTFail("transformation should throw because the JSON is invalid")
+            })
+        }
+        catch {
+			//Success
+        }
+    }
 
     func testObjectDataToConcreteObjectsFromSingleItem() {
         let transformController = TransformController()
@@ -170,7 +164,7 @@ class TransformControllerTests: XCTestCase {
 		guard let data = loadDataFromUrl("exampleBaseModel") else {
 			return
 		}
-		
+
         do {
             try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
                 XCTAssertTrue(results.count == 1)
