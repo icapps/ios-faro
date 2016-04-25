@@ -36,11 +36,12 @@ class ConcreteErrorControllerSpec: QuickSpec {
 					expect(error).to(matchError(ResponseError.InvalidResponseData))
 				}))
 
-				expect { try errorController.responseDataEmptyError() }.to(throwError(closure: { (error) in
-					let expectedNsError = NSError(domain: "101", code: 101, userInfo: nil)
-//					let responseError = ResponseError.ResponseError(error: expectedNsError)
-//					expect(error).to(matchError()
-				}))
+				//TODO this test needs to be finished when RequestController is refactored
+//				expect { try errorController.responseDataEmptyError() }.to(throwError(closure: { (error) in
+//					_ = NSError(domain: "101", code: 101, userInfo: nil)
+////					let responseError = ResponseError.ResponseError(error: expectedNsError)
+////					expect(error).to(matchError()
+//				}))
 			}
 		}
 	}
