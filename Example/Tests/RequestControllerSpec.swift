@@ -21,6 +21,18 @@ class MockEntity: GameScore {
 		return Mock ()
 	}
 }
+
+//class MockEntity: GameScore {
+//
+//	override func contextPath() -> String {
+//		return "invalid JSON"
+//	}
+//
+//	override func environment() -> protocol<Environment, Mockable, Transformable> {
+//		return Mock ()
+//	}
+//}
+
 class RequestControllerSpec: QuickSpec {
 	override func spec() {
 		describe("Error cases") {
@@ -35,10 +47,13 @@ class RequestControllerSpec: QuickSpec {
 
 			it("should fail when contextPaht does not exist") {
 				expect { try requestController.retrieve(failingCompletion, failure: successFailure) }.to(throwError(closure: { (error) in
-					expect(error).to(matchError(RequestError.InvalidUrl))
+					expect(error).to(matchError(ResponseError.InvalidResponseData))
 				}))
 			}
 
+			it("should fail when JSON is invalid") {
+
+			}
 		}
 	}
 

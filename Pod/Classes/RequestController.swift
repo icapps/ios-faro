@@ -79,10 +79,10 @@ public class RequestController <Type: ModelProtocol> {
 			let errorController = body.responseErrorController()
 
 			guard error == nil else {
-				self.handleTaksError(error!, failure: failure, errorController: errorController)
+				self.failureWithError(error!, failure: failure, errorController: errorController)
 				return
 			}
-			self.handleTaksSuccess(environment, errorController: errorController, data: data, response: response, body: body, completion: completion, failure: failure)
+			self.succesForEnvironment(environment, errorController: errorController, data: data, response: response, body: body, completion: completion, failure: failure)
 
 		})
 
@@ -107,7 +107,7 @@ public class RequestController <Type: ModelProtocol> {
 
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
-			handleTaksSuccess(environment,
+			succesForEnvironment(environment,
 			                  errorController: errorController,
 			                  data: try mockDataAtUrl(url, transformController: environment.transformController()),
 			                  response: nil,
@@ -120,9 +120,9 @@ public class RequestController <Type: ModelProtocol> {
 
 		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-				self.handleTaksError(error, failure: failure, errorController: errorController)
+				self.failureWithError(error, failure: failure, errorController: errorController)
 			}else {
-				self.handleTaksSuccess(environment, errorController: errorController, data: data, response: response, body: nil, completion: completion, failure: failure)
+				self.succesForEnvironment(environment, errorController: errorController, data: data, response: response, body: nil, completion: completion, failure: failure)
 			}
 		})
 		
@@ -148,7 +148,7 @@ public class RequestController <Type: ModelProtocol> {
 
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
-			handleTaksSuccess(environment,
+			succesForEnvironment(environment,
 			                  errorController: errorController,
 			                  data: try mockDataAtUrl(url, transformController: environment.transformController()),
 			                  response: nil, body: nil,
@@ -161,9 +161,9 @@ public class RequestController <Type: ModelProtocol> {
 
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-				self.handleTaksError(error, failure: failure, errorController: errorController)
+				self.failureWithError(error, failure: failure, errorController: errorController)
 			}else {
-				self.handleTaksSuccess(environment, errorController: errorController, data: data, response: response, body: nil, completion: completion, failure: failure)
+				self.succesForEnvironment(environment, errorController: errorController, data: data, response: response, body: nil, completion: completion, failure: failure)
 			}
 		})
 		
@@ -175,7 +175,7 @@ public class RequestController <Type: ModelProtocol> {
 		guard let
 			fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue),
 			data = NSData(contentsOfURL: fileURL) else {
-				throw RequestError.InvalidUrl
+				throw ResponseError.InvalidResponseData
 			return nil
 		}
 
@@ -189,7 +189,7 @@ public class RequestController <Type: ModelProtocol> {
 	We have to do this until apple provides a data task that can handle throws in its closures.
 	*/
 
-	private func handleTaksSuccess(environment: Transformable, errorController: ErrorController, data: NSData?, response: NSURLResponse?, body: Type?,  completion:(response: Type)->(), failure:((RequestError) ->())?) {
+	func succesForEnvironment(environment: Transformable, errorController: ErrorController, data: NSData?, response: NSURLResponse?, body: Type?,  completion:(response: Type)->(), failure:((RequestError) ->())?) {
 		do {
 			try self.responseController.respond(environment, response:(data: data,urlResponse: response), body: body, completion: completion)
 		}catch {
@@ -197,12 +197,22 @@ public class RequestController <Type: ModelProtocol> {
 		}
 	}
 
-	private func handleTaksSuccess(environment: Transformable, errorController: ErrorController, data: NSData?, response: NSURLResponse?, body: Type?,  completion:(response: [Type])->(), failure:((RequestError) ->())?) {
+	func succesForEnvironment(environment: Transformable, errorController: ErrorController, data: NSData?, response: NSURLResponse?, body: Type?,  completion:(response: [Type])->(), failure:((RequestError) ->())?) {
 		do {
 			try self.responseController.respond(environment, response: (data: data, urlResponse: response), completion: completion)
 		}catch {
 			splitErrorType(error, failure: failure, errorController: errorController)
 		}
+	}
+
+	func failureWithError(taskError: NSError ,failure:((RequestError) ->())?, errorController: ErrorController) {
+		print("---Error request failed with error: \(taskError)----")
+		do {
+			try errorController.requestResponseError(taskError)
+		}catch {
+			failure?(RequestError.ResponseError(error: taskError))
+		}
+		failure?(RequestError.ResponseError(error: taskError))
 	}
 
 	private func splitErrorType(error: ErrorType, failure: ((RequestError) ->())?, errorController: ErrorController) {
@@ -225,13 +235,5 @@ public class RequestController <Type: ModelProtocol> {
 		}
 	}
 	
-	private func handleTaksError(taskError: NSError ,failure:((RequestError) ->())?, errorController: ErrorController) {
-		print("---Error request failed with error: \(taskError)----")
-		do {
-			try errorController.requestResponseError(taskError)
-		}catch {
-			failure?(RequestError.ResponseError(error: taskError))
-		}
-		failure?(RequestError.ResponseError(error: taskError))
-	}
+
 }
