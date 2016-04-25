@@ -35,11 +35,8 @@ class ResponseControllerUtilsTests: XCTestCase {
     func testNoResponseNoError() {
         do {
             try ResponseControllerUtils.checkStatusCodeAndData((data:nil, urlResponse:nil), errorController: errorController)
-            XCTFail("call should fail")
-        } catch ResponseError.InvalidResponse {
-            XCTAssertTrue(true)
-        } catch {
-            XCTFail("wrong error type")
+        }  catch {
+            XCTFail("We should not fail when an empty urlResponse is given")
         }
     }
     

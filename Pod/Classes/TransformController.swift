@@ -16,6 +16,7 @@ public class TransformController {
     - parameter inputModel: optional input object of `Type`. If no input object is provided, a new object of `Type` is created based on the JSON.
      If an existing object of `Type` is passed, the object properties are filled in based on the JSON.
 	- returns: via the completion block a parsed object of `Type` is returned.
+	- throws:
 	*/
 	public func transform<Type: Parsable>(data: NSData, body: Type? = nil, completion:(Type)->()) throws {
         do {
@@ -40,11 +41,10 @@ public class TransformController {
 	}
 
 	/**
-	* TODO: #5 transformation of array results to existing objects.
-
 	- parameter data: valid JSON
     - parameter rootKey: root of the array. Defaults to 'results', but can be overridden to a custom value
 	- returns: via the completion block an array of parsed objects of `Type`.
+	- throws:
 	*/
 
     public func transform<Type: Parsable>(data: NSData, body: Type? = nil, completion:([Type])->()) throws{

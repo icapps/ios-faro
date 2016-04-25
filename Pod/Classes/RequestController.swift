@@ -96,30 +96,29 @@ public class RequestController <Type: ModelProtocol> {
 	
 	- parameter response: closure is called when service request successfully returns
 	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
-	- throws : TODO
+	- throws :
 	*/
 	public func retrieve(completion:(response: [Type])->(), failure:((RequestError)->())? = nil) throws{
 		let entity = Type()
 		let environment = Type().environment()
 		environment.request.HTTPMethod = "GET"
 
-		guard !environment.shouldMock() else {
-			print("🤔 Mocking (\(Type.self)) with contextPath: \(entity.contextPath())")
-			let transformController = environment.transFormcontroller()
-			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
-			guard let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue)  else {
-				throw RequestError.InvalidUrl
-			}
+		let errorController = Type.requestErrorController()
 
-			let data = NSData(contentsOfURL: fileURL)!
-			try transformController.transform(data, completion: { (responseArray) -> () in
-				completion(response: responseArray)
-			})
+		guard !environment.shouldMock() else {
+			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
+			handleTaksSuccess(environment,
+			                  errorController: errorController,
+			                  data: try mockDataAtUrl(url, transformController: environment.transformController()),
+			                  response: nil,
+			                  body: nil,
+			                  completion: completion,
+			                  failure: failure)
+
 			return
 		}
 
 		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
-			let errorController = Type.requestErrorController()
 			if let error = error {
 				self.handleTaksError(error, failure: failure, errorController: errorController)
 			}else {
@@ -144,27 +143,23 @@ public class RequestController <Type: ModelProtocol> {
 		let environment = Type().environment()
 		let request = environment.request
 		request.HTTPMethod = "GET"
+		let errorController = Type.requestErrorController()
+
 
 		guard !environment.shouldMock() else {
-			print("🤔 Mocking (\(Type.self)) with objectID: \(objectId), contextPath: \(entity.contextPath())")
-			let transformController = environment.transFormcontroller()
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
-
-			guard let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue) else {
-				throw RequestError.InvalidUrl
-			}
-
-			let data = NSData(contentsOfURL: fileURL)!
-			try transformController.transform(data, completion: { (result) in
-				completion(response: result)
-			})
-
+			handleTaksSuccess(environment,
+			                  errorController: errorController,
+			                  data: try mockDataAtUrl(url, transformController: environment.transformController()),
+			                  response: nil, body: nil,
+			                  completion: completion,
+			                  failure: failure)
+			
 			return
 		}
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
-			let errorController = Type.requestErrorController()
 			if let error = error {
 				self.handleTaksError(error, failure: failure, errorController: errorController)
 			}else {
@@ -173,6 +168,18 @@ public class RequestController <Type: ModelProtocol> {
 		})
 		
 		task.resume()
+	}
+
+	private func mockDataAtUrl(url: String, transformController: TransformController) throws -> NSData?  {
+		print("🤔 Mocking (\(Type.self)) with contextPath: \(Type().contextPath())")
+		guard let
+			fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue),
+			data = NSData(contentsOfURL: fileURL) else {
+				throw RequestError.InvalidUrl
+			return nil
+		}
+
+		return data
 	}
 
 	//MARK: Mocking

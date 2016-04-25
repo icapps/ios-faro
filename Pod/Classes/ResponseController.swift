@@ -25,7 +25,7 @@ public class ResponseController {
 			return
 		}
 
-		try environment.transFormcontroller().transform(data, body: body, completion: completion)
+		try environment.transformController().transform(data, body: body, completion: completion)
 	}
 
 	func respond<ResponseType: protocol<Parsable, ErrorControlable, UniqueAble> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), body: ResponseType? = nil, completion: ([ResponseType])->()) throws{
@@ -34,8 +34,9 @@ public class ResponseController {
 			return
 		}
 
-		try environment.transFormcontroller().transform(data, body: body, completion: completion)
+		try environment.transformController().transform(data, body: body, completion: completion)
     }
+
 }
 
 internal class ResponseControllerUtils {
@@ -62,8 +63,7 @@ internal class ResponseControllerUtils {
             return data
         }
         else {
-            try errorController.responseInvalidError()
-            return nil
+            return response.data
         }
     }
 }
