@@ -47,7 +47,7 @@ public class TransformController {
 	- returns: via the completion block an array of parsed objects of `Type`.
 	*/
 
-    public func transform<Type: Parsable>(data: NSData, completion:([Type])->()) throws{
+    public func transform<Type: Parsable>(data: NSData, body: Type? = nil, completion:([Type])->()) throws{
         do {
             let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
 			print(json)

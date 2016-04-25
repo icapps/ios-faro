@@ -20,24 +20,21 @@ public class ResponseController {
 	}
 	
 	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable, UniqueAble> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
-		let errorController = ResponseType.requestErrorController()
 
-        if let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: errorController){
-			try environment.transFormcontroller().transform(data, body: body, completion: { (concreteObject) -> () in
-
-				completion(concreteObject)
-			})
+        guard let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: ResponseType.requestErrorController()) else {
+			return
 		}
+
+		try environment.transFormcontroller().transform(data, body: body, completion: completion)
 	}
 
-	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), completion: ([ResponseType])->()) throws{
-		let errorController = ResponseType.requestErrorController()
+	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable, UniqueAble> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), body: ResponseType? = nil, completion: ([ResponseType])->()) throws{
 
-		if let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: errorController) {
-			try environment.transFormcontroller().transform(data, completion: { (responseArray) -> () in
-				completion(responseArray)
-			})
+		guard let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: ResponseType.requestErrorController()) else {
+			return
 		}
+
+		try environment.transFormcontroller().transform(data, body: body, completion: completion)
     }
 }
 
