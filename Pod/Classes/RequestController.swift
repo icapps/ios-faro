@@ -82,7 +82,7 @@ public class RequestController <Type: ModelProtocol> {
 				self.failureWithError(error!, failure: failure, errorController: errorController)
 				return
 			}
-			self.succesForEnvironment(environment, errorController: errorController, data: data, response: response, body: body, completion: completion, failure: failure)
+			self.success(data, response: response, body: body, completion: completion, failure: failure)
 
 		})
 
@@ -107,13 +107,9 @@ public class RequestController <Type: ModelProtocol> {
 
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
-			succesForEnvironment(environment,
-			                  errorController: errorController,
-			                  data: try mockDataAtUrl(url, transformController: environment.transformController()),
-			                  response: nil,
-			                  body: nil,
-			                  completion: completion,
-			                  failure: failure)
+			success(try mockDataAtUrl(url, transformController: environment.transformController()),
+					completion: completion,
+			        failure: failure)
 
 			return
 		}
@@ -122,7 +118,7 @@ public class RequestController <Type: ModelProtocol> {
 			if let error = error {
 				self.failureWithError(error, failure: failure, errorController: errorController)
 			}else {
-				self.succesForEnvironment(environment, errorController: errorController, data: data, response: response, body: nil, completion: completion, failure: failure)
+				self.success(data, response: response, completion: completion, failure: failure)
 			}
 		})
 		
@@ -148,12 +144,9 @@ public class RequestController <Type: ModelProtocol> {
 
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
-			succesForEnvironment(environment,
-			                  errorController: errorController,
-			                  data: try mockDataAtUrl(url, transformController: environment.transformController()),
-			                  response: nil, body: nil,
-			                  completion: completion,
-			                  failure: failure)
+			success(try mockDataAtUrl(url, transformController: environment.transformController()),
+			       response: nil, body: nil,
+			       completion: completion, failure: failure)
 			
 			return
 		}
@@ -163,7 +156,7 @@ public class RequestController <Type: ModelProtocol> {
 			if let error = error {
 				self.failureWithError(error, failure: failure, errorController: errorController)
 			}else {
-				self.succesForEnvironment(environment, errorController: errorController, data: data, response: response, body: nil, completion: completion, failure: failure)
+				self.success(data, response: response, completion: completion, failure: failure)
 			}
 		})
 		
@@ -189,7 +182,11 @@ public class RequestController <Type: ModelProtocol> {
 	We have to do this until apple provides a data task that can handle throws in its closures.
 	*/
 
-	func succesForEnvironment(environment: Transformable, errorController: ErrorController, data: NSData?, response: NSURLResponse?, body: Type?,  completion:(response: Type)->(), failure:((RequestError) ->())?) {
+	func success(data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: Type)->(), failure:((RequestError) ->())?) {
+		let entity  = Type()
+		let environment = entity.environment()
+		let errorController = entity.responseErrorController()
+
 		do {
 			try self.responseController.respond(environment, response:(data: data,urlResponse: response), body: body, completion: completion)
 		}catch {
@@ -197,7 +194,11 @@ public class RequestController <Type: ModelProtocol> {
 		}
 	}
 
-	func succesForEnvironment(environment: Transformable, errorController: ErrorController, data: NSData?, response: NSURLResponse?, body: Type?,  completion:(response: [Type])->(), failure:((RequestError) ->())?) {
+	func success(data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: [Type])->(), failure:((RequestError) ->())?) {
+		let entity  = Type()
+		let environment = entity.environment()
+		let errorController = entity.responseErrorController()
+
 		do {
 			try self.responseController.respond(environment, response: (data: data, urlResponse: response), completion: completion)
 		}catch {

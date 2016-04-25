@@ -20,24 +20,26 @@ class MockEntity: GameScore {
 	override func environment() -> protocol<Environment, Mockable, Transformable> {
 		return Mock ()
 	}
-}
 
-//class MockEntity: GameScore {
-//
-//	override func contextPath() -> String {
-//		return "invalid JSON"
-//	}
-//
-//	override func environment() -> protocol<Environment, Mockable, Transformable> {
-//		return Mock ()
-//	}
-//}
+	override func parseFromDict(json: AnyObject) throws {
+		guard let
+			dict = json as? [String: AnyObject],
+			_ = dict["playername"] else  {
+			throw ResponseError.InvalidResponseData
+		}
+
+		try super.parseFromDict(json)
+	}
+}
 
 class RequestControllerSpec: QuickSpec {
 	override func spec() {
 		describe("Error cases") {
 
+
+
 			let requestController = RequestController<MockEntity>()
+
 			let failingCompletion = { (response: [MockEntity]) in
 				XCTFail() // we should not complete
 			}
@@ -52,6 +54,12 @@ class RequestControllerSpec: QuickSpec {
 			}
 
 			it("should fail when JSON is invalid") {
+
+				let data = try! NSJSONSerialization.dataWithJSONObject(["wrong": "json"], options: .PrettyPrinted)
+
+				requestController.success(data, completion: failingCompletion, failure: { (error) in
+					expect(error).to(matchError(ResponseError.InvalidResponseData))
+				})
 
 			}
 		}

@@ -25,7 +25,7 @@ public class GameScore: NSObject, UniqueAble,  ErrorControlable, Parsable, Envir
 		]
 	}
 
-	public func parseFromDict(json: AnyObject) {
+	public func parseFromDict(json: AnyObject) throws {
 		if let json = json as? NSDictionary {
 			if let objectId = json["objectId"] as? String {
 				self.objectId = objectId
