@@ -56,17 +56,16 @@ public class RequestController <Type: ModelProtocol> {
 		let request = environment.request
 
 		request.HTTPMethod = "POST"
-		print("\(body)")
 
 		guard let bodyObject = body.body() else {
-			try body.parsingErrorController().requestBodyError()
+			try body.responseErrorController().requestBodyError()
 			return
 		}
 
 		do {
 			request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(bodyObject, options: .PrettyPrinted)
 		}catch {
-			try body.parsingErrorController().requestBodyError()
+			try body.responseErrorController().requestBodyError()
 		}
 
 		guard !environment.shouldMock() else {
@@ -77,14 +76,7 @@ public class RequestController <Type: ModelProtocol> {
 		
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			guard error == nil else {
-				let taskError = error!
-				print("---Error request failed with error: \(taskError)----")
-				do {
-					try body.parsingErrorController().requestResponseError(taskError)
-				}catch {
-					failure?(RequestError.ResponseError(error: taskError))
-				}
-				failure?(RequestError.ResponseError(error: taskError))
+				self.handleTaksError(error!, failure: failure, errorController: body.responseErrorController())
 				return
 			}
 
@@ -93,14 +85,14 @@ public class RequestController <Type: ModelProtocol> {
 			}catch RequestError.InvalidAuthentication {
 				print("---Error we could not Authenticate----")
 				do {
-					try body.parsingErrorController().requestAuthenticationError()
+					try body.responseErrorController().requestAuthenticationError()
 				}catch {
 					failure?(RequestError.InvalidAuthentication)
 				}
 			}catch {
 				print("---Error we could not process the response----")
 				do {
-					try body.parsingErrorController().requestGeneralError()
+					try body.responseErrorController().requestGeneralError()
 				}catch {
 					failure?(RequestError.General)
 				}
@@ -109,6 +101,7 @@ public class RequestController <Type: ModelProtocol> {
 
 		task.resume()
 	}
+
 
 	//MARK: - Retrieve
 	/**
@@ -140,8 +133,7 @@ public class RequestController <Type: ModelProtocol> {
 
 		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-				print("💣 Error request failed with error: \(error)💣")
-				failure?(RequestError.ResponseError(error: error))
+				self.handleTaksError(error, failure: failure, errorController: Type.requestErrorController())
 			}else {
 				do {
 					try self.responseController.handleResponse(environment, response:(data: data,urlResponse: response, error: error), completion: completion)
@@ -190,8 +182,8 @@ public class RequestController <Type: ModelProtocol> {
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
-			if error != nil {
-				print("---Error request failed with error: \(error)----")
+			if let error = error {
+				self.handleTaksError(error, failure: failure, errorController: Type.requestErrorController())
 			}else {
 				do {
 					try self.responseController.handleResponse(environment, response:(data: data,urlResponse: response, error: error), completion: completion)
@@ -207,6 +199,15 @@ public class RequestController <Type: ModelProtocol> {
 		})
 		
 		task.resume()
-		
+	}
+
+	private func handleTaksError(taskError: NSError ,failure:((RequestError) ->())?, errorController: ErrorController) {
+		print("---Error request failed with error: \(taskError)----")
+		do {
+			try errorController.requestResponseError(taskError)
+		}catch {
+			failure?(RequestError.ResponseError(error: taskError))
+		}
+		failure?(RequestError.ResponseError(error: taskError))
 	}
 }
