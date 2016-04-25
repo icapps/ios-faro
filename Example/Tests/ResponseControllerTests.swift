@@ -17,11 +17,11 @@ import XCTest
 //        
 //    }
 //    
-//    func importFromJSON(json: AnyObject) {
+//    func parseFromDict(json: AnyObject) {
 //        
 //    }
 //    
-//    func body() -> NSDictionary? {
+//    func toDictionary() -> NSDictionary? {
 //        return [:]
 //    }
 //    

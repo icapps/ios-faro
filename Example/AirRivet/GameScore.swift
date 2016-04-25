@@ -17,14 +17,7 @@ public class GameScore: NSObject, UniqueAble,  ErrorControlable, Parsable, Envir
 		super.init()
 	}
 
-	public required init(json: AnyObject) {
-		super.init()
-		importFromJSON(json)
-	}
-
-
-
-	public func body()-> NSDictionary? {
+	public func toDictionary()-> NSDictionary? {
 		return [
 			"score": score!,
 			"cheatMode": cheatMode!,
@@ -32,7 +25,7 @@ public class GameScore: NSObject, UniqueAble,  ErrorControlable, Parsable, Envir
 		]
 	}
 
-	public func importFromJSON(json: AnyObject) {
+	public func parseFromDict(json: AnyObject) {
 		if let json = json as? NSDictionary {
 			if let objectId = json["objectId"] as? String {
 				self.objectId = objectId

@@ -48,14 +48,14 @@ public protocol Parsable {
 	init ()
 	
 	/**
-	* Set all properties from the received JSON
+	Set all properties from the data
 	*/
-	func importFromJSON(json: AnyObject) throws
+	func parseFromDict(dict: AnyObject) throws
 
 	/**
-	* Override if you want to POST this as JSON
+	From a dictionary containing properties of the object
 	*/
-	func body()-> NSDictionary?
+	func toDictionary()-> NSDictionary?
 
 	/**
 	Should provide key in JSON to node of dict that can be parsed.

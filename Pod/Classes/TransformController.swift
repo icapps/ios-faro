@@ -22,12 +22,12 @@ public class TransformController {
         do {
             let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
             if var model = body {
-                try model.importFromJSON(json)
+                try model.parseFromDict(json)
                 completion(model)
             }
             else {
 				let model = Type()
-				try model.importFromJSON(json)
+				try model.parseFromDict(json)
                 completion(model)
             }
         }
@@ -57,7 +57,7 @@ public class TransformController {
             }
             else if let dict = json as? [String:AnyObject] {
                 let model = Type()
-				try model.importFromJSON(dict)
+				try model.parseFromDict(dict)
                 completion([model])
 			}else if let array = json as? [[String:AnyObject]] {
 				completion(try dictToArray(array))
@@ -75,7 +75,7 @@ public class TransformController {
 		var concreteObjectArray = [Type]()
 		for dict in array {
 			let entity = Type()
-			try entity.importFromJSON(dict)
+			try entity.parseFromDict(dict)
 			concreteObjectArray.append(entity)
 		}
 		return concreteObjectArray

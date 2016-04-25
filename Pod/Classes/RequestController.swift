@@ -57,7 +57,7 @@ public class RequestController <Type: ModelProtocol> {
 
 		request.HTTPMethod = "POST"
 
-		guard let bodyObject = body.body() else {
+		guard let bodyObject = body.toDictionary() else {
 			try body.responseErrorController().requestBodyError()
 			return
 		}

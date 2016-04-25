@@ -17,7 +17,7 @@ class ExampleBaseModel: UniqueAble, ErrorControlable, Parsable {
 
 	}
 	
-    func importFromJSON(json: AnyObject) throws {
+    func parseFromDict(json: AnyObject) throws {
         if let json = json as? NSDictionary,
             identifier = json["identifier"] as? String {
                 self.objectId = identifier
@@ -26,7 +26,7 @@ class ExampleBaseModel: UniqueAble, ErrorControlable, Parsable {
 		}
     }
     
-    func body()-> NSDictionary? {
+    func toDictionary()-> NSDictionary? {
         return [
             "identifier": objectId!,
         ]
@@ -80,7 +80,7 @@ class TransformControllerTests: XCTestCase {
     func testObjectDataToConcreteObjectWithExistingModel() {
         let transformController = TransformController()
         let inputModel:ExampleBaseModel = ExampleBaseModel()
-		try! inputModel.importFromJSON( ["identifier":"test123"])
+		try! inputModel.parseFromDict( ["identifier":"test123"])
         
 		guard let data = loadDataFromUrl("exampleBaseModel") else {
 			return
