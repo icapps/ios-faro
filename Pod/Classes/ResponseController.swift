@@ -23,7 +23,7 @@ public class ResponseController {
 		let errorController = ResponseType.requestErrorController()
 
         if let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: errorController){
-			try environment.transFormcontroller().transform(data, inputModel: body, completion: { (concreteObject) -> () in
+			try environment.transFormcontroller().transform(data, body: body, completion: { (concreteObject) -> () in
 
 				completion(concreteObject)
 			})

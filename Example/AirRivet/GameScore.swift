@@ -59,5 +59,7 @@ public class GameScore: NSObject, UniqueAble,  ErrorControlable, Parsable, Envir
 		return Parse<GameScore>()
 	}
 
-
+	public static func rootKey() -> String? {
+		return "results"
+	}
 }

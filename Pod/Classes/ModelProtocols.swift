@@ -59,6 +59,17 @@ public protocol Parsable {
 	* Override if you want to POST this as JSON
 	*/
 	func body()-> NSDictionary?
+
+	/**
+	Should provide key in JSON to node of dict that can be parsed.
+	
+	```
+	{
+		rootKey: {<dictToParse>}
+	}
+	```
+	*/
+	static func rootKey() -> String?
 }
 
 
