@@ -29,11 +29,11 @@ class GameScoreSpec: QuickSpec {
     override func spec() {
         describe("GameScore") {
 
-			let test = RequestController<MockGameScore>()
+			let requestController = RequestController<MockGameScore>()
 
 			it ("Should be synchronous because we implement the Mockable protocol") {
 				var result = [MockGameScore]()
-				try! test.retrieve({ (response) in
+				try! requestController.retrieve({ (response) in
 					result = response
 				})
 				expect(result).to(haveCount(5))
@@ -42,7 +42,7 @@ class GameScoreSpec: QuickSpec {
 			it("all gamescores should be parsed", closure: {
 				var result = [MockGameScore]()
 				let expected = ["Bob", "Daniel", "Hans", "Stijn", "Jelle"]
-				try! test.retrieve({ (response) in
+				try! requestController.retrieve({ (response) in
 					result = response
 
 				})
@@ -59,7 +59,7 @@ class GameScoreSpec: QuickSpec {
 				gameScore.cheatMode = false
 				gameScore.playerName = "Foo"
 				
-				try! test.save(gameScore, completion: { (response) in
+				try! requestController.save(gameScore, completion: { (response) in
 					success = true
 					})
 				expect(success).to(equal(true))
@@ -69,7 +69,7 @@ class GameScoreSpec: QuickSpec {
 
 				var result = MockGameScore()
 				let objectId = "1275"
-				try! test.retrieve(objectId, completion: { (response) in
+				try! requestController.retrieve(objectId, completion: { (response) in
 					result = response
 				})
 				expect(result.objectId).to(equal(objectId))

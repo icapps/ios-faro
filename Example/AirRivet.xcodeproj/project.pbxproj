@@ -25,6 +25,7 @@
 		C012EA501CCA8A5B00B298D7 /* GET_gameScoreArray_1275.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */; };
 		C052960D1CB6629E007E1111 /* ICAOBJCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C052960C1CB6629E007E1111 /* ICAOBJCViewController.m */; };
 		C05296121CB6661E007E1111 /* GameSoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05296111CB6661E007E1111 /* GameSoreController.swift */; };
+		C08BF3941CCE4AF8005CAD3F /* RequestControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08BF3931CCE4AF8005CAD3F /* RequestControllerSpec.swift */; };
 		C0A3DB0D1CAEBBB200978DBD /* Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* Parse.swift */; };
 		C0A3DB0E1CAEBBB200978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
 		C0A3DB0F1CAEBBB600978DBD /* Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* Parse.swift */; };
@@ -72,6 +73,7 @@
 		C052960B1CB6629E007E1111 /* ICAOBJCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICAOBJCViewController.h; sourceTree = "<group>"; };
 		C052960C1CB6629E007E1111 /* ICAOBJCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICAOBJCViewController.m; sourceTree = "<group>"; };
 		C05296111CB6661E007E1111 /* GameSoreController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSoreController.swift; sourceTree = "<group>"; };
+		C08BF3931CCE4AF8005CAD3F /* RequestControllerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestControllerSpec.swift; sourceTree = "<group>"; };
 		C0A3DB0B1CAEBBB200978DBD /* Parse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parse.swift; sourceTree = "<group>"; };
 		C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScore.swift; sourceTree = "<group>"; };
 		C0A3DB111CAEBBCA00978DBD /* GameScoreTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScoreTest.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				A4D85BD61CCA6AE60046AF29 /* ResponseControllerTests.swift */,
 				A4D85BD71CCA6AE60046AF29 /* ResponseControllerUtilsTests.swift */,
 				C0A3DB111CAEBBCA00978DBD /* GameScoreTest.swift */,
+				C08BF3931CCE4AF8005CAD3F /* RequestControllerSpec.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -452,6 +455,7 @@
 				C0A3DB0F1CAEBBB600978DBD /* Parse.swift in Sources */,
 				A4D85BC41CC8FAB00046AF29 /* TransformControllerTests.swift in Sources */,
 				A4D85BDB1CCA6B470046AF29 /* ResponseControllerUtilsTests.swift in Sources */,
+				C08BF3941CCE4AF8005CAD3F /* RequestControllerSpec.swift in Sources */,
 				C0A3DB101CAEBBB600978DBD /* GameScore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
