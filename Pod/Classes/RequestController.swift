@@ -184,7 +184,7 @@ public class RequestController <Type: ModelProtocol> {
 
 	private func handleTaksSuccess(environment: Transformable, errorController: ErrorController, data: NSData?, response: NSURLResponse?, body: Type?,  completion:(response: Type)->(), failure:((RequestError) ->())?) {
 		do {
-			try self.responseController.handleResponse(environment, response:(data: data,urlResponse: response), body: body, completion: completion)
+			try self.responseController.respond(environment, response:(data: data,urlResponse: response), body: body, completion: completion)
 		}catch {
 			splitErrorType(error, failure: failure, errorController: errorController)
 		}
@@ -192,7 +192,7 @@ public class RequestController <Type: ModelProtocol> {
 
 	private func handleTaksSuccess(environment: Transformable, errorController: ErrorController, data: NSData?, response: NSURLResponse?, body: Type?,  completion:(response: [Type])->(), failure:((RequestError) ->())?) {
 		do {
-			try self.responseController.handleResponse(environment, response: (data: data, urlResponse: response), completion: completion)
+			try self.responseController.respond(environment, response: (data: data, urlResponse: response), completion: completion)
 		}catch {
 			splitErrorType(error, failure: failure, errorController: errorController)
 		}

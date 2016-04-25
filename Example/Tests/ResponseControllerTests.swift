@@ -42,9 +42,9 @@ class ResponseControllerTests: XCTestCase {
 //        return ResponseController(transformController: transformController)
 //    }()
     
-//    func testhandleResponse() {
+//    func testrespond() {
 //        do {
-//            try responseController.handleResponse((data: nil,urlResponse: nil, error: nil),  completion: { (result:DummyClass) in
+//            try responseController.respond((data: nil,urlResponse: nil, error: nil),  completion: { (result:DummyClass) in
 //                XCTFail("implement this!")
 //            })
 //        }

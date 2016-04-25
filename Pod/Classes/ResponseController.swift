@@ -19,7 +19,7 @@ public class ResponseController {
 	public init() {
 	}
 	
-	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable, UniqueAble> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
+	func respond<ResponseType: protocol<Parsable, ErrorControlable, UniqueAble> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
 
         guard let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: ResponseType.requestErrorController()) else {
 			return
@@ -28,7 +28,7 @@ public class ResponseController {
 		try environment.transFormcontroller().transform(data, body: body, completion: completion)
 	}
 
-	func handleResponse<ResponseType: protocol<Parsable, ErrorControlable, UniqueAble> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), body: ResponseType? = nil, completion: ([ResponseType])->()) throws{
+	func respond<ResponseType: protocol<Parsable, ErrorControlable, UniqueAble> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), body: ResponseType? = nil, completion: ([ResponseType])->()) throws{
 
 		guard let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: ResponseType.requestErrorController()) else {
 			return
