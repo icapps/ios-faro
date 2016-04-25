@@ -30,9 +30,9 @@ class MockEntity: GameScore {
 
 		}
 
-		try super.parseFromDict(json)
 	}
 }
+
 
 class RequestControllerSpec: QuickSpec {
 
@@ -59,8 +59,6 @@ class RequestControllerSpec: QuickSpec {
 				let invalidDict = ["wrong": "json"]
 				let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
 
-				//TODO: Test errorController handling
-
 				requestController.success(data, completion: failingCompletion, failure: { (error) in
 
 					switch error {
@@ -72,7 +70,45 @@ class RequestControllerSpec: QuickSpec {
 						XCTFail("Wrong type of error")
 					}
 				})
+			}
 
+			context("Mocking the ErrorController"){
+				class MockEntityWithErrorController: GameScore {
+					override func environment() -> protocol<Environment, Mockable, Transformable> {
+						return Mock()
+					}
+
+					override func parseFromDict(json: AnyObject) throws {
+						throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
+					}
+
+					override func responseErrorController() -> ErrorController {
+						return MockErrorController()
+					}
+				}
+
+				class MockErrorController: ConcreteErrorController {
+					override func responseInvalidDictionary(dictionary: AnyObject) throws{
+						//mock the throwing out
+						return
+					}
+				}
+				
+				it("should succeed with invalid json if the error controller handles the error") {
+
+					let invalidDict = ["wrong": "json"]
+					let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
+
+					let request2 = RequestController<MockEntityWithErrorController>()
+
+					request2.success(data, completion: { (response: MockEntityWithErrorController) in
+						//
+						}, failure: { (error) in
+							XCTFail("Should not raise \(error)")
+					})
+
+					
+				}
 			}
 		}
 	}

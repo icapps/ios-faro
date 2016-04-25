@@ -35,6 +35,14 @@ class ExampleBaseModel: UniqueAble, ErrorControlable, Parsable {
 	static func rootKey() -> String? {
 		return "results"
 	}
+
+	func responseErrorController () -> ErrorController {
+		return ConcreteErrorController()
+	}
+
+	static func requestErrorController() -> ErrorController {
+		return ConcreteErrorController()
+	}
 }
 extension ExampleBaseModel: EnvironmentConfigurable {
 

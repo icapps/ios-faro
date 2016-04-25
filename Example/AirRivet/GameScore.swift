@@ -43,6 +43,16 @@ public class GameScore: NSObject, UniqueAble,  ErrorControlable, Parsable, Envir
 		}
 	}
 
+	//MARK: ErrorControlable
+	
+	public func responseErrorController () -> ErrorController {
+		return ConcreteErrorController()
+	}
+
+	public static func requestErrorController() -> ErrorController {
+		return ConcreteErrorController()
+	}
+
 	//MARK: EnvironmentConfigurable
 	public func contextPath() -> String {
 		return "GameScore"

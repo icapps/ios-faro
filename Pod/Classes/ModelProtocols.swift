@@ -15,6 +15,8 @@ A `RequestController` should be able to build up a request when your model objec
 
 /**
 React and/or solve error that could arrise while
+
+This error controller is used with the `RequestController`. You can inspect how error handling is expected to behave by looking at `RequestControllerSpec` in the tests of the Example project.
 */
 public protocol ErrorControlable {
 
@@ -28,20 +30,6 @@ public protocol ErrorControlable {
 	 - returns: By default an implementation of `ConcreteErrorController` is returned via a protocol extension
 	*/
 	static func requestErrorController() -> ErrorController
-}
-
-/**
-Default implementation for `ErrorControlalbe`
-*/
-public extension ErrorControlable {
-
-	func responseErrorController () -> ErrorController {
-		return ConcreteErrorController()
-	}
-
-	static func requestErrorController() -> ErrorController {
-		return ConcreteErrorController()
-	}
 }
 
 public protocol Parsable {
