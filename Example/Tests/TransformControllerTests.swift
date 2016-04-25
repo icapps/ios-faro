@@ -112,7 +112,7 @@ class TransformControllerTests: XCTestCase {
         }
     }
     
-    //MARK: objectsDataToConcreteObjects
+    //MARK: transform
     
     func testObjectDataToConcreteObjects() {
         let transformController = TransformController()
@@ -125,7 +125,7 @@ class TransformControllerTests: XCTestCase {
         }
         
         do {
-            try transformController.objectsDataToConcreteObjects(data, completion: { (results:[ExampleBaseModel]) in
+            try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
                 XCTAssertTrue(results.count == 3)
                 XCTAssertEqual(results[0].objectId, "123a")
                 XCTAssertEqual(results[1].objectId, "456b")
@@ -148,7 +148,7 @@ class TransformControllerTests: XCTestCase {
         }
         
         do {
-            try transformController.objectsDataToConcreteObjects(data, rootKey:"items", completion: { (results:[ExampleBaseModel]) in
+            try transformController.transform(data, rootKey:"items", completion: { (results:[ExampleBaseModel]) in
                 XCTAssertTrue(results.count == 3)
                 XCTAssertEqual(results[0].objectId, "123a")
                 XCTAssertEqual(results[1].objectId, "456b")
@@ -171,7 +171,7 @@ class TransformControllerTests: XCTestCase {
         }
         
         do {
-            try transformController.objectsDataToConcreteObjects(data, completion: { (results:[ExampleBaseModel]) in
+            try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
                 XCTAssertTrue(results.count == 1)
                 XCTAssertEqual(results[0].objectId, "123456ABCdef")
             })
@@ -188,7 +188,7 @@ class TransformControllerTests: XCTestCase {
         var random = NSInteger(arc4random_uniform(99) + 1)
         let data = NSData(bytes: &random, length: 3)
         
-        XCTAssertThrowsError(try transformController.objectsDataToConcreteObjects(data, completion: { (results:[ExampleBaseModel]) in
+        XCTAssertThrowsError(try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
             XCTFail("transformation of invalid json data should not result in a model object")
         }), "transformation of invalid json data should throw an error") { (error) in
             guard let thrownError = error as? TransformError else {

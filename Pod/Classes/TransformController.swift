@@ -45,7 +45,7 @@ public class TransformController {
 	- returns: via the completion block an array of parsed objects of `Type`.
 	*/
 
-    public func objectsDataToConcreteObjects<Type: Parsable>(data: NSData, rootKey: String = "results", completion:([Type])->()) throws{
+    public func transform<Type: Parsable>(data: NSData, rootKey: String = "results", completion:([Type])->()) throws{
         do {
             let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
             if let array = json[rootKey] as? [[String:AnyObject]] {
