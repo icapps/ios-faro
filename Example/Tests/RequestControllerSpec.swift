@@ -107,6 +107,11 @@ class RequestControllerSpec: QuickSpec {
 							XCTFail("Should not raise \(error)")
 					})
 
+					//TODO: See if you can parse from invalid data to the objects you want. 
+					//1. An error happens
+					//2. Errors in the dictionary are removed
+					//3. The parsing is continued
+					//4. The correct objects are returned.
 					
 				}
 			}
