@@ -120,7 +120,7 @@ public class Air{
 	private class func mockOrPerform <Type: ModelProtocol> (mockUrl: String, request: NSURLRequest,
 	                                  environment: protocol<Environment, Mockable, Transformable>,
 	                                  responseController: ResponseController, session: NSURLSession,
-	                                  succeed:(response: [Type])->(), fail:((ResponseError)->())? = nil) throws {
+	                                  succeed:(response: [Type])->(), fail:((ResponseError)->())?) throws {
 		guard !environment.shouldMock() else {
 			try mockDataFromUrl(mockUrl, transformController: environment.transformController(), responseController: responseController, succeed: succeed, fail: fail)
 			return
@@ -132,7 +132,7 @@ public class Air{
 	private class func mockOrPerform <Type: ModelProtocol> (mockUrl: String, request: NSURLRequest,
 	                                  environment: protocol<Environment, Mockable, Transformable>,
 	                                  responseController: ResponseController, session: NSURLSession,
-	                                  succeed:(response: Type)->(), fail:((ResponseError)->())? = nil) throws {
+	                                  succeed:(response: Type)->(), fail:((ResponseError)->())?) throws {
 		guard !environment.shouldMock() else {
 			try mockDataFromUrl(mockUrl, transformController: environment.transformController(), responseController: responseController, succeed: succeed, fail: fail)
 			return
@@ -142,13 +142,13 @@ public class Air{
 	}
 
 	private class func mockDataFromUrl <Type: ModelProtocol> (url: String, transformController: TransformController, responseController: ResponseController,
-	                                    succeed:(response: [Type])->(), fail:((ResponseError)->())? = nil ) throws {
+	                                    succeed:(response: [Type])->(), fail:((ResponseError)->())? ) throws {
 		let data = try dataAtUrl(url, transformController: transformController)
 		responseController.respond(data, succeed: succeed, fail: fail)
 	}
 
 	private class func mockDataFromUrl <Type: ModelProtocol> (url: String, transformController: TransformController, responseController: ResponseController,
-	                                    succeed:(response: Type)->(), fail:((ResponseError)->())? = nil ) throws {
+	                                    succeed:(response: Type)->(), fail:((ResponseError)->())?) throws {
 		let data = try dataAtUrl(url, transformController: transformController)
 		responseController.respond(data, succeed: succeed, fail: fail)
 	}
