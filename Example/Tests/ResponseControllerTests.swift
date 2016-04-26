@@ -9,6 +9,8 @@
 import XCTest
 @testable import AirRivet
 
+
+//TODO: Make them work
 //class DummyClass:ErrorControlable, Parsable {
 //    
 //    //MARK: Parsable

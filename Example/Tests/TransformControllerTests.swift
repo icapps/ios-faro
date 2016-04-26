@@ -10,7 +10,7 @@ import XCTest
 @testable import AirRivet
 
 //TODO: convert to Nimble
-class ExampleBaseModel: UniqueAble, ErrorControlable, Parsable {
+class ExampleBaseModel: UniqueAble, Mitigatable, Parsable {
     var objectId: String?
 
 	required init (){

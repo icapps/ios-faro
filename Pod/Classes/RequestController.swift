@@ -1,7 +1,7 @@
 import Foundation
 
 
-public typealias ModelProtocol = protocol<UniqueAble, EnvironmentConfigurable, Parsable, ErrorControlable>
+public typealias ModelProtocol = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable>
 
 /** 
 RequestController to handle interactions with a model of a specific Type.
@@ -17,7 +17,7 @@ You can retreive a single instance or an array of objects
 The response controllers does the actual parsing. In theory you can parse any kind of reponse, for now we only support JSON.
 
 ## Pass errors to the errorController of `Type`
-Any type can decide to handle error in a specific way that is suited for that `Type` by conforming to protocol `ErrorControlable`.
+Any type can decide to handle error in a specific way that is suited for that `Type` by conforming to protocol `Mitigatable`.
 
 You can inspect how error handling is expected to behave by looking at `RequestControllerSpec` in the tests of the Example project.
 

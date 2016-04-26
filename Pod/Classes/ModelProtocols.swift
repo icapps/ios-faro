@@ -14,11 +14,11 @@ A `RequestController` should be able to build up a request when your model objec
 */
 
 /**
-React and/or solve errors that could arrise while the entity that conforms to `ErrorControlable` is handeled.
+React and/or solve errors that could arrise while the entity that conforms to `Mitigatable` is handeled.
 
-This `Mitigator is used with the `RequestController`. You can inspect how error handling is expected to behave by looking at `RequestControllerSpec` in the tests of the Example project.
+You can inspect how error mitigation is expected to behave by looking at `RequestControllerSpec` in the tests of the Example project.
 */
-public protocol ErrorControlable {
+public protocol Mitigatable {
 
 	/**
 	By returning an error controller you can handle parsing errors.
