@@ -18,12 +18,13 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
 		do {
-			try request.retrieve({ (response: [GameScore]) in
+			try request.retrieve(completion: { (response: [GameScore]) in
 				print(response)
-				dispatch.async.main({ 
+				dispatch.async.main({
 					self.label.text = "Received \(response.count) objects"
 				})
 			})
+
 		}catch {
 			print("-------Error with request------")
 		}

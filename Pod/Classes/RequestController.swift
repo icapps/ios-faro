@@ -28,8 +28,6 @@ You can also mock this class via its Type. Take a look at the `GameScoreTest` in
 */
 public class RequestController{
 	private let responseController: ResponseController
-	private let sessionConfig: NSURLSessionConfiguration
-	private let session: NSURLSession
 
 	/**
 	Initialization
@@ -39,8 +37,6 @@ public class RequestController{
 	*/
 	public init(responseController: ResponseController = ResponseController()) {
 		self.responseController = responseController
-		sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
-		session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
 	}
 
 	//MARK: - Save
@@ -48,11 +44,14 @@ public class RequestController{
  Save a single item or `Type`. Completion block return on a background queue!
 	
 	- parameter body: the Type object is converted to JSON and send to the server.
+	- parameter session : default NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()
 	- parameter completion: closure is called when service request successfully returns
 	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
+
 	- throws : TODO
 */
-	public func save <Type: ModelProtocol>  (body: Type, completion:(response: Type)->(), failure:((ResponseError) ->())? = nil) throws {
+	public func save <Type: ModelProtocol>  (body: Type, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
+	                  completion:(response: Type)->(), failure:((ResponseError) ->())? = nil) throws {
 		let entity = Type()
 		let environment = Type().environment()
 		let request = environment.request
@@ -75,7 +74,7 @@ public class RequestController{
 			completion(response: body)
 			return
 		}
-		
+
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			guard error == nil else {
 				let mitigator = self.responseController.mitigator(Type())
@@ -98,7 +97,8 @@ public class RequestController{
 	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
 	- throws :
 	*/
-	public func retrieve<Type: ModelProtocol> (completion:(response: [Type])->(), failure:((ResponseError)->())? = nil) throws{
+	public func retrieve<Type: ModelProtocol> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
+		completion:(response: [Type])->(), failure:((ResponseError)->())? = nil) throws{
 		let entity = Type()
 		let environment = Type().environment()
 		environment.request.HTTPMethod = "GET"
@@ -135,7 +135,8 @@ public class RequestController{
 	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
 	- throws : TODO
 	*/
-	public func retrieve <Type: ModelProtocol> (objectId:String, completion:(response: Type)->(),failure:((ResponseError)->())? = nil) throws{
+	public func retrieve <Type: ModelProtocol> (objectId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
+	                      completion:(response: Type)->(),failure:((ResponseError)->())? = nil) throws{
 		let entity = Type()
 		let environment = Type().environment()
 		let request = environment.request

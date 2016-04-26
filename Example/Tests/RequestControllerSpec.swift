@@ -38,16 +38,16 @@ class RequestControllerSpec: QuickSpec {
 	override func spec() {
 		describe("Error cases") {
 			let failingCompletion = { (response: [MockEntity]) in
-				XCTFail() // we should not complete
-			}
-			let successFailure = { (error: ResponseError) in
-				//Success no assert
 			}
 
 			it("should fail when contextPaht does not exist") {
-				expect { try RequestController().retrieve(failingCompletion, failure: successFailure) }.to(throwError(closure: { (error) in
+				expect {
+					try RequestController().retrieve(completion: { (response: [MockEntity]) in
+						XCTFail() // we should not complete
+					})
+				}.to(throwError { (error) in
 					expect(error).to(matchError(ResponseError.InvalidResponseData))
-				}))
+				})
 			}
 
 			it("should fail when JSON is invalid") {
