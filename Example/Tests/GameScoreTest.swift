@@ -31,24 +31,21 @@ class GameScoreSpec: QuickSpec {
 
 
 			it ("Should be synchronous because we implement the Mockable protocol") {
-				var result = [MockGameScore]()
-				try! RequestController().retrieve({ (response) in
-					result = response
+
+				try! RequestController().retrieve(completion: { (response: [MockGameScore]) in
+					expect(response).to(haveCount(5))
 				})
-				expect(result).to(haveCount(5))
 			}
 
 			it("all gamescores should be parsed", closure: {
-				var result = [MockGameScore]()
 				let expected = ["Bob", "Daniel", "Hans", "Stijn", "Jelle"]
-				try! RequestController().retrieve({ (response) in
-					result = response
-
+				try! RequestController().retrieve(completion: { (response: [MockGameScore]) in
+					for i in 0..<response.count {
+						let gameScore = response[i]
+						expect(gameScore.playerName).to(equal(expected[i]))
+					}
 				})
-				for i in 0..<result.count {
-					let gameScore = result[i]
-					expect(gameScore.playerName).to(equal(expected[i]))
-				}
+
 			})
             it("save succeeds by mocking") {
 
