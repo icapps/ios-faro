@@ -1,11 +1,3 @@
-//
-//  RequestControllerSpec.swift
-//  AirRivet
-//
-//  Created by Stijn Willems on 25/04/16.
-//  Copyright © 2016 CocoaPods. All rights reserved.
-//
-
 import Quick
 import Nimble
 

@@ -10,13 +10,13 @@ import Foundation
 
 
 /**
-A `RequestController` should be able to build up a request when your model object complies to the protocols  below.
+A `Air` should be able to build up a request when your model object complies to the protocols  below.
 */
 
 /**
 React and/or solve errors that could arrise while the entity that conforms to `Mitigatable` is handeled.
 
-You can inspect how error mitigation is expected to behave by looking at `RequestControllerSpec` in the tests of the Example project.
+You can inspect how error mitigation is expected to behave by looking at `AirSpec` in the tests of the Example project.
 */
 public protocol Mitigatable : class {
 

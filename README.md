@@ -12,46 +12,31 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ### Swift
 ```swift
-import UIKit
 import AirRivet
 
-class ViewController: UIViewController {
-	let requestController = RequestController<GameScore>()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-		do {
-			try requestController.retrieve({ (response) in
-				print(response)
-			})
-		}catch {
-			print("-------Error with request------")
-		}
-
-    }
+do {
+	try Air.retrieve({ (response) in
+	print(response)
+})
+}catch {
+	print("💣Error with request construction: \(error)💣")
 }
 ```
 ### Objective-C
 ```objective-C
-#import "ICAOBJCViewController.h"
 /**
  In build settings look at the Module Identifier. This is the one you should use to import swift files from the same target.
  */
 #import "AirRivet_Example-Swift.h"
 
-@implementation ICAOBJCViewController
+GameScoreController * controller = [[GameScoreController alloc] init];
 
-- (void)viewDidLoad {
-	[ super viewDidLoad];
-	GameScoreController * controller = [[GameScoreController alloc] init];
+[controller retrieve:^(NSArray<GameScore *> * _Nonnull response) {
+	NSLog(@"%@", response);
+} failure:^(NSError * _Nonnull error) {
+	NSLog(@"%@", error);
+}];
 
-	[controller retrieve:^(NSArray<GameScore *> * _Nonnull response) {
-		NSLog(@"%@", response);
-	} failure:^(NSError * _Nonnull error) {
-		NSLog(@"%@", error);
-	}];
-}
 @end
 ```
 > *See "(project root)/Example" *
