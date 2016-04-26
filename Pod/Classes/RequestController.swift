@@ -26,7 +26,7 @@ You can inspect how error handling is expected to behave by looking at `RequestC
 You can also mock this class via its Type. Take a look at the `GameScoreTest` in example to know how.
 
 */
-public class RequestController <Type: ModelProtocol> {
+public class RequestController{
 	private let responseController: ResponseController
 	private let sessionConfig: NSURLSessionConfiguration
 	private let session: NSURLSession
@@ -52,7 +52,7 @@ public class RequestController <Type: ModelProtocol> {
 	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
 	- throws : TODO
 */
-	public func save(body: Type, completion:(response: Type)->(), failure:((ResponseError) ->())? = nil) throws {
+	public func save <Type: ModelProtocol>  (body: Type, completion:(response: Type)->(), failure:((ResponseError) ->())? = nil) throws {
 		let entity = Type()
 		let environment = Type().environment()
 		let request = environment.request
@@ -60,14 +60,14 @@ public class RequestController <Type: ModelProtocol> {
 		request.HTTPMethod = "POST"
 
 		guard let bodyObject = body.toDictionary() else {
-			try Type.requestErrorController().requestBodyError()
+			try Type.requestMitigator().requestBodyError()
 			return
 		}
 
 		do {
 			request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(bodyObject, options: .PrettyPrinted)
 		}catch {
-			try Type.requestErrorController().requestBodyError()
+			try Type.requestMitigator().requestBodyError()
 		}
 
 		guard !environment.shouldMock() else {
@@ -78,7 +78,8 @@ public class RequestController <Type: ModelProtocol> {
 		
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			guard error == nil else {
-				self.fail(error!, failure: failure)
+				let mitigator = self.responseController.mitigator(Type())
+				self.fail(error!, failure: failure , mitigator: mitigator)
 				return
 			}
 			self.succeed(data, response: response, body: body, completion: completion, failure: failure)
@@ -97,12 +98,12 @@ public class RequestController <Type: ModelProtocol> {
 	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
 	- throws :
 	*/
-	public func retrieve(completion:(response: [Type])->(), failure:((ResponseError)->())? = nil) throws{
+	public func retrieve<Type: ModelProtocol> (completion:(response: [Type])->(), failure:((ResponseError)->())? = nil) throws{
 		let entity = Type()
 		let environment = Type().environment()
 		environment.request.HTTPMethod = "GET"
 
-		let errorController = Type.requestErrorController()
+		let errorController = Type.requestMitigator()
 
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
@@ -115,7 +116,8 @@ public class RequestController <Type: ModelProtocol> {
 
 		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-				self.fail(error, failure: failure)
+				let mitigator = self.responseController.mitigator(Type())
+				self.fail(error, failure: failure, mitigator: mitigator)
 			}else {
 				self.succeed(data, response: response, completion: completion, failure: failure)
 			}
@@ -133,16 +135,17 @@ public class RequestController <Type: ModelProtocol> {
 	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
 	- throws : TODO
 	*/
-	public func retrieve(objectId:String, completion:(response: Type)->(),failure:((ResponseError)->())? = nil) throws{
+	public func retrieve <Type: ModelProtocol> (objectId:String, completion:(response: Type)->(),failure:((ResponseError)->())? = nil) throws{
 		let entity = Type()
 		let environment = Type().environment()
 		let request = environment.request
 		request.HTTPMethod = "GET"
-		let errorController = Type.requestErrorController()
+		let mitigator = Type.requestMitigator()
 
 
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
+			print("🤔 Mocking (\(Type.self)) with contextPath: \(Type().contextPath())")
 			succeed(try mockDataAtUrl(url, transformController: environment.transformController()),
 			       response: nil, body: nil,
 			       completion: completion, failure: failure)
@@ -153,7 +156,8 @@ public class RequestController <Type: ModelProtocol> {
 
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-				self.fail(error, failure: failure)
+				let mitigator = self.responseController.mitigator(Type())
+				self.fail(error, failure: failure, mitigator: mitigator)
 			}else {
 				self.succeed(data, response: response, completion: completion, failure: failure)
 			}
@@ -163,7 +167,6 @@ public class RequestController <Type: ModelProtocol> {
 	}
 
 	private func mockDataAtUrl(url: String, transformController: TransformController) throws -> NSData?  {
-		print("🤔 Mocking (\(Type.self)) with contextPath: \(Type().contextPath())")
 		guard let
 			fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue),
 			data = NSData(contentsOfURL: fileURL) else {
@@ -181,7 +184,7 @@ public class RequestController <Type: ModelProtocol> {
 	We have to do this until apple provides a data task that can handle throws in its closures.
 	*/
 
-	func succeed(data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: Type)->(), failure:((ResponseError) ->())?) {
+	func succeed<Type: ModelProtocol> (data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: Type)->(), failure:((ResponseError) ->())?) {
 		let entity  = Type()
 		let environment = entity.environment()
 		let errorController = entity.responseMitigator()
@@ -193,7 +196,7 @@ public class RequestController <Type: ModelProtocol> {
 		}
 	}
 
-	func succeed(data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: [Type])->(), failure:((ResponseError) ->())?) {
+	func succeed<Type: ModelProtocol> (data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: [Type])->(), failure:((ResponseError) ->())?) {
 		let entity  = Type()
 		let environment = entity.environment()
 		let errorController = entity.responseMitigator()
@@ -205,9 +208,8 @@ public class RequestController <Type: ModelProtocol> {
 		}
 	}
 
-	func fail(taskError: NSError ,failure:((ResponseError) ->())?) {
+	func fail(taskError: NSError ,failure:((ResponseError) ->())?, mitigator: ResponsMitigatable) {
 		print("---Error request failed with error: \(taskError)----")
-		let mitigator = responseController.mitigator(Type())
 		do {
 			try mitigator.requestResponseError(taskError)
 		}catch {

@@ -18,19 +18,19 @@ React and/or solve errors that could arrise while the entity that conforms to `M
 
 You can inspect how error mitigation is expected to behave by looking at `RequestControllerSpec` in the tests of the Example project.
 */
-public protocol Mitigatable {
+public protocol Mitigatable : class {
 
 	init ()
 	/**
 	By returning an error controller you can handle parsing errors.
 	- returns: By default an implementation of `DefaultMitigator` is returned via a protocol extension
 	*/
-	func responseMitigator () -> ResponsMitigatable
+	func responseMitigator() -> ResponsMitigatable
 	/**
 	If an error happens while constructing an entity this error controller could handle the error if needed.
 	 - returns: By default an implementation of `DefaultMitigator` is returned via a protocol extension
 	*/
-	static func requestErrorController() -> RequestMitigatable
+	static func requestMitigator()-> RequestMitigatable
 }
 
 public protocol Parsable {

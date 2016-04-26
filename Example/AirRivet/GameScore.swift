@@ -49,7 +49,7 @@ public class GameScore: NSObject, UniqueAble,  Mitigatable, Parsable, Environmen
 		return DefaultMitigator()
 	}
 
-	public static func requestErrorController() -> RequestMitigatable {
+	public static func requestMitigator() -> RequestMitigatable {
 		return DefaultMitigator()
 	}
 
