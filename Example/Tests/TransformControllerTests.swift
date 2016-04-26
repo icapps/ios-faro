@@ -85,44 +85,29 @@ class TransformControllerTests: QuickSpec {
                 })
                 expect(result.objectId).to(equal("123456ABCdef"))
             }
+            
+            let inputModel : ExampleBaseModel = ExampleBaseModel()
+            it("should not return error at parseFromDict"){
+                expect{ try inputModel.parseFromDict(["identifier" : "test123"])}.notTo(throwError())
+            }
+            
+            
+            it("should return correct objectId at transform with body"){
+                let transformController = TransformController()
+                var data = NSData()
+                expect {try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())
+                
+                var result = ExampleBaseModel()
+                try! transformController.transform(data, body: inputModel, completion: {
+                    (item) in
+                    result = item
+                })
+                expect(result.objectId).to(equal("123456ABCdef"))
+            }
         }
     }
+}
 
-//    func testObjectDataToConcreteObjectNoExistingModel() {
-//        let transformController = TransformController()
-//        
-//		guard let data = loadDataFromUrl("exampleBaseModel") else {
-//			return
-//		}
-//        
-//        do {
-//            try transformController.transform(data, completion: { (model:ExampleBaseModel) in
-//                XCTAssertEqual(model.objectId, "123456ABCdef")
-//            })
-//        }
-//        catch {
-//            XCTFail("transformation should not throw an error")
-//        }
-//    }
-//    
-//    func testObjectDataToConcreteObjectWithExistingModel() {
-//        let transformController = TransformController()
-//        let inputModel:ExampleBaseModel = ExampleBaseModel()
-//		try! inputModel.parseFromDict( ["identifier":"test123"])
-//        
-//		guard let data = loadDataFromUrl("exampleBaseModel") else {
-//			return
-//		}
-//
-//        do {
-//            try transformController.transform(data, body:inputModel, completion: { (model:ExampleBaseModel) in
-//                XCTAssertEqual(model.objectId, "123456ABCdef")
-//            })
-//        }
-//        catch {
-//            XCTFail("transformation should not throw an error")
-//        }
-//    }
 //    
 //    func testObjectDataToConcreteObjectInvalidJSONData() {
 //        let transformController = TransformController()
@@ -212,4 +197,4 @@ class TransformControllerTests: QuickSpec {
 //            XCTAssertEqual(nsError.code, 3840)
 //        }
 //    }
-}
+
