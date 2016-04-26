@@ -27,52 +27,51 @@ You can inspect how error handling is expected to behave by looking at `RequestC
 You can also mock this class via its Type. Take a look at the `GameScoreTest` in example to know how.
 
 */
-public class RequestController{
+public class Air{
 
 	//MARK: - Save
 /**
- Save a single item or `Type`. Completion block return on a background queue!
+ Save a single item or `Rivet`. Completion block return on a background queue!
 	
-	- parameter body: the Type object is converted to JSON and send to the server.
+	- parameter body: the object of type `Rivet` is converted to JSON and send to the server.
 	- parameter session : default NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()
-	- parameter completion: closure is called when service request successfully returns
-	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
-
+	- parameter succeed: closure is called when service request successfully returns
+	- parameter fail: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
 	- throws : TODO
 */
-	public  class func save <Type: ModelProtocol>  (body: Type, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
+	public  class func save <Rivet: ModelProtocol>  (body: Rivet, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
 	                  responseController: ResponseController = ResponseController(),
-	                  completion:(response: Type)->(), failure:((ResponseError) ->())? = nil) throws {
-		let entity = Type()
-		let environment = Type().environment()
+	                  succeed:(response: Rivet)->(), fail:((ResponseError) ->())? = nil) throws {
+		let entity = Rivet()
+		let environment = Rivet().environment()
 		let request = environment.request
 
 		request.HTTPMethod = "POST"
 
 		guard let bodyObject = body.toDictionary() else {
-			try Type.requestMitigator().requestBodyError()
+			try Rivet.requestMitigator().requestBodyError()
 			return
 		}
 
 		do {
 			request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(bodyObject, options: .PrettyPrinted)
 		}catch {
-			try Type.requestMitigator().requestBodyError()
+			try Rivet.requestMitigator().requestBodyError()
 		}
 
 		guard !environment.shouldMock() else {
-			print("🤔 Mocking (\(Type.self)) is mocking saves")
-			completion(response: body)
+			print("🤔 Mocking (\(Rivet.self)) is mocking saves")
+			succeed(response: body)
 			return
 		}
 
 		let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
 			guard error == nil else {
-				let mitigator = responseController.mitigator(Type())
-				RequestController.fail(error!, failure: failure , mitigator: mitigator)
+				let mitigator = responseController.mitigator(Rivet())
+				Air.fail(error!, fail: fail, mitigator: mitigator)
 				return
 			}
-			RequestController.succeed(data, response: response, body: body, completion: completion, failure: failure)
+			Air.succeed(data, response: response, body: body, succeed: succeed, fail: fail)
 
 		})
 
@@ -90,7 +89,7 @@ public class RequestController{
 	*/
 	public class func retrieve<Type: ModelProtocol> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
 	                     responseController: ResponseController = ResponseController(),
-		completion:(response: [Type])->(), failure:((ResponseError)->())? = nil) throws{
+		succeed:(response: [Type])->(), fail:((ResponseError)->())? = nil) throws{
 		let entity = Type()
 		let environment = Type().environment()
 		environment.request.HTTPMethod = "GET"
@@ -99,9 +98,8 @@ public class RequestController{
 
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
-			RequestController.succeed(try mockDataAtUrl(url, transformController: environment.transformController()),
-					completion: completion,
-			        failure: failure)
+			Air.succeed(try mockDataAtUrl(url, transformController: environment.transformController()),
+			            succeed: succeed, fail: fail)
 
 			return
 		}
@@ -109,9 +107,9 @@ public class RequestController{
 		let task = session.dataTaskWithRequest(environment.request, completionHandler: { (data, response, error) -> Void in
 			if let error = error {
 				let mitigator = responseController.mitigator(Type())
-				RequestController.fail(error, failure: failure, mitigator: mitigator)
+				Air.fail(error, fail: fail, mitigator: mitigator)
 			}else {
-				RequestController.succeed(data, response: response, completion: completion, failure: failure)
+				Air.succeed(data, response: response, succeed: succeed, fail: fail)
 			}
 		})
 		
@@ -129,7 +127,7 @@ public class RequestController{
 	*/
 	public class func retrieve <Type: ModelProtocol> (objectId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
 	                      responseController: ResponseController = ResponseController(),
-	                      completion:(response: Type)->(),failure:((ResponseError)->())? = nil) throws{
+	                      succeed:(response: Type)->(),fail:((ResponseError)->())? = nil) throws{
 		let entity = Type()
 		let environment = Type().environment()
 		let request = environment.request
@@ -140,9 +138,8 @@ public class RequestController{
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
 			print("🤔 Mocking (\(Type.self)) with contextPath: \(Type().contextPath())")
-			RequestController.succeed(try mockDataAtUrl(url, transformController: environment.transformController()),
-			       response: nil, body: nil,
-			       completion: completion, failure: failure)
+			Air.succeed(try mockDataAtUrl(url, transformController: environment.transformController()),
+			       succeed: succeed, fail: fail)
 			
 			return
 		}
@@ -151,58 +148,56 @@ public class RequestController{
 		let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
 			if let error = error {
 				let mitigator = responseController.mitigator(Type())
-				RequestController.fail(error, failure: failure, mitigator: mitigator)
+				Air.fail(error, fail: fail, mitigator: mitigator)
 			}else {
-				RequestController.succeed(data, response: response, completion: completion, failure: failure)
+				Air.succeed(data, response: response, succeed: succeed, fail: fail)
 			}
 		})
 		
 		task.resume()
 	}
 
-	//MARK: Mocking
-
-	//MARK: Functions to split throws into failure closure
+	//MARK: ResponseHandler
 	/**
 	We have to do this until apple provides a data task that can handle throws in its closures.
 	*/
 
 	class func succeed<Type: ModelProtocol> (data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,
 	             responseController: ResponseController = ResponseController(),
-	             completion:(response: Type)->(), failure:((ResponseError) ->())?) {
+	             succeed:(response: Type)->(), fail:((ResponseError) ->())?) {
 		let entity  = Type()
 		let environment = entity.environment()
 		let errorController = entity.responseMitigator()
 
 		do {
-			try responseController.respond(environment, response:(data: data,urlResponse: response), body: body, completion: completion)
+			try responseController.respond(environment, response:(data: data,urlResponse: response), body: body, completion: succeed)
 		}catch {
-			RequestController.splitErrorType(error, failure: failure, mitigator: errorController)
+			Air.splitErrorType(error, failure: fail, mitigator: errorController)
 		}
 	}
 
-	class func succeed<Type: ModelProtocol> (data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: [Type])->(),
-	             responseController: ResponseController = ResponseController(),
-	             failure:((ResponseError) ->())?) {
+	class func succeed<Type: ModelProtocol> (data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,
+	                    responseController: ResponseController = ResponseController(),
+	                   succeed:(response: [Type])->(), fail:((ResponseError) ->())?) {
 		let entity  = Type()
 		let environment = entity.environment()
 		let errorController = entity.responseMitigator()
 
 		do {
-			try responseController.respond(environment, response: (data: data, urlResponse: response), completion: completion)
+			try responseController.respond(environment, response: (data: data, urlResponse: response), completion: succeed)
 		}catch {
-			RequestController.splitErrorType(error, failure: failure, mitigator: errorController)
+			Air.splitErrorType(error, failure: fail, mitigator: errorController)
 		}
 	}
 
-	class func fail(taskError: NSError ,failure:((ResponseError) ->())?, mitigator: ResponsMitigatable) {
+	class func fail(taskError: NSError ,fail:((ResponseError) ->())?, mitigator: ResponsMitigatable) {
 		print("---Error request failed with error: \(taskError)----")
 		do {
 			try mitigator.requestResponseError(taskError)
 		}catch {
-			failure?(ResponseError.ResponseError(error: taskError))
+			fail?(ResponseError.ResponseError(error: taskError))
 		}
-		failure?(ResponseError.ResponseError(error: taskError))
+		fail?(ResponseError.ResponseError(error: taskError))
 	}
 
 	private class func splitErrorType(error: ErrorType, failure: ((ResponseError) ->())?, mitigator: ResponsMitigatable) {

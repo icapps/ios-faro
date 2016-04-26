@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
 		do {
-			try RequestController.retrieve(completion: { (response: [GameScore]) in
+			try Air.retrieve(succeed: { (response: [GameScore]) in
 				print(response)
 				dispatch.async.main({
 					self.label.text = "Received \(response.count) objects"

@@ -87,7 +87,7 @@
 		BA7362188C5D17958A5080EE299A90FC /* BeginWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94C50A90B1870905CCE35F998288E99 /* BeginWith.swift */; };
 		BBF88FA3F28C0906DBB78314A8E50A01 /* AssertionRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1474DB694C67A1CABB7194D53E6B727 /* AssertionRecorder.swift */; };
 		BEA76FA499D5899BD98DBD891FF921D4 /* SatisfyAnyOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1CBF7E0E8ADEA394A70089D7FF3009 /* SatisfyAnyOf.swift */; };
-		C6CCB3FCEA43DDC1BE108039C53627EE /* RequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5071688B68ECF7727429D7C3C149AB /* RequestController.swift */; };
+		C6CCB3FCEA43DDC1BE108039C53627EE /* Air.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5071688B68ECF7727429D7C3C149AB /* Air.swift */; };
 		C755136BFCDFA000C44C8BBCA065E4BE /* HaveCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BD573AFAA7965C23360DBCA4BB88E6 /* HaveCount.swift */; };
 		C81BEDE79545C013BEBBA0363480FD47 /* DSL+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D87375EFC51405B2C84DC11FA00548F /* DSL+Wait.swift */; };
 		CB0651B735E6006FF2E04D42646D6C8B /* NSString+QCKSelectorName.h in Headers */ = {isa = PBXBuildFile; fileRef = 89C775E533140093DB63E802364B3E94 /* NSString+QCKSelectorName.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -262,7 +262,7 @@
 		B43FA1D81CC657D89462331BCCD5E310 /* BeLessThanOrEqual.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeLessThanOrEqual.swift; path = Sources/Nimble/Matchers/BeLessThanOrEqual.swift; sourceTree = "<group>"; };
 		B95BBE44C17F47EB632848A1BFFE75CC /* Pods-AirRivet_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AirRivet_Example.release.xcconfig"; sourceTree = "<group>"; };
 		B9C6B0239F0F891F694575875BB7775A /* Pods-AirRivet_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AirRivet_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		BA5071688B68ECF7727429D7C3C149AB /* RequestController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RequestController.swift; sourceTree = "<group>"; };
+		BA5071688B68ECF7727429D7C3C149AB /* Air.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Air.swift; sourceTree = "<group>"; };
 		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		BFA23D56E5600B4488DBCBC854433373 /* BeGreaterThanOrEqualTo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeGreaterThanOrEqualTo.swift; path = Sources/Nimble/Matchers/BeGreaterThanOrEqualTo.swift; sourceTree = "<group>"; };
 		BFBFEF4A9D6B6E9AB4F11211B430A31B /* QuickSelectedTestSuiteBuilder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = QuickSelectedTestSuiteBuilder.swift; path = Sources/Quick/QuickSelectedTestSuiteBuilder.swift; sourceTree = "<group>"; };
@@ -365,7 +365,7 @@
 				1A9F651D0C65C35EBBB562F949144498 /* Environment.swift */,
 				260F288C6DBB535C9E019E78BEE589A3 /* ErrorMitigator.swift */,
 				332064BB1EEAAD2B907C36C293F12BE5 /* ModelProtocols.swift */,
-				BA5071688B68ECF7727429D7C3C149AB /* RequestController.swift */,
+				BA5071688B68ECF7727429D7C3C149AB /* Air.swift */,
 				C0C6498C7CF0EB65CD7CC0954B2C7D92 /* ResponseController.swift */,
 				761E67B6D3162AE93DD30F6CC0C6F78E /* TransformController.swift */,
 			);
@@ -860,7 +860,7 @@
 				329811B0751BCB4F2E2223F9A84BD90B /* Environment.swift in Sources */,
 				34B8EAFE30DC913A32EA00758DD66DDD /* ErrorMitigator.swift in Sources */,
 				8D90839B5424FD2441C67492B42E2A96 /* ModelProtocols.swift in Sources */,
-				C6CCB3FCEA43DDC1BE108039C53627EE /* RequestController.swift in Sources */,
+				C6CCB3FCEA43DDC1BE108039C53627EE /* Air.swift in Sources */,
 				D5985BFCBDD2F4E1B5C7B511F3F1BB98 /* ResponseController.swift in Sources */,
 				EBCF5461ACE9CDB1FE6F08A81367D0A2 /* TransformController.swift in Sources */,
 			);

@@ -33,7 +33,7 @@ class MockEntity: GameScore {
 }
 
 
-class RequestControllerSpec: QuickSpec {
+class AirSpec: QuickSpec {
 
 	override func spec() {
 		describe("Error cases") {
@@ -42,7 +42,7 @@ class RequestControllerSpec: QuickSpec {
 
 			it("should fail when contextPaht does not exist") {
 				expect {
-					try RequestController.retrieve(completion: { (response: [MockEntity]) in
+					try Air.retrieve(succeed: { (response: [MockEntity]) in
 						XCTFail() // we should not complete
 					})
 				}.to(throwError { (error) in
@@ -55,7 +55,7 @@ class RequestControllerSpec: QuickSpec {
 				let invalidDict = ["wrong": "json"]
 				let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
 
-				RequestController.succeed(data, completion: failingCompletion, failure: { (error) in
+				Air.succeed(data, succeed: failingCompletion, fail: { (error) in
 
 					switch error {
 					case ResponseError.InvalidDictionary(let anyThing):
@@ -95,9 +95,9 @@ class RequestControllerSpec: QuickSpec {
 					let invalidDict = ["wrong": "json"]
 					let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
 
-					RequestController.succeed(data, completion: { (response: MockEntityWithErrorMitigator) in
+					Air.succeed(data, succeed: { (response: MockEntityWithErrorMitigator) in
 						//TODO:
-						}, failure: { (error) in
+						}, fail: { (error) in
 							XCTFail("Should not raise \(error)")
 					})
 

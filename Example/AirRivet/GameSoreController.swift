@@ -26,9 +26,9 @@ public class GameScoreController: NSObject {
 	
 	public func retrieve(completion:(response: [GameScore])->(), failure:((error: NSError)->())? = nil) {
 		do {
-			try RequestController.retrieve(completion: { (response: [GameScore]) in
+			try Air.retrieve(succeed: { (response: [GameScore]) in
 					completion(response: response)
-				}, failure: { (requestError) in
+				}, fail: { (requestError) in
 					if let failure = failure {
 						self.transferResponseErrorToNSErrorForError(requestError, failure: failure)
 					}
