@@ -6,7 +6,7 @@ An `ErrorMitigator` recieves errors that happen. Mitigate means ‘make (somethi
 
 So do that or rethrow what you cannot handle.
 */
-public protocol Mitigator: RequestErrorController, ResponseErrorController, TransformErrorController
+public protocol Mitigator: RequestMitigatable, ResponsMitigatable, TransformMitigatable
 {
 
 }
@@ -15,14 +15,14 @@ public protocol Mitigator: RequestErrorController, ResponseErrorController, Tran
  * This class is responsible to handle errors in general and in a type specific way.
  */
 
-public protocol RequestErrorController {
+public protocol RequestMitigatable {
     func requestBodyError() throws -> ()
     func requestAuthenticationError() throws -> ()
     func requestGeneralError() throws -> ()
     func requestResponseError(error: NSError?) throws -> ()
 }
 
-public protocol ResponseErrorController {
+public protocol ResponsMitigatable {
     func responseDataEmptyError() throws -> ()
     func responseInvalidError() throws -> ()
 	/**
@@ -31,7 +31,7 @@ public protocol ResponseErrorController {
 	func responseInvalidDictionary(dictionary: AnyObject) throws -> ()
 }
 
-public protocol TransformErrorController {
+public protocol TransformMitigatable {
 //    func transformInvalidObjectERror() throws -> ()
 //    func transformDictionayError(diction) throws -> ()
 }
