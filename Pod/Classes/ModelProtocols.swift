@@ -14,20 +14,20 @@ A `RequestController` should be able to build up a request when your model objec
 */
 
 /**
-React and/or solve error that could arrise while
+React and/or solve errors that could arrise while the entity that conforms to `ErrorControlable` is handeled.
 
-This error controller is used with the `RequestController`. You can inspect how error handling is expected to behave by looking at `RequestControllerSpec` in the tests of the Example project.
+This `Mitigator is used with the `RequestController`. You can inspect how error handling is expected to behave by looking at `RequestControllerSpec` in the tests of the Example project.
 */
 public protocol ErrorControlable {
 
 	/**
 	By returning an error controller you can handle parsing errors.
-	- returns: By default an implementation of `ConcreteErrorController` is returned via a protocol extension
+	- returns: By default an implementation of `DefaultMitigator` is returned via a protocol extension
 	*/
 	func responseErrorController() -> Mitigator
 	/**
 	If an error happens while constructing an entity this error controller could handle the error if needed.
-	 - returns: By default an implementation of `ConcreteErrorController` is returned via a protocol extension
+	 - returns: By default an implementation of `DefaultMitigator` is returned via a protocol extension
 	*/
 	static func requestErrorController() -> Mitigator
 }
