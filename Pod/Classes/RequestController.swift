@@ -208,7 +208,7 @@ public class RequestController <Type: ModelProtocol> {
 		}
 	}
 
-	func failureWithError(taskError: NSError ,failure:((ResponseError) ->())?, errorController: ErrorController) {
+	func failureWithError(taskError: NSError ,failure:((ResponseError) ->())?, errorController: ErrorMitigator) {
 		print("---Error request failed with error: \(taskError)----")
 		do {
 			try errorController.requestResponseError(taskError)
@@ -218,7 +218,7 @@ public class RequestController <Type: ModelProtocol> {
 		failure?(ResponseError.ResponseError(error: taskError))
 	}
 
-	private func splitErrorType(error: ErrorType, failure: ((ResponseError) ->())?, errorController: ErrorController) {
+	private func splitErrorType(error: ErrorType, failure: ((ResponseError) ->())?, errorController: ErrorMitigator) {
 
 		switch error {
 		case ResponseError.InvalidAuthentication:

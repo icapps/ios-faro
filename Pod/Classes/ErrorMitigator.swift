@@ -1,12 +1,15 @@
-//
-//  BaseModelError.swift
-//  Umbrella
-//
-//  Created by Stijn Willems on 29/11/15.
-//  Copyright © 2015 dooz. All rights reserved.
-//
-
 import Foundation
+
+
+/**
+An `ErrorMitigator` recieves errors that happen. Mitigate means ‘make (something bad) less severe'. 
+
+So do that or rethrow what you cannot handle.
+*/
+public protocol ErrorMitigator: RequestErrorController, ResponseErrorController, TransformErrorController
+{
+
+}
 
 /**
  * This class is responsible to handle errors in general and in a type specific way.
@@ -33,10 +36,7 @@ public protocol TransformErrorController {
 //    func transformDictionayError(diction) throws -> ()
 }
 
-public protocol ErrorController:RequestErrorController, ResponseErrorController, TransformErrorController
-{
-    
-}
+
 
 public enum RequestError: ErrorType {
 	case InvalidBody

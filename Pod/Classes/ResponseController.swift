@@ -40,7 +40,7 @@ public class ResponseController {
 }
 
 internal class ResponseControllerUtils {
-    class func checkStatusCodeAndData(response: (data: NSData?, urlResponse: NSURLResponse?), errorController: ErrorController) throws -> NSData? {
+    class func checkStatusCodeAndData(response: (data: NSData?, urlResponse: NSURLResponse?), errorController: ErrorMitigator) throws -> NSData? {
         if let httpResponse = response.urlResponse as? NSHTTPURLResponse {
             
             let statusCode = httpResponse.statusCode

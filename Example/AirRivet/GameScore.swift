@@ -45,12 +45,12 @@ public class GameScore: NSObject, UniqueAble,  ErrorControlable, Parsable, Envir
 
 	//MARK: ErrorControlable
 	
-	public func responseErrorController () -> ErrorController {
-		return ConcreteErrorController()
+	public func responseErrorController () -> ErrorMitigator {
+		return DefaultErrorMitigator()
 	}
 
-	public static func requestErrorController() -> ErrorController {
-		return ConcreteErrorController()
+	public static func requestErrorController() -> ErrorMitigator {
+		return DefaultErrorMitigator()
 	}
 
 	//MARK: EnvironmentConfigurable

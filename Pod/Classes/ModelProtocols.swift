@@ -24,12 +24,12 @@ public protocol ErrorControlable {
 	By returning an error controller you can handle parsing errors.
 	- returns: By default an implementation of `ConcreteErrorController` is returned via a protocol extension
 	*/
-	func responseErrorController() -> ErrorController
+	func responseErrorController() -> ErrorMitigator
 	/**
 	If an error happens while constructing an entity this error controller could handle the error if needed.
 	 - returns: By default an implementation of `ConcreteErrorController` is returned via a protocol extension
 	*/
-	static func requestErrorController() -> ErrorController
+	static func requestErrorController() -> ErrorMitigator
 }
 
 public protocol Parsable {

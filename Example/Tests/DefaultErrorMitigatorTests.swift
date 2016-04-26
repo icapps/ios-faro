@@ -11,11 +11,11 @@ import Quick
 import XCTest
 @testable import AirRivet
 
-class ConcreteErrorControllerSpec: QuickSpec {
+class DefaultErrorMitigatorSpec: QuickSpec {
 
 	override func spec () {
 		describe("Concrete ErrorController default behaviour") {
-			let errorController = ConcreteErrorController()
+			let errorController = DefaultErrorMitigator()
 
 			it("should throw Request Errors for mistakes in the request") {
 				expect { try errorController.requestBodyError() }.to(throwError(closure: { (error) in

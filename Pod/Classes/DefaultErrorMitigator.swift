@@ -1,14 +1,6 @@
-//
-//  ConcreteErrorController.swift
-//  Umbrella
-//
-//  Created by Stijn Willems on 30/11/15.
-//  Copyright © 2015 dooz. All rights reserved.
-//
-
 import Foundation
 
-public class ConcreteErrorController: ErrorController {
+public class DefaultErrorMitigator: ErrorMitigator {
 
 	public init () {
 		

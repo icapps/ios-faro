@@ -73,7 +73,7 @@ class RequestControllerSpec: QuickSpec {
 			}
 
 			context("Mocking the ErrorController"){
-				class MockEntityWithErrorController: GameScore {
+				class MockEntityWithErrorMitigator: GameScore {
 					override func environment() -> protocol<Environment, Mockable, Transformable> {
 						return Mock()
 					}
@@ -82,12 +82,12 @@ class RequestControllerSpec: QuickSpec {
 						throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
 					}
 
-					override func responseErrorController() -> ErrorController {
+					override func responseErrorController() -> ErrorMitigator {
 						return MockErrorController()
 					}
 				}
 
-				class MockErrorController: ConcreteErrorController {
+				class MockErrorController: DefaultErrorMitigator {
 					override func responseInvalidDictionary(dictionary: AnyObject) throws{
 						//mock the throwing out
 						return
@@ -99,9 +99,9 @@ class RequestControllerSpec: QuickSpec {
 					let invalidDict = ["wrong": "json"]
 					let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
 
-					let request2 = RequestController<MockEntityWithErrorController>()
+					let request2 = RequestController<MockEntityWithErrorMitigator>()
 
-					request2.success(data, completion: { (response: MockEntityWithErrorController) in
+					request2.success(data, completion: { (response: MockEntityWithErrorMitigator) in
 						//
 						}, failure: { (error) in
 							XCTFail("Should not raise \(error)")

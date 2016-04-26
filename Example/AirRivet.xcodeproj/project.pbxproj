@@ -14,7 +14,7 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		8267CF8A05CF0925DE7C4BFB /* Pods_AirRivet_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55D1E149225205C6E4B910A5 /* Pods_AirRivet_Tests.framework */; };
-		A4D85BC11CC8E00B0046AF29 /* ConcreteErrorControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BC01CC8E00B0046AF29 /* ConcreteErrorControllerTests.swift */; };
+		A4D85BC11CC8E00B0046AF29 /* DefaultErrorMitigatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BC01CC8E00B0046AF29 /* DefaultErrorMitigatorTests.swift */; };
 		A4D85BC41CC8FAB00046AF29 /* TransformControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BC31CC8FAB00046AF29 /* TransformControllerTests.swift */; };
 		A4D85BC91CC9106A0046AF29 /* exampleBaseModel.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */; };
 		A4D85BCB1CCA150F0046AF29 /* exampleBaseModelResultsArray.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */; };
@@ -60,7 +60,7 @@
 		6A2CB6D8A418713EAB4F9FF0 /* Pods-AirRivet_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirRivet_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AirRivet_Tests/Pods-AirRivet_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		714653C99B98D8A21123128F /* Pods-AirRivet_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirRivet_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AirRivet_Example/Pods-AirRivet_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		9B789678420428DC67D55427 /* Pods-AirRivet_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirRivet_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirRivet_Example/Pods-AirRivet_Example.release.xcconfig"; sourceTree = "<group>"; };
-		A4D85BC01CC8E00B0046AF29 /* ConcreteErrorControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcreteErrorControllerTests.swift; sourceTree = "<group>"; };
+		A4D85BC01CC8E00B0046AF29 /* DefaultErrorMitigatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultErrorMitigatorTests.swift; sourceTree = "<group>"; };
 		A4D85BC31CC8FAB00046AF29 /* TransformControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformControllerTests.swift; sourceTree = "<group>"; };
 		A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModel.json; sourceTree = "<group>"; };
 		A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArray.json; sourceTree = "<group>"; };
@@ -199,7 +199,7 @@
 		A4D85BC21CC8E0100046AF29 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				A4D85BC01CC8E00B0046AF29 /* ConcreteErrorControllerTests.swift */,
+				A4D85BC01CC8E00B0046AF29 /* DefaultErrorMitigatorTests.swift */,
 				A4D85BC31CC8FAB00046AF29 /* TransformControllerTests.swift */,
 				A4D85BD61CCA6AE60046AF29 /* ResponseControllerTests.swift */,
 				A4D85BD71CCA6AE60046AF29 /* ResponseControllerUtilsTests.swift */,
@@ -451,7 +451,7 @@
 			files = (
 				A4D85BDA1CCA6B450046AF29 /* ResponseControllerTests.swift in Sources */,
 				C0A3DB121CAEBBCA00978DBD /* GameScoreTest.swift in Sources */,
-				A4D85BC11CC8E00B0046AF29 /* ConcreteErrorControllerTests.swift in Sources */,
+				A4D85BC11CC8E00B0046AF29 /* DefaultErrorMitigatorTests.swift in Sources */,
 				C0A3DB0F1CAEBBB600978DBD /* Parse.swift in Sources */,
 				A4D85BC41CC8FAB00046AF29 /* TransformControllerTests.swift in Sources */,
 				A4D85BDB1CCA6B470046AF29 /* ResponseControllerUtilsTests.swift in Sources */,

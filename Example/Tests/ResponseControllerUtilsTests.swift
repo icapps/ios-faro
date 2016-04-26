@@ -9,7 +9,7 @@
 import XCTest
 @testable import AirRivet
 
-class DummyErrorController: ConcreteErrorController {
+class DummyErrorController: DefaultErrorMitigator {
     override func responseDataEmptyError() throws {
         throw ResponseError.InvalidResponseData
     }
@@ -30,7 +30,7 @@ class DummyErrorController: ConcreteErrorController {
 //TODO refactor to nimble
 class ResponseControllerUtilsTests: XCTestCase {
     
-    lazy var errorController:ErrorController = ConcreteErrorController()
+    lazy var errorController:ErrorMitigator = DefaultErrorMitigator()
 
     func testNoResponseNoError() {
         do {
