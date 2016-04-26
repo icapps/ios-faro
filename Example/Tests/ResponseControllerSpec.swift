@@ -15,18 +15,18 @@ class ResponseControllerSpec: QuickSpec {
 				let invalidDict = ["wrong": "json"]
 				let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
 
-//				ResponseController().respond(data, succeed: { (response: MockEntity) in
-//					XCTFail()
-//					}, fail: { (error) in
-//						switch error {
-//						case ResponseError.InvalidDictionary(let anyThing):
-//							let dictionary = anyThing as! [String: String]
-//							let key = dictionary["wrong"]
-//							expect(key).to(equal("json"))
-//						default:
-//							XCTFail("Wrong type of error")
-//						}
-//				})
+				ResponseController().respond(data, succeed: { (response: MockEntity) in
+					XCTFail()
+					}, fail: { (error) in
+						switch error {
+						case ResponseError.InvalidDictionary(let anyThing):
+							let dictionary = anyThing as! [String: String]
+							let key = dictionary["wrong"]
+							expect(key).to(equal("json"))
+						default:
+							XCTFail("Wrong type of error")
+						}
+				})
 			}
 
 			context("Mocking the Mitigator"){
@@ -56,11 +56,11 @@ class ResponseControllerSpec: QuickSpec {
 					let invalidDict = ["wrong": "json"]
 					let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
 
-//					ResponseController().respond(data, succeed: { (response: MockEntityWithErrorMitigator) in
-//						//TODO:
-//						}, fail: { (error) in
-//							XCTFail("Should not raise \(error)")
-//					})
+					ResponseController().respond(data, succeed: { (response: MockEntityWithErrorMitigator) in
+						//TODO:
+						}, fail: { (error) in
+							XCTFail("Should not raise \(error)")
+					})
 
 					//TODO: See if you can parse from invalid data to the objects you want.
 					//1. An error happens

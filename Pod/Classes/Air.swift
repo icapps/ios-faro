@@ -91,8 +91,6 @@ public class Air{
 		let environment = Type().environment()
 		environment.request.HTTPMethod = "GET"
 
-		let errorController = Type.requestMitigator()
-
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
 			let data = try dataAtUrl(url, transformController: environment.transformController())
@@ -123,8 +121,6 @@ public class Air{
 		let environment = Type().environment()
 		let request = environment.request
 		request.HTTPMethod = "GET"
-		let mitigator = Type.requestMitigator()
-
 
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
