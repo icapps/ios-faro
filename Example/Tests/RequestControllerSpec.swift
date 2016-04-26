@@ -42,7 +42,7 @@ class RequestControllerSpec: QuickSpec {
 
 			it("should fail when contextPaht does not exist") {
 				expect {
-					try RequestController().retrieve(completion: { (response: [MockEntity]) in
+					try RequestController.retrieve(completion: { (response: [MockEntity]) in
 						XCTFail() // we should not complete
 					})
 				}.to(throwError { (error) in

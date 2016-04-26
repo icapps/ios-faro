@@ -4,7 +4,8 @@ import Foundation
 public typealias ModelProtocol = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable>
 
 /** 
-RequestController to handle interactions with a model of a specific Type.
+RequestController to handle interactions with a model of a specific Type. It is intensionaly stateless.
+
 # Tasks
 
 ## Save
@@ -28,9 +29,6 @@ You can also mock this class via its Type. Take a look at the `GameScoreTest` in
 */
 public class RequestController{
 
-	public init() {
-	}
-
 	//MARK: - Save
 /**
  Save a single item or `Type`. Completion block return on a background queue!
@@ -42,7 +40,7 @@ public class RequestController{
 
 	- throws : TODO
 */
-	public func save <Type: ModelProtocol>  (body: Type, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
+	public  class func save <Type: ModelProtocol>  (body: Type, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
 	                  responseController: ResponseController = ResponseController(),
 	                  completion:(response: Type)->(), failure:((ResponseError) ->())? = nil) throws {
 		let entity = Type()
@@ -68,7 +66,7 @@ public class RequestController{
 			return
 		}
 
-		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
+		let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
 			guard error == nil else {
 				let mitigator = responseController.mitigator(Type())
 				RequestController.fail(error!, failure: failure , mitigator: mitigator)
@@ -90,7 +88,7 @@ public class RequestController{
 	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
 	- throws :
 	*/
-	public func retrieve<Type: ModelProtocol> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
+	public class func retrieve<Type: ModelProtocol> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
 	                     responseController: ResponseController = ResponseController(),
 		completion:(response: [Type])->(), failure:((ResponseError)->())? = nil) throws{
 		let entity = Type()
@@ -108,7 +106,7 @@ public class RequestController{
 			return
 		}
 
-		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
+		let task = session.dataTaskWithRequest(environment.request, completionHandler: { (data, response, error) -> Void in
 			if let error = error {
 				let mitigator = responseController.mitigator(Type())
 				RequestController.fail(error, failure: failure, mitigator: mitigator)
@@ -129,7 +127,7 @@ public class RequestController{
 	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
 	- throws : TODO
 	*/
-	public func retrieve <Type: ModelProtocol> (objectId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
+	public class func retrieve <Type: ModelProtocol> (objectId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
 	                      responseController: ResponseController = ResponseController(),
 	                      completion:(response: Type)->(),failure:((ResponseError)->())? = nil) throws{
 		let entity = Type()
@@ -150,7 +148,7 @@ public class RequestController{
 		}
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 
-		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
+		let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
 			if let error = error {
 				let mitigator = responseController.mitigator(Type())
 				RequestController.fail(error, failure: failure, mitigator: mitigator)
@@ -160,17 +158,6 @@ public class RequestController{
 		})
 		
 		task.resume()
-	}
-
-	private func mockDataAtUrl(url: String, transformController: TransformController) throws -> NSData?  {
-		guard let
-			fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue),
-			data = NSData(contentsOfURL: fileURL) else {
-				throw ResponseError.InvalidResponseData
-			return nil
-		}
-
-		return data
 	}
 
 	//MARK: Mocking
@@ -243,6 +230,15 @@ public class RequestController{
 			}
 		}
 	}
-	
+}
 
+func mockDataAtUrl(url: String, transformController: TransformController) throws -> NSData?  {
+	guard let
+		fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue),
+		data = NSData(contentsOfURL: fileURL) else {
+			throw ResponseError.InvalidResponseData
+			return nil
+	}
+
+	return data
 }

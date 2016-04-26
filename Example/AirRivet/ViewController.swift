@@ -12,13 +12,12 @@ import AirRivet
 class ViewController: UIViewController {
 	@IBOutlet var label: UILabel!
 
-	let request = RequestController() //TODO: remove the need for this owning thing.
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
 		do {
-			try request.retrieve(completion: { (response: [GameScore]) in
+			try RequestController.retrieve(completion: { (response: [GameScore]) in
 				print(response)
 				dispatch.async.main({
 					self.label.text = "Received \(response.count) objects"

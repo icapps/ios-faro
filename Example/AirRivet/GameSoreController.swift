@@ -26,7 +26,7 @@ public class GameScoreController: NSObject {
 	
 	public func retrieve(completion:(response: [GameScore])->(), failure:((error: NSError)->())? = nil) {
 		do {
-			try RequestController().retrieve(completion: { (response: [GameScore]) in
+			try RequestController.retrieve(completion: { (response: [GameScore]) in
 					completion(response: response)
 				}, failure: { (requestError) in
 					if let failure = failure {
