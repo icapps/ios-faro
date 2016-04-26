@@ -4,7 +4,9 @@ import Foundation
 public typealias ModelProtocol = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable>
 
 /** 
-RequestController to handle interactions with a model of a specific Type. It is intensionaly stateless.
+`Air` handles interactions with a model of a specific Type called `Rivet`. 
+
+This class is intensionaly stateless.
 
 # Tasks
 
@@ -31,13 +33,13 @@ public class Air{
 
 	//MARK: - Save
 /**
- Save a single item or `Rivet`. Completion block return on a background queue!
+ Save a single item of Type `Rivet`.  Closures are called on a background queue!
 	
 	- parameter body: the object of type `Rivet` is converted to JSON and send to the server.
 	- parameter session : default NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()
 	- parameter succeed: closure is called when service request successfully returns
-	- parameter fail: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
-	- throws : TODO
+	- parameter fail: closure called when something in the response fails.
+	- throws : Errors related to the request construction.
 */
 	public  class func save <Rivet: ModelProtocol>  (body: Rivet, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
 	                  responseController: ResponseController = ResponseController(),
@@ -81,11 +83,11 @@ public class Air{
 
 	//MARK: - Retrieve
 	/**
- Retreive a all items of `Type`. Completion block return on a background queue!
+ Retreive a all items of `Type`. Closures are called on a background queue!
 	
 	- parameter response: closure is called when service request successfully returns
-	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
-	- throws :
+	- parameter fail: closure called when something in the response fails.
+	- throws : Errors related to the request construction.
 	*/
 	public class func retrieve<Type: ModelProtocol> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
 	                     responseController: ResponseController = ResponseController(),
@@ -98,7 +100,7 @@ public class Air{
 
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
-			Air.succeed(try mockDataAtUrl(url, transformController: environment.transformController()),
+			Air.succeed(try dataAtUrl(url, transformController: environment.transformController()),
 			            succeed: succeed, fail: fail)
 
 			return
@@ -118,12 +120,12 @@ public class Air{
 	}
 	
 	/**
- Retreive a single item or `Type`. Completion block return on a background queue!
+ Retreive a single item or `Type`. Closures are called on a background queue!
 	
 	- parameter objectID: Something that uniquely defines the object you are asking for of `Type`
-	- parameter completion: closure is called when service request successfully returns
-	- parameter failure: optional parameter that we need to implement because the function `dataTaskWithRequest` on a `WebServiceSession` does not throw.
-	- throws : TODO
+	- parameter succeed: closure is called when service request successfully returns. !on a background queue
+	- parameter fail: closure called when something in the response fails.
+	- throws : Errors related to the request construction.
 	*/
 	public class func retrieve <Type: ModelProtocol> (objectId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
 	                      responseController: ResponseController = ResponseController(),
@@ -138,7 +140,7 @@ public class Air{
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
 			print("🤔 Mocking (\(Type.self)) with contextPath: \(Type().contextPath())")
-			Air.succeed(try mockDataAtUrl(url, transformController: environment.transformController()),
+			Air.succeed(try dataAtUrl(url, transformController: environment.transformController()),
 			       succeed: succeed, fail: fail)
 			
 			return
@@ -162,31 +164,31 @@ public class Air{
 	We have to do this until apple provides a data task that can handle throws in its closures.
 	*/
 
-	class func succeed<Type: ModelProtocol> (data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,
+	class func succeed<Rivet: ModelProtocol> (data: NSData?, response: NSURLResponse? = nil, body: Rivet? = nil,
 	             responseController: ResponseController = ResponseController(),
-	             succeed:(response: Type)->(), fail:((ResponseError) ->())?) {
-		let entity  = Type()
+	             succeed:(response: Rivet)->(), fail:((ResponseError) ->())?) {
+		let entity  = Rivet()
 		let environment = entity.environment()
 		let errorController = entity.responseMitigator()
 
 		do {
 			try responseController.respond(environment, response:(data: data,urlResponse: response), body: body, completion: succeed)
 		}catch {
-			Air.splitErrorType(error, failure: fail, mitigator: errorController)
+			Air.splitErrorType(error, fail: fail, mitigator: errorController)
 		}
 	}
 
-	class func succeed<Type: ModelProtocol> (data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,
+	class func succeed<Rivet: ModelProtocol> (data: NSData?, response: NSURLResponse? = nil, body: Rivet? = nil,
 	                    responseController: ResponseController = ResponseController(),
-	                   succeed:(response: [Type])->(), fail:((ResponseError) ->())?) {
-		let entity  = Type()
+	                   succeed:(response: [Rivet])->(), fail:((ResponseError) ->())?) {
+		let entity  = Rivet()
 		let environment = entity.environment()
 		let errorController = entity.responseMitigator()
 
 		do {
 			try responseController.respond(environment, response: (data: data, urlResponse: response), completion: succeed)
 		}catch {
-			Air.splitErrorType(error, failure: fail, mitigator: errorController)
+			Air.splitErrorType(error, fail: fail, mitigator: errorController)
 		}
 	}
 
@@ -200,34 +202,34 @@ public class Air{
 		fail?(ResponseError.ResponseError(error: taskError))
 	}
 
-	private class func splitErrorType(error: ErrorType, failure: ((ResponseError) ->())?, mitigator: ResponsMitigatable) {
+	private class func splitErrorType(error: ErrorType, fail: ((ResponseError) ->())?, mitigator: ResponsMitigatable) {
 
 		switch error {
 		case ResponseError.InvalidAuthentication:
 			do {
 				try mitigator.requestAuthenticationError()
 			}catch {
-				failure?(ResponseError.InvalidAuthentication)
+				fail?(ResponseError.InvalidAuthentication)
 			}
 		case ResponseError.InvalidDictionary(dictionary: let dictionary):
 			do {
 				try mitigator.responseInvalidDictionary(dictionary)
 			}catch {
 				let responsError = error as! ResponseError
-				failure?(responsError)
+				fail?(responsError)
 			}
 		default:
 			print("---Error we could not process the response----")
 			do {
 				try mitigator.requestGeneralError()
 			}catch {
-				failure?(ResponseError.General)
+				fail?(ResponseError.General)
 			}
 		}
 	}
 }
 
-func mockDataAtUrl(url: String, transformController: TransformController) throws -> NSData?  {
+func dataAtUrl(url: String, transformController: TransformController) throws -> NSData?  {
 	guard let
 		fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue),
 		data = NSData(contentsOfURL: fileURL) else {
