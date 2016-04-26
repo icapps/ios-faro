@@ -68,11 +68,7 @@ public class Air{
 			return
 		}
 
-		let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
-			responseController.respond(data, urlResponse: response, error: error, succeed: succeed)
-		})
-
-		task.resume()
+		performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
 	}
 
 
@@ -84,7 +80,7 @@ public class Air{
 	- parameter fail: closure called when something in the response fails.
 	- throws : Errors related to the request construction.
 	*/
-	public class func retrieve<Type: ModelProtocol> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
+	public class func retrieve<Type: ModelProtocol> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                     responseController: ResponseController = ResponseController(),
 		succeed:(response: [Type])->(), fail:((ResponseError)->())? = nil) throws{
 		let entity = Type()
@@ -98,12 +94,7 @@ public class Air{
 			return
 		}
 
-		let task = session.dataTaskWithRequest(environment.request, completionHandler: { (data, response, error) -> Void in
-			responseController.respond(data, urlResponse: response, error: error, succeed: succeed)
-		})
-		
-		task.resume()
-		
+		performAsychonousRequest(environment.request, session: session, responseController: responseController, succeed: succeed, fail: fail)
 	}
 	
 	/**
@@ -114,7 +105,7 @@ public class Air{
 	- parameter fail: closure called when something in the response fails.
 	- throws : Errors related to the request construction.
 	*/
-	public class func retrieve <Type: ModelProtocol> (objectId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
+	public class func retrieve <Type: ModelProtocol> (objectId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                      responseController: ResponseController = ResponseController(),
 	                      succeed:(response: Type)->(), fail:((ResponseError)->())? = nil) throws{
 		let entity = Type()
@@ -131,13 +122,27 @@ public class Air{
 		}
 		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 
-		let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
-			responseController.respond(data, urlResponse: response, error: error, succeed: succeed)
-		})
-		
-		task.resume()
+		performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
 	}
 
+	private class func performAsychonousRequest<Type: ModelProtocol> (request: NSURLRequest,
+	                                            session: NSURLSession, responseController: ResponseController,
+	                                            succeed:(response: Type)->(), fail:((ResponseError)->())? = nil ) {
+		let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+			responseController.respond(data, urlResponse: response, error: error, succeed: succeed, fail: fail)
+		})
+
+		task.resume()
+	}
+	private class func performAsychonousRequest<Type: ModelProtocol> (request: NSURLRequest,
+	                                            session: NSURLSession, responseController: ResponseController,
+	                                            succeed:(response: [Type])->(), fail:((ResponseError)->())? = nil ) {
+		let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+			responseController.respond(data, urlResponse: response, error: error, succeed: succeed, fail: fail)
+		})
+
+		task.resume()
+	}
 }
 
 func dataAtUrl(url: String, transformController: TransformController) throws -> NSData?  {
