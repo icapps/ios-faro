@@ -7,9 +7,10 @@
 //
 
 import XCTest
+import Nimble
+import Quick
 @testable import AirRivet
 
-//TODO: convert to Nimble
 class ExampleBaseModel: UniqueAble, Mitigatable, Parsable {
     var objectId: String?
 
@@ -55,9 +56,9 @@ extension ExampleBaseModel: EnvironmentConfigurable {
 	}
 }
 
-class TransformControllerTests: XCTestCase {
-
-	private func loadDataFromUrl(url: String) -> NSData? {
+class TransformControllerTests: QuickSpec {
+    
+	private func loadDataFromUrl(url: String) throws -> NSData? {
 		guard
 			let path = NSBundle.mainBundle().pathForResource(url, ofType: "json"),
 			let data = NSData(contentsOfFile: path) else {
@@ -67,129 +68,148 @@ class TransformControllerTests: XCTestCase {
 		return data
 	}
     //MARK: transform
-
-    func testObjectDataToConcreteObjectNoExistingModel() {
-        let transformController = TransformController()
-        
-		guard let data = loadDataFromUrl("exampleBaseModel") else {
-			return
-		}
-        
-        do {
-            try transformController.transform(data, completion: { (model:ExampleBaseModel) in
-                XCTAssertEqual(model.objectId, "123456ABCdef")
-            })
-        }
-        catch {
-            XCTFail("transformation should not throw an error")
-        }
-    }
     
-    func testObjectDataToConcreteObjectWithExistingModel() {
-        let transformController = TransformController()
-        let inputModel:ExampleBaseModel = ExampleBaseModel()
-		try! inputModel.parseFromDict( ["identifier":"test123"])
-        
-		guard let data = loadDataFromUrl("exampleBaseModel") else {
-			return
-		}
-
-        do {
-            try transformController.transform(data, body:inputModel, completion: { (model:ExampleBaseModel) in
-                XCTAssertEqual(model.objectId, "123456ABCdef")
-            })
-        }
-        catch {
-            XCTFail("transformation should not throw an error")
-        }
-    }
-    
-    func testObjectDataToConcreteObjectInvalidJSONData() {
-        let transformController = TransformController()
-        
-        //Just generate some random data
-        var random = NSInteger(arc4random_uniform(99) + 1)
-        let data = NSData(bytes: &random, length: 3)
-
-        XCTAssertThrowsError(try transformController.transform(data, completion: { (model:ExampleBaseModel) in
-            XCTFail("transformation of invalid json data should not result in a model object")
-        }), "transformation of invalid json data should throw an error") { (error) in
-			let nsError = error as NSError
-			XCTAssertEqual(nsError.code, 3840)
-        }
-    }
-    
-    //MARK: transform
-    
-    func testObjectDataToConcreteObjects() {
-        let transformController = TransformController()
-        
-		guard let data = loadDataFromUrl("exampleBaseModelResultsArray") else {
-			return
-		}
-
-        do {
-            try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
-                XCTAssertTrue(results.count == 3)
-                XCTAssertEqual(results[0].objectId, "123a")
-                XCTAssertEqual(results[1].objectId, "456b")
-                XCTAssertEqual(results[2].objectId, "789c")
-            })
-        }
-        catch {
-            XCTFail("transformation should not throw an error")
+    override func spec() {
+        describe("TransformController"){
+            let transformController = TransformController()
+            var data = NSData()
+            it("should not return error at loadingData"){
+                expect {try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())
+            }
+            
+            it ("should return correct objectId at transformation"){
+                var result = ExampleBaseModel()
+                try! transformController.transform(data, completion: {
+                    (model: ExampleBaseModel) in
+                    result = model
+                })
+                expect(result.objectId).to(equal("123456ABCdef"))
+            }
         }
     }
 
-    func testObjectDataToConcreteObjectsCustomRootKey() {
-        let transformController = TransformController()
-        
-		guard let data = loadDataFromUrl("exampleBaseModelResultsArrayCustomRootKey") else {
-			return
-		}
-
-        do {
-            try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
-				XCTFail("transformation should throw because the JSON is invalid")
-            })
-        }
-        catch {
-			//Success
-        }
-    }
-
-    func testObjectDataToConcreteObjectsFromSingleItem() {
-        let transformController = TransformController()
-        
-		guard let data = loadDataFromUrl("exampleBaseModel") else {
-			return
-		}
-
-        do {
-            try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
-                XCTAssertTrue(results.count == 1)
-                XCTAssertEqual(results[0].objectId, "123456ABCdef")
-            })
-        }
-        catch {
-            XCTFail("transformation should not throw an error")
-        }
-    }
-    
-    func testObjectDataToConcreteObjectsInvalidJSONData() {
-        let transformController = TransformController()
-        
-        //Just generate some random data
-        var random = NSInteger(arc4random_uniform(99) + 1)
-        let data = NSData(bytes: &random, length: 3)
-        
-        XCTAssertThrowsError(try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
-            XCTFail("transformation of invalid json data should not result in a model object")
-        }), "transformation of invalid json data should throw an error") { (error) in
-
-			let nsError = error as NSError
-
-            XCTAssertEqual(nsError.code, 3840)
-        }
-    }
+//    func testObjectDataToConcreteObjectNoExistingModel() {
+//        let transformController = TransformController()
+//        
+//		guard let data = loadDataFromUrl("exampleBaseModel") else {
+//			return
+//		}
+//        
+//        do {
+//            try transformController.transform(data, completion: { (model:ExampleBaseModel) in
+//                XCTAssertEqual(model.objectId, "123456ABCdef")
+//            })
+//        }
+//        catch {
+//            XCTFail("transformation should not throw an error")
+//        }
+//    }
+//    
+//    func testObjectDataToConcreteObjectWithExistingModel() {
+//        let transformController = TransformController()
+//        let inputModel:ExampleBaseModel = ExampleBaseModel()
+//		try! inputModel.parseFromDict( ["identifier":"test123"])
+//        
+//		guard let data = loadDataFromUrl("exampleBaseModel") else {
+//			return
+//		}
+//
+//        do {
+//            try transformController.transform(data, body:inputModel, completion: { (model:ExampleBaseModel) in
+//                XCTAssertEqual(model.objectId, "123456ABCdef")
+//            })
+//        }
+//        catch {
+//            XCTFail("transformation should not throw an error")
+//        }
+//    }
+//    
+//    func testObjectDataToConcreteObjectInvalidJSONData() {
+//        let transformController = TransformController()
+//        
+//        //Just generate some random data
+//        var random = NSInteger(arc4random_uniform(99) + 1)
+//        let data = NSData(bytes: &random, length: 3)
+//
+//        XCTAssertThrowsError(try transformController.transform(data, completion: { (model:ExampleBaseModel) in
+//            XCTFail("transformation of invalid json data should not result in a model object")
+//        }), "transformation of invalid json data should throw an error") { (error) in
+//			let nsError = error as NSError
+//			XCTAssertEqual(nsError.code, 3840)
+//        }
+//    }
+//    
+//    //MARK: transform
+//    
+//    func testObjectDataToConcreteObjects() {
+//        let transformController = TransformController()
+//        
+//		guard let data = loadDataFromUrl("exampleBaseModelResultsArray") else {
+//			return
+//		}
+//
+//        do {
+//            try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
+//                XCTAssertTrue(results.count == 3)
+//                XCTAssertEqual(results[0].objectId, "123a")
+//                XCTAssertEqual(results[1].objectId, "456b")
+//                XCTAssertEqual(results[2].objectId, "789c")
+//            })
+//        }
+//        catch {
+//            XCTFail("transformation should not throw an error")
+//        }
+//    }
+//
+//    func testObjectDataToConcreteObjectsCustomRootKey() {
+//        let transformController = TransformController()
+//        
+//		guard let data = loadDataFromUrl("exampleBaseModelResultsArrayCustomRootKey") else {
+//			return
+//		}
+//
+//        do {
+//            try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
+//				XCTFail("transformation should throw because the JSON is invalid")
+//            })
+//        }
+//        catch {
+//			//Success
+//        }
+//    }
+//
+//    func testObjectDataToConcreteObjectsFromSingleItem() {
+//        let transformController = TransformController()
+//        
+//		guard let data = loadDataFromUrl("exampleBaseModel") else {
+//			return
+//		}
+//
+//        do {
+//            try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
+//                XCTAssertTrue(results.count == 1)
+//                XCTAssertEqual(results[0].objectId, "123456ABCdef")
+//            })
+//        }
+//        catch {
+//            XCTFail("transformation should not throw an error")
+//        }
+//    }
+//    
+//    func testObjectDataToConcreteObjectsInvalidJSONData() {
+//        let transformController = TransformController()
+//        
+//        //Just generate some random data
+//        var random = NSInteger(arc4random_uniform(99) + 1)
+//        let data = NSData(bytes: &random, length: 3)
+//        
+//        XCTAssertThrowsError(try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
+//            XCTFail("transformation of invalid json data should not result in a model object")
+//        }), "transformation of invalid json data should throw an error") { (error) in
+//
+//			let nsError = error as NSError
+//
+//            XCTAssertEqual(nsError.code, 3840)
+//        }
+//    }
 }
