@@ -19,7 +19,7 @@
 		A4D85BC91CC9106A0046AF29 /* exampleBaseModel.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */; };
 		A4D85BCB1CCA150F0046AF29 /* exampleBaseModelResultsArray.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */; };
 		A4D85BCD1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */; };
-		A4D85BDA1CCA6B450046AF29 /* ResponseControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BD61CCA6AE60046AF29 /* ResponseControllerTests.swift */; };
+		A4D85BDA1CCA6B450046AF29 /* ResponseControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BD61CCA6AE60046AF29 /* ResponseControllerSpec.swift */; };
 		A4D85BDB1CCA6B470046AF29 /* ResponseControllerUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BD71CCA6AE60046AF29 /* ResponseControllerUtilsTests.swift */; };
 		C012EA4D1CCA5E2700B298D7 /* GET_gameScoreArray.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */; };
 		C012EA501CCA8A5B00B298D7 /* GET_gameScoreArray_1275.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */; };
@@ -65,7 +65,7 @@
 		A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModel.json; sourceTree = "<group>"; };
 		A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArray.json; sourceTree = "<group>"; };
 		A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArrayCustomRootKey.json; sourceTree = "<group>"; };
-		A4D85BD61CCA6AE60046AF29 /* ResponseControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseControllerTests.swift; sourceTree = "<group>"; };
+		A4D85BD61CCA6AE60046AF29 /* ResponseControllerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseControllerSpec.swift; sourceTree = "<group>"; };
 		A4D85BD71CCA6AE60046AF29 /* ResponseControllerUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseControllerUtilsTests.swift; sourceTree = "<group>"; };
 		C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray.json; sourceTree = "<group>"; };
 		C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray_1275.json; sourceTree = "<group>"; };
@@ -201,7 +201,7 @@
 			children = (
 				A4D85BC01CC8E00B0046AF29 /* DefaultMitigatorSpec.swift */,
 				A4D85BC31CC8FAB00046AF29 /* TransformControllerTests.swift */,
-				A4D85BD61CCA6AE60046AF29 /* ResponseControllerTests.swift */,
+				A4D85BD61CCA6AE60046AF29 /* ResponseControllerSpec.swift */,
 				A4D85BD71CCA6AE60046AF29 /* ResponseControllerUtilsTests.swift */,
 				C0A3DB111CAEBBCA00978DBD /* GameScoreTest.swift */,
 				C08BF3931CCE4AF8005CAD3F /* AirSpec.swift */,
@@ -449,7 +449,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4D85BDA1CCA6B450046AF29 /* ResponseControllerTests.swift in Sources */,
+				A4D85BDA1CCA6B450046AF29 /* ResponseControllerSpec.swift in Sources */,
 				C0A3DB121CAEBBCA00978DBD /* GameScoreTest.swift in Sources */,
 				A4D85BC11CC8E00B0046AF29 /* DefaultMitigatorSpec.swift in Sources */,
 				C0A3DB0F1CAEBBB600978DBD /* Parse.swift in Sources */,
