@@ -60,14 +60,14 @@ public class RequestController <Type: ModelProtocol> {
 		request.HTTPMethod = "POST"
 
 		guard let bodyObject = body.toDictionary() else {
-			try body.responseErrorController().requestBodyError()
+			try Type.requestErrorController().requestBodyError()
 			return
 		}
 
 		do {
 			request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(bodyObject, options: .PrettyPrinted)
 		}catch {
-			try body.responseErrorController().requestBodyError()
+			try Type.requestErrorController().requestBodyError()
 		}
 
 		guard !environment.shouldMock() else {
@@ -118,7 +118,7 @@ public class RequestController <Type: ModelProtocol> {
 
 		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-				self.failureWithError(error, failure: failure, mitigator: errorController)
+//				self.failureWithError(error, failure: failure, mitigator: responseController.mitigator())
 			}else {
 				self.success(data, response: response, completion: completion, failure: failure)
 			}
@@ -156,7 +156,7 @@ public class RequestController <Type: ModelProtocol> {
 
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-				self.failureWithError(error, failure: failure, mitigator: errorController)
+//				self.failureWithError(error, failure: failure, mitigator: responseController.mitigator())
 			}else {
 				self.success(data, response: response, completion: completion, failure: failure)
 			}
@@ -208,7 +208,7 @@ public class RequestController <Type: ModelProtocol> {
 		}
 	}
 
-	func failureWithError(taskError: NSError ,failure:((ResponseError) ->())?, mitigator: Mitigator) {
+	func failureWithError(taskError: NSError ,failure:((ResponseError) ->())?, mitigator: ResponsMitigatable) {
 		print("---Error request failed with error: \(taskError)----")
 		do {
 			try mitigator.requestResponseError(taskError)
@@ -218,7 +218,7 @@ public class RequestController <Type: ModelProtocol> {
 		failure?(ResponseError.ResponseError(error: taskError))
 	}
 
-	private func splitErrorType(error: ErrorType, failure: ((ResponseError) ->())?, mitigator: Mitigator) {
+	private func splitErrorType(error: ErrorType, failure: ((ResponseError) ->())?, mitigator: ResponsMitigatable) {
 
 		switch error {
 		case ResponseError.InvalidAuthentication:

@@ -20,16 +20,17 @@ You can inspect how error mitigation is expected to behave by looking at `Reques
 */
 public protocol Mitigatable {
 
+	init ()
 	/**
 	By returning an error controller you can handle parsing errors.
 	- returns: By default an implementation of `DefaultMitigator` is returned via a protocol extension
 	*/
-	func responseErrorController() -> Mitigator
+	func responseErrorController() -> ResponsMitigatable
 	/**
 	If an error happens while constructing an entity this error controller could handle the error if needed.
 	 - returns: By default an implementation of `DefaultMitigator` is returned via a protocol extension
 	*/
-	static func requestErrorController() -> Mitigator
+	static func requestErrorController() -> RequestMitigatable
 }
 
 public protocol Parsable {

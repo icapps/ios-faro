@@ -21,7 +21,7 @@ public class ResponseController {
 	
 	func respond<ResponseType: protocol<Parsable, Mitigatable, UniqueAble> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
 
-        guard let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: ResponseType.requestErrorController()) else {
+        guard let data = try ResponseControllerUtils.checkStatusCodeAndData(response, mitigator: mitigator(body)) else {
 			return
 		}
 
@@ -30,33 +30,44 @@ public class ResponseController {
 
 	func respond<ResponseType: protocol<Parsable, Mitigatable, UniqueAble> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), body: ResponseType? = nil, completion: ([ResponseType])->()) throws{
 
-		guard let data = try ResponseControllerUtils.checkStatusCodeAndData(response, errorController: ResponseType.requestErrorController()) else {
+		guard let data = try ResponseControllerUtils.checkStatusCodeAndData(response, mitigator: mitigator(body)) else {
 			return
 		}
 
 		try environment.transformController().transform(data, body: body, completion: completion)
     }
 
+	func mitigator<T: Mitigatable>(body: T? = nil) -> ResponsMitigatable {
+		var mitigator: ResponsMitigatable
+
+		if let body = body {
+			mitigator = body.responseErrorController()
+		}else {
+			mitigator = T().responseErrorController()
+		}
+
+		return mitigator
+	}
 }
 
 internal class ResponseControllerUtils {
-    class func checkStatusCodeAndData(response: (data: NSData?, urlResponse: NSURLResponse?), errorController: Mitigator) throws -> NSData? {
+    class func checkStatusCodeAndData(response: (data: NSData?, urlResponse: NSURLResponse?), mitigator: ResponsMitigatable) throws -> NSData? {
         if let httpResponse = response.urlResponse as? NSHTTPURLResponse {
             
             let statusCode = httpResponse.statusCode
             
             guard statusCode != 404 else {
-                try errorController.requestAuthenticationError()
+                try mitigator.requestAuthenticationError()
                 return nil
             }
             
             guard 200...201 ~= statusCode else {
-                try errorController.requestGeneralError()
+                try mitigator.requestGeneralError()
                 return nil
             }
             
             guard let data = response.data else {
-                try errorController.responseDataEmptyError()
+                try mitigator.responseDataEmptyError()
                 return nil
             }
             

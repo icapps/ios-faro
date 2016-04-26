@@ -81,7 +81,7 @@ class RequestControllerSpec: QuickSpec {
 						throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
 					}
 
-					override func responseErrorController() -> Mitigator {
+					override func responseErrorController() -> ResponsMitigatable {
 						return MockMitigator()
 					}
 				}

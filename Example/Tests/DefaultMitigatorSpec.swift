@@ -3,7 +3,7 @@ import Quick
 import XCTest
 @testable import AirRivet
 
-class DefaultErrorMitigatorSpec: QuickSpec {
+class DefaultMitigatorSpec: QuickSpec {
 
 	override func spec () {
 		describe("ErrorMitigator default behaviour") {

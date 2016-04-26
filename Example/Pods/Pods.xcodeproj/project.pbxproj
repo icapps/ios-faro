@@ -52,7 +52,7 @@
 		5B21B2BBADCCEB5AC51E0A0C99BA5B93 /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087515F43B6E323BC4CD46B187B508E /* Expression.swift */; };
 		602B5CEB21CA60AFA67B508D13282E94 /* BeCloseTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE4C99DFCF7541927B27D70C2FF79AB4 /* BeCloseTo.swift */; };
 		6445B28465C1A7900E895709BC333C23 /* Contain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF9BF66567EE37794C740576FC81B8 /* Contain.swift */; };
-		668B4C72817F13F5B4FE03F3CB6780BA /* DefaultErrorMitigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68BD00DB886C4014B54037DADCED2CC /* DefaultErrorMitigator.swift */; };
+		668B4C72817F13F5B4FE03F3CB6780BA /* DefaultMitigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68BD00DB886C4014B54037DADCED2CC /* DefaultMitigator.swift */; };
 		684A7E4C24ADAAB1B497B5F658036FC2 /* Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47121F417F445D331F985C881199CD5C /* Functional.swift */; };
 		6852935F47E5A754D62DFB3D884DD0EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E351727CD07BB90B2A3CAE2C2433F6C5 /* Foundation.framework */; };
 		6E57DC2AC652F362C5F7C996529B97FC /* Quick-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DC249729BE429ECEE4EA51787CC65B2 /* Quick-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -279,7 +279,7 @@
 		E163190886EF521E9A6EF0AEA8DDF58C /* EndWith.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EndWith.swift; path = Sources/Nimble/Matchers/EndWith.swift; sourceTree = "<group>"; };
 		E351727CD07BB90B2A3CAE2C2433F6C5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		E5484262055138D368755EC1F57CF629 /* QCKDSL.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = QCKDSL.h; path = Sources/Quick/DSL/QCKDSL.h; sourceTree = "<group>"; };
-		E68BD00DB886C4014B54037DADCED2CC /* DefaultErrorMitigator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DefaultErrorMitigator.swift; sourceTree = "<group>"; };
+		E68BD00DB886C4014B54037DADCED2CC /* DefaultMitigator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DefaultMitigator.swift; sourceTree = "<group>"; };
 		E8FEA8BC649FEF0C333E7AA13960F66B /* NMBObjCMatcher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NMBObjCMatcher.swift; path = Sources/Nimble/Adapters/ObjectiveC/NMBObjCMatcher.swift; sourceTree = "<group>"; };
 		E90C420ADEEA32E3BB9B6BE860FD3AE6 /* BeAnInstanceOf.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeAnInstanceOf.swift; path = Sources/Nimble/Matchers/BeAnInstanceOf.swift; sourceTree = "<group>"; };
 		EA3B3B0290A80EE14D171CA5C21331B0 /* SuiteHooks.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SuiteHooks.swift; path = Sources/Quick/Hooks/SuiteHooks.swift; sourceTree = "<group>"; };
@@ -360,7 +360,7 @@
 		0F94DE33D40573D0C51133E1EA706E85 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				E68BD00DB886C4014B54037DADCED2CC /* DefaultErrorMitigator.swift */,
+				E68BD00DB886C4014B54037DADCED2CC /* DefaultMitigator.swift */,
 				49921CAC25D507F84DBEA04877EF5315 /* dispatch.swift */,
 				1A9F651D0C65C35EBBB562F949144498 /* Environment.swift */,
 				260F288C6DBB535C9E019E78BEE589A3 /* ErrorMitigator.swift */,
@@ -855,7 +855,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5678503841F61B8EDD5D6407E794BF52 /* AirRivet-dummy.m in Sources */,
-				668B4C72817F13F5B4FE03F3CB6780BA /* DefaultErrorMitigator.swift in Sources */,
+				668B4C72817F13F5B4FE03F3CB6780BA /* DefaultMitigator.swift in Sources */,
 				2188D275BDB17B9E994238BC139DC414 /* dispatch.swift in Sources */,
 				329811B0751BCB4F2E2223F9A84BD90B /* Environment.swift in Sources */,
 				34B8EAFE30DC913A32EA00758DD66DDD /* ErrorMitigator.swift in Sources */,

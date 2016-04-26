@@ -17,7 +17,6 @@ public protocol Mitigator: RequestMitigatable, ResponsMitigatable, TransformMiti
 
 public protocol RequestMitigatable {
     func requestBodyError() throws -> ()
-    func requestAuthenticationError() throws -> ()
     func requestGeneralError() throws -> ()
     func requestResponseError(error: NSError?) throws -> ()
 }
@@ -25,6 +24,10 @@ public protocol RequestMitigatable {
 public protocol ResponsMitigatable {
     func responseDataEmptyError() throws -> ()
     func responseInvalidError() throws -> ()
+	func requestAuthenticationError() throws -> ()
+	func requestResponseError(error: NSError?) throws -> ()
+	func requestGeneralError() throws -> ()
+
 	/**
 	Your chance to intercept dictionary data that cannot is irregular. You can fix it and don't trow.
 	*/
