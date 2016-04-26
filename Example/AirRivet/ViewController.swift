@@ -18,11 +18,15 @@ class ViewController: UIViewController {
 
 		do {
 			try Air.retrieve(succeed: { (response: [GameScore]) in
-				print(response)
+				print("🎉 successfully retreived \(response.count) objects")
 				dispatch.async.main({
 					self.label.text = "Received \(response.count) objects"
 				})
 			})
+
+			try Air.retrieve("pyqCt2ZHWT", succeed: { (response: GameScore) in
+				print("🎉 successfully retreived one object \(response.objectId)")
+				})
 
 		}catch {
 			print("-------Error with request------")

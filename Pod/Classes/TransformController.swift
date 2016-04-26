@@ -45,7 +45,6 @@ public class TransformController {
     public func transform<Type: Parsable>(data: NSData, body: Type? = nil, completion:([Type])->()) throws{
 		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
 		if let rootKey = Type.rootKey(), let array = json[rootKey] as? [[String:AnyObject]] {
-			print(array)
 			completion(try dictToArray(array))
 		}
 		else if let dict = json as? [String:AnyObject] {
