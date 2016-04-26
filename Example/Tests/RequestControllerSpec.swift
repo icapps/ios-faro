@@ -55,7 +55,7 @@ class RequestControllerSpec: QuickSpec {
 				let invalidDict = ["wrong": "json"]
 				let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
 
-				RequestController().succeed(data, completion: failingCompletion, failure: { (error) in
+				RequestController.succeed(data, completion: failingCompletion, failure: { (error) in
 
 					switch error {
 					case ResponseError.InvalidDictionary(let anyThing):
@@ -95,7 +95,7 @@ class RequestControllerSpec: QuickSpec {
 					let invalidDict = ["wrong": "json"]
 					let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
 
-					RequestController().succeed(data, completion: { (response: MockEntityWithErrorMitigator) in
+					RequestController.succeed(data, completion: { (response: MockEntityWithErrorMitigator) in
 						//TODO:
 						}, failure: { (error) in
 							XCTFail("Should not raise \(error)")

@@ -27,16 +27,8 @@ You can also mock this class via its Type. Take a look at the `GameScoreTest` in
 
 */
 public class RequestController{
-	private let responseController: ResponseController
 
-	/**
-	Initialization
-	
-	- parameter responseController: a default repsonse controller is provided that can handle JSON responses and normal errors related to that. You can always provide your own for more complex cases.
-	- returns: A genericly typed Request controller that can handle task for the `Type` you provide.
-	*/
-	public init(responseController: ResponseController = ResponseController()) {
-		self.responseController = responseController
+	public init() {
 	}
 
 	//MARK: - Save
@@ -51,6 +43,7 @@ public class RequestController{
 	- throws : TODO
 */
 	public func save <Type: ModelProtocol>  (body: Type, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
+	                  responseController: ResponseController = ResponseController(),
 	                  completion:(response: Type)->(), failure:((ResponseError) ->())? = nil) throws {
 		let entity = Type()
 		let environment = Type().environment()
@@ -77,11 +70,11 @@ public class RequestController{
 
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			guard error == nil else {
-				let mitigator = self.responseController.mitigator(Type())
-				self.fail(error!, failure: failure , mitigator: mitigator)
+				let mitigator = responseController.mitigator(Type())
+				RequestController.fail(error!, failure: failure , mitigator: mitigator)
 				return
 			}
-			self.succeed(data, response: response, body: body, completion: completion, failure: failure)
+			RequestController.succeed(data, response: response, body: body, completion: completion, failure: failure)
 
 		})
 
@@ -98,6 +91,7 @@ public class RequestController{
 	- throws :
 	*/
 	public func retrieve<Type: ModelProtocol> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
+	                     responseController: ResponseController = ResponseController(),
 		completion:(response: [Type])->(), failure:((ResponseError)->())? = nil) throws{
 		let entity = Type()
 		let environment = Type().environment()
@@ -107,7 +101,7 @@ public class RequestController{
 
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
-			succeed(try mockDataAtUrl(url, transformController: environment.transformController()),
+			RequestController.succeed(try mockDataAtUrl(url, transformController: environment.transformController()),
 					completion: completion,
 			        failure: failure)
 
@@ -116,10 +110,10 @@ public class RequestController{
 
 		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-				let mitigator = self.responseController.mitigator(Type())
-				self.fail(error, failure: failure, mitigator: mitigator)
+				let mitigator = responseController.mitigator(Type())
+				RequestController.fail(error, failure: failure, mitigator: mitigator)
 			}else {
-				self.succeed(data, response: response, completion: completion, failure: failure)
+				RequestController.succeed(data, response: response, completion: completion, failure: failure)
 			}
 		})
 		
@@ -136,6 +130,7 @@ public class RequestController{
 	- throws : TODO
 	*/
 	public func retrieve <Type: ModelProtocol> (objectId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: nil, delegateQueue: nil),
+	                      responseController: ResponseController = ResponseController(),
 	                      completion:(response: Type)->(),failure:((ResponseError)->())? = nil) throws{
 		let entity = Type()
 		let environment = Type().environment()
@@ -147,7 +142,7 @@ public class RequestController{
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
 			print("🤔 Mocking (\(Type.self)) with contextPath: \(Type().contextPath())")
-			succeed(try mockDataAtUrl(url, transformController: environment.transformController()),
+			RequestController.succeed(try mockDataAtUrl(url, transformController: environment.transformController()),
 			       response: nil, body: nil,
 			       completion: completion, failure: failure)
 			
@@ -157,10 +152,10 @@ public class RequestController{
 
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-				let mitigator = self.responseController.mitigator(Type())
-				self.fail(error, failure: failure, mitigator: mitigator)
+				let mitigator = responseController.mitigator(Type())
+				RequestController.fail(error, failure: failure, mitigator: mitigator)
 			}else {
-				self.succeed(data, response: response, completion: completion, failure: failure)
+				RequestController.succeed(data, response: response, completion: completion, failure: failure)
 			}
 		})
 		
@@ -185,31 +180,35 @@ public class RequestController{
 	We have to do this until apple provides a data task that can handle throws in its closures.
 	*/
 
-	func succeed<Type: ModelProtocol> (data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: Type)->(), failure:((ResponseError) ->())?) {
+	class func succeed<Type: ModelProtocol> (data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,
+	             responseController: ResponseController = ResponseController(),
+	             completion:(response: Type)->(), failure:((ResponseError) ->())?) {
 		let entity  = Type()
 		let environment = entity.environment()
 		let errorController = entity.responseMitigator()
 
 		do {
-			try self.responseController.respond(environment, response:(data: data,urlResponse: response), body: body, completion: completion)
+			try responseController.respond(environment, response:(data: data,urlResponse: response), body: body, completion: completion)
 		}catch {
-			splitErrorType(error, failure: failure, mitigator: errorController)
+			RequestController.splitErrorType(error, failure: failure, mitigator: errorController)
 		}
 	}
 
-	func succeed<Type: ModelProtocol> (data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: [Type])->(), failure:((ResponseError) ->())?) {
+	class func succeed<Type: ModelProtocol> (data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: [Type])->(),
+	             responseController: ResponseController = ResponseController(),
+	             failure:((ResponseError) ->())?) {
 		let entity  = Type()
 		let environment = entity.environment()
 		let errorController = entity.responseMitigator()
 
 		do {
-			try self.responseController.respond(environment, response: (data: data, urlResponse: response), completion: completion)
+			try responseController.respond(environment, response: (data: data, urlResponse: response), completion: completion)
 		}catch {
-			splitErrorType(error, failure: failure, mitigator: errorController)
+			RequestController.splitErrorType(error, failure: failure, mitigator: errorController)
 		}
 	}
 
-	func fail(taskError: NSError ,failure:((ResponseError) ->())?, mitigator: ResponsMitigatable) {
+	class func fail(taskError: NSError ,failure:((ResponseError) ->())?, mitigator: ResponsMitigatable) {
 		print("---Error request failed with error: \(taskError)----")
 		do {
 			try mitigator.requestResponseError(taskError)
@@ -219,7 +218,7 @@ public class RequestController{
 		failure?(ResponseError.ResponseError(error: taskError))
 	}
 
-	private func splitErrorType(error: ErrorType, failure: ((ResponseError) ->())?, mitigator: ResponsMitigatable) {
+	private class func splitErrorType(error: ErrorType, failure: ((ResponseError) ->())?, mitigator: ResponsMitigatable) {
 
 		switch error {
 		case ResponseError.InvalidAuthentication:
