@@ -47,7 +47,7 @@ class RequestControllerSpec: QuickSpec {
 				//Success no assert
 			}
 
-			it("should fail when contextPaht does not exist") {
+			it("should fail when contextPath does not exist") {
 				expect { try requestController.retrieve(failingCompletion, failure: successFailure) }.to(throwError(closure: { (error) in
 					expect(error).to(matchError(ResponseError.InvalidResponseData))
 				}))
