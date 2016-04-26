@@ -1,11 +1,3 @@
-//
-//  ConcreteErrorControllerTests.swift
-//  AirRivet
-//
-//  Created by Hans Van Herreweghe on 21/04/16.
-//  Copyright © 2016 CocoaPods. All rights reserved.
-//
-
 import Nimble
 import Quick
 import XCTest
@@ -14,8 +6,8 @@ import XCTest
 class DefaultErrorMitigatorSpec: QuickSpec {
 
 	override func spec () {
-		describe("Concrete ErrorController default behaviour") {
-			let errorController = DefaultErrorMitigator()
+		describe("ErrorMitigator default behaviour") {
+			let errorController = DefaultMitigator()
 
 			it("should throw Request Errors for mistakes in the request") {
 				expect { try errorController.requestBodyError() }.to(throwError(closure: { (error) in

@@ -29,7 +29,6 @@ class MockEntity: GameScore {
 		throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
 
 		}
-
 	}
 }
 
@@ -72,7 +71,7 @@ class RequestControllerSpec: QuickSpec {
 				})
 			}
 
-			context("Mocking the ErrorController"){
+			context("Mocking the Mitigator"){
 				class MockEntityWithErrorMitigator: GameScore {
 					override func environment() -> protocol<Environment, Mockable, Transformable> {
 						return Mock()
@@ -82,12 +81,12 @@ class RequestControllerSpec: QuickSpec {
 						throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
 					}
 
-					override func responseErrorController() -> ErrorMitigator {
-						return MockErrorController()
+					override func responseErrorController() -> Mitigator {
+						return MockMitigator()
 					}
 				}
 
-				class MockErrorController: DefaultErrorMitigator {
+				class MockMitigator: DefaultMitigator {
 					override func responseInvalidDictionary(dictionary: AnyObject) throws{
 						//mock the throwing out
 						return

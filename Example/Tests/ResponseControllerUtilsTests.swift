@@ -1,15 +1,7 @@
-//
-//  ResponseControllerUtilsTests.swift
-//  AirRivet
-//
-//  Created by Hans Van Herreweghe on 22/04/16.
-//  Copyright © 2016 CocoaPods. All rights reserved.
-//
-
 import XCTest
 @testable import AirRivet
 
-class DummyErrorController: DefaultErrorMitigator {
+class DummyMitigator: DefaultMitigator {
     override func responseDataEmptyError() throws {
         throw ResponseError.InvalidResponseData
     }
@@ -30,7 +22,7 @@ class DummyErrorController: DefaultErrorMitigator {
 //TODO refactor to nimble
 class ResponseControllerUtilsTests: XCTestCase {
     
-    lazy var errorController:ErrorMitigator = DefaultErrorMitigator()
+    lazy var errorController:Mitigator = DefaultMitigator()
 
     func testNoResponseNoError() {
         do {

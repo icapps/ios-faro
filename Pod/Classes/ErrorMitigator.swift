@@ -6,7 +6,7 @@ An `ErrorMitigator` recieves errors that happen. Mitigate means ‘make (somethi
 
 So do that or rethrow what you cannot handle.
 */
-public protocol ErrorMitigator: RequestErrorController, ResponseErrorController, TransformErrorController
+public protocol Mitigator: RequestErrorController, ResponseErrorController, TransformErrorController
 {
 
 }

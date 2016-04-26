@@ -1,6 +1,6 @@
 import Foundation
 
-public class DefaultErrorMitigator: ErrorMitigator {
+public class DefaultMitigator: Mitigator {
 
 	public init () {
 		

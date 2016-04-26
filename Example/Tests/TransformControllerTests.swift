@@ -36,12 +36,12 @@ class ExampleBaseModel: UniqueAble, ErrorControlable, Parsable {
 		return "results"
 	}
 
-	func responseErrorController () -> ErrorMitigator {
-		return DefaultErrorMitigator()
+	func responseErrorController () -> Mitigator {
+		return DefaultMitigator()
 	}
 
-	static func requestErrorController() -> ErrorMitigator {
-		return DefaultErrorMitigator()
+	static func requestErrorController() -> Mitigator {
+		return DefaultMitigator()
 	}
 }
 extension ExampleBaseModel: EnvironmentConfigurable {

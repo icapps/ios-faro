@@ -81,7 +81,7 @@ public class RequestController <Type: ModelProtocol> {
 			let errorController = body.responseErrorController()
 
 			guard error == nil else {
-				self.failureWithError(error!, failure: failure, errorController: errorController)
+				self.failureWithError(error!, failure: failure, mitigator: errorController)
 				return
 			}
 			self.success(data, response: response, body: body, completion: completion, failure: failure)
@@ -118,7 +118,7 @@ public class RequestController <Type: ModelProtocol> {
 
 		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-				self.failureWithError(error, failure: failure, errorController: errorController)
+				self.failureWithError(error, failure: failure, mitigator: errorController)
 			}else {
 				self.success(data, response: response, completion: completion, failure: failure)
 			}
@@ -156,7 +156,7 @@ public class RequestController <Type: ModelProtocol> {
 
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-				self.failureWithError(error, failure: failure, errorController: errorController)
+				self.failureWithError(error, failure: failure, mitigator: errorController)
 			}else {
 				self.success(data, response: response, completion: completion, failure: failure)
 			}
@@ -192,7 +192,7 @@ public class RequestController <Type: ModelProtocol> {
 		do {
 			try self.responseController.respond(environment, response:(data: data,urlResponse: response), body: body, completion: completion)
 		}catch {
-			splitErrorType(error, failure: failure, errorController: errorController)
+			splitErrorType(error, failure: failure, mitigator: errorController)
 		}
 	}
 
@@ -204,32 +204,32 @@ public class RequestController <Type: ModelProtocol> {
 		do {
 			try self.responseController.respond(environment, response: (data: data, urlResponse: response), completion: completion)
 		}catch {
-			splitErrorType(error, failure: failure, errorController: errorController)
+			splitErrorType(error, failure: failure, mitigator: errorController)
 		}
 	}
 
-	func failureWithError(taskError: NSError ,failure:((ResponseError) ->())?, errorController: ErrorMitigator) {
+	func failureWithError(taskError: NSError ,failure:((ResponseError) ->())?, mitigator: Mitigator) {
 		print("---Error request failed with error: \(taskError)----")
 		do {
-			try errorController.requestResponseError(taskError)
+			try mitigator.requestResponseError(taskError)
 		}catch {
 			failure?(ResponseError.ResponseError(error: taskError))
 		}
 		failure?(ResponseError.ResponseError(error: taskError))
 	}
 
-	private func splitErrorType(error: ErrorType, failure: ((ResponseError) ->())?, errorController: ErrorMitigator) {
+	private func splitErrorType(error: ErrorType, failure: ((ResponseError) ->())?, mitigator: Mitigator) {
 
 		switch error {
 		case ResponseError.InvalidAuthentication:
 			do {
-				try errorController.requestAuthenticationError()
+				try mitigator.requestAuthenticationError()
 			}catch {
 				failure?(ResponseError.InvalidAuthentication)
 			}
 		case ResponseError.InvalidDictionary(dictionary: let dictionary):
 			do {
-				try errorController.responseInvalidDictionary(dictionary)
+				try mitigator.responseInvalidDictionary(dictionary)
 			}catch {
 				let responsError = error as! ResponseError
 				failure?(responsError)
@@ -237,7 +237,7 @@ public class RequestController <Type: ModelProtocol> {
 		default:
 			print("---Error we could not process the response----")
 			do {
-				try errorController.requestGeneralError()
+				try mitigator.requestGeneralError()
 			}catch {
 				failure?(ResponseError.General)
 			}
