@@ -77,14 +77,11 @@ public class RequestController <Type: ModelProtocol> {
 		}
 		
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
-
-			let errorController = body.responseErrorController()
-
 			guard error == nil else {
-				self.failureWithError(error!, failure: failure, mitigator: errorController)
+				self.fail(error!, failure: failure)
 				return
 			}
-			self.success(data, response: response, body: body, completion: completion, failure: failure)
+			self.succeed(data, response: response, body: body, completion: completion, failure: failure)
 
 		})
 
@@ -109,7 +106,7 @@ public class RequestController <Type: ModelProtocol> {
 
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
-			success(try mockDataAtUrl(url, transformController: environment.transformController()),
+			succeed(try mockDataAtUrl(url, transformController: environment.transformController()),
 					completion: completion,
 			        failure: failure)
 
@@ -118,9 +115,9 @@ public class RequestController <Type: ModelProtocol> {
 
 		let task = session.dataTaskWithRequest(environment.request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-//				self.failureWithError(error, failure: failure, mitigator: responseController.mitigator())
+				self.fail(error, failure: failure)
 			}else {
-				self.success(data, response: response, completion: completion, failure: failure)
+				self.succeed(data, response: response, completion: completion, failure: failure)
 			}
 		})
 		
@@ -146,7 +143,7 @@ public class RequestController <Type: ModelProtocol> {
 
 		guard !environment.shouldMock() else {
 			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
-			success(try mockDataAtUrl(url, transformController: environment.transformController()),
+			succeed(try mockDataAtUrl(url, transformController: environment.transformController()),
 			       response: nil, body: nil,
 			       completion: completion, failure: failure)
 			
@@ -156,9 +153,9 @@ public class RequestController <Type: ModelProtocol> {
 
 		let task = session.dataTaskWithRequest(request, completionHandler: { [unowned self] (data, response, error) -> Void in
 			if let error = error {
-//				self.failureWithError(error, failure: failure, mitigator: responseController.mitigator())
+				self.fail(error, failure: failure)
 			}else {
-				self.success(data, response: response, completion: completion, failure: failure)
+				self.succeed(data, response: response, completion: completion, failure: failure)
 			}
 		})
 		
@@ -184,10 +181,10 @@ public class RequestController <Type: ModelProtocol> {
 	We have to do this until apple provides a data task that can handle throws in its closures.
 	*/
 
-	func success(data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: Type)->(), failure:((ResponseError) ->())?) {
+	func succeed(data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: Type)->(), failure:((ResponseError) ->())?) {
 		let entity  = Type()
 		let environment = entity.environment()
-		let errorController = entity.responseErrorController()
+		let errorController = entity.responseMitigator()
 
 		do {
 			try self.responseController.respond(environment, response:(data: data,urlResponse: response), body: body, completion: completion)
@@ -196,10 +193,10 @@ public class RequestController <Type: ModelProtocol> {
 		}
 	}
 
-	func success(data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: [Type])->(), failure:((ResponseError) ->())?) {
+	func succeed(data: NSData?, response: NSURLResponse? = nil, body: Type? = nil,  completion:(response: [Type])->(), failure:((ResponseError) ->())?) {
 		let entity  = Type()
 		let environment = entity.environment()
-		let errorController = entity.responseErrorController()
+		let errorController = entity.responseMitigator()
 
 		do {
 			try self.responseController.respond(environment, response: (data: data, urlResponse: response), completion: completion)
@@ -208,8 +205,9 @@ public class RequestController <Type: ModelProtocol> {
 		}
 	}
 
-	func failureWithError(taskError: NSError ,failure:((ResponseError) ->())?, mitigator: ResponsMitigatable) {
+	func fail(taskError: NSError ,failure:((ResponseError) ->())?) {
 		print("---Error request failed with error: \(taskError)----")
+		let mitigator = responseController.mitigator(Type())
 		do {
 			try mitigator.requestResponseError(taskError)
 		}catch {

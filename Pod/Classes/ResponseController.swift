@@ -41,9 +41,9 @@ public class ResponseController {
 		var mitigator: ResponsMitigatable
 
 		if let body = body {
-			mitigator = body.responseErrorController()
+			mitigator = body.responseMitigator()
 		}else {
-			mitigator = T().responseErrorController()
+			mitigator = T().responseMitigator()
 		}
 
 		return mitigator

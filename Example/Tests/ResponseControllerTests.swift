@@ -28,7 +28,7 @@ import XCTest
 //    }
 //    
 //    //MARK: ErrorControlable
-//    func responseErrorController() -> ErrorController {
+//    func responseMitigator -> ErrorController {
 //        return ConcreteErrorController()
 //    }
 //}
