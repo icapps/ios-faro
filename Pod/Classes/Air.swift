@@ -47,14 +47,18 @@ public class Air{
 	                         succeed:(response: Rivet)->(), fail:((ResponseError) ->())? = nil) throws {
 		let entity = Rivet()
 		let environment = Rivet().environment()
-		let request = environment.request
 
-		request.HTTPMethod = "POST"
+		guard !environment.shouldMock() else {
+			succeed(response: body)
+			return
+		}
 
 		guard let bodyObject = body.toDictionary() else {
 			try Rivet.requestMitigator().requestBodyError()
 			return
 		}
+
+		let request = environment.request
 
 		do {
 			request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(bodyObject, options: .PrettyPrinted)
@@ -62,12 +66,7 @@ public class Air{
 			try Rivet.requestMitigator().requestBodyError()
 		}
 
-		guard !environment.shouldMock() else {
-			print("🤔 Mocking (\(Rivet.self)) is mocking saves")
-			succeed(response: body)
-			return
-		}
-
+		request.HTTPMethod = "POST"
 		performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
 	}
 
@@ -82,19 +81,15 @@ public class Air{
 	*/
 	public class func retrieve<Type: ModelProtocol> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                     responseController: ResponseController = ResponseController(),
-		succeed:(response: [Type])->(), fail:((ResponseError)->())? = nil) throws{
+	                     succeed:(response: [Type])->(), fail:((ResponseError)->())? = nil) throws{
 		let entity = Type()
 		let environment = Type().environment()
+		let mockUrl = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
 		environment.request.HTTPMethod = "GET"
 
-		guard !environment.shouldMock() else {
-			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
-			let data = try dataAtUrl(url, transformController: environment.transformController())
-			responseController.respond(data, succeed: succeed)
-			return
-		}
-
-		performAsychonousRequest(environment.request, session: session, responseController: responseController, succeed: succeed, fail: fail)
+		try mockOrPerform(mockUrl, request: environment.request,
+		                  environment: environment, responseController: responseController, session: session,
+		                  succeed: succeed, fail: fail)
 	}
 	
 	/**
@@ -112,19 +107,52 @@ public class Air{
 		let environment = Type().environment()
 		let request = environment.request
 		request.HTTPMethod = "GET"
+		if let _ = request.URL {
+			request.URL = request.URL!.URLByAppendingPathComponent(objectId)
+		}
 
+		let mockUrl = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
+		try mockOrPerform(mockUrl, request: request,
+		                  environment: environment, responseController: responseController, session: session,
+		                  succeed: succeed, fail: fail)
+	}
+
+	private class func mockOrPerform <Type: ModelProtocol> (mockUrl: String, request: NSURLRequest,
+	                                  environment: protocol<Environment, Mockable, Transformable>,
+	                                  responseController: ResponseController, session: NSURLSession,
+	                                  succeed:(response: [Type])->(), fail:((ResponseError)->())? = nil) throws {
 		guard !environment.shouldMock() else {
-			let url = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
-			print("🤔 Mocking (\(Type.self)) with contextPath: \(Type().contextPath())")
-			let data = try dataAtUrl(url, transformController: environment.transformController())
-			responseController.respond(data, succeed: succeed)
+			try mockDataFromUrl(mockUrl, transformController: environment.transformController(), responseController: responseController, succeed: succeed, fail: fail)
 			return
 		}
-		request.URL = request.URL!.URLByAppendingPathComponent(objectId)
 
 		performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
 	}
 
+	private class func mockOrPerform <Type: ModelProtocol> (mockUrl: String, request: NSURLRequest,
+	                                  environment: protocol<Environment, Mockable, Transformable>,
+	                                  responseController: ResponseController, session: NSURLSession,
+	                                  succeed:(response: Type)->(), fail:((ResponseError)->())? = nil) throws {
+		guard !environment.shouldMock() else {
+			try mockDataFromUrl(mockUrl, transformController: environment.transformController(), responseController: responseController, succeed: succeed, fail: fail)
+			return
+		}
+
+		performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
+	}
+
+	private class func mockDataFromUrl <Type: ModelProtocol> (url: String, transformController: TransformController, responseController: ResponseController,
+	                                    succeed:(response: [Type])->(), fail:((ResponseError)->())? = nil ) throws {
+		let data = try dataAtUrl(url, transformController: transformController)
+		responseController.respond(data, succeed: succeed, fail: fail)
+	}
+
+	private class func mockDataFromUrl <Type: ModelProtocol> (url: String, transformController: TransformController, responseController: ResponseController,
+	                                    succeed:(response: Type)->(), fail:((ResponseError)->())? = nil ) throws {
+		let data = try dataAtUrl(url, transformController: transformController)
+		responseController.respond(data, succeed: succeed, fail: fail)
+	}
+	
 	private class func performAsychonousRequest<Type: ModelProtocol> (request: NSURLRequest,
 	                                            session: NSURLSession, responseController: ResponseController,
 	                                            succeed:(response: Type)->(), fail:((ResponseError)->())? = nil ) {
@@ -134,6 +162,7 @@ public class Air{
 
 		task.resume()
 	}
+
 	private class func performAsychonousRequest<Type: ModelProtocol> (request: NSURLRequest,
 	                                            session: NSURLSession, responseController: ResponseController,
 	                                            succeed:(response: [Type])->(), fail:((ResponseError)->())? = nil ) {
