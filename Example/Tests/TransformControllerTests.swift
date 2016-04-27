@@ -69,10 +69,12 @@ class TransformControllerTests: QuickSpec {
 	}
     //MARK: transform
     
-    override func spec() {
+    override func spec()
+    {
+        let transformController = TransformController()
+        var data = NSData()
         describe("TransformController"){
-            let transformController = TransformController()
-            var data = NSData()
+            
             it("should not return error at loadingData"){
                 expect {try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())
             }
@@ -93,8 +95,7 @@ class TransformControllerTests: QuickSpec {
             
             
             it("should return correct objectId at transform with body"){
-                let transformController = TransformController()
-                var data = NSData()
+                //var data = NSData()
                 expect {try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())
                 
                 var result = ExampleBaseModel()
@@ -106,10 +107,9 @@ class TransformControllerTests: QuickSpec {
             }
             
             it("should throw error at transform with wrong data"){
-                let transformController = TransformController()
                 //Just generate some random data
                 var random = NSInteger(arc4random_uniform(99) + 1)
-                let data = NSData(bytes: &random, length: 3)
+                data = NSData(bytes: &random, length: 3)
                 
                 expect { try transformController.transform(data, completion: { (model : ExampleBaseModel) in
                     
@@ -117,6 +117,10 @@ class TransformControllerTests: QuickSpec {
                     let error = error as NSError
                     expect(error.code).to(equal(3840))
                 }))
+            }
+            
+            it("should not throw errror at transform with array of objects"){
+                
             }
         }
     }
