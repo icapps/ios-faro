@@ -39,7 +39,7 @@ public class Air{
 	- parameter session : default NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()
 	- parameter succeed: closure is called when service request successfully returns
 	- parameter fail: closure called when something in the response fails.
-	- throws : Errors related to the request construction.
+	- throws : errors related to the request construction.
 */
 	public  class func save <Rivet: ModelProtocol>  (body: Rivet,
 	                         session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
@@ -73,11 +73,11 @@ public class Air{
 
 	//MARK: - Retrieve
 	/**
- Retreive a all items of `Type`. Closures are called on a background queue!
+ Retreive all items of `Type`. Closures are called on a background queue!
 	
 	- parameter response: closure is called when service request successfully returns
 	- parameter fail: closure called when something in the response fails.
-	- throws : Errors related to the request construction.
+	- throws : errors related to the request construction.
 	*/
 	public class func retrieve<Type: ModelProtocol> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                     responseController: ResponseController = ResponseController(),
@@ -93,10 +93,10 @@ public class Air{
 	}
 	
 	/**
- Retreive a single item or `Type`. Closures are called on a background queue!
+ Retreive a single item of `Type`. Closures are called on a background queue!
 	
-	- parameter objectID: Something that uniquely defines the object you are asking for of `Type`
-	- parameter succeed: closure is called when service request successfully returns. !on a background queue
+	- parameter objectID: something that uniquely defines the object you are asking for of `Type`
+	- parameter succeed: closure is called when service request successfully returns. Closures are called on a background queue!
 	- parameter fail: closure called when something in the response fails.
 	- throws : Errors related to the request construction.
 	*/
