@@ -18,16 +18,16 @@ public class TransformController {
 	- returns: via the completion block a parsed object of `Type` is returned.
 	- throws:
 	*/
-	public func transform<Type: Parsable>(data: NSData, body: Type? = nil, completion:(Type)->()) throws {
+	public func transform<Type: Parsable>(data: NSData, entity: Type? = nil, succeed:(Type)->()) throws {
 		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-		if var model = body {
+		if var model = entity {
 			try model.parseFromDict(json)
-			completion(model)
+			succeed(model)
 		}
 		else {
 			let model = Type()
 			try model.parseFromDict(json)
-			completion(model)
+			succeed(model)
 		}
 	}
 
@@ -42,17 +42,17 @@ public class TransformController {
 	- throws:
 	*/
 
-    public func transform<Type: Parsable>(data: NSData, body: Type? = nil, completion:([Type])->()) throws{
+    public func transform<Type: Parsable>(data: NSData, entity: Type? = nil, succeed:([Type])->()) throws{
 		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
 		if let rootKey = Type.rootKey(), let array = json[rootKey] as? [[String:AnyObject]] {
-			completion(try dictToArray(array))
+			succeed(try dictToArray(array))
 		}
 		else if let dict = json as? [String:AnyObject] {
 			let model = Type()
 			try model.parseFromDict(dict)
-			completion([model])
+			succeed([model])
 		}else if let array = json as? [[String:AnyObject]] {
-			completion(try dictToArray(array))
+			succeed(try dictToArray(array))
 		}
 		else {
 			throw ResponseError.InvalidDictionary(dictionary: json)

@@ -9,25 +9,25 @@ class ResponseControllerSpec: QuickSpec {
 
 	override func spec () {
 
-		describe ("  ") {
-			it("should fail when JSON is invalid") {
-
-				let invalidDict = ["wrong": "json"]
-				let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
-
-				ResponseController().respond(data, succeed: { (response: MockEntity) in
-					XCTFail()
-					}, fail: { (error) in
-						switch error {
-						case ResponseError.InvalidDictionary(let anyThing):
-							let dictionary = anyThing as! [String: String]
-							let key = dictionary["wrong"]
-							expect(key).to(equal("json"))
-						default:
-							XCTFail("Wrong type of error")
-						}
-				})
-			}
+		describe ("Response controller  ") {
+//			it("should fail when JSON is invalid") {
+//
+//				let invalidDict = ["wrong": "json"]
+//				let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
+//
+//				ResponseController().respond(data, succeed: { (response: MockEntity) in
+//					XCTFail()
+//					}, fail: { (error) in
+//						switch error {
+//						case ResponseError.InvalidDictionary(let anyThing):
+//							let dictionary = anyThing as! [String: String]
+//							let key = dictionary["wrong"]
+//							expect(key).to(equal("json"))
+//						default:
+//							XCTFail("Wrong type of error")
+//						}
+//				})
+//			}
 
 			context("Mocking the Mitigator"){
 				class MockEntityWithErrorMitigator: GameScore {
@@ -36,6 +36,7 @@ class ResponseControllerSpec: QuickSpec {
 					}
 
 					override func parseFromDict(json: AnyObject) throws {
+						print(json)
 						throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
 					}
 
@@ -46,28 +47,27 @@ class ResponseControllerSpec: QuickSpec {
 
 				class MockMitigator: DefaultMitigator {
 					override func responseInvalidDictionary(dictionary: AnyObject) throws{
+						//TODO: I need the object here
 						//mock the throwing out
 						return
 					}
 				}
 
-				it("should succeed with invalid json if the error controller handles the error") {
+				it("should succeed with invalid json if the mitigator handles the error") {
 
-					let invalidDict = ["wrong": "json"]
+					let expectedObjectId = "expectedObjectId"
+					let invalidDict = ["wrong": "json", "writeNode": ["objectId":expectedObjectId]]
 					let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
 
+					var result = MockEntityWithErrorMitigator()
+
 					ResponseController().respond(data, succeed: { (response: MockEntityWithErrorMitigator) in
-						//TODO:
+						result = response
 						}, fail: { (error) in
 							XCTFail("Should not raise \(error)")
 					})
 
-					//TODO: See if you can parse from invalid data to the objects you want.
-					//1. An error happens
-					//2. Errors in the dictionary are removed
-					//3. The parsing is continued
-					//4. The correct objects are returned.
-					
+					expect(result.objectId).to(equal(expectedObjectId))
 				}
 			}
 		}

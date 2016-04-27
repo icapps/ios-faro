@@ -20,48 +20,64 @@ public class ResponseController {
 	}
 	
 	func respond<Rivet: ModelProtocol>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, body: Rivet? = nil,
-	             succeed: (Rivet)->(), fail:((ResponseError)->())? = nil) {
+	             succeed: (Rivet)->(), fail:((ResponseError)->())?) {
 
-		let entity  = Rivet()
+		let entity = useBodyOrCreateEntity(body)
 		let mitigator = entity.responseMitigator()
-
-		guard  error == nil else {
-			respondWithfail(error!, fail: fail, mitigator: mitigator)
+		guard let data = checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail) else {
 			return
 		}
 
 		do {
-			guard let data = try ResponseControllerUtils.checkStatusCodeAndData(data, urlResponse: urlResponse, error: error, mitigator: mitigator) else {
-				return
-			}
-
-			try entity.environment().transformController().transform(data, body: body, completion: succeed)
+			try entity.environment().transformController().transform(data, entity: entity, succeed: succeed)
 		}catch {
 			splitErrorType(error, fail: fail, mitigator: mitigator)
 		}
+
 	}
 
 	func respond<Rivet: ModelProtocol>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, body: Rivet? = nil,
-	             succeed: ([Rivet])->(),  fail:((ResponseError)->())? = nil){
+	             succeed: ([Rivet])->(),  fail:((ResponseError)->())?){
 
-		let entity  = Rivet()
+		let entity = useBodyOrCreateEntity(body)
 		let mitigator = entity.responseMitigator()
-
-		guard error == nil else {
-			respondWithfail(error!, fail: fail, mitigator: mitigator)
+		guard let data = checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail) else {
 			return
 		}
 
 		do {
-			guard let data = try ResponseControllerUtils.checkStatusCodeAndData(data, urlResponse: urlResponse, error: error, mitigator: mitigator) else {
-				return
-			}
-
-			try entity.environment().transformController().transform(data, body: body, completion: succeed)
+			try entity.environment().transformController().transform(data, entity: entity, succeed: succeed)
 		}catch {
 			splitErrorType(error, fail: fail, mitigator: mitigator)
 		}
     }
+
+
+	private func checkErrorAndReturnValidData(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponsMitigatable, fail:((ResponseError)->())?) -> NSData?{
+
+		guard  error == nil else {
+			respondWithfail(error!, fail: fail, mitigator: mitigator)
+			return nil
+		}
+
+		do {
+			guard let data = try ResponseControllerUtils.checkStatusCodeAndData(data, urlResponse: urlResponse, error: error, mitigator: mitigator) else {
+				return nil
+			}
+			return data
+		}catch {
+			splitErrorType(error, fail: fail, mitigator: mitigator)
+			return nil
+		}
+	}
+
+	private func useBodyOrCreateEntity<Rivet: ModelProtocol>(body: Rivet?) -> Rivet {
+		var entity = body
+		if entity == nil {
+			entity = Rivet()
+		}
+		return entity!
+	}
 
 	private func respondWithfail(taskError: NSError ,fail:((ResponseError) ->())?, mitigator: ResponsMitigatable) {
 		print("---Error request failed with error: \(taskError)----")
