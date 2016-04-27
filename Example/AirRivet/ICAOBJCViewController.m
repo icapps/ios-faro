@@ -19,6 +19,9 @@
 	GameScoreController * controller = [[GameScoreController alloc] init];
 
 	[controller retrieve:^(NSArray<GameScore *> * _Nonnull response) {
+		[[NSOperationQueue mainQueue]addOperationWithBlock:^{
+			self.label.text = [NSString stringWithFormat:@"Received %lu objects", (unsigned long)response.count];
+		}];
 		NSLog(@"%@", response);
 	} failure:^(NSError * _Nonnull error) {
 		NSLog(@"%@", error);

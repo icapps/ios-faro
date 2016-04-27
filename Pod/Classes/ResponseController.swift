@@ -19,40 +19,90 @@ public class ResponseController {
 	public init() {
 	}
 	
-	func respond<ResponseType: protocol<Parsable, Mitigatable, UniqueAble> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
+	func respond<Rivet: ModelProtocol>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, body: Rivet? = nil,
+	             succeed: (Rivet)->(), fail:((ResponseError)->())? = nil) {
 
-        guard let data = try ResponseControllerUtils.checkStatusCodeAndData(response, mitigator: mitigator(body)) else {
+		let entity  = Rivet()
+		let mitigator = entity.responseMitigator()
+
+		guard  error == nil else {
+			respondWithfail(error!, fail: fail, mitigator: mitigator)
 			return
 		}
 
-		try environment.transformController().transform(data, body: body, completion: completion)
+		do {
+			guard let data = try ResponseControllerUtils.checkStatusCodeAndData(data, urlResponse: urlResponse, error: error, mitigator: mitigator) else {
+				return
+			}
+
+			try entity.environment().transformController().transform(data, body: body, completion: succeed)
+		}catch {
+			splitErrorType(error, fail: fail, mitigator: mitigator)
+		}
 	}
 
-	func respond<ResponseType: protocol<Parsable, Mitigatable, UniqueAble> >(environment: Transformable, response:  (data: NSData?, urlResponse: NSURLResponse?), body: ResponseType? = nil, completion: ([ResponseType])->()) throws{
+	func respond<Rivet: ModelProtocol>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, body: Rivet? = nil,
+	             succeed: ([Rivet])->(),  fail:((ResponseError)->())? = nil){
 
-		guard let data = try ResponseControllerUtils.checkStatusCodeAndData(response, mitigator: mitigator(body)) else {
+		let entity  = Rivet()
+		let mitigator = entity.responseMitigator()
+
+		guard error == nil else {
+			respondWithfail(error!, fail: fail, mitigator: mitigator)
 			return
 		}
 
-		try environment.transformController().transform(data, body: body, completion: completion)
+		do {
+			guard let data = try ResponseControllerUtils.checkStatusCodeAndData(data, urlResponse: urlResponse, error: error, mitigator: mitigator) else {
+				return
+			}
+
+			try entity.environment().transformController().transform(data, body: body, completion: succeed)
+		}catch {
+			splitErrorType(error, fail: fail, mitigator: mitigator)
+		}
     }
 
-	func mitigator<T: Mitigatable>(body: T? = nil) -> ResponsMitigatable {
-		var mitigator: ResponsMitigatable
-
-		if let body = body {
-			mitigator = body.responseErrorController()
-		}else {
-			mitigator = T().responseErrorController()
+	private func respondWithfail(taskError: NSError ,fail:((ResponseError) ->())?, mitigator: ResponsMitigatable) {
+		print("---Error request failed with error: \(taskError)----")
+		do {
+			try mitigator.requestResponseError(taskError)
+		}catch {
+			fail?(ResponseError.ResponseError(error: taskError))
 		}
+		fail?(ResponseError.ResponseError(error: taskError))
+	}
 
-		return mitigator
+	private func splitErrorType(error: ErrorType, fail: ((ResponseError) ->())?, mitigator: ResponsMitigatable) {
+
+		switch error {
+		case ResponseError.InvalidAuthentication:
+			do {
+				try mitigator.requestAuthenticationError()
+			}catch {
+				fail?(ResponseError.InvalidAuthentication)
+			}
+		case ResponseError.InvalidDictionary(dictionary: let dictionary):
+			do {
+				try mitigator.responseInvalidDictionary(dictionary)
+			}catch {
+				let responsError = error as! ResponseError
+				fail?(responsError)
+			}
+		default:
+			print("---Error we could not process the response----")
+			do {
+				try mitigator.requestGeneralError()
+			}catch {
+				fail?(ResponseError.General)
+			}
+		}
 	}
 }
 
 internal class ResponseControllerUtils {
-    class func checkStatusCodeAndData(response: (data: NSData?, urlResponse: NSURLResponse?), mitigator: ResponsMitigatable) throws -> NSData? {
-        if let httpResponse = response.urlResponse as? NSHTTPURLResponse {
+	class func checkStatusCodeAndData(data: NSData? = nil, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponsMitigatable) throws -> NSData? {
+        if let httpResponse = urlResponse as? NSHTTPURLResponse {
             
             let statusCode = httpResponse.statusCode
             
@@ -66,7 +116,7 @@ internal class ResponseControllerUtils {
                 return nil
             }
             
-            guard let data = response.data else {
+            guard let data = data else {
                 try mitigator.responseDataEmptyError()
                 return nil
             }
@@ -74,7 +124,7 @@ internal class ResponseControllerUtils {
             return data
         }
         else {
-            return response.data
+            return data
         }
     }
 }

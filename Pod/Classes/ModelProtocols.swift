@@ -10,27 +10,27 @@ import Foundation
 
 
 /**
-A `RequestController` should be able to build up a request when your model object complies to the protocols  below.
+A `Air` should be able to build up a request when your model object complies to the protocols  below.
 */
 
 /**
 React and/or solve errors that could arrise while the entity that conforms to `Mitigatable` is handeled.
 
-You can inspect how error mitigation is expected to behave by looking at `RequestControllerSpec` in the tests of the Example project.
+You can inspect how error mitigation is expected to behave by looking at `AirSpec` in the tests of the Example project.
 */
-public protocol Mitigatable {
+public protocol Mitigatable : class {
 
 	init ()
 	/**
 	By returning an error controller you can handle parsing errors.
 	- returns: By default an implementation of `DefaultMitigator` is returned via a protocol extension
 	*/
-	func responseErrorController() -> ResponsMitigatable
+	func responseMitigator() -> ResponsMitigatable
 	/**
 	If an error happens while constructing an entity this error controller could handle the error if needed.
 	 - returns: By default an implementation of `DefaultMitigator` is returned via a protocol extension
 	*/
-	static func requestErrorController() -> RequestMitigatable
+	static func requestMitigator()-> RequestMitigatable
 }
 
 public protocol Parsable {

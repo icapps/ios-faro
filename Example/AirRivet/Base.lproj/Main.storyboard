@@ -92,6 +92,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Objective-C" id="hhF-Yy-ZI3"/>
+                    <connections>
+                        <outlet property="label" destination="mUx-ZP-HLJ" id="a2L-bf-Ete"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dd1-0c-BEh" sceneMemberID="firstResponder"/>
             </objects>

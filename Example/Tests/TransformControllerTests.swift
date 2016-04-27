@@ -37,11 +37,11 @@ class ExampleBaseModel: UniqueAble, Mitigatable, Parsable {
 		return "results"
 	}
 
-	func responseErrorController () -> ResponsMitigatable {
+	func responseMitigator() -> ResponsMitigatable {
 		return DefaultMitigator()
 	}
 
-	static func requestErrorController() -> RequestMitigatable {
+	static func requestMitigator()-> RequestMitigatable {
 		return DefaultMitigator()
 	}
 }

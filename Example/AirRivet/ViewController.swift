@@ -10,20 +10,24 @@ import UIKit
 import AirRivet
 
 class ViewController: UIViewController {
-	let requestController = RequestController<GameScore>()
-
 	@IBOutlet var label: UILabel!
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
 		do {
-			try requestController.retrieve({ (response) in
-				print(response)
-				dispatch.async.main({ 
+			try Air.retrieve(succeed: { (response: [GameScore]) in
+				print("🎉 successfully retreived \(response.count) objects")
+				dispatch.async.main({
 					self.label.text = "Received \(response.count) objects"
 				})
 			})
+
+			try Air.retrieve("pyqCt2ZHWT", succeed: { (response: GameScore) in
+				print("🎉 successfully retreived one object \(response.objectId)")
+				})
+
 		}catch {
 			print("-------Error with request------")
 		}
