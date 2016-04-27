@@ -80,12 +80,10 @@ class TransformControllerSpec: QuickSpec {
             }
             
             it ("should return correct objectId at transformation"){
-                var result = ExampleBaseModel()
                 try! transformController.transform(data, completion: {
                     (model: ExampleBaseModel) in
-                    result = model
+					expect(model.objectId).to(equal("123456ABCdef"))
                 })
-                expect(result.objectId).to(equal("123456ABCdef"))
             }
             
             let inputModel : ExampleBaseModel = ExampleBaseModel()
@@ -98,12 +96,10 @@ class TransformControllerSpec: QuickSpec {
                 //var data = NSData()
                 expect {try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())
                 
-                var result = ExampleBaseModel()
                 try! transformController.transform(data, body: inputModel, completion: {
-                    (item) in
-                    result = item
+					(result : ExampleBaseModel) in
+					expect(result.objectId).to(equal("123456ABCdef"))
                 })
-                expect(result.objectId).to(equal("123456ABCdef"))
             }
             
             it("should throw error at transform with wrong data"){
