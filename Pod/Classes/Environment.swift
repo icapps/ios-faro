@@ -3,10 +3,10 @@
 import Foundation
 
 /**
-The environmont where we should fetch the data from.
+The environment where we should fetch the data from.
 
 Example environments:
-* Pruduction
+* Production
 * Development
 * Filesystem
 * ...
@@ -28,7 +28,7 @@ public protocol Mockable {
 
 /**
 	Handle the data that you receive. Data can be anything you want
-	- returns: By default a `TransformController` is returned that does data ~> JSON ~> entities of your type.
+	- returns: By default a `TransformController` is returned that does: 'data ~> JSON ~> entities of your type'.
 */
 public protocol Transformable {
 	func transformController() -> TransformController

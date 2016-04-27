@@ -10,7 +10,7 @@ import Foundation
 
 
 /**
-A `Air` should be able to build up a request when your model object complies to the protocols  below.
+An `Air` should be able to build up a request when your model object complies to the protocols below.
 */
 
 /**
@@ -71,7 +71,9 @@ public protocol EnvironmentConfigurable {
 	func contextPath() -> String
 }
 
-
+/**
+ Every object has to have an unique identifier
+ */
 public protocol UniqueAble {
 	var objectId: String? {get set}
 }

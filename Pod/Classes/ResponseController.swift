@@ -1,20 +1,20 @@
 import Foundation
 
 /**
-Deal with the errors of the response and interpret the respons.
+Deal with the errors of the response and interpret the response.
 
 #Tasks
 
 ## Handle errors in response
 Errors cause an throw
-## Pass response to the TransformController 
-Responses are interpretted in the TransFormController
+## Pass response to the `TransformController`
+Responses are interpretted in the `TransFormController`
 */
 public class ResponseController {
 
 	/**
 	- parameter transformController: a default implementation is given that transforms from JSON to your model object of `ResponseType`
-	- returns: Properly instantiated ResponseController
+	- returns: Properly instantiated `ResponseController`
 	*/
 	public init() {
 	}
