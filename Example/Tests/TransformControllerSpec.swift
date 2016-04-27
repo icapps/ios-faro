@@ -56,7 +56,7 @@ extension ExampleBaseModel: EnvironmentConfigurable {
 	}
 }
 
-class TransformControllerTests: QuickSpec {
+class TransformControllerSpec: QuickSpec {
     
 	private func loadDataFromUrl(url: String) throws -> NSData? {
 		guard
