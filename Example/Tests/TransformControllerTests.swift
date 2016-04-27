@@ -146,25 +146,19 @@ class TransformControllerTests: QuickSpec {
                 })
             }
             
+            it("should throw error at transform an array with wrong data"){
+                //Just generate some random data
+                var random = NSInteger(arc4random_uniform(99) + 1)
+                data = NSData(bytes: &random, length: 3)
+                
+                expect { try transformController.transform(data, completion: { (model : [ExampleBaseModel]) in
+                    
+                })}.to(throwError(closure: { (error) in
+                    let error = error as NSError
+                    expect(error.code).to(equal(3840))
+                }))
+            }
+            
         }
     }
 }
-
-//    
-//    func testObjectDataToConcreteObjectsInvalidJSONData() {
-//        let transformController = TransformController()
-//        
-//        //Just generate some random data
-//        var random = NSInteger(arc4random_uniform(99) + 1)
-//        let data = NSData(bytes: &random, length: 3)
-//        
-//        XCTAssertThrowsError(try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
-//            XCTFail("transformation of invalid json data should not result in a model object")
-//        }), "transformation of invalid json data should throw an error") { (error) in
-//
-//			let nsError = error as NSError
-//
-//            XCTAssertEqual(nsError.code, 3840)
-//        }
-//    }
-
