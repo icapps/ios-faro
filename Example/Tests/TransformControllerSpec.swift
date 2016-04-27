@@ -108,7 +108,7 @@ class TransformControllerSpec: QuickSpec {
                 data = NSData(bytes: &random, length: 3)
                 
                 expect { try transformController.transform(data, completion: { (model : ExampleBaseModel) in
-                    
+                    XCTFail("Should not complete")
                 })}.to(throwError(closure: { (error) in
                     let error = error as NSError
                     expect(error.code).to(equal(3840))
@@ -128,7 +128,7 @@ class TransformControllerSpec: QuickSpec {
             it ("should throw error at transform with invalid root key"){
                 expect{ try data = self.loadDataFromUrl("exampleBaseModelResultsArrayCustomRootKey")!}.notTo(throwError())
                 expect { try transformController.transform(data, completion: { (model : [ExampleBaseModel]) in
-                    
+                    XCTFail("Should not complete")
                 })}.to(throwError(closure: { (error) in
                     expect(error).to(matchError(ResponseError.InvalidResponseData))
                 }))
@@ -148,7 +148,7 @@ class TransformControllerSpec: QuickSpec {
                 data = NSData(bytes: &random, length: 3)
                 
                 expect { try transformController.transform(data, completion: { (model : [ExampleBaseModel]) in
-                    
+                    XCTFail("Should not complete")
                 })}.to(throwError(closure: { (error) in
                     let error = error as NSError
                     expect(error.code).to(equal(3840))
