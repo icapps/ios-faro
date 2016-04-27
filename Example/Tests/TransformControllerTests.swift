@@ -128,67 +128,28 @@ class TransformControllerTests: QuickSpec {
                     expect{results[2].objectId}.to(equal("789c"))
                 })
             }
+            
+            it ("should throw error at transform with invalid root key"){
+                expect{ try data = self.loadDataFromUrl("exampleBaseModelResultsArrayCustomRootKey")!}.notTo(throwError())
+                expect { try transformController.transform(data, completion: { (model : [ExampleBaseModel]) in
+                    
+                })}.to(throwError(closure: { (error) in
+                    expect(error).to(matchError(ResponseError.InvalidResponseData))
+                }))
+            }
+            
+            it("should not throw error at transform with single item"){
+                expect{ try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())
+                try! transformController.transform(data, completion: {(results: [ExampleBaseModel]) in
+                    expect(results.count).to(equal(1))
+                    expect(results[0].objectId).to(equal("123456ABCdef"))
+                })
+            }
+            
         }
     }
 }
 
-//    
-//    //MARK: transform
-//    
-//    func testObjectDataToConcreteObjects() {
-//        let transformController = TransformController()
-//        
-//		guard let data = loadDataFromUrl("exampleBaseModelResultsArray") else {
-//			return
-//		}
-//
-//        do {
-//            try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
-//                XCTAssertTrue(results.count == 3)
-//                XCTAssertEqual(results[0].objectId, "123a")
-//                XCTAssertEqual(results[1].objectId, "456b")
-//                XCTAssertEqual(results[2].objectId, "789c")
-//            })
-//        }
-//        catch {
-//            XCTFail("transformation should not throw an error")
-//        }
-//    }
-//
-//    func testObjectDataToConcreteObjectsCustomRootKey() {
-//        let transformController = TransformController()
-//        
-//		guard let data = loadDataFromUrl("exampleBaseModelResultsArrayCustomRootKey") else {
-//			return
-//		}
-//
-//        do {
-//            try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
-//				XCTFail("transformation should throw because the JSON is invalid")
-//            })
-//        }
-//        catch {
-//			//Success
-//        }
-//    }
-//
-//    func testObjectDataToConcreteObjectsFromSingleItem() {
-//        let transformController = TransformController()
-//        
-//		guard let data = loadDataFromUrl("exampleBaseModel") else {
-//			return
-//		}
-//
-//        do {
-//            try transformController.transform(data, completion: { (results:[ExampleBaseModel]) in
-//                XCTAssertTrue(results.count == 1)
-//                XCTAssertEqual(results[0].objectId, "123456ABCdef")
-//            })
-//        }
-//        catch {
-//            XCTFail("transformation should not throw an error")
-//        }
-//    }
 //    
 //    func testObjectDataToConcreteObjectsInvalidJSONData() {
 //        let transformController = TransformController()
