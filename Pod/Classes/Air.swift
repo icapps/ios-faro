@@ -6,7 +6,7 @@ public typealias ModelProtocol = protocol<UniqueAble, EnvironmentConfigurable, P
 /** 
 `Air` handles interactions with a model of a specific Type called `Rivet`. 
 
-This class is intensionaly stateless.
+This class is intentionally stateless.
 
 # Tasks
 
