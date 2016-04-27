@@ -14,7 +14,7 @@ public class ResponseController {
 
 	/**
 	- parameter transformController: a default implementation is given that transforms from JSON to your model object of `ResponseType`
-	- returns: properly instantiated `ResponseController`
+	- returns: Properly instantiated `ResponseController`
 	*/
 	public init() {
 	}

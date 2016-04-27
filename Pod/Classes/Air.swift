@@ -35,11 +35,11 @@ public class Air{
 /**
  Save a single item of Type `Rivet`.  Closures are called on a background queue!
 	
-	- parameter body: the object of type `Rivet` is converted to JSON and send to the server.
-	- parameter session : default NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()
-	- parameter succeed: closure is called when service request successfully returns
-	- parameter fail: closure called when something in the response fails.
-	- throws : errors related to the request construction.
+	- parameter body: The object of type `Rivet` is converted to JSON and send to the server.
+	- parameter session : Default NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()
+	- parameter succeed: Closure is called when service request successfully returns
+	- parameter fail: Closure called when something in the response fails.
+	- throws : Errors related to the request construction.
 */
 	public  class func save <Rivet: ModelProtocol>  (body: Rivet,
 	                         session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
@@ -75,9 +75,9 @@ public class Air{
 	/**
  Retreive all items of `Type`. Closures are called on a background queue!
 	
-	- parameter response: closure is called when service request successfully returns
-	- parameter fail: closure called when something in the response fails.
-	- throws : errors related to the request construction.
+	- parameter response: Closure is called when service request successfully returns
+	- parameter fail: Closure called when something in the response fails.
+	- throws : Errors related to the request construction.
 	*/
 	public class func retrieve<Type: ModelProtocol> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                     responseController: ResponseController = ResponseController(),
@@ -95,9 +95,9 @@ public class Air{
 	/**
  Retreive a single item of `Type`. Closures are called on a background queue!
 	
-	- parameter objectID: something that uniquely defines the object you are asking for of `Type`
-	- parameter succeed: closure is called when service request successfully returns. Closures are called on a background queue!
-	- parameter fail: closure called when something in the response fails.
+	- parameter objectID: Something that uniquely defines the object you are asking for of `Type`
+	- parameter succeed: Closure is called when service request successfully returns. Closures are called on a background queue!
+	- parameter fail: Closure called when something in the response fails.
 	- throws : Errors related to the request construction.
 	*/
 	public class func retrieve <Type: ModelProtocol> (objectId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
