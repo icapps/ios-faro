@@ -30,8 +30,10 @@ public protocol ResponsMitigatable {
 
 	/**
 	Your chance to intercept dictionary data that cannot is irregular. You can fix it and don't trow.
+	- returns : a valid dictionary that can be transformed
+	- throws: When you cannot interpret the dictionary throw an error
 	*/
-	func responseInvalidDictionary(dictionary: AnyObject) throws -> ()
+	func responseInvalidDictionary(dictionary: AnyObject) throws -> AnyObject?
 }
 
 public protocol TransformMitigatable {

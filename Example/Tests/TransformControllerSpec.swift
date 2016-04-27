@@ -124,13 +124,18 @@ class TransformControllerSpec: QuickSpec {
                     expect{results[2].objectId}.to(equal("789c"))
                 })
             }
-            
+
             it ("should throw error at transform with invalid root key"){
                 expect{ try data = self.loadDataFromUrl("exampleBaseModelResultsArrayCustomRootKey")!}.notTo(throwError())
                 expect { try transformController.transform(data, succeed: { (model : [ExampleBaseModel]) in
                     
                 })}.to(throwError(closure: { (error) in
-                    expect(error).to(matchError(ResponseError.InvalidResponseData))
+					switch error {
+					case ResponseError.InvalidDictionary(dictionary: _):
+						break
+					default :
+						XCTFail("Should not be error of type \(error)")
+					}
                 }))
             }
             
