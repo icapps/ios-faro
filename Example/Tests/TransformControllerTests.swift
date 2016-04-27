@@ -120,7 +120,13 @@ class TransformControllerTests: QuickSpec {
             }
             
             it("should not throw errror at transform with array of objects"){
-                
+                expect{ try data = self.loadDataFromUrl("exampleBaseModelResultsArray")!}.notTo(throwError())
+                try! transformController.transform(data, completion: { (results: [ExampleBaseModel]) in
+                    expect{results.count}.to(equal(3))
+                    expect{results[0].objectId}.to(equal("123a"))
+                    expect{results[1].objectId}.to(equal("456b"))
+                    expect{results[2].objectId}.to(equal("789c"))
+                })
             }
         }
     }
