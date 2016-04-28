@@ -74,7 +74,7 @@ public class TransformController {
 		}
 	}
 
-	private func getJSONFromData(data: NSData, rootKey: String?, mitigator: ResponsMitigatable) throws -> AnyObject {
+	private func getJSONFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject {
 
 		var json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
 
