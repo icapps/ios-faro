@@ -36,7 +36,7 @@ public class DefaultMitigator: Mitigator {
         throw ResponseError.InvalidResponseData
     }
     
-    public func responseInvalidError() throws {
+    public func ivalidResponseError() throws {
         print("-----------Invalid response type-----")
         throw ResponseError.InvalidResponse
 	}

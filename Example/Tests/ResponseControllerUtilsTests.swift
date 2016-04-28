@@ -6,7 +6,7 @@ class DummyMitigator: DefaultMitigator {
         throw ResponseError.InvalidResponseData
     }
     
-    override func responseInvalidError() throws {
+    override func ivalidResponseError() throws {
         throw ResponseError.InvalidResponse
     }
     
