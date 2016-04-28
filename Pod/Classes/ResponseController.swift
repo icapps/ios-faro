@@ -133,7 +133,7 @@ internal class ResponseControllerUtils {
             }
             
             guard let data = data else {
-                try mitigator.responseDataEmptyError()
+                try mitigator.invalidResponseEmptyDataError()
                 return nil
             }
             

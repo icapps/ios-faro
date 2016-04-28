@@ -2,7 +2,7 @@ import XCTest
 @testable import AirRivet
 
 class DummyMitigator: DefaultMitigator {
-    override func responseDataEmptyError() throws {
+    override func invalidResponseEmptyDataError() throws {
         throw ResponseError.InvalidResponseData
     }
     

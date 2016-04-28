@@ -31,7 +31,7 @@ public class DefaultMitigator: Mitigator {
     
     //MARK: ResponseErrorController
     
-    public func responseDataEmptyError() throws {
+    public func invalidResponseEmptyDataError() throws {
         print("-----------Invalid response data-----")
         throw ResponseError.InvalidResponseData
     }

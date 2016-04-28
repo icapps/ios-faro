@@ -22,7 +22,7 @@ public protocol RequestMitigatable {
 }
 
 public protocol ResponsMitigatable {
-    func responseDataEmptyError() throws -> ()
+    func invalidResponseEmptyDataError() throws -> ()
     func responseInvalidError() throws -> ()
 	func invalidAuthenticationError() throws -> ()
 	func responseError(error: NSError?) throws -> ()

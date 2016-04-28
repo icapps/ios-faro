@@ -23,7 +23,7 @@ class DefaultMitigatorSpec: QuickSpec {
 			}
 
 			it("should throw Response Errors when the response cannot be interpreted") {
-				expect { try errorController.responseDataEmptyError() }.to(throwError(closure: { (error) in
+				expect { try errorController.invalidResponseEmptyDataError() }.to(throwError(closure: { (error) in
 					expect(error).to(matchError(ResponseError.InvalidResponseData))
 				}))
 
