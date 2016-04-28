@@ -18,14 +18,14 @@ public protocol Mitigator: RequestMitigatable, ResponsMitigatable, TransformMiti
 public protocol RequestMitigatable {
     func bodyError() throws -> ()
     func generalError() throws -> ()
-    func requestResponseError(error: NSError?) throws -> ()
+    func responseError(error: NSError?) throws -> ()
 }
 
 public protocol ResponsMitigatable {
     func responseDataEmptyError() throws -> ()
     func responseInvalidError() throws -> ()
 	func requestAuthenticationError() throws -> ()
-	func requestResponseError(error: NSError?) throws -> ()
+	func responseError(error: NSError?) throws -> ()
 	func generalError() throws -> ()
 
 	/**

@@ -82,7 +82,7 @@ public class ResponseController {
 	private func respondWithfail(taskError: NSError ,fail:((ResponseError) ->())?, mitigator: ResponsMitigatable) {
 		print("---Error request failed with error: \(taskError)----")
 		do {
-			try mitigator.requestResponseError(taskError)
+			try mitigator.responseError(taskError)
 		}catch {
 			fail?(ResponseError.ResponseError(error: taskError))
 		}

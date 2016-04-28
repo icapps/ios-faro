@@ -22,7 +22,7 @@ public class DefaultMitigator: Mitigator {
 		throw RequestError.General
 	}
 	
-	public func requestResponseError(error: NSError?) throws {
+	public func responseError(error: NSError?) throws {
 		print("-----------Request failed with error-----")
         if let error = error {
             throw ResponseError.ResponseError(error: error)
