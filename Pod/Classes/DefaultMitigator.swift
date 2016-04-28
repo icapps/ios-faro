@@ -7,7 +7,7 @@ public class DefaultMitigator: Mitigator {
 	}
     //MARK: RequestErrorController
     
-	public func bodyError() throws -> () {
+	public func invalidBodyError() throws -> () {
 		print("-----------Error building up body-----")
 		throw RequestError.InvalidBody
 	}

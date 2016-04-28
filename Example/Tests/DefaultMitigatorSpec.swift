@@ -10,7 +10,7 @@ class DefaultMitigatorSpec: QuickSpec {
 			let errorController = DefaultMitigator()
 
 			it("should throw Request Errors for mistakes in the request") {
-				expect { try errorController.bodyError() }.to(throwError(closure: { (error) in
+				expect { try errorController.invalidBodyError() }.to(throwError(closure: { (error) in
 					expect(error).to(matchError(RequestError.InvalidBody))
 				}))
 
