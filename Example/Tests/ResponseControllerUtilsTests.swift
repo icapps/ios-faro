@@ -14,7 +14,7 @@ class DummyMitigator: DefaultMitigator {
         throw ResponseError.InvalidAuthentication
     }
     
-    override func requestGeneralError() throws {
+    override func generalError() throws {
         throw RequestError.General
     }
 }

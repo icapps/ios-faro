@@ -17,7 +17,7 @@ class DefaultMitigatorSpec: QuickSpec {
 				expect { try errorController.requestAuthenticationError() }.to(throwError(closure: { (error) in
 					expect(error).to(matchError(ResponseError.InvalidAuthentication))
 				}))
-				expect { try errorController.requestGeneralError()}.to(throwError(closure: { (error) in
+				expect { try errorController.generalError()}.to(throwError(closure: { (error) in
 					expect(error).to(matchError(RequestError.General))
 				}))
 			}

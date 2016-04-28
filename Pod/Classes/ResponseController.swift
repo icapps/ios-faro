@@ -108,7 +108,7 @@ public class ResponseController {
 		default:
 			print("---Error we could not process the response----")
 			do {
-				try mitigator.requestGeneralError()
+				try mitigator.generalError()
 			}catch {
 				fail?(ResponseError.General)
 			}
@@ -128,7 +128,7 @@ internal class ResponseControllerUtils {
             }
             
             guard 200...201 ~= statusCode else {
-                try mitigator.requestGeneralError()
+                try mitigator.generalError()
                 return nil
             }
             

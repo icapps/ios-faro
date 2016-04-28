@@ -17,7 +17,7 @@ public class DefaultMitigator: Mitigator {
 		throw ResponseError.InvalidAuthentication
 	}
 	
-	public func requestGeneralError() throws {
+	public func generalError() throws {
 		print("-----------General error-----")
 		throw RequestError.General
 	}
