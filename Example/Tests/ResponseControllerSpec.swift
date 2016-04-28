@@ -43,7 +43,7 @@ class ResponseControllerSpec: QuickSpec {
 						}
 					}
 
-					override func responseMitigator() -> ResponsMitigatable {
+					override func responseMitigator() -> ResponseMitigatable {
 						return MockMitigator()
 					}
 				}
