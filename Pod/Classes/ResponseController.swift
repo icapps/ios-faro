@@ -94,7 +94,7 @@ public class ResponseController {
 		switch error {
 		case ResponseError.InvalidAuthentication:
 			do {
-				try mitigator.requestAuthenticationError()
+				try mitigator.invalidAuthenticationError()
 			}catch {
 				fail?(ResponseError.InvalidAuthentication)
 			}
@@ -123,7 +123,7 @@ internal class ResponseControllerUtils {
             let statusCode = httpResponse.statusCode
             
             guard statusCode != 404 else {
-                try mitigator.requestAuthenticationError()
+                try mitigator.invalidAuthenticationError()
                 return nil
             }
             

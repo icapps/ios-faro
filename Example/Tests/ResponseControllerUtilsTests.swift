@@ -10,7 +10,7 @@ class DummyMitigator: DefaultMitigator {
         throw ResponseError.InvalidResponse
     }
     
-    override func requestAuthenticationError() throws {
+    override func invalidAuthenticationError() throws {
         throw ResponseError.InvalidAuthentication
     }
     

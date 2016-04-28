@@ -12,7 +12,7 @@ public class DefaultMitigator: Mitigator {
 		throw RequestError.InvalidBody
 	}
 	
-	public func requestAuthenticationError() throws {
+	public func invalidAuthenticationError() throws {
 		print("-----------Authentication error-----")
 		throw ResponseError.InvalidAuthentication
 	}
