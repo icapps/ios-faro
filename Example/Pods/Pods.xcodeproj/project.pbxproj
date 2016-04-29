@@ -65,7 +65,7 @@
 		812A89BB2E8D5301C5D856181F276779 /* XCTestObservationCenter+Register.m in Sources */ = {isa = PBXBuildFile; fileRef = 113A823AD108465189E78D464E5CCF04 /* XCTestObservationCenter+Register.m */; };
 		847E01B8709E8253C7B9ACB4B8947F30 /* Callsite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8629AD3F9BCCC6E902F2F76E4164FDAC /* Callsite.swift */; };
 		866830C585216CA87A15D078A28C410A /* CurrentTestCaseTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 5583616EEE527A70D440EAF59BBDAD7F /* CurrentTestCaseTracker.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		8D90839B5424FD2441C67492B42E2A96 /* ModelProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332064BB1EEAAD2B907C36C293F12BE5 /* ModelProtocols.swift */; };
+		8D90839B5424FD2441C67492B42E2A96 /* Rivetable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332064BB1EEAAD2B907C36C293F12BE5 /* Rivetable.swift */; };
 		8DFE23F2C7973BC8A159168AFC2FB8C3 /* MatcherFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323EEF15091E8F608ACD6EF30C09C63B /* MatcherFunc.swift */; };
 		9296C7ABDE9E5894D47CD74E7F78F968 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38597CAB2F0F1CF8BC531272E9DF1578 /* Match.swift */; };
 		929CA5857896A0933D5BC99310605774 /* NSBundle+CurrentTestBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91D54974A2D101091E96BE4DDA7B6241 /* NSBundle+CurrentTestBundle.swift */; };
@@ -183,7 +183,7 @@
 		30B05E2D48A9C702F567056145D11238 /* Nimble.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Nimble.xcconfig; sourceTree = "<group>"; };
 		31FA2400B718421EEECAAA307444815B /* Pods-AirRivet_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AirRivet_Tests-dummy.m"; sourceTree = "<group>"; };
 		323EEF15091E8F608ACD6EF30C09C63B /* MatcherFunc.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MatcherFunc.swift; path = Sources/Nimble/Matchers/MatcherFunc.swift; sourceTree = "<group>"; };
-		332064BB1EEAAD2B907C36C293F12BE5 /* ModelProtocols.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ModelProtocols.swift; sourceTree = "<group>"; };
+		332064BB1EEAAD2B907C36C293F12BE5 /* Rivetable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Rivetable.swift; sourceTree = "<group>"; };
 		346BD7645EA79B6CA47F2FF7341DF1FD /* Pods-AirRivet_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AirRivet_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		3480736B9221D3CC9BEBD487930B4FD2 /* XCTestSuite+QuickTestSuiteBuilder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "XCTestSuite+QuickTestSuiteBuilder.m"; path = "Sources/Quick/XCTestSuite+QuickTestSuiteBuilder.m"; sourceTree = "<group>"; };
 		36F0FD7695B869EF9BA4F092625A7CC5 /* NMBStringify.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NMBStringify.h; path = Sources/Nimble/Adapters/ObjectiveC/NMBStringify.h; sourceTree = "<group>"; };
@@ -364,7 +364,7 @@
 				49921CAC25D507F84DBEA04877EF5315 /* dispatch.swift */,
 				1A9F651D0C65C35EBBB562F949144498 /* Environment.swift */,
 				260F288C6DBB535C9E019E78BEE589A3 /* ErrorMitigator.swift */,
-				332064BB1EEAAD2B907C36C293F12BE5 /* ModelProtocols.swift */,
+				332064BB1EEAAD2B907C36C293F12BE5 /* Rivetable.swift */,
 				BA5071688B68ECF7727429D7C3C149AB /* Air.swift */,
 				C0C6498C7CF0EB65CD7CC0954B2C7D92 /* ResponseController.swift */,
 				761E67B6D3162AE93DD30F6CC0C6F78E /* TransformController.swift */,
@@ -859,7 +859,7 @@
 				2188D275BDB17B9E994238BC139DC414 /* dispatch.swift in Sources */,
 				329811B0751BCB4F2E2223F9A84BD90B /* Environment.swift in Sources */,
 				34B8EAFE30DC913A32EA00758DD66DDD /* ErrorMitigator.swift in Sources */,
-				8D90839B5424FD2441C67492B42E2A96 /* ModelProtocols.swift in Sources */,
+				8D90839B5424FD2441C67492B42E2A96 /* Rivetable.swift in Sources */,
 				C6CCB3FCEA43DDC1BE108039C53627EE /* Air.swift in Sources */,
 				D5985BFCBDD2F4E1B5C7B511F3F1BB98 /* ResponseController.swift in Sources */,
 				EBCF5461ACE9CDB1FE6F08A81367D0A2 /* TransformController.swift in Sources */,

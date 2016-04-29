@@ -19,7 +19,7 @@ public class ResponseController {
 	public init() {
 	}
 	
-	func respond<Rivet: ModelProtocol>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, body: Rivet? = nil,
+	func respond<Rivet: Rivetable>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, body: Rivet? = nil,
 	             succeed: (Rivet)->(), fail:((ResponseError)->())?) {
 
 		let entity = useBodyOrCreateEntity(body)
@@ -36,7 +36,7 @@ public class ResponseController {
 
 	}
 
-	func respond<Rivet: ModelProtocol>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, body: Rivet? = nil,
+	func respond<Rivet: Rivetable>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, body: Rivet? = nil,
 	             succeed: ([Rivet])->(),  fail:((ResponseError)->())?){
 
 		let entity = useBodyOrCreateEntity(body)
@@ -71,7 +71,7 @@ public class ResponseController {
 		}
 	}
 
-	private func useBodyOrCreateEntity<Rivet: ModelProtocol>(body: Rivet?) -> Rivet {
+	private func useBodyOrCreateEntity<Rivet: Rivetable>(body: Rivet?) -> Rivet {
 		var entity = body
 		if entity == nil {
 			entity = Rivet()

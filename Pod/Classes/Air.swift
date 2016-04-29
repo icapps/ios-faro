@@ -1,8 +1,5 @@
 import Foundation
 
-
-public typealias ModelProtocol = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable>
-
 /** 
 `Air` handles interactions with a model of a specific Type called `Rivet`. 
 
@@ -41,7 +38,7 @@ public class Air{
 	- parameter fail: Closure called when something in the response fails.
 	- throws : Errors related to the request construction.
 */
-	public  class func save <Rivet: ModelProtocol>  (body: Rivet,
+	public  class func save <Rivet: Rivetable>  (body: Rivet,
 	                         session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                         responseController: ResponseController = ResponseController(),
 	                         succeed:(response: Rivet)->(), fail:((ResponseError) ->())? = nil) throws {
@@ -79,7 +76,7 @@ public class Air{
 	- parameter fail: Closure called when something in the response fails.
 	- throws : Errors related to the request construction.
 	*/
-	public class func retrieve<Type: ModelProtocol> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
+	public class func retrieve<Type: Rivetable> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                     responseController: ResponseController = ResponseController(),
 	                     succeed:(response: [Type])->(), fail:((ResponseError)->())? = nil) throws{
 		let entity = Type()
@@ -100,7 +97,7 @@ public class Air{
 	- parameter fail: Closure called when something in the response fails.
 	- throws : Errors related to the request construction.
 	*/
-	public class func retrieve <Type: ModelProtocol> (objectId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
+	public class func retrieve <Type: Rivetable> (objectId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                      responseController: ResponseController = ResponseController(),
 	                      succeed:(response: Type)->(), fail:((ResponseError)->())? = nil) throws{
 		let entity = Type()
@@ -117,7 +114,7 @@ public class Air{
 		                  succeed: succeed, fail: fail)
 	}
 
-	private class func mockOrPerform <Type: ModelProtocol> (mockUrl: String, request: NSURLRequest,
+	private class func mockOrPerform <Type: Rivetable> (mockUrl: String, request: NSURLRequest,
 	                                  environment: protocol<Environment, Mockable, Transformable>,
 	                                  responseController: ResponseController, session: NSURLSession,
 	                                  succeed:(response: [Type])->(), fail:((ResponseError)->())?) throws {
@@ -129,7 +126,7 @@ public class Air{
 		performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
 	}
 
-	private class func mockOrPerform <Type: ModelProtocol> (mockUrl: String, request: NSURLRequest,
+	private class func mockOrPerform <Type: Rivetable> (mockUrl: String, request: NSURLRequest,
 	                                  environment: protocol<Environment, Mockable, Transformable>,
 	                                  responseController: ResponseController, session: NSURLSession,
 	                                  succeed:(response: Type)->(), fail:((ResponseError)->())?) throws {
@@ -141,19 +138,19 @@ public class Air{
 		performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
 	}
 
-	private class func mockDataFromUrl <Type: ModelProtocol> (url: String, transformController: TransformController, responseController: ResponseController,
+	private class func mockDataFromUrl <Type: Rivetable> (url: String, transformController: TransformController, responseController: ResponseController,
 	                                    succeed:(response: [Type])->(), fail:((ResponseError)->())? ) throws {
 		let data = try dataAtUrl(url, transformController: transformController)
 		responseController.respond(data, succeed: succeed, fail: fail)
 	}
 
-	private class func mockDataFromUrl <Type: ModelProtocol> (url: String, transformController: TransformController, responseController: ResponseController,
+	private class func mockDataFromUrl <Type: Rivetable> (url: String, transformController: TransformController, responseController: ResponseController,
 	                                    succeed:(response: Type)->(), fail:((ResponseError)->())?) throws {
 		let data = try dataAtUrl(url, transformController: transformController)
 		responseController.respond(data, succeed: succeed, fail: fail)
 	}
 	
-	private class func performAsychonousRequest<Type: ModelProtocol> (request: NSURLRequest,
+	private class func performAsychonousRequest<Type: Rivetable> (request: NSURLRequest,
 	                                            session: NSURLSession, responseController: ResponseController,
 	                                            succeed:(response: Type)->(), fail:((ResponseError)->())? = nil ) {
 		let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
@@ -163,7 +160,7 @@ public class Air{
 		task.resume()
 	}
 
-	private class func performAsychonousRequest<Type: ModelProtocol> (request: NSURLRequest,
+	private class func performAsychonousRequest<Type: Rivetable> (request: NSURLRequest,
 	                                            session: NSURLSession, responseController: ResponseController,
 	                                            succeed:(response: [Type])->(), fail:((ResponseError)->())? = nil ) {
 		let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in

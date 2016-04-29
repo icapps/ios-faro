@@ -8,6 +8,7 @@
 
 import Foundation
 
+public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable>
 
 /**
 An `Air` should be able to build up a request when your model object complies to the protocols below.
