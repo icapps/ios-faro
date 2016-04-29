@@ -19,7 +19,7 @@ React and/or solve errors that could arrise while the entity that conforms to `M
 
 You can inspect how error mitigation is expected to behave by looking at `AirSpec` in the tests of the Example project.
 */
-public protocol Mitigatable : class {
+public protocol Mitigatable {
 
 	init ()
 	/**
