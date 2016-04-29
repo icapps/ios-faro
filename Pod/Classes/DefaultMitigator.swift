@@ -20,7 +20,7 @@ public class DefaultMitigator: Mitigator {
 		} catch ResponseError.ResponseError(error: let error) {
 			try responseError(error)
 		}catch {
-			//TODO
+			throw error
 		}
 	}
 
@@ -58,8 +58,6 @@ public class DefaultMitigator: Mitigator {
 
 	public func responseError(error: NSError?) throws {
 		print("-----------Request failed with error-----")
-		if let error = error {
-			throw ResponseError.ResponseError(error: error)
-		}
+		throw ResponseError.ResponseError(error: error)
 	}
 }

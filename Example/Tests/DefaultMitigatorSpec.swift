@@ -40,7 +40,7 @@ class DefaultMitigatorSpec: QuickSpec {
 					}
 				}))
 
-				expect { try mitigator.mitigate {throw ResponseError.ResponseError(error: nil) } }.to(throwError(closure: { (error) in
+				expect { try mitigator.mitigate {throw ResponseError.ResponseError(error: nil)} }.to(throwError(closure: { (error) in
 					switch error {
 					case ResponseError.ResponseError(error: _):
 						break
@@ -48,8 +48,14 @@ class DefaultMitigatorSpec: QuickSpec {
 						XCTFail("Should not throw \(error)")
 					}
 				}))
-
 			}
+
+			it("should throw any other errror", closure: {
+				enum RandomError: ErrorType {
+					case Random
+				}
+				expect {try mitigator.mitigate { throw RandomError.Random}}.to(throwError())
+			})
 		}
 	}
 }
