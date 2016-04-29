@@ -40,9 +40,10 @@ public class DefaultMitigator: Mitigator {
         print("-----------Invalid response type-----")
         throw ResponseError.InvalidResponse
 	}
-	public func responseInvalidDictionary(dictionary: AnyObject) throws {
+	public func responseInvalidDictionary(dictionary: AnyObject) throws -> AnyObject? {
 		print("-------- Received invalid dictionary \(dictionary)-------")
 		throw ResponseError.InvalidDictionary(dictionary: dictionary)
+		return nil
 	}
 
     //MARK: TransformErrorController

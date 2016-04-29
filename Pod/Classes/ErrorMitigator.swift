@@ -6,7 +6,7 @@ An `ErrorMitigator` recieves errors that happen. Mitigate means ‘make (somethi
 
 So do that or rethrow what you cannot handle.
 */
-public protocol Mitigator: RequestMitigatable, ResponsMitigatable, TransformMitigatable
+public protocol Mitigator: RequestMitigatable, ResponseMitigatable, TransformMitigatable
 {
 
 }
@@ -21,7 +21,7 @@ public protocol RequestMitigatable {
     func requestResponseError(error: NSError?) throws -> ()
 }
 
-public protocol ResponsMitigatable {
+public protocol ResponseMitigatable {
     func responseDataEmptyError() throws -> ()
     func responseInvalidError() throws -> ()
 	func requestAuthenticationError() throws -> ()
@@ -30,8 +30,10 @@ public protocol ResponsMitigatable {
 
 	/**
 	Your chance to intercept dictionary data that cannot is irregular. You can fix it and don't trow.
+	- returns : a valid dictionary that can be transformed
+	- throws: When you cannot interpret the dictionary throw an error
 	*/
-	func responseInvalidDictionary(dictionary: AnyObject) throws -> ()
+	func responseInvalidDictionary(dictionary: AnyObject) throws -> AnyObject?
 }
 
 public protocol TransformMitigatable {

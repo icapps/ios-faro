@@ -9,7 +9,7 @@ class ResponseControllerSpec: QuickSpec {
 
 	override func spec () {
 
-		describe ("  ") {
+		describe ("Response controller  ") {
 			it("should fail when JSON is invalid") {
 
 				let invalidDict = ["wrong": "json"]
@@ -36,38 +36,39 @@ class ResponseControllerSpec: QuickSpec {
 					}
 
 					override func parseFromDict(json: AnyObject) throws {
-						throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
+						if let _ = json["wrong"] {
+							throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
+						}else {
+							try super.parseFromDict(json)
+						}
 					}
 
-					override func responseMitigator() -> ResponsMitigatable {
+					override func responseMitigator() -> ResponseMitigatable {
 						return MockMitigator()
 					}
 				}
 
 				class MockMitigator: DefaultMitigator {
-					override func responseInvalidDictionary(dictionary: AnyObject) throws{
-						//mock the throwing out
-						return
+					override func responseInvalidDictionary(dictionary: AnyObject) throws -> AnyObject?{
+						return dictionary["writeNode"]
 					}
 				}
 
-				it("should succeed with invalid json if the error controller handles the error") {
+				it("should succeed with invalid json if the mitigator handles the error") {
 
-					let invalidDict = ["wrong": "json"]
+					let expectedObjectId = "expectedObjectId"
+					let invalidDict = ["wrong": "json", "writeNode": ["objectId":expectedObjectId]]
 					let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
 
+
 					ResponseController().respond(data, succeed: { (response: MockEntityWithErrorMitigator) in
-						//TODO:
+						expect(response.objectId).to(equal(expectedObjectId))
 						}, fail: { (error) in
 							XCTFail("Should not raise \(error)")
 					})
 
-					//TODO: See if you can parse from invalid data to the objects you want.
-					//1. An error happens
-					//2. Errors in the dictionary are removed
-					//3. The parsing is continued
-					//4. The correct objects are returned.
-					
+
+					//TODO add array test
 				}
 			}
 		}

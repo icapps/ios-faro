@@ -18,16 +18,26 @@ public class TransformController {
 	- returns: Via the completion block a parsed object of `Type` is returned.
 	- throws:
 	*/
-	public func transform<Type: Parsable>(data: NSData, body: Type? = nil, completion:(Type)->()) throws {
-		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-		if var model = body {
-			try model.parseFromDict(json)
-			completion(model)
+	public func transform<Rivet: protocol<Parsable, Mitigatable>>(data: NSData, entity: Rivet? = nil, succeed:(Rivet)->()) throws {
+
+		var model = entity
+		if entity == nil {
+			model = Rivet()
 		}
-		else {
-			let model = Type()
-			try model.parseFromDict(json)
-			completion(model)
+
+		let mitigator = model!.responseMitigator()
+		let json =  try getJSONFromData(data, rootKey: Rivet.rootKey(), mitigator: mitigator)
+
+		do {
+			try model!.parseFromDict(json)
+			succeed(model!)
+		}catch ResponseError.InvalidDictionary(dictionary: let dict) {
+			if let correctedDictionary = try mitigator.responseInvalidDictionary(dict) {
+				try model!.parseFromDict(correctedDictionary)
+			}
+			succeed(model!)
+		}catch {
+			throw error
 		}
 	}
 
@@ -41,22 +51,50 @@ public class TransformController {
 	- returns: Via the completion block an array of parsed objects of `Type`.
 	- throws:
 	*/
+    public func transform<Rivet: protocol<Parsable, Mitigatable>>(data: NSData, entity: Rivet? = nil, succeed:([Rivet])->()) throws{
 
-    public func transform<Type: Parsable>(data: NSData, body: Type? = nil, completion:([Type])->()) throws{
-		let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-		if let rootKey = Type.rootKey(), let array = json[rootKey] as? [[String:AnyObject]] {
-			completion(try dictToArray(array))
+		var model = entity
+		if entity == nil {
+			model = Rivet()
 		}
-		else if let dict = json as? [String:AnyObject] {
-			let model = Type()
+
+		let json = try getJSONFromData(data, rootKey: Rivet.rootKey(), mitigator: model!.responseMitigator())
+
+		if let array = json as? [[String:AnyObject]] {
+			succeed(try dictToArray(array))
+		}else if let dict = json as? [String:AnyObject] {
+			let model = Rivet()
 			try model.parseFromDict(dict)
-			completion([model])
+			succeed([model])
 		}else if let array = json as? [[String:AnyObject]] {
-			completion(try dictToArray(array))
+			succeed(try dictToArray(array))
 		}
 		else {
 			throw ResponseError.InvalidDictionary(dictionary: json)
 		}
+	}
+
+	private func getJSONFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject {
+
+		var json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+
+		if let
+			rootKey = rootKey,
+			jsonWithoutRoot = json[rootKey]{
+
+			if jsonWithoutRoot == nil {
+				if let correctedJson = try mitigator.responseInvalidDictionary(json) {
+					json = correctedJson
+				}else {
+					throw ResponseError.InvalidDictionary(dictionary: json)
+				}
+
+			}else {
+				json = jsonWithoutRoot!
+			}
+		}
+
+		return json
 	}
 
 	private func dictToArray<Type: Parsable>(array: [[String:AnyObject]]) throws -> [Type] {
