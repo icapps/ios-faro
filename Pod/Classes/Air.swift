@@ -173,12 +173,9 @@ public class Air{
 }
 
 func dataAtUrl(url: String, transformController: TransformController) throws -> NSData?  {
-	guard let
-		fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue),
-		data = NSData(contentsOfURL: fileURL) else {
-			throw ResponseError.InvalidResponseData(data: nil)
-			return nil
+	if let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue) {
+		return  NSData(contentsOfURL: fileURL)
+	}else {
+		throw ResponseError.InvalidResponseData(data: nil)
 	}
-
-	return data
 }
