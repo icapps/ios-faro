@@ -6,9 +6,12 @@ An `ErrorMitigator` recieves errors that happen. Mitigate means ‘make (somethi
 
 So do that or rethrow what you cannot handle.
 */
-public protocol Mitigator: RequestMitigatable, ResponseMitigatable, TransformMitigatable
+public protocol Mitigator: RequestMitigatable, ResponseMitigatable
 {
-
+	/**
+	Handle throws by calling the corresponding functions to a  throw.
+	*/
+	func mitigate(thrower: ()throws -> ()) throws
 }
 
 /**
@@ -21,6 +24,7 @@ public protocol RequestMitigatable {
 }
 
 public protocol ResponseMitigatable {
+
     func invalidResponseEmptyDataError() throws -> ()
     func ivalidResponseError() throws -> ()
 	func invalidAuthenticationError() throws -> ()
@@ -34,12 +38,6 @@ public protocol ResponseMitigatable {
 	*/
 	func responseInvalidDictionary(dictionary: AnyObject) throws -> AnyObject?
 }
-
-public protocol TransformMitigatable {
-//    func transformInvalidObjectERror() throws -> ()
-//    func transformDictionayError(diction) throws -> ()
-}
-
 
 
 public enum RequestError: ErrorType {

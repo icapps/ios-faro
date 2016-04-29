@@ -6,50 +6,26 @@ import XCTest
 class DefaultMitigatorSpec: QuickSpec {
 
 	override func spec () {
-		describe("ErrorMitigator default behaviour") {
-			let errorController = DefaultMitigator()
+		describe("Throwing behaviour on mitigation") {
+			let mitigator = DefaultMitigator()
 
-			it("should throw Request Errors for mistakes in the request") {
-				expect { try errorController.invalidBodyError() }.to(throwError(closure: { (error) in
+			it("should rethrow for request errors") {
+
+				expect { try mitigator.mitigate {throw RequestError.InvalidBody} }.to(throwError(closure: { (error) in
 					expect(error).to(matchError(RequestError.InvalidBody))
 				}))
 
-				expect { try errorController.invalidAuthenticationError() }.to(throwError(closure: { (error) in
-					expect(error).to(matchError(ResponseError.InvalidAuthentication))
-				}))
-				expect { try errorController.generalError()}.to(throwError(closure: { (error) in
+				expect { try mitigator.mitigate {throw RequestError.General} }.to(throwError(closure: { (error) in
 					expect(error).to(matchError(RequestError.General))
 				}))
 			}
 
-			it("should throw Response Errors when the response cannot be interpreted") {
-				expect { try errorController.invalidResponseEmptyDataError() }.to(throwError(closure: { (error) in
+			it("should throw for response errors") {
+				expect { try mitigator.invalidResponseEmptyDataError() }.to(throwError(closure: { (error) in
 					expect(error).to(matchError(ResponseError.InvalidResponseData))
 				}))
 
-				//TODO this test needs to be finished when RequestController is refactored
-//				expect { try errorController.responseDataEmptyError() }.to(throwError(closure: { (error) in
-//					_ = NSError(domain: "101", code: 101, userInfo: nil)
-////					let responseError = ResponseError.ResponseError(error: expectedNsError)
-////					expect(error).to(matchError()
-//				}))
 			}
 		}
 	}
-//
-//    func testRequestResponseError() {
-//        let expectedError = NSError(domain: "com.icapps.test", code: 123, userInfo: [NSLocalizedDescriptionKey:"some error"])
-//        XCTAssertThrowsError(try errorController.requestResponseError(expectedError), "method should trow correct error") { error in
-//            guard let thrownError = error as? RequestError else {
-//                XCTFail("wrong error type")
-//                return
-//            }
-//            switch thrownError {
-//            case .ResponseError(let responseError):
-//                XCTAssertEqual(responseError, expectedError)
-//            default:
-//                XCTFail("wrong error type")
-//            }
-//        }
-//    }
 }
