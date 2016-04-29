@@ -53,7 +53,7 @@ public class ResponseController {
     }
 
 
-	private func checkErrorAndReturnValidData(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponsMitigatable, fail:((ResponseError)->())?) -> NSData?{
+	private func checkErrorAndReturnValidData(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponseMitigatable, fail:((ResponseError)->())?) -> NSData?{
 
 		guard  error == nil else {
 			respondWithfail(error!, fail: fail, mitigator: mitigator)
@@ -79,7 +79,7 @@ public class ResponseController {
 		return entity!
 	}
 
-	private func respondWithfail(taskError: NSError ,fail:((ResponseError) ->())?, mitigator: ResponsMitigatable) {
+	private func respondWithfail(taskError: NSError ,fail:((ResponseError) ->())?, mitigator: ResponseMitigatable) {
 		print("---Error request failed with error: \(taskError)----")
 		do {
 			try mitigator.requestResponseError(taskError)
@@ -89,7 +89,7 @@ public class ResponseController {
 		fail?(ResponseError.ResponseError(error: taskError))
 	}
 
-	private func splitErrorType(error: ErrorType, fail: ((ResponseError) ->())?, mitigator: ResponsMitigatable) {
+	private func splitErrorType(error: ErrorType, fail: ((ResponseError) ->())?, mitigator: ResponseMitigatable) {
 
 		switch error {
 		case ResponseError.InvalidAuthentication:
@@ -118,7 +118,7 @@ public class ResponseController {
 }
 
 internal class ResponseControllerUtils {
-	class func checkStatusCodeAndData(data: NSData? = nil, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponsMitigatable) throws -> NSData? {
+	class func checkStatusCodeAndData(data: NSData? = nil, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponseMitigatable) throws -> NSData? {
         if let httpResponse = urlResponse as? NSHTTPURLResponse {
             
             let statusCode = httpResponse.statusCode

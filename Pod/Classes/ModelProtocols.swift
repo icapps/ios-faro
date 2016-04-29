@@ -25,7 +25,7 @@ public protocol Mitigatable : class {
 	By returning an error controller you can handle parsing errors.
 	- returns: By default an implementation of `DefaultMitigator` is returned via a protocol extension
 	*/
-	func responseMitigator() -> ResponsMitigatable
+	func responseMitigator() -> ResponseMitigatable
 	/**
 	If an error happens while constructing an entity this error controller could handle the error if needed.
 	 - returns: By default an implementation of `DefaultMitigator` is returned via a protocol extension
