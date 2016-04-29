@@ -30,10 +30,10 @@
             <a href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Classes/ConcreteErrorController.html">ConcreteErrorController</a>
+                <a href="Classes/Air.html">Air</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/RequestController.html">RequestController</a>
+                <a href="Classes/DefaultMitigator.html">DefaultMitigator</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/ResponseController.html">ResponseController</a>
@@ -53,7 +53,10 @@
                 <a href="Enums/RequestError.html">RequestError</a>
               </li>
               <li class="nav-group-task">
-                <a href="Enums/TransformError.html">TransformError</a>
+                <a href="Enums/ResponseError.html">ResponseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/TransformType.html">TransformType</a>
               </li>
             </ul>
           </li>
@@ -67,13 +70,25 @@
                 <a href="Protocols/EnvironmentConfigurable.html">EnvironmentConfigurable</a>
               </li>
               <li class="nav-group-task">
-                <a href="Protocols/ErrorControlable.html">ErrorControlable</a>
+                <a href="Protocols/Mitigatable.html">Mitigatable</a>
               </li>
               <li class="nav-group-task">
-                <a href="Protocols/ErrorController.html">ErrorController</a>
+                <a href="Protocols/Mitigator.html">Mitigator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Mockable.html">Mockable</a>
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/Parsable.html">Parsable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/RequestMitigatable.html">RequestMitigatable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ResponseMitigatable.html">ResponseMitigatable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Transformable.html">Transformable</a>
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/UniqueAble.html">UniqueAble</a>
@@ -95,9 +110,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:P8AirRivet15ErrorController"></a>
-                    <a name="//apple_ref/swift/Protocol/ErrorController" class="dashAnchor"></a>
-                    <a class="token" href="#/s:P8AirRivet15ErrorController">ErrorController</a>
+                    <a name="/s:P8AirRivet11Environment"></a>
+                    <a name="//apple_ref/swift/Protocol/Environment" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8AirRivet11Environment">Environment</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -105,17 +120,87 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This class is responsible to handle errors in general and in a type specific way.</p>
+                        <p>The environment where we should fetch the data from.</p>
 
-                        <a href="Protocols/ErrorController.html" class="slightly-smaller">See more</a>
+<p>Example environments:
+* Production
+* Development
+* Filesystem
+* &hellip;</p>
+
+                        <a href="Protocols/Environment.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ErrorController</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Environment</span></code></pre>
 
                         </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:P8AirRivet8Mockable"></a>
+                    <a name="//apple_ref/swift/Protocol/Mockable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8AirRivet8Mockable">Mockable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If you implement <code>Mockable</code> your entity can provide a default response. This can be handy for tests.
+You should only implement this protocol in unit tests or in your application while the service is not yet available.
+When a type conforms to Mockable the environment you provide by conforming to <code><a href="Protocols/EnvironmentConfigurable.html">EnvironmentConfigurable</a></code> will be ignored.</p>
+
+                        <a href="Protocols/Mockable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Mockable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:P8AirRivet13Transformable"></a>
+                    <a name="//apple_ref/swift/Protocol/Transformable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8AirRivet13Transformable">Transformable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handle the data that you receive. Data can be anything you want
+- returns: By default a <code><a href="Classes/TransformController.html">TransformController</a></code> is returned that does: &lsquo;data ~&gt; JSON ~&gt; entities of your type&rsquo;.</p>
+
+                        <a href="Protocols/Transformable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Transformable</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>By default a <code><a href="Classes/TransformController.html">TransformController</a></code> is returned that does: &lsquo;data ~&gt; JSON ~&gt; entities of your type&rsquo;.</p>
+
                       </div>
                     </section>
                   </div>
@@ -127,9 +212,67 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:P8AirRivet16ErrorControlable"></a>
-                    <a name="//apple_ref/swift/Protocol/ErrorControlable" class="dashAnchor"></a>
-                    <a class="token" href="#/s:P8AirRivet16ErrorControlable">ErrorControlable</a>
+                    <a name="/s:P8AirRivet9Mitigator"></a>
+                    <a name="//apple_ref/swift/Protocol/Mitigator" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8AirRivet9Mitigator">Mitigator</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An <code>ErrorMitigator</code> recieves errors that happen. Mitigate means ‘make (something bad) less severe&rsquo;. </p>
+
+<p>So do that or rethrow what you cannot handle.</p>
+
+                        <a href="Protocols/Mitigator.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Mitigator</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:P8AirRivet18RequestMitigatable"></a>
+                    <a name="//apple_ref/swift/Protocol/RequestMitigatable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8AirRivet18RequestMitigatable">RequestMitigatable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This class is responsible to handle errors in general and in a type specific way.</p>
+
+                        <a href="Protocols/RequestMitigatable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">RequestMitigatable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:P8AirRivet19ResponseMitigatable"></a>
+                    <a name="//apple_ref/swift/Protocol/ResponseMitigatable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8AirRivet19ResponseMitigatable">ResponseMitigatable</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -139,7 +282,31 @@
                       <div class="abstract">
                         <p>Undocumented</p>
 
-                        <a href="Protocols/ErrorControlable.html" class="slightly-smaller">See more</a>
+                        <a href="Protocols/ResponseMitigatable.html" class="slightly-smaller">See more</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:P8AirRivet11Mitigatable"></a>
+                    <a name="//apple_ref/swift/Protocol/Mitigatable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:P8AirRivet11Mitigatable">Mitigatable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Protocols/Mitigatable.html" class="slightly-smaller">See more</a>
                       </div>
                     </section>
                   </div>
@@ -197,45 +364,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Every object has to have an unique identifier</p>
 
                         <a href="Protocols/UniqueAble.html" class="slightly-smaller">See more</a>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:P8AirRivet11Environment"></a>
-                    <a name="//apple_ref/swift/Protocol/Environment" class="dashAnchor"></a>
-                    <a class="token" href="#/s:P8AirRivet11Environment">Environment</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The environmont where we should fetch the data from.</p>
-
-<p>Example environments:
-* Pruduction
-* Development
-* Filesystem
-* &hellip;</p>
-
-                        <a href="Protocols/Environment.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Environment</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">UniqueAble</span></code></pre>
 
                         </div>
                       </div>
@@ -247,7 +384,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-04-22)</p>
+          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-04-29)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Parsable Protocol Reference</title>
+    <title>Transformable Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Protocol/Parsable" class="dashAnchor"></a>
-    <a title="Parsable Protocol Reference"></a>
+    <a name="//apple_ref/swift/Protocol/Transformable" class="dashAnchor"></a>
+    <a title="Transformable Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html"> Docs</a> (100% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" />
-        Parsable Protocol Reference
+        Transformable Protocol Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -101,8 +101,15 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Parsable</h1>
-            <p>Undocumented</p>
+            <h1>Transformable</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Transformable</span></code></pre>
+
+                </div>
+              </div>
+            <p>Handle the data that you receive. Data can be anything you want
+- returns: By default a <code><a href="../Classes/TransformController.html">TransformController</a></code> is returned that does: &lsquo;data ~&gt; JSON ~&gt; entities of your type&rsquo;.</p>
 
           </section>
           <section class="section task-group-section">
@@ -111,10 +118,13 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP8AirRivet8ParsablecFT_x"></a>
-                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP8AirRivet8ParsablecFT_x">init()</a>
+                    <a name="/s:FP8AirRivet13Transformable19transformControllerFT_CS_19TransformController"></a>
+                    <a name="//apple_ref/swift/Method/transformController()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP8AirRivet13Transformable19transformControllerFT_CS_19TransformController">transformController()</a>
                     </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
@@ -124,89 +134,16 @@
                         <p>Undocumented</p>
 
                       </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FP8AirRivet8Parsable13parseFromDictFzPs9AnyObject_T_"></a>
-                    <a name="//apple_ref/swift/Method/parseFromDict(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP8AirRivet8Parsable13parseFromDictFzPs9AnyObject_T_">parseFromDict(_:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Set all properties from the data</p>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">parseFromDict</span><span class="p">(</span><span class="nv">dict</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">)</span> <span class="k">throws</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FP8AirRivet8Parsable12toDictionaryFT_GSqCSo12NSDictionary_"></a>
-                    <a name="//apple_ref/swift/Method/toDictionary()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP8AirRivet8Parsable12toDictionaryFT_GSqCSo12NSDictionary_">toDictionary()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>From a dictionary containing properties of the object</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">toDictionary</span><span class="p">()</span><span class="o">-&gt;</span> <span class="kt">NSDictionary</span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:ZFP8AirRivet8Parsable7rootKeyFT_GSqSS_"></a>
-                    <a name="//apple_ref/swift/Method/rootKey()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:ZFP8AirRivet8Parsable7rootKeyFT_GSqSS_">rootKey()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Should provide key in JSON to node of dict that can be parsed.</p>
-
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-    </span><span class="err">rootKey:</span><span class="w"> </span><span class="err">{&lt;dictToParse&gt;</span><span class="p">}</span><span class="w">
-</span><span class="err">}</span><span class="w">
-</span></code></pre>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">rootKey</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Transformable</span></code></pre>
 
                         </div>
                       </div>

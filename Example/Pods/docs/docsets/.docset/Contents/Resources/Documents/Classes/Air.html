@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Air Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/Air" class="dashAnchor"></a>
+    <a title="Air Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        Air Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Air.html">Air</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultMitigator.html">DefaultMitigator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ResponseController.html">ResponseController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TransformController.html">TransformController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/dispatch.html">dispatch</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/RequestError.html">RequestError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ResponseError.html">ResponseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/TransformType.html">TransformType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/Environment.html">Environment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/EnvironmentConfigurable.html">EnvironmentConfigurable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Mitigatable.html">Mitigatable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Mitigator.html">Mitigator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Mockable.html">Mockable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Parsable.html">Parsable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/RequestMitigatable.html">RequestMitigatable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ResponseMitigatable.html">ResponseMitigatable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Transformable.html">Transformable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/UniqueAble.html">UniqueAble</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Air</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Air</span></code></pre>
+
+                </div>
+              </div>
+            <p><code>Air</code> handles interactions with a model of a specific Type called <code>Rivet</code>. </p>
+
+<p>This class is intentionally stateless.</p>
+
+<p><a href='#tasks' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='tasks'>Tasks</h1>
+<a href='#save' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='save'>Save</h2></p>
+
+<p><code>Type</code> is converted to JSON and send as the body of a request</p>
+
+<p><a href='#retrieve' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='retrieve'>Retrieve</h2></p>
+
+<p>You can retreive a single instance or an array of objects</p>
+
+<p><a href='#handle_response_via_code_responsecontroller_code' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='handle_response_via_code_responsecontroller_code'>Handle response via <code><a href="../Classes/ResponseController.html">ResponseController</a></code></h2></p>
+
+<p>The response controllers does the actual parsing. In theory you can parse any kind of reponse, for now we only support JSON.</p>
+
+<p><a href='#pass_errors_to_the_code_mitigator_code' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='pass_errors_to_the_code_mitigator_code'>Pass errors to the <code><a href="../Protocols/Mitigator.html">Mitigator</a></code></h2></p>
+
+<p>Any type can decide to handle error in a specific way that is suited for that <code>Type</code> by conforming to protocol <code><a href="../Protocols/Mitigatable.html">Mitigatable</a></code>.</p>
+
+<p>You can inspect how error handling is expected to behave by looking at <code>DefaultMitigatorSpec</code> in the tests of the Example project.</p>
+
+<p><a href='#mocking' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='mocking'>Mocking</h1></p>
+
+<p>You can also mock this class via its Type. Take a look at the <code>GameScoreTest</code> in example to know how.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Save"></a>
+                <a name="//apple_ref/swift/Section/Save" class="dashAnchor"></a>
+                <a href="#/Save">
+                  <h3 class="section-name">Save</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC8AirRivet3Air4saveuRxS_23EnvironmentConfigurablexS_11MitigatablexS_8ParsablexS_10UniqueAblerFzTx7sessionCSo12NSURLSession18responseControllerCS_18ResponseController7succeedFT8responsex_T_4failGSqFOS_13ResponseErrorT___T_"></a>
+                    <a name="//apple_ref/swift/Method/save(_:session:responseController:succeed:fail:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC8AirRivet3Air4saveuRxS_23EnvironmentConfigurablexS_11MitigatablexS_8ParsablexS_10UniqueAblerFzTx7sessionCSo12NSURLSession18responseControllerCS_18ResponseController7succeedFT8responsex_T_4failGSqFOS_13ResponseErrorT___T_">save(_:session:responseController:succeed:fail:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Save a single item of Type <code>Rivet</code>.  Closures are called on a background queue!</p>
+
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    throws : Errors related to the request construction.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span>  <span class="kd">class</span> <span class="kd">func</span> <span class="n">save</span> <span class="o">&lt;</span><span class="kt">Rivet</span><span class="p">:</span> <span class="kt">Rivetable</span><span class="o">&gt;</span>  <span class="p">(</span><span class="nv">body</span><span class="p">:</span> <span class="kt">Rivet</span><span class="p">,</span>
+	                         <span class="nv">session</span><span class="p">:</span> <span class="kt">NSURLSession</span> <span class="o">=</span> <span class="kt">NSURLSession</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span><span class="kt">NSURLSessionConfiguration</span><span class="o">.</span><span class="nf">defaultSessionConfiguration</span><span class="p">()),</span>
+	                         <span class="nv">responseController</span><span class="p">:</span> <span class="kt">ResponseController</span> <span class="o">=</span> <span class="kt">ResponseController</span><span class="p">(),</span>
+	                         <span class="nv">succeed</span><span class="p">:(</span><span class="nv">response</span><span class="p">:</span> <span class="kt">Rivet</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">(),</span> <span class="nv">fail</span><span class="p">:((</span><span class="kt">ResponseError</span><span class="p">)</span> <span class="o">-&gt;</span><span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>body</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The object of type <code>Rivet</code> is converted to JSON and send to the server.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>session</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Default NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>succeed</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Closure is called when service request successfully returns</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>fail</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Closure called when something in the response fails.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Retrieve"></a>
+                <a name="//apple_ref/swift/Section/Retrieve" class="dashAnchor"></a>
+                <a href="#/Retrieve">
+                  <h3 class="section-name">Retrieve</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC8AirRivet3Air8retrieveuRxS_23EnvironmentConfigurablexS_11MitigatablexS_8ParsablexS_10UniqueAblerFzTCSo12NSURLSession18responseControllerCS_18ResponseController7succeedFT8responseGSax__T_4failGSqFOS_13ResponseErrorT___T_"></a>
+                    <a name="//apple_ref/swift/Method/retrieve(_:responseController:succeed:fail:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC8AirRivet3Air8retrieveuRxS_23EnvironmentConfigurablexS_11MitigatablexS_8ParsablexS_10UniqueAblerFzTCSo12NSURLSession18responseControllerCS_18ResponseController7succeedFT8responseGSax__T_4failGSqFOS_13ResponseErrorT___T_">retrieve(_:responseController:succeed:fail:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retreive all items of <code>Type</code>. Closures are called on a background queue!</p>
+
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    throws : Errors related to the request construction.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="n">retrieve</span><span class="o">&lt;</span><span class="kt">Rivet</span><span class="p">:</span> <span class="kt">Rivetable</span><span class="o">&gt;</span> <span class="p">(</span><span class="nv">session</span><span class="p">:</span> <span class="kt">NSURLSession</span> <span class="o">=</span> <span class="kt">NSURLSession</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span><span class="kt">NSURLSessionConfiguration</span><span class="o">.</span><span class="nf">defaultSessionConfiguration</span><span class="p">()),</span>
+	                     <span class="nv">responseController</span><span class="p">:</span> <span class="kt">ResponseController</span> <span class="o">=</span> <span class="kt">ResponseController</span><span class="p">(),</span>
+	                     <span class="nv">succeed</span><span class="p">:(</span><span class="nv">response</span><span class="p">:</span> <span class="p">[</span><span class="kt">Rivet</span><span class="p">])</span><span class="o">-&gt;</span><span class="p">(),</span> <span class="nv">fail</span><span class="p">:((</span><span class="kt">ResponseError</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>response</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Closure is called when service request successfully returns</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>fail</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Closure called when something in the response fails.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC8AirRivet3Air8retrieveuRxS_23EnvironmentConfigurablexS_11MitigatablexS_8ParsablexS_10UniqueAblerFzTSS7sessionCSo12NSURLSession18responseControllerCS_18ResponseController7succeedFT8responsex_T_4failGSqFOS_13ResponseErrorT___T_"></a>
+                    <a name="//apple_ref/swift/Method/retrieve(_:session:responseController:succeed:fail:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC8AirRivet3Air8retrieveuRxS_23EnvironmentConfigurablexS_11MitigatablexS_8ParsablexS_10UniqueAblerFzTSS7sessionCSo12NSURLSession18responseControllerCS_18ResponseController7succeedFT8responsex_T_4failGSqFOS_13ResponseErrorT___T_">retrieve(_:session:responseController:succeed:fail:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retreive a single item of <code>Rivet</code>. Closures are called on a background queue!</p>
+
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    throws : Errors related to the request construction.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="n">retrieve</span> <span class="o">&lt;</span><span class="kt">Rivet</span><span class="p">:</span> <span class="kt">Rivetable</span><span class="o">&gt;</span> <span class="p">(</span><span class="nv">objectId</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">NSURLSession</span> <span class="o">=</span> <span class="kt">NSURLSession</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span><span class="kt">NSURLSessionConfiguration</span><span class="o">.</span><span class="nf">defaultSessionConfiguration</span><span class="p">()),</span>
+	                      <span class="nv">responseController</span><span class="p">:</span> <span class="kt">ResponseController</span> <span class="o">=</span> <span class="kt">ResponseController</span><span class="p">(),</span>
+	                      <span class="nv">succeed</span><span class="p">:(</span><span class="nv">response</span><span class="p">:</span> <span class="kt">Rivet</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">(),</span> <span class="nv">fail</span><span class="p">:((</span><span class="kt">ResponseError</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>objectID</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Something that uniquely defines the object you are asking for of <code>Rivet</code></p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>succeed</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Closure is called when service request successfully returns. Closures are called on a background queue!</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>fail</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Closure called when something in the response fails.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-04-29)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

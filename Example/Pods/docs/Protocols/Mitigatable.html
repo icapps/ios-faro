@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Parsable Protocol Reference</title>
+    <title>Mitigatable Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Protocol/Parsable" class="dashAnchor"></a>
-    <a title="Parsable Protocol Reference"></a>
+    <a name="//apple_ref/swift/Protocol/Mitigatable" class="dashAnchor"></a>
+    <a title="Mitigatable Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html"> Docs</a> (100% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" />
-        Parsable Protocol Reference
+        Mitigatable Protocol Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -101,7 +101,7 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Parsable</h1>
+            <h1>Mitigatable</h1>
             <p>Undocumented</p>
 
           </section>
@@ -111,9 +111,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP8AirRivet8ParsablecFT_x"></a>
+                    <a name="/s:FP8AirRivet11MitigatablecFT_x"></a>
                     <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP8AirRivet8ParsablecFT_x">init()</a>
+                    <a class="token" href="#/s:FP8AirRivet11MitigatablecFT_x">init()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -130,9 +130,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP8AirRivet8Parsable13parseFromDictFzPs9AnyObject_T_"></a>
-                    <a name="//apple_ref/swift/Method/parseFromDict(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP8AirRivet8Parsable13parseFromDictFzPs9AnyObject_T_">parseFromDict(_:)</a>
+                    <a name="/s:FP8AirRivet11Mitigatable17responseMitigatorFT_PS_9MitigatorS_19ResponseMitigatable_"></a>
+                    <a name="//apple_ref/swift/Method/responseMitigator()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP8AirRivet11Mitigatable17responseMitigatorFT_PS_9MitigatorS_19ResponseMitigatable_">responseMitigator()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -140,16 +140,22 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Set all properties from the data</p>
+                        <p>By returning an error controller you can handle parsing errors.
+- returns: By default an implementation of <code><a href="../Classes/DefaultMitigator.html">DefaultMitigator</a></code> is returned via a protocol extension</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">parseFromDict</span><span class="p">(</span><span class="nv">dict</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">responseMitigator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kd">protocol</span><span class="o">&lt;</span><span class="kt">ResponseMitigatable</span><span class="p">,</span> <span class="kt">Mitigator</span><span class="o">&gt;</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>By default an implementation of <code><a href="../Classes/DefaultMitigator.html">DefaultMitigator</a></code> is returned via a protocol extension</p>
+
                       </div>
                     </section>
                   </div>
@@ -157,9 +163,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP8AirRivet8Parsable12toDictionaryFT_GSqCSo12NSDictionary_"></a>
-                    <a name="//apple_ref/swift/Method/toDictionary()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP8AirRivet8Parsable12toDictionaryFT_GSqCSo12NSDictionary_">toDictionary()</a>
+                    <a name="/s:ZFP8AirRivet11Mitigatable16requestMitigatorFT_PS_9MitigatorS_18RequestMitigatable_"></a>
+                    <a name="//apple_ref/swift/Method/requestMitigator()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFP8AirRivet11Mitigatable16requestMitigatorFT_PS_9MitigatorS_18RequestMitigatable_">requestMitigator()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -167,48 +173,22 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>From a dictionary containing properties of the object</p>
+                        <p>If an error happens while constructing an entity this error controller could handle the error if needed.
+ - returns: By default an implementation of <code><a href="../Classes/DefaultMitigator.html">DefaultMitigator</a></code> is returned via a protocol extension</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">toDictionary</span><span class="p">()</span><span class="o">-&gt;</span> <span class="kt">NSDictionary</span><span class="p">?</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">requestMitigator</span><span class="p">()</span><span class="o">-&gt;</span> <span class="kd">protocol</span><span class="o">&lt;</span><span class="kt">RequestMitigatable</span><span class="p">,</span> <span class="kt">Mitigator</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:ZFP8AirRivet8Parsable7rootKeyFT_GSqSS_"></a>
-                    <a name="//apple_ref/swift/Method/rootKey()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:ZFP8AirRivet8Parsable7rootKeyFT_GSqSS_">rootKey()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Should provide key in JSON to node of dict that can be parsed.</p>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>By default an implementation of <code><a href="../Classes/DefaultMitigator.html">DefaultMitigator</a></code> is returned via a protocol extension</p>
 
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-    </span><span class="err">rootKey:</span><span class="w"> </span><span class="err">{&lt;dictToParse&gt;</span><span class="p">}</span><span class="w">
-</span><span class="err">}</span><span class="w">
-</span></code></pre>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">rootKey</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
-
-                        </div>
                       </div>
                     </section>
                   </div>

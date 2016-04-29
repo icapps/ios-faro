@@ -30,10 +30,10 @@
             <a href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Classes/ConcreteErrorController.html">ConcreteErrorController</a>
+                <a href="Classes/Air.html">Air</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/RequestController.html">RequestController</a>
+                <a href="Classes/DefaultMitigator.html">DefaultMitigator</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/ResponseController.html">ResponseController</a>
@@ -53,7 +53,10 @@
                 <a href="Enums/RequestError.html">RequestError</a>
               </li>
               <li class="nav-group-task">
-                <a href="Enums/TransformError.html">TransformError</a>
+                <a href="Enums/ResponseError.html">ResponseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/TransformType.html">TransformType</a>
               </li>
             </ul>
           </li>
@@ -67,13 +70,25 @@
                 <a href="Protocols/EnvironmentConfigurable.html">EnvironmentConfigurable</a>
               </li>
               <li class="nav-group-task">
-                <a href="Protocols/ErrorControlable.html">ErrorControlable</a>
+                <a href="Protocols/Mitigatable.html">Mitigatable</a>
               </li>
               <li class="nav-group-task">
-                <a href="Protocols/ErrorController.html">ErrorController</a>
+                <a href="Protocols/Mitigator.html">Mitigator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Mockable.html">Mockable</a>
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/Parsable.html">Parsable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/RequestMitigatable.html">RequestMitigatable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ResponseMitigatable.html">ResponseMitigatable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Transformable.html">Transformable</a>
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/UniqueAble.html">UniqueAble</a>
@@ -95,9 +110,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:C8AirRivet17RequestController"></a>
-                    <a name="//apple_ref/swift/Class/RequestController" class="dashAnchor"></a>
-                    <a class="token" href="#/s:C8AirRivet17RequestController">RequestController</a>
+                    <a name="/s:C8AirRivet16DefaultMitigator"></a>
+                    <a name="//apple_ref/swift/Class/DefaultMitigator" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C8AirRivet16DefaultMitigator">DefaultMitigator</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -105,7 +120,65 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>RequestController to handle interactions with a model of a specific Type.</p>
+                        <p>Undocumented</p>
+
+                        <a href="Classes/DefaultMitigator.html" class="slightly-smaller">See more</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C8AirRivet8dispatch"></a>
+                    <a name="//apple_ref/swift/Class/dispatch" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C8AirRivet8dispatch">dispatch</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Use class functions to easily change queue&rsquo;s.</p>
+
+                        <a href="Classes/dispatch.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="n">dispatch</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C8AirRivet3Air"></a>
+                    <a name="//apple_ref/swift/Class/Air" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C8AirRivet3Air">Air</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p><code>Air</code> handles interactions with a model of a specific Type called <code>Rivet</code>. </p>
+
+<p>This class is intentionally stateless.</p>
 
 <p><a href='#tasks' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='tasks'>Tasks</h1>
 <a href='#save' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='save'>Save</h2></p>
@@ -120,17 +193,64 @@
 
 <p>The response controllers does the actual parsing. In theory you can parse any kind of reponse, for now we only support JSON.</p>
 
-<p><a href='#pass_errors_to_the_errorcontroller_of_code_type_code' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='pass_errors_to_the_errorcontroller_of_code_type_code'>Pass errors to the errorController of <code>Type</code></h2></p>
+<p><a href='#pass_errors_to_the_code_mitigator_code' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='pass_errors_to_the_code_mitigator_code'>Pass errors to the <code><a href="Protocols/Mitigator.html">Mitigator</a></code></h2></p>
 
-<p>Any type can decide to handle error in a specific way that is suited for that <code>Type</code> by conforming to protoco <code><a href="Protocols/ErrorControlable.html">ErrorControlable</a></code>.</p>
+<p>Any type can decide to handle error in a specific way that is suited for that <code>Type</code> by conforming to protocol <code><a href="Protocols/Mitigatable.html">Mitigatable</a></code>.</p>
 
-                        <a href="Classes/RequestController.html" class="slightly-smaller">See more</a>
+<p>You can inspect how error handling is expected to behave by looking at <code>DefaultMitigatorSpec</code> in the tests of the Example project.</p>
+
+<p><a href='#mocking' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='mocking'>Mocking</h1></p>
+
+<p>You can also mock this class via its Type. Take a look at the <code>GameScoreTest</code> in example to know how.</p>
+
+                        <a href="Classes/Air.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">RequestController</span> <span class="o">&lt;</span><span class="k">Type</span><span class="p">:</span><span class="kd">protocol</span><span class="o">&lt;</span><span class="kt">UniqueAble</span><span class="p">,</span> <span class="kt">EnvironmentConfigurable</span><span class="p">,</span> <span class="kt">Parsable</span><span class="p">,</span> <span class="kt">ErrorControlable</span><span class="o">&gt;</span> <span class="o">&gt;</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Air</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C8AirRivet18ResponseController"></a>
+                    <a name="//apple_ref/swift/Class/ResponseController" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C8AirRivet18ResponseController">ResponseController</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Deal with the errors of the response and interpret the response.</p>
+
+<p><a href='#tasks' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='tasks'>Tasks</h1>
+<a href='#handle_errors_in_response' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='handle_errors_in_response'>Handle errors in response</h2></p>
+
+<p>Errors cause an throw</p>
+
+<p><a href='#pass_response_to_the_code_transformcontroller_code' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='pass_response_to_the_code_transformcontroller_code'>Pass response to the <code><a href="Classes/TransformController.html">TransformController</a></code></h2></p>
+
+<p>Responses are interpretted in the <code>TransFormController</code></p>
+
+                        <a href="Classes/ResponseController.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">ResponseController</span></code></pre>
 
                         </div>
                       </div>
@@ -171,107 +291,10 @@
                 </li>
               </ul>
             </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:C8AirRivet23ConcreteErrorController"></a>
-                    <a name="//apple_ref/swift/Class/ConcreteErrorController" class="dashAnchor"></a>
-                    <a class="token" href="#/s:C8AirRivet23ConcreteErrorController">ConcreteErrorController</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                        <a href="Classes/ConcreteErrorController.html" class="slightly-smaller">See more</a>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:C8AirRivet18ResponseController"></a>
-                    <a name="//apple_ref/swift/Class/ResponseController" class="dashAnchor"></a>
-                    <a class="token" href="#/s:C8AirRivet18ResponseController">ResponseController</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Deal with the errors of the response and interpret the respons.</p>
-
-<p><a href='#tasks' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='tasks'>Tasks</h1>
-<a href='#handle_errors_in_response' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='handle_errors_in_response'>Handle errors in response</h2></p>
-
-<p>Errors cause an throw</p>
-
-<p><a href='#pass_response_to_the_transformcontroller' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='pass_response_to_the_transformcontroller'>Pass response to the TransformController</h2></p>
-
-<p>Responses are interpretted in the TransFormController</p>
-
-                        <a href="Classes/ResponseController.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">ResponseController</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:C8AirRivet8dispatch"></a>
-                    <a name="//apple_ref/swift/Class/dispatch" class="dashAnchor"></a>
-                    <a class="token" href="#/s:C8AirRivet8dispatch">dispatch</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Use class functions to easily change queue&rsquo;s.</p>
-
-                        <a href="Classes/dispatch.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="n">dispatch</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-04-22)</p>
+          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-04-29)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

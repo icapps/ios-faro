@@ -13,7 +13,7 @@
     <a title="Classes  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (14% documented)</p>
+        <p><a href="index.html"> Docs</a> (13% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -36,7 +36,7 @@
                 <a href="Classes/GameScoreController.html">GameScoreController</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/ParseExampleService.html">ParseExampleService</a>
+                <a href="Classes/Parse.html">Parse</a>
               </li>
             </ul>
           </li>
@@ -75,7 +75,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">GameScore</span><span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">UniqueAble</span><span class="p">,</span> <span class="kt">EnvironmentConfigurable</span><span class="p">,</span>  <span class="kt">ErrorControlable</span><span class="p">,</span> <span class="kt">Parsable</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">GameScore</span><span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">UniqueAble</span><span class="p">,</span>  <span class="kt">Mitigatable</span><span class="p">,</span> <span class="kt">Parsable</span><span class="p">,</span> <span class="kt">EnvironmentConfigurable</span></code></pre>
 
                         </div>
                       </div>
@@ -121,9 +121,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:C16AirRivet_Example19ParseExampleService"></a>
-                    <a name="//apple_ref/swift/Class/ParseExampleService" class="dashAnchor"></a>
-                    <a class="token" href="#/s:C16AirRivet_Example19ParseExampleService">ParseExampleService</a>
+                    <a name="/s:C16AirRivet_Example5Parse"></a>
+                    <a name="//apple_ref/swift/Class/Parse" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C16AirRivet_Example5Parse">Parse</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -131,33 +131,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This is an example implementation of the protocol Service parameters. You can use this class in conjunction with a requestController like:</p>
+                        <p>This is an example implementation of the protocol <code>Environment</code>.</p>
 
-<pre class="highlight plaintext"><code>class ViewController: UIViewController {
-let requestController = RequestController&lt;GameScore&gt;(Environment: ParseExampleService &lt;GameScore&gt;())
-
-override func viewDidLoad() {
-    super.viewDidLoad()
-
-    do {
-        try requestController.retrieve({ (response) in
-            print(response)
-        })
-    }catch {
-        print("-------Error with request------")
-    }
-
-    }
-}
-</code></pre>
-
-                        <a href="Classes/ParseExampleService.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/Parse.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">ParseExampleService</span> <span class="o">&lt;</span><span class="kt">BodyType</span><span class="p">:</span> <span class="kt">EnvironmentConfigurable</span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">Environment</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Parse</span> <span class="o">&lt;</span><span class="kt">Rivet</span><span class="p">:</span> <span class="kt">EnvironmentConfigurable</span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">Environment</span><span class="p">,</span> <span class="kt">Mockable</span><span class="p">,</span> <span class="kt">Transformable</span></code></pre>
 
                         </div>
                       </div>
@@ -169,7 +151,7 @@ override func viewDidLoad() {
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-04-22)</p>
+          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-04-29)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
