@@ -101,6 +101,7 @@ public class ResponseController {
 		case ResponseError.InvalidDictionary(dictionary: let dictionary):
 			do {
 				try mitigator.responseInvalidDictionary(dictionary)
+				//TODO: retry transforming once
 			}catch {
 				let responsError = error as! ResponseError
 				fail?(responsError)
