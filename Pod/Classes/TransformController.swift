@@ -26,11 +26,14 @@ public class TransformController {
 		}
 
 		let mitigator = model!.responseMitigator()
-		let json =  try getJSONFromData(data, rootKey: Rivet.rootKey(), mitigator: mitigator)
 
 		do {
-			try model!.parseFromDict(json)
-			succeed(model!)
+			try mitigator.mitigate {
+				let json =  try self.getJSONFromData(data, rootKey: Rivet.rootKey(), mitigator: mitigator)
+				try model!.parseFromDict(json)
+				succeed(model!)
+			}
+
 		}catch ResponseError.InvalidDictionary(dictionary: let dict) {
 			if let correctedDictionary = try mitigator.invalidDictionary(dict) {
 				try model!.parseFromDict(correctedDictionary)
@@ -58,19 +61,22 @@ public class TransformController {
 			model = Rivet()
 		}
 
-		let json = try getJSONFromData(data, rootKey: Rivet.rootKey(), mitigator: model!.responseMitigator())
+		let mitigator = model!.responseMitigator()
+		try mitigator.mitigate {
+			let json = try self.getJSONFromData(data, rootKey: Rivet.rootKey(), mitigator: mitigator)
 
-		if let array = json as? [[String:AnyObject]] {
-			succeed(try dictToArray(array))
-		}else if let dict = json as? [String:AnyObject] {
-			let model = Rivet()
-			try model.parseFromDict(dict)
-			succeed([model])
-		}else if let array = json as? [[String:AnyObject]] {
-			succeed(try dictToArray(array))
-		}
-		else {
-			throw ResponseError.InvalidDictionary(dictionary: json)
+			if let array = json as? [[String:AnyObject]] {
+				succeed(try self.dictToArray(array))
+			}else if let dict = json as? [String:AnyObject] {
+				let model = Rivet()
+				try model.parseFromDict(dict)
+				succeed([model])
+			}else if let array = json as? [[String:AnyObject]] {
+				succeed(try self.dictToArray(array))
+			}
+			else {
+				throw ResponseError.InvalidDictionary(dictionary: json)
+			}
 		}
 	}
 
