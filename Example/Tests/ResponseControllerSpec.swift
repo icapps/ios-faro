@@ -19,12 +19,10 @@ class ResponseControllerSpec: QuickSpec {
 					XCTFail()
 					}, fail: { (error) in
 						switch error {
-						case ResponseError.InvalidDictionary(let anyThing):
-							let dictionary = anyThing as! [String: String]
-							let key = dictionary["wrong"]
-							expect(key).to(equal("json"))
+						case ResponseError.InvalidDictionary(dictionary: _):
+							break
 						default:
-							XCTFail("Wrong type of error")
+							XCTFail("Wrong type of error \(error)")
 						}
 				})
 			}
