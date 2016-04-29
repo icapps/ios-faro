@@ -97,10 +97,10 @@ public class TransformController {
 		return json
 	}
 
-	private func dictToArray<Type: Parsable>(array: [[String:AnyObject]]) throws -> [Type] {
-		var concreteObjectArray = [Type]()
+	private func dictToArray<Rivet: Parsable>(array: [[String:AnyObject]]) throws -> [Rivet] {
+		var concreteObjectArray = [Rivet]()
 		for dict in array {
-			let entity = Type()
+			let entity = Rivet()
 			try entity.parseFromDict(dict)
 			concreteObjectArray.append(entity)
 		}
