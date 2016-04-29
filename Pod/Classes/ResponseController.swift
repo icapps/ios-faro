@@ -29,7 +29,9 @@ public class ResponseController {
 		}
 
 		do {
-			try entity.environment().transformController().transform(data, entity: entity, succeed: succeed)
+			try mitigator.mitigate {
+				try entity.environment().transformController().transform(data, entity: entity, succeed: succeed)
+			}
 		}catch {
 			splitErrorType(error, fail: fail, mitigator: mitigator)
 		}
@@ -46,13 +48,16 @@ public class ResponseController {
 		}
 
 		do {
-			try entity.environment().transformController().transform(data, entity: entity, succeed: succeed)
+			try mitigator.mitigate {
+				try entity.environment().transformController().transform(data, entity: entity, succeed: succeed)
+			}
 		}catch {
 			splitErrorType(error, fail: fail, mitigator: mitigator)
 		}
     }
 
 
+	//MARK: Private
 	private func checkErrorAndReturnValidData(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponseMitigatable, fail:((ResponseError)->())?) -> NSData?{
 
 		guard  error == nil else {
