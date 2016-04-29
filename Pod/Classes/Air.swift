@@ -54,7 +54,7 @@ public class Air{
 		}
 
 		guard let bodyObject = body.toDictionary() else {
-			try Rivet.requestMitigator().requestBodyError()
+			try Rivet.requestMitigator().invalidBodyError()
 			return
 		}
 
@@ -63,7 +63,7 @@ public class Air{
 		do {
 			request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(bodyObject, options: .PrettyPrinted)
 		}catch {
-			try Rivet.requestMitigator().requestBodyError()
+			try Rivet.requestMitigator().invalidBodyError()
 		}
 
 		request.HTTPMethod = "POST"

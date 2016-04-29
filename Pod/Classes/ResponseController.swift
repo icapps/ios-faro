@@ -82,7 +82,7 @@ public class ResponseController {
 	private func respondWithfail(taskError: NSError ,fail:((ResponseError) ->())?, mitigator: ResponseMitigatable) {
 		print("---Error request failed with error: \(taskError)----")
 		do {
-			try mitigator.requestResponseError(taskError)
+			try mitigator.responseError(taskError)
 		}catch {
 			fail?(ResponseError.ResponseError(error: taskError))
 		}
@@ -94,7 +94,7 @@ public class ResponseController {
 		switch error {
 		case ResponseError.InvalidAuthentication:
 			do {
-				try mitigator.requestAuthenticationError()
+				try mitigator.invalidAuthenticationError()
 			}catch {
 				fail?(ResponseError.InvalidAuthentication)
 			}
@@ -109,7 +109,7 @@ public class ResponseController {
 		default:
 			print("---Error we could not process the response----")
 			do {
-				try mitigator.requestGeneralError()
+				try mitigator.generalError()
 			}catch {
 				fail?(ResponseError.General)
 			}
@@ -124,17 +124,17 @@ internal class ResponseControllerUtils {
             let statusCode = httpResponse.statusCode
             
             guard statusCode != 404 else {
-                try mitigator.requestAuthenticationError()
+                try mitigator.invalidAuthenticationError()
                 return nil
             }
             
             guard 200...201 ~= statusCode else {
-                try mitigator.requestGeneralError()
+                try mitigator.generalError()
                 return nil
             }
             
             guard let data = data else {
-                try mitigator.responseDataEmptyError()
+                try mitigator.invalidResponseEmptyDataError()
                 return nil
             }
             

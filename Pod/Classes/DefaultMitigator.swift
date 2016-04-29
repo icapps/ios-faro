@@ -7,22 +7,22 @@ public class DefaultMitigator: Mitigator {
 	}
     //MARK: RequestErrorController
     
-	public func requestBodyError() throws -> () {
+	public func invalidBodyError() throws -> () {
 		print("-----------Error building up body-----")
 		throw RequestError.InvalidBody
 	}
 	
-	public func requestAuthenticationError() throws {
+	public func invalidAuthenticationError() throws {
 		print("-----------Authentication error-----")
 		throw ResponseError.InvalidAuthentication
 	}
 	
-	public func requestGeneralError() throws {
+	public func generalError() throws {
 		print("-----------General error-----")
 		throw RequestError.General
 	}
 	
-	public func requestResponseError(error: NSError?) throws {
+	public func responseError(error: NSError?) throws {
 		print("-----------Request failed with error-----")
         if let error = error {
             throw ResponseError.ResponseError(error: error)
@@ -31,12 +31,12 @@ public class DefaultMitigator: Mitigator {
     
     //MARK: ResponseErrorController
     
-    public func responseDataEmptyError() throws {
+    public func invalidResponseEmptyDataError() throws {
         print("-----------Invalid response data-----")
         throw ResponseError.InvalidResponseData
     }
     
-    public func responseInvalidError() throws {
+    public func ivalidResponseError() throws {
         print("-----------Invalid response type-----")
         throw ResponseError.InvalidResponse
 	}

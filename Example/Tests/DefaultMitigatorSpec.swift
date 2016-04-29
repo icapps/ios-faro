@@ -10,20 +10,20 @@ class DefaultMitigatorSpec: QuickSpec {
 			let errorController = DefaultMitigator()
 
 			it("should throw Request Errors for mistakes in the request") {
-				expect { try errorController.requestBodyError() }.to(throwError(closure: { (error) in
+				expect { try errorController.invalidBodyError() }.to(throwError(closure: { (error) in
 					expect(error).to(matchError(RequestError.InvalidBody))
 				}))
 
-				expect { try errorController.requestAuthenticationError() }.to(throwError(closure: { (error) in
+				expect { try errorController.invalidAuthenticationError() }.to(throwError(closure: { (error) in
 					expect(error).to(matchError(ResponseError.InvalidAuthentication))
 				}))
-				expect { try errorController.requestGeneralError()}.to(throwError(closure: { (error) in
+				expect { try errorController.generalError()}.to(throwError(closure: { (error) in
 					expect(error).to(matchError(RequestError.General))
 				}))
 			}
 
 			it("should throw Response Errors when the response cannot be interpreted") {
-				expect { try errorController.responseDataEmptyError() }.to(throwError(closure: { (error) in
+				expect { try errorController.invalidResponseEmptyDataError() }.to(throwError(closure: { (error) in
 					expect(error).to(matchError(ResponseError.InvalidResponseData))
 				}))
 
