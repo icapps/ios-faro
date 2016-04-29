@@ -21,7 +21,8 @@ class DefaultMitigatorSpec: QuickSpec {
 			}
 
 			it("should throw for response errors") {
-				expect { try mitigator.invalidResponseEmptyDataError() }.to(throwError(closure: { (error) in
+			
+				expect { try mitigator.mitigate {throw ResponseError.InvalidResponseData} }.to(throwError(closure: { (error) in
 					expect(error).to(matchError(ResponseError.InvalidResponseData))
 				}))
 

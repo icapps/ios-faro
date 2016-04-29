@@ -25,8 +25,7 @@ public protocol RequestMitigatable {
 
 public protocol ResponseMitigatable {
 
-    func invalidResponseEmptyDataError() throws -> ()
-    func ivalidResponseError() throws -> ()
+    func invalidResponseData() throws -> ()
 	func invalidAuthenticationError() throws -> ()
 	func responseError(error: NSError?) throws -> ()
 	func generalError() throws -> ()
@@ -47,7 +46,6 @@ public enum RequestError: ErrorType {
 }
 
 public enum ResponseError:ErrorType {
-    case InvalidResponse
 	case InvalidResponseData
 	case InvalidDictionary(dictionary: AnyObject)
 	case ResponseError(error: NSError?)
