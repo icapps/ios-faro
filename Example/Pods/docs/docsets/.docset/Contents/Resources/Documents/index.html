@@ -95,6 +95,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="Typealiases.html">Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8AirRivet9Rivetable">Rivetable</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -103,7 +111,22 @@
             
             <a href='#airrivet_pods' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='airrivet_pods'>AirRivet Pods</h1>
 
-<p>This is a generic pod to fix your model objects to a webservice over the Air. The <code>Type</code> is used as a Rivet to attach your model object that complies to the protocol <code>BaseModel</code> to a webservice. Hence the name <code>AirRivet</code>.</p>
+<p><strong>AirRivet</strong> is a service layer build in Swift by using generics. The idea is that you have <code>Air</code> which is a class that performs the request for an <code>Environment</code>. To do this it needs a Type called <code>Rivet</code> that can be handeled over the <code>Air</code> 🤔. So how do we make this <code>Rivet</code> Type?</p>
+
+<p><code>AnyThing</code> can be a <code>Rivet</code> if they are <code>Rivetable</code>. <code>Rivetable</code> is a combination of protocols that the Rivet (Type) has to conform to. The <code>Rivet</code> is <code>Rivetable</code> if:</p>
+
+<ul>
+<li><code>Mitigatable</code> -&gt; Receive requests to make anything that can go wrong less severe.</li>
+<li><code>Parsable</code> -&gt; You get Dictionaries that you use to set the variables</li>
+<li><code>EnvironmentConfigurable</code> -&gt; We could get the data over the <code>Air</code> from a <em>production</em> or a <em>development</em> environment
+
+<ul>
+<li>There is also a special case where the environment is <code>Mockable</code> then your request are loaded from local files <em>(dummy files)</em></li>
+</ul></li>
+<li><code>UniqueAble</code> -&gt; If your <code>AnyThing</code> is in a <em>collection</em> you can find your entitiy by complying to <code>UniqueAble</code></li>
+</ul>
+
+<p>If you do the above (there are default implementation provided in the example).</p>
 
           </section>
         </section>

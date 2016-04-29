@@ -96,6 +96,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8AirRivet9Rivetable">Rivetable</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -172,7 +180,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span>  <span class="kd">class</span> <span class="kd">func</span> <span class="n">save</span> <span class="o">&lt;</span><span class="kt">Rivet</span><span class="p">:</span> <span class="kt">Rivetable</span><span class="o">&gt;</span>  <span class="p">(</span><span class="nv">body</span><span class="p">:</span> <span class="kt">Rivet</span><span class="p">,</span>
+                          <pre class="highlight"><code><span class="kd">public</span>  <span class="kd">class</span> <span class="kd">func</span> <span class="n">save</span> <span class="o">&lt;</span><span class="kt">Rivet</span><span class="p">:</span> <span class="kt">Rivetable</span><span class="o">&gt;</span>  <span class="p">(</span><span class="nv">entity</span><span class="p">:</span> <span class="kt">Rivet</span><span class="p">,</span>
 	                         <span class="nv">session</span><span class="p">:</span> <span class="kt">NSURLSession</span> <span class="o">=</span> <span class="kt">NSURLSession</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span><span class="kt">NSURLSessionConfiguration</span><span class="o">.</span><span class="nf">defaultSessionConfiguration</span><span class="p">()),</span>
 	                         <span class="nv">responseController</span><span class="p">:</span> <span class="kt">ResponseController</span> <span class="o">=</span> <span class="kt">ResponseController</span><span class="p">(),</span>
 	                         <span class="nv">succeed</span><span class="p">:(</span><span class="nv">response</span><span class="p">:</span> <span class="kt">Rivet</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">(),</span> <span class="nv">fail</span><span class="p">:((</span><span class="kt">ResponseError</span><span class="p">)</span> <span class="o">-&gt;</span><span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
@@ -186,12 +194,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>body</em>
+                                <em>entity</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The object of type <code>Rivet</code> is converted to JSON and send to the server.</p>
+                                  <p>The <code>Rivet</code> is converted to JSON and send to the server.</p>
 
                                 </div>
                               </td>
@@ -212,12 +220,25 @@
                             <tr>
                               <td>
                                 <code>
+                                <em>responseController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>default is  ResponseController = ResponseController(),</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
                                 <em>succeed</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>Closure is called when service request successfully returns</p>
+                                  <p>Closure is called when service request successfully returns - !_!</p>
 
                                 </div>
                               </td>
@@ -230,7 +251,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>Closure called when something in the response fails.</p>
+                                  <p>Optional Closure called when something in the response fails. - !_!</p>
 
                                 </div>
                               </td>
@@ -291,12 +312,38 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>response</em>
+                                <em>session</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>Closure is called when service request successfully returns</p>
+                                  <p>Default NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>responseController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>default is  ResponseController = ResponseController(),</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>succeed</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Closure is called when service request successfully returns - !_!</p>
 
                                 </div>
                               </td>
@@ -309,7 +356,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>Closure called when something in the response fails.</p>
+                                  <p>Closure called when something in the response fails. - !_!</p>
 
                                 </div>
                               </td>
@@ -323,9 +370,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:ZFC8AirRivet3Air8retrieveuRxS_23EnvironmentConfigurablexS_11MitigatablexS_8ParsablexS_10UniqueAblerFzTSS7sessionCSo12NSURLSession18responseControllerCS_18ResponseController7succeedFT8responsex_T_4failGSqFOS_13ResponseErrorT___T_"></a>
-                    <a name="//apple_ref/swift/Method/retrieve(_:session:responseController:succeed:fail:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:ZFC8AirRivet3Air8retrieveuRxS_23EnvironmentConfigurablexS_11MitigatablexS_8ParsablexS_10UniqueAblerFzTSS7sessionCSo12NSURLSession18responseControllerCS_18ResponseController7succeedFT8responsex_T_4failGSqFOS_13ResponseErrorT___T_">retrieve(_:session:responseController:succeed:fail:)</a>
+                    <a name="/s:ZFC8AirRivet3Air20retrieveWithUniqueIduRxS_23EnvironmentConfigurablexS_11MitigatablexS_8ParsablexS_10UniqueAblerFzTSS7sessionCSo12NSURLSession18responseControllerCS_18ResponseController7succeedFT8responsex_T_4failGSqFOS_13ResponseErrorT___T_"></a>
+                    <a name="//apple_ref/swift/Method/retrieveWithUniqueId(_:session:responseController:succeed:fail:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC8AirRivet3Air20retrieveWithUniqueIduRxS_23EnvironmentConfigurablexS_11MitigatablexS_8ParsablexS_10UniqueAblerFzTSS7sessionCSo12NSURLSession18responseControllerCS_18ResponseController7succeedFT8responsex_T_4failGSqFOS_13ResponseErrorT___T_">retrieveWithUniqueId(_:session:responseController:succeed:fail:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -346,7 +393,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="n">retrieve</span> <span class="o">&lt;</span><span class="kt">Rivet</span><span class="p">:</span> <span class="kt">Rivetable</span><span class="o">&gt;</span> <span class="p">(</span><span class="nv">objectId</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">NSURLSession</span> <span class="o">=</span> <span class="kt">NSURLSession</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span><span class="kt">NSURLSessionConfiguration</span><span class="o">.</span><span class="nf">defaultSessionConfiguration</span><span class="p">()),</span>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="n">retrieveWithUniqueId</span> <span class="o">&lt;</span><span class="kt">Rivet</span><span class="p">:</span> <span class="kt">Rivetable</span><span class="o">&gt;</span> <span class="p">(</span><span class="nv">uniqueId</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">NSURLSession</span> <span class="o">=</span> <span class="kt">NSURLSession</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span><span class="kt">NSURLSessionConfiguration</span><span class="o">.</span><span class="nf">defaultSessionConfiguration</span><span class="p">()),</span>
 	                      <span class="nv">responseController</span><span class="p">:</span> <span class="kt">ResponseController</span> <span class="o">=</span> <span class="kt">ResponseController</span><span class="p">(),</span>
 	                      <span class="nv">succeed</span><span class="p">:(</span><span class="nv">response</span><span class="p">:</span> <span class="kt">Rivet</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">(),</span> <span class="nv">fail</span><span class="p">:((</span><span class="kt">ResponseError</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 

@@ -24,7 +24,7 @@ class ViewController: UIViewController {
 				})
 			})
 
-			try Air.retrieve("pyqCt2ZHWT", succeed: { (response: GameScore) in
+			try Air.retrieveWithUniqueId("pyqCt2ZHWT", succeed: { (response: GameScore) in
 				print("🎉 successfully retreived one object \(response.objectId)")
 				})
 

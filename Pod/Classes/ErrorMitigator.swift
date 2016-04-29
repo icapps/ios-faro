@@ -2,27 +2,31 @@ import Foundation
 
 
 /**
-An `ErrorMitigator` recieves errors that happen. Mitigate means ‘make (something bad) less severe'. 
+A `Mitigator` recieves errors that happen. Mitigate means ‘make (something bad) less severe'.
 
 So do that or rethrow what you cannot handle.
 */
 public protocol Mitigator
 {
 	/**
-	Handle throws by calling the corresponding functions to a  throw.
+	See `DefaultMitigator` for an example implementation of this function. 
+	
+	- parameter thrower: A function used as a wrapper around throwing functions in `Air`, `ResponseController` and `TransformController`.
 	*/
 	func mitigate(thrower: ()throws -> ()) throws
 }
 
 /**
- * This class is responsible to handle errors in general and in a type specific way.
- */
-
+Try to handle errors gracefully or rethrow them. The `DefaultMitigator` implements these methods.
+*/
 public protocol RequestMitigatable {
     func invalidBodyError() throws -> ()
     func generalError() throws -> ()
 }
 
+/**
+Try to handle errors gracefully or rethrow them. The `DefaultMitigator` implements these methods.
+*/
 public protocol ResponseMitigatable {
 
 	func invalidResponseData(data: NSData?) throws -> ()

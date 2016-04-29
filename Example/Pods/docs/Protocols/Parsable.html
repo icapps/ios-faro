@@ -96,13 +96,27 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8AirRivet9Rivetable">Rivetable</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
         <section>
           <section class="section">
             <h1>Parsable</h1>
-            <p>Undocumented</p>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Parsable</span></code></pre>
+
+                </div>
+              </div>
+            <p>Implement so we can set data on your variables in the <code><a href="../Classes/TransformController.html">TransformController</a></code>.</p>
 
           </section>
           <section class="section task-group-section">
@@ -123,6 +137,14 @@
                       <div class="abstract">
                         <p>Undocumented</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Parsable</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -197,8 +219,8 @@
                         <p>Should provide key in JSON to node of dict that can be parsed.</p>
 
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
-    </span><span class="err">rootKey:</span><span class="w"> </span><span class="err">{&lt;dictToParse&gt;</span><span class="p">}</span><span class="w">
-</span><span class="err">}</span><span class="w">
+    </span><span class="nt">"rootKey"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">&lt;dictToParse&gt;</span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></code></pre>
 
                       </div>

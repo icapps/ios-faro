@@ -8,16 +8,11 @@
 
 import Foundation
 
-public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable>
-
-/**
-An `Air` should be able to build up a request when your model object complies to the protocols below.
-*/
 
 /**
 React and/or solve errors that could arrise while the entity that conforms to `Mitigatable` is handeled.
 
-You can inspect how error mitigation is expected to behave by looking at `AirSpec` in the tests of the Example project.
+You can inspect how error mitigation is expected to behave by looking at `DefaultMitigatorSpec` and `ResponseControllerSpec` in the tests of the Example project.
 */
 public protocol Mitigatable {
 
@@ -34,6 +29,9 @@ public protocol Mitigatable {
 	static func requestMitigator()-> protocol<RequestMitigatable, Mitigator>
 }
 
+/**
+Implement so we can set data on your variables in the `TransformController`.
+*/
 public protocol Parsable {
 	init ()
 	
@@ -52,7 +50,7 @@ public protocol Parsable {
 	
 	```
 	{
-		rootKey: {<dictToParse>}
+		"rootKey": {<dictToParse>}
 	}
 	```
 	*/
@@ -73,9 +71,13 @@ public protocol EnvironmentConfigurable {
 }
 
 /**
- Every object has to have an unique identifier
+ Every `Rivetable` instance should have an unique identifier so we can retreive the object in a collection.
  */
 public protocol UniqueAble {
 	var objectId: String? {get set}
 }
 
+/**
+An `Air` should be able to build up a request when your model object complies to the protocols below.
+*/
+public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable>

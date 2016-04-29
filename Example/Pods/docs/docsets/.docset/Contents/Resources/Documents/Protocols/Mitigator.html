@@ -96,6 +96,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8AirRivet9Rivetable">Rivetable</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -108,7 +116,7 @@
 
                 </div>
               </div>
-            <p>An <code>ErrorMitigator</code> recieves errors that happen. Mitigate means ‘make (something bad) less severe&rsquo;. </p>
+            <p>A <code>Mitigator</code> recieves errors that happen. Mitigate means ‘make (something bad) less severe&rsquo;.</p>
 
 <p>So do that or rethrow what you cannot handle.</p>
 
@@ -129,7 +137,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Handle throws by calling the corresponding functions to a  throw.</p>
+                        <p>See <code><a href="../Classes/DefaultMitigator.html">DefaultMitigator</a></code> for an example implementation of this function. </p>
 
                       </div>
                       <div class="declaration">
@@ -139,6 +147,26 @@
                           <pre class="highlight"><code><span class="kd">func</span> <span class="nf">mitigate</span><span class="p">(</span><span class="nv">thrower</span><span class="p">:</span> <span class="p">()</span><span class="k">throws</span> <span class="o">-&gt;</span> <span class="p">())</span> <span class="k">throws</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>thrower</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A function used as a wrapper around throwing functions in <code>Air</code>, <code>ResponseController</code> and <code>TransformController</code>.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

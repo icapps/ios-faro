@@ -1,11 +1,19 @@
 import Foundation
 
+/**
+A mitigator tries to make a problem less servere. This is a default implementation that implements all the required protocols:
+
+- `Mitigator` -> capture any thrown errors and rethrow them if needed.
+- `ResponseMitigatable` -> Try to handle response errors. By default errors are printed and rethrown.
+- `RequestMitigatable` -> Try to handle request errors.  By default errors are printed and rethrown.
+*/
 public class DefaultMitigator: Mitigator, ResponseMitigatable, RequestMitigatable {
 
 	public init () {
 		
 	}
 
+	//MARK: Mitigator
 	public func mitigate(thrower: ()throws -> ()) throws  {
 		do {
 			try thrower()
@@ -24,8 +32,7 @@ public class DefaultMitigator: Mitigator, ResponseMitigatable, RequestMitigatabl
 		}
 	}
 
-    //MARK: Request
-    
+    //MARK: RequestMitigatable
 	public func invalidBodyError() throws -> () {
 		print("-----------Error building up body-----")
 		throw RequestError.InvalidBody
@@ -37,8 +44,7 @@ public class DefaultMitigator: Mitigator, ResponseMitigatable, RequestMitigatabl
 	}
 
     
-    //MARK: Response
-
+    //MARK: ResponseMitigatable
 	public func invalidAuthenticationError() throws {
 		print("-----------Authentication error-----")
 		throw ResponseError.InvalidAuthentication

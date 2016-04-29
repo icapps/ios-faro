@@ -6,6 +6,7 @@ import Foundation
 The environment where we should fetch the data from.
 
 Example environments:
+
 * Production
 * Development
 * Filesystem
@@ -19,8 +20,7 @@ public protocol Environment {
 
 /**
 If you implement `Mockable` your entity can provide a default response. This can be handy for tests.
-You should only implement this protocol in unit tests or in your application while the service is not yet available.
-When a type conforms to Mockable the environment you provide by conforming to `EnvironmentConfigurable` will be ignored.
+When a type conforms to Mockable the environment you provide by conforming to `EnvironmentConfigurable` will be ignored and files are loaded from local disk by `Air`.
 */
 public protocol Mockable {
 	func shouldMock() -> Bool

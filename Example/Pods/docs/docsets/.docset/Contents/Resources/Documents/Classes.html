@@ -95,6 +95,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="Typealiases.html">Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8AirRivet9Rivetable">Rivetable</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -120,9 +128,23 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>A mitigator tries to make a problem less servere. This is a default implementation that implements all the required protocols:</p>
+
+<ul>
+<li><code><a href="Protocols/Mitigator.html">Mitigator</a></code> -&gt; capture any thrown errors and rethrow them if needed.</li>
+<li><code><a href="Protocols/ResponseMitigatable.html">ResponseMitigatable</a></code> -&gt; Try to handle response errors. By default errors are printed and rethrown.</li>
+<li><code><a href="Protocols/RequestMitigatable.html">RequestMitigatable</a></code> -&gt; Try to handle request errors.  By default errors are printed and rethrown.</li>
+</ul>
 
                         <a href="Classes/DefaultMitigator.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DefaultMitigator</span><span class="p">:</span> <span class="kt">Mitigator</span><span class="p">,</span> <span class="kt">ResponseMitigatable</span><span class="p">,</span> <span class="kt">RequestMitigatable</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -274,7 +296,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Transformations of data to concrete objects. This implementation expects data to be valid JSON.</p>
+                        <p>Transformations of data to concrete objects. This implementation expects data to be valid JSON.
+Any Type using these functions should be :</p>
+
+<ul>
+<li><code><a href="Protocols/Parsable.html">Parsable</a></code></li>
+<li><code><a href="Protocols/Mitigatable.html">Mitigatable</a></code> -&gt; Try to solve problems found in the data provided.</li>
+</ul>
+
+<p><a href='#tasks' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='tasks'>Tasks</h2>
+<a href='#transform_data_to_code_rivetable_code_instances' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='transform_data_to_code_rivetable_code_instances'>Transform data to <code><a href="Typealiases.html#/s:8AirRivet9Rivetable">Rivetable</a></code> instances.</h3></p>
 
                         <a href="Classes/TransformController.html" class="slightly-smaller">See more</a>
                       </div>

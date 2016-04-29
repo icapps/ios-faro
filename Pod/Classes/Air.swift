@@ -32,13 +32,14 @@ public class Air{
 /**
  Save a single item of Type `Rivet`.  Closures are called on a background queue!
 	
-	- parameter body: The object of type `Rivet` is converted to JSON and send to the server.
+	- parameter entity: The `Rivet` is converted to JSON and send to the server.
 	- parameter session : Default NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()
-	- parameter succeed: Closure is called when service request successfully returns
-	- parameter fail: Closure called when something in the response fails.
+	- parameter responseController: default is  ResponseController = ResponseController(),
+	- parameter succeed: Closure is called when service request successfully returns - !__Called on a background queue___!
+	- parameter fail: Optional Closure called when something in the response fails. - !__Called on a background queue___!
 	- throws : Errors related to the request construction.
 */
-	public  class func save <Rivet: Rivetable>  (body: Rivet,
+	public  class func save <Rivet: Rivetable>  (entity: Rivet,
 	                         session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                         responseController: ResponseController = ResponseController(),
 	                         succeed:(response: Rivet)->(), fail:((ResponseError) ->())? = nil) throws {
@@ -46,14 +47,14 @@ public class Air{
 		let environment = Rivet().environment()
 
 		guard !environment.shouldMock() else {
-			succeed(response: body)
+			succeed(response: entity)
 			return
 		}
 
 		let request = environment.request
 
 		try Rivet.requestMitigator().mitigate {
-			if let dict = try body.toDictionary() {
+			if let dict = try entity.toDictionary() {
 				request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
 			}
 		}
@@ -67,8 +68,10 @@ public class Air{
 	/**
  Retreive all items of `Type`. Closures are called on a background queue!
 	
-	- parameter response: Closure is called when service request successfully returns
-	- parameter fail: Closure called when something in the response fails.
+	- parameter session : Default NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()
+	- parameter responseController: default is  ResponseController = ResponseController(),
+	- parameter succeed: Closure is called when service request successfully returns - !__Called on a background queue___!
+	- parameter fail: Closure called when something in the response fails. - !__Called on a background queue___!
 	- throws : Errors related to the request construction.
 	*/
 	public class func retrieve<Rivet: Rivetable> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
@@ -92,7 +95,7 @@ public class Air{
 	- parameter fail: Closure called when something in the response fails.
 	- throws : Errors related to the request construction.
 	*/
-	public class func retrieve <Rivet: Rivetable> (objectId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
+	public class func retrieveWithUniqueId <Rivet: Rivetable> (uniqueId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                      responseController: ResponseController = ResponseController(),
 	                      succeed:(response: Rivet)->(), fail:((ResponseError)->())? = nil) throws{
 		let entity = Rivet()
@@ -100,10 +103,10 @@ public class Air{
 		let request = environment.request
 		request.HTTPMethod = "GET"
 		if let _ = request.URL {
-			request.URL = request.URL!.URLByAppendingPathComponent(objectId)
+			request.URL = request.URL!.URLByAppendingPathComponent(uniqueId)
 		}
 
-		let mockUrl = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(objectId)"
+		let mockUrl = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(uniqueId)"
 		try mockOrPerform(mockUrl, request: request,
 		                  environment: environment, responseController: responseController, session: session,
 		                  succeed: succeed, fail: fail)

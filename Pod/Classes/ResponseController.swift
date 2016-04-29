@@ -12,17 +12,23 @@ Responses are interpretted in the `TransFormController`
 */
 public class ResponseController {
 
-	/**
-	- parameter transformController: a default implementation is given that transforms from JSON to your model object of `ResponseType`
-	- returns: Properly instantiated `ResponseController`
-	*/
+
 	public init() {
 	}
-	
-	func respond<Rivet: Rivetable>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, body: Rivet? = nil,
+	/**
+	On success it returns an updated instance of type `Rivet`.
+
+	- parameter data: The data to transform to type `Rivetable`
+	- paramater urlResponse: The response from the `Environment`
+	- parameter error: Any error that occured before calling this method
+	- paramter entity: Optional entity you want variables to be set on by the data proveded. If no entity provided one of type `Rivet` will be created
+	- parameter succeed: Closure called on success
+	- parameter fail: Closure called on failure
+	*/
+	public func respond<Rivet: Rivetable>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, entity: Rivet? = nil,
 	             succeed: (Rivet)->(), fail:((ResponseError)->())?) {
 
-		let entity = useBodyOrCreateEntity(body)
+		let entity = useBodyOrCreateEntity(entity)
 		if let transformController = prepareTransFormOnEntity(data, urlResponse: urlResponse, error: error, entity: entity, fail: fail) {
 			do {
 				try transformController.transform(data!, entity: entity, succeed: succeed)
@@ -32,10 +38,20 @@ public class ResponseController {
 		}
 	}
 
-	func respond<Rivet: Rivetable>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, body: Rivet? = nil,
+	/**
+	On success it returns an array of type `Rivet`.
+	
+	- parameter data: The data to transform to type `Rivetable`
+	- paramater urlResponse: The response from the `Environment`
+	- parameter error: Any error that occured before calling this method
+	- paramter entity: Optional entity you want variables to be set on by the data proveded. If no entity provided one of type `Rivet` will be created
+	- parameter succeed: Closure called on success
+	- parameter fail: Closure called on failure
+	*/
+	public func respond<Rivet: Rivetable>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, entity: Rivet? = nil,
 	             succeed: ([Rivet])->(),  fail:((ResponseError)->())?){
 
-		let entity = useBodyOrCreateEntity(body)
+		let entity = useBodyOrCreateEntity(entity)
 		if let transformController = prepareTransFormOnEntity(data, urlResponse: urlResponse, error: error, entity: entity, fail: fail) {
 			do {
 				try transformController.transform(data!, entity: entity, succeed: succeed)

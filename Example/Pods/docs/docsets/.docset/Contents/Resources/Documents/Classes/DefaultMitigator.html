@@ -96,13 +96,33 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8AirRivet9Rivetable">Rivetable</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
         <section>
           <section class="section">
             <h1>DefaultMitigator</h1>
-            <p>Undocumented</p>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DefaultMitigator</span><span class="p">:</span> <span class="kt">Mitigator</span><span class="p">,</span> <span class="kt">ResponseMitigatable</span><span class="p">,</span> <span class="kt">RequestMitigatable</span></code></pre>
+
+                </div>
+              </div>
+            <p>A mitigator tries to make a problem less servere. This is a default implementation that implements all the required protocols:</p>
+
+<ul>
+<li><code><a href="../Protocols/Mitigator.html">Mitigator</a></code> -&gt; capture any thrown errors and rethrow them if needed.</li>
+<li><code><a href="../Protocols/ResponseMitigatable.html">ResponseMitigatable</a></code> -&gt; Try to handle response errors. By default errors are printed and rethrown.</li>
+<li><code><a href="../Protocols/RequestMitigatable.html">RequestMitigatable</a></code> -&gt; Try to handle request errors.  By default errors are printed and rethrown.</li>
+</ul>
 
           </section>
           <section class="section task-group-section">
@@ -124,9 +144,28 @@
                         <p>Undocumented</p>
 
                       </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DefaultMitigator</span><span class="p">:</span> <span class="kt">Mitigator</span><span class="p">,</span> <span class="kt">ResponseMitigatable</span><span class="p">,</span> <span class="kt">RequestMitigatable</span></code></pre>
+
+                        </div>
+                      </div>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Mitigator"></a>
+                <a name="//apple_ref/swift/Section/Mitigator" class="dashAnchor"></a>
+                <a href="#/Mitigator">
+                  <h3 class="section-name">Mitigator</h3>
+                </a>
+              </div>
+              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -143,6 +182,14 @@
                         <p>Undocumented</p>
 
                       </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DefaultMitigator</span><span class="p">:</span> <span class="kt">Mitigator</span><span class="p">,</span> <span class="kt">ResponseMitigatable</span><span class="p">,</span> <span class="kt">RequestMitigatable</span></code></pre>
+
+                        </div>
+                      </div>
                     </section>
                   </div>
                 </li>
@@ -150,10 +197,10 @@
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Request"></a>
-                <a name="//apple_ref/swift/Section/Request" class="dashAnchor"></a>
-                <a href="#/Request">
-                  <h3 class="section-name">Request</h3>
+                <a name="/RequestMitigatable"></a>
+                <a name="//apple_ref/swift/Section/RequestMitigatable" class="dashAnchor"></a>
+                <a href="#/RequestMitigatable">
+                  <h3 class="section-name">RequestMitigatable</h3>
                 </a>
               </div>
               <ul>
@@ -172,6 +219,14 @@
                       <div class="abstract">
                         <p>Undocumented</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DefaultMitigator</span><span class="p">:</span> <span class="kt">Mitigator</span><span class="p">,</span> <span class="kt">ResponseMitigatable</span><span class="p">,</span> <span class="kt">RequestMitigatable</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -192,6 +247,14 @@
                         <p>Undocumented</p>
 
                       </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DefaultMitigator</span><span class="p">:</span> <span class="kt">Mitigator</span><span class="p">,</span> <span class="kt">ResponseMitigatable</span><span class="p">,</span> <span class="kt">RequestMitigatable</span></code></pre>
+
+                        </div>
+                      </div>
                     </section>
                   </div>
                 </li>
@@ -199,10 +262,10 @@
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Response"></a>
-                <a name="//apple_ref/swift/Section/Response" class="dashAnchor"></a>
-                <a href="#/Response">
-                  <h3 class="section-name">Response</h3>
+                <a name="/ResponseMitigatable"></a>
+                <a name="//apple_ref/swift/Section/ResponseMitigatable" class="dashAnchor"></a>
+                <a href="#/ResponseMitigatable">
+                  <h3 class="section-name">ResponseMitigatable</h3>
                 </a>
               </div>
               <ul>
@@ -221,6 +284,14 @@
                       <div class="abstract">
                         <p>Undocumented</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DefaultMitigator</span><span class="p">:</span> <span class="kt">Mitigator</span><span class="p">,</span> <span class="kt">ResponseMitigatable</span><span class="p">,</span> <span class="kt">RequestMitigatable</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -241,6 +312,14 @@
                         <p>Undocumented</p>
 
                       </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DefaultMitigator</span><span class="p">:</span> <span class="kt">Mitigator</span><span class="p">,</span> <span class="kt">ResponseMitigatable</span><span class="p">,</span> <span class="kt">RequestMitigatable</span></code></pre>
+
+                        </div>
+                      </div>
                     </section>
                   </div>
                 </li>
@@ -260,6 +339,14 @@
                         <p>Undocumented</p>
 
                       </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DefaultMitigator</span><span class="p">:</span> <span class="kt">Mitigator</span><span class="p">,</span> <span class="kt">ResponseMitigatable</span><span class="p">,</span> <span class="kt">RequestMitigatable</span></code></pre>
+
+                        </div>
+                      </div>
                     </section>
                   </div>
                 </li>
@@ -278,6 +365,14 @@
                       <div class="abstract">
                         <p>Undocumented</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DefaultMitigator</span><span class="p">:</span> <span class="kt">Mitigator</span><span class="p">,</span> <span class="kt">ResponseMitigatable</span><span class="p">,</span> <span class="kt">RequestMitigatable</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>

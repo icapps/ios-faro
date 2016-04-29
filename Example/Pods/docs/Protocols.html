@@ -95,6 +95,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="Typealiases.html">Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8AirRivet9Rivetable">Rivetable</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -122,11 +130,14 @@
                       <div class="abstract">
                         <p>The environment where we should fetch the data from.</p>
 
-<p>Example environments:
-* Production
-* Development
-* Filesystem
-* &hellip;</p>
+<p>Example environments:</p>
+
+<ul>
+<li>Production</li>
+<li>Development</li>
+<li>Filesystem</li>
+<li>&hellip;</li>
+</ul>
 
                         <a href="Protocols/Environment.html" class="slightly-smaller">See more</a>
                       </div>
@@ -155,8 +166,7 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>If you implement <code>Mockable</code> your entity can provide a default response. This can be handy for tests.
-You should only implement this protocol in unit tests or in your application while the service is not yet available.
-When a type conforms to Mockable the environment you provide by conforming to <code><a href="Protocols/EnvironmentConfigurable.html">EnvironmentConfigurable</a></code> will be ignored.</p>
+When a type conforms to Mockable the environment you provide by conforming to <code><a href="Protocols/EnvironmentConfigurable.html">EnvironmentConfigurable</a></code> will be ignored and files are loaded from local disk by <code><a href="Classes/Air.html">Air</a></code>.</p>
 
                         <a href="Protocols/Mockable.html" class="slightly-smaller">See more</a>
                       </div>
@@ -222,7 +232,7 @@ When a type conforms to Mockable the environment you provide by conforming to <c
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An <code>ErrorMitigator</code> recieves errors that happen. Mitigate means ‘make (something bad) less severe&rsquo;. </p>
+                        <p>A <code>Mitigator</code> recieves errors that happen. Mitigate means ‘make (something bad) less severe&rsquo;.</p>
 
 <p>So do that or rethrow what you cannot handle.</p>
 
@@ -252,7 +262,7 @@ When a type conforms to Mockable the environment you provide by conforming to <c
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This class is responsible to handle errors in general and in a type specific way.</p>
+                        <p>Try to handle errors gracefully or rethrow them. The <code><a href="Classes/DefaultMitigator.html">DefaultMitigator</a></code> implements these methods.</p>
 
                         <a href="Protocols/RequestMitigatable.html" class="slightly-smaller">See more</a>
                       </div>
@@ -280,9 +290,17 @@ When a type conforms to Mockable the environment you provide by conforming to <c
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Try to handle errors gracefully or rethrow them. The <code><a href="Classes/DefaultMitigator.html">DefaultMitigator</a></code> implements these methods.</p>
 
                         <a href="Protocols/ResponseMitigatable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ResponseMitigatable</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -304,9 +322,19 @@ When a type conforms to Mockable the environment you provide by conforming to <c
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>React and/or solve errors that could arrise while the entity that conforms to <code>Mitigatable</code> is handeled.</p>
+
+<p>You can inspect how error mitigation is expected to behave by looking at <code>DefaultMitigatorSpec</code> and <code>ResponseControllerSpec</code> in the tests of the Example project.</p>
 
                         <a href="Protocols/Mitigatable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Mitigatable</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -324,9 +352,17 @@ When a type conforms to Mockable the environment you provide by conforming to <c
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Implement so we can set data on your variables in the <code><a href="Classes/TransformController.html">TransformController</a></code>.</p>
 
                         <a href="Protocols/Parsable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Parsable</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -364,7 +400,7 @@ When a type conforms to Mockable the environment you provide by conforming to <c
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Every object has to have an unique identifier</p>
+                        <p>Every <code><a href="Typealiases.html#/s:8AirRivet9Rivetable">Rivetable</a></code> instance should have an unique identifier so we can retreive the object in a collection.</p>
 
                         <a href="Protocols/UniqueAble.html" class="slightly-smaller">See more</a>
                       </div>
