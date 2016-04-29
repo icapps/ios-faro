@@ -24,18 +24,17 @@ public class ResponseController {
 
 		let entity = useBodyOrCreateEntity(body)
 		let mitigator = entity.responseMitigator()
-		guard let data = checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail) else {
-			return
-		}
 
 		do {
 			try mitigator.mitigate {
+				guard let data = try self.checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail) else {
+					return
+				}
 				try entity.environment().transformController().transform(data, entity: entity, succeed: succeed)
 			}
 		}catch {
-			splitErrorType(error, fail: fail, mitigator: mitigator)
+			respondWithfail(error, fail: fail)
 		}
-
 	}
 
 	func respond<Rivet: Rivetable>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, body: Rivet? = nil,
@@ -43,37 +42,31 @@ public class ResponseController {
 
 		let entity = useBodyOrCreateEntity(body)
 		let mitigator = entity.responseMitigator()
-		guard let data = checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail) else {
-			return
-		}
 
 		do {
 			try mitigator.mitigate {
+				guard let data = try self.checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail) else {
+					return
+				}
 				try entity.environment().transformController().transform(data, entity: entity, succeed: succeed)
 			}
 		}catch {
-			splitErrorType(error, fail: fail, mitigator: mitigator)
+			respondWithfail(error, fail: fail)
 		}
     }
 
 
 	//MARK: Private
-	private func checkErrorAndReturnValidData(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponseMitigatable, fail:((ResponseError)->())?) -> NSData?{
+	private func checkErrorAndReturnValidData(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponseMitigatable, fail:((ResponseError)->())?) throws -> NSData?{
 
 		guard  error == nil else {
 			respondWithfail(error!, fail: fail, mitigator: mitigator)
 			return nil
 		}
-
-		do {
-			guard let data = try ResponseControllerUtils.checkStatusCodeAndData(data, urlResponse: urlResponse, error: error, mitigator: mitigator) else {
-				return nil
-			}
-			return data
-		}catch {
-			splitErrorType(error, fail: fail, mitigator: mitigator)
+		guard let data = try ResponseControllerUtils.checkStatusCodeAndData(data, urlResponse: urlResponse, error: error, mitigator: mitigator) else {
 			return nil
 		}
+		return data
 	}
 
 	private func useBodyOrCreateEntity<Rivet: Rivetable>(body: Rivet?) -> Rivet {
@@ -84,40 +77,20 @@ public class ResponseController {
 		return entity!
 	}
 
+	private func respondWithfail(error: ErrorType ,fail:((ResponseError) ->())?) {
+		if let responseError = error as? ResponseError {
+			fail?(responseError)
+		}else {
+			print("💣 failed response with error: \(error)")
+			fail?(ResponseError.General)
+		}
+	}
 	private func respondWithfail(taskError: NSError ,fail:((ResponseError) ->())?, mitigator: ResponseMitigatable) {
 		print("---Error request failed with error: \(taskError)----")
 		do {
 			try mitigator.responseError(taskError)
 		}catch {
 			fail?(ResponseError.ResponseError(error: taskError))
-		}
-		fail?(ResponseError.ResponseError(error: taskError))
-	}
-
-	private func splitErrorType(error: ErrorType, fail: ((ResponseError) ->())?, mitigator: ResponseMitigatable) {
-
-		switch error {
-		case ResponseError.InvalidAuthentication:
-			do {
-				try mitigator.invalidAuthenticationError()
-			}catch {
-				fail?(ResponseError.InvalidAuthentication)
-			}
-		case ResponseError.InvalidDictionary(dictionary: let dictionary):
-			do {
-				try mitigator.invalidDictionary(dictionary)
-				//TODO: retry transforming once
-			}catch {
-				let responsError = error as! ResponseError
-				fail?(responsError)
-			}
-		default:
-			print("---Error we could not process the response----")
-			do {
-				try mitigator.generalError()
-			}catch {
-				fail?(ResponseError.General)
-			}
 		}
 	}
 }
