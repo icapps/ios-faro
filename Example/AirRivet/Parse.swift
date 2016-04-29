@@ -4,10 +4,10 @@ import AirRivet
 /**
 This is an example implementation of the protocol `Environment`. 
 */
-public class Parse <BodyType: EnvironmentConfigurable>: Environment, Mockable, Transformable {
+public class Parse <Rivet: EnvironmentConfigurable>: Environment, Mockable, Transformable {
 	public var serverUrl = "https://api.parse.com/1/classes/"
 	public var request: NSMutableURLRequest {
-		let URL = NSURL(string: "\(serverUrl)\(BodyType().contextPath())")
+		let URL = NSURL(string: "\(serverUrl)\(Rivet().contextPath())")
 		let request = NSMutableURLRequest(URL: URL!)
 
 		// Headers
