@@ -1,78 +1,147 @@
 import Foundation
 
 /**
-Deal with the errors of the response and interpret the respons.
+Deal with the errors of the response and interpret the response.
 
 #Tasks
 
 ## Handle errors in response
 Errors cause an throw
-## Pass response to the TransformController 
-Responses are interpretted in the TransFormController
+## Pass response to the `TransformController`
+Responses are interpretted in the `TransFormController`
 */
 public class ResponseController {
-	
-	private let transformController: TransformController
 
 	/**
 	- parameter transformController: a default implementation is given that transforms from JSON to your model object of `ResponseType`
-	- returns: Properly instantiated ResponseController
+	- returns: Properly instantiated `ResponseController`
 	*/
-	public init(transformController: TransformController = TransformController()) {
-		self.transformController = transformController
+	public init() {
 	}
 	
-	func handleResponse<ResponseType: BaseModel>(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), body: ResponseType? = nil, completion: (ResponseType)->()) throws {
-		let errorController = ResponseType.getErrorController()
+	func respond<Rivet: ModelProtocol>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, body: Rivet? = nil,
+	             succeed: (Rivet)->(), fail:((ResponseError)->())?) {
 
-		try checkError(response, errorController: errorController)
-		if let data = try checkStatusCodeAndData(response, errorController: errorController){
-			try transformController.objectDataToConcreteObject(data, body: body, completion: { (concreteObject) -> () in
-				completion(concreteObject)
-			})
+		let entity = useBodyOrCreateEntity(body)
+		let mitigator = entity.responseMitigator()
+		guard let data = checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail) else {
+			return
 		}
-	}
-	//TODO: #5 transformation of array results to existing objects.
-	func handleResponse<ResponseType: BaseModel>(response:  (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), completion: ([ResponseType])->()) throws{
-		let errorController = ResponseType.getErrorController()
-		
-		try checkError(response, errorController: errorController)
-		
-		if let data = try checkStatusCodeAndData(response, errorController: errorController) {
-			try transformController.objectsDataToConcreteObjects(data, completion: { (responseArray) -> () in
-				completion(responseArray)
-			})
-		}
-	}
-	
-	private func checkError(response: (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), errorController: ErrorController) throws{
-		if let error = response.error {
-			print("URL Session Task Failed: %@", response.error!.localizedDescription);
-			try errorController.requestResponseError(error)
-		}
-	}
-	private func checkStatusCodeAndData(response: (data: NSData?, urlResponse: NSURLResponse?, error: NSError?), errorController: ErrorController) throws -> NSData? {
-		let statusCode = (response.urlResponse as! NSHTTPURLResponse).statusCode
-		print("--------------URL Response: statusCode \(statusCode)---------------")
 
-		guard statusCode == 200 || statusCode == 201 else {
-			if statusCode == 404{
-				try errorController.requestAuthenticationError()
-			}else {
-				try errorController.requestGeneralError()
+		do {
+			try entity.environment().transformController().transform(data, entity: entity, succeed: succeed)
+		}catch {
+			splitErrorType(error, fail: fail, mitigator: mitigator)
+		}
+
+	}
+
+	func respond<Rivet: ModelProtocol>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, body: Rivet? = nil,
+	             succeed: ([Rivet])->(),  fail:((ResponseError)->())?){
+
+		let entity = useBodyOrCreateEntity(body)
+		let mitigator = entity.responseMitigator()
+		guard let data = checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail) else {
+			return
+		}
+
+		do {
+			try entity.environment().transformController().transform(data, entity: entity, succeed: succeed)
+		}catch {
+			splitErrorType(error, fail: fail, mitigator: mitigator)
+		}
+    }
+
+
+	private func checkErrorAndReturnValidData(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponseMitigatable, fail:((ResponseError)->())?) -> NSData?{
+
+		guard  error == nil else {
+			respondWithfail(error!, fail: fail, mitigator: mitigator)
+			return nil
+		}
+
+		do {
+			guard let data = try ResponseControllerUtils.checkStatusCodeAndData(data, urlResponse: urlResponse, error: error, mitigator: mitigator) else {
+				return nil
 			}
+			return data
+		}catch {
+			splitErrorType(error, fail: fail, mitigator: mitigator)
 			return nil
 		}
+	}
 
-		guard let data = response.data else {
-			try errorController.requestResponseDataEmpty()
-			return nil
+	private func useBodyOrCreateEntity<Rivet: ModelProtocol>(body: Rivet?) -> Rivet {
+		var entity = body
+		if entity == nil {
+			entity = Rivet()
 		}
+		return entity!
+	}
 
-		return data
+	private func respondWithfail(taskError: NSError ,fail:((ResponseError) ->())?, mitigator: ResponseMitigatable) {
+		print("---Error request failed with error: \(taskError)----")
+		do {
+			try mitigator.requestResponseError(taskError)
+		}catch {
+			fail?(ResponseError.ResponseError(error: taskError))
+		}
+		fail?(ResponseError.ResponseError(error: taskError))
+	}
+
+	private func splitErrorType(error: ErrorType, fail: ((ResponseError) ->())?, mitigator: ResponseMitigatable) {
+
+		switch error {
+		case ResponseError.InvalidAuthentication:
+			do {
+				try mitigator.requestAuthenticationError()
+			}catch {
+				fail?(ResponseError.InvalidAuthentication)
+			}
+		case ResponseError.InvalidDictionary(dictionary: let dictionary):
+			do {
+				try mitigator.responseInvalidDictionary(dictionary)
+				//TODO: retry transforming once
+			}catch {
+				let responsError = error as! ResponseError
+				fail?(responsError)
+			}
+		default:
+			print("---Error we could not process the response----")
+			do {
+				try mitigator.requestGeneralError()
+			}catch {
+				fail?(ResponseError.General)
+			}
+		}
 	}
 }
 
-enum UmbrellaErrors: ErrorType {
-	case badBody
+internal class ResponseControllerUtils {
+	class func checkStatusCodeAndData(data: NSData? = nil, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponseMitigatable) throws -> NSData? {
+        if let httpResponse = urlResponse as? NSHTTPURLResponse {
+            
+            let statusCode = httpResponse.statusCode
+            
+            guard statusCode != 404 else {
+                try mitigator.requestAuthenticationError()
+                return nil
+            }
+            
+            guard 200...201 ~= statusCode else {
+                try mitigator.requestGeneralError()
+                return nil
+            }
+            
+            guard let data = data else {
+                try mitigator.responseDataEmptyError()
+                return nil
+            }
+            
+            return data
+        }
+        else {
+            return data
+        }
+    }
 }

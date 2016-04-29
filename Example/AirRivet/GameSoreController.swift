@@ -23,14 +23,12 @@ public class GameScoreController: NSObject {
 		self.gameScore = nil
 		super.init()
 	}
-
-	private let requestController = RequestController<GameScore>(serviceParameters: ParseExampleService <GameScore>())
 	
 	public func retrieve(completion:(response: [GameScore])->(), failure:((error: NSError)->())? = nil) {
 		do {
-			try requestController.retrieve({ (response) in
-				completion(response: response)
-				}, failure: { (requestError) in
+			try Air.retrieve(succeed: { (response: [GameScore]) in
+					completion(response: response)
+				}, fail: { (requestError) in
 					if let failure = failure {
 						self.transferResponseErrorToNSErrorForError(requestError, failure: failure)
 					}

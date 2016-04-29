@@ -53,19 +53,31 @@
               <li class="nav-group-task">
                 <a href="../Enums/RequestError.html">RequestError</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Enums/TransformError.html">TransformError</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Protocols/BaseModel.html">BaseModel</a>
+                <a href="../Protocols/Environment.html">Environment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/EnvironmentConfigurable.html">EnvironmentConfigurable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ErrorControlable.html">ErrorControlable</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/ErrorController.html">ErrorController</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/ServiceParameters.html">ServiceParameters</a>
+                <a href="../Protocols/Parsable.html">Parsable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/UniqueAble.html">UniqueAble</a>
               </li>
             </ul>
           </li>
@@ -90,9 +102,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC8AirRivet19TransformController26objectDataToConcreteObjectuRxS_9BaseModelrFzTCSo6NSData4bodyGSqx_10completionFxT__T_"></a>
-                    <a name="//apple_ref/swift/Method/objectDataToConcreteObject(_:body:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC8AirRivet19TransformController26objectDataToConcreteObjectuRxS_9BaseModelrFzTCSo6NSData4bodyGSqx_10completionFxT__T_">objectDataToConcreteObject(_:body:completion:)</a>
+                    <a name="/s:FC8AirRivet19TransformController26objectDataToConcreteObjectuRxS_8ParsablerFzTCSo6NSData10inputModelGSqx_10completionFxT__T_"></a>
+                    <a name="//apple_ref/swift/Method/objectDataToConcreteObject(_:inputModel:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC8AirRivet19TransformController26objectDataToConcreteObjectuRxS_8ParsablerFzTCSo6NSData10inputModelGSqx_10completionFxT__T_">objectDataToConcreteObject(_:inputModel:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -106,7 +118,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">objectDataToConcreteObject</span><span class="o">&lt;</span><span class="k">Type</span><span class="p">:</span> <span class="kt">BaseModel</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">NSData</span><span class="p">,</span> <span class="nv">body</span><span class="p">:</span> <span class="k">Type</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:(</span><span class="k">Type</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">())</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">objectDataToConcreteObject</span><span class="o">&lt;</span><span class="k">Type</span><span class="p">:</span> <span class="kt">Parsable</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">NSData</span><span class="p">,</span> <span class="nv">inputModel</span><span class="p">:</span> <span class="k">Type</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:(</span><span class="k">Type</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">())</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -141,9 +153,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC8AirRivet19TransformController28objectsDataToConcreteObjectsuRxS_9BaseModelrFzTCSo6NSData10completionFGSax_T__T_"></a>
-                    <a name="//apple_ref/swift/Method/objectsDataToConcreteObjects(_:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC8AirRivet19TransformController28objectsDataToConcreteObjectsuRxS_9BaseModelrFzTCSo6NSData10completionFGSax_T__T_">objectsDataToConcreteObjects(_:completion:)</a>
+                    <a name="/s:FC8AirRivet19TransformController28objectsDataToConcreteObjectsuRxS_8ParsablerFzTCSo6NSData7rootKeySS10completionFGSax_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/objectsDataToConcreteObjects(_:rootKey:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC8AirRivet19TransformController28objectsDataToConcreteObjectsuRxS_8ParsablerFzTCSo6NSData7rootKeySS10completionFGSax_T__T_">objectsDataToConcreteObjects(_:rootKey:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -162,7 +174,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">objectsDataToConcreteObjects</span><span class="o">&lt;</span><span class="k">Type</span><span class="p">:</span> <span class="kt">BaseModel</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">NSData</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:([</span><span class="k">Type</span><span class="p">])</span><span class="o">-&gt;</span><span class="p">())</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">objectsDataToConcreteObjects</span><span class="o">&lt;</span><span class="k">Type</span><span class="p">:</span> <span class="kt">Parsable</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">NSData</span><span class="p">,</span> <span class="nv">rootKey</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"results"</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:([</span><span class="k">Type</span><span class="p">])</span><span class="o">-&gt;</span><span class="p">())</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -199,7 +211,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-04-07)</p>
+          <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2016-04-22)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

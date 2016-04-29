@@ -1,20 +1,20 @@
 PODS:
-  - AirRivet (0.1.0)
-  - Nimble (3.2.0)
+  - AirRivet (0.0.6)
+  - Nimble (4.0.1)
   - Quick (0.9.1)
 
 DEPENDENCIES:
   - AirRivet (from `../`)
-  - Nimble (~> 3.0)
-  - Quick (~> 0.8)
+  - Nimble (~> 4.0)
+  - Quick (~> 0.9)
 
 EXTERNAL SOURCES:
   AirRivet:
     :path: "../"
 
 SPEC CHECKSUMS:
-  AirRivet: 5ba18e2d01f6f6873c67502b6cf1eebb7b054999
-  Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
+  AirRivet: 4c56d7b242128a04bfb2044f1e93fde9f06b0ec7
+  Nimble: 0f3c8b8b084cda391209c3c5efbb48bedeeb920a
   Quick: a5221fc21788b6aeda934805e68b061839bc3165
 
 COCOAPODS: 0.39.0
