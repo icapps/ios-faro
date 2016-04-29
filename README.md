@@ -3,9 +3,9 @@
 For quick start follow the instructions below. For more in dept info on why and how we build this AirRivet stuff you are more then welcome on the [wiki](https://github.com/icapps/ios-air-rivet/wiki)
 
 ## Concept
-AirRivet is a service layer build in Swift by using generics. The idea is that you have `Air` which is a class that performs the request for an `Environment`. To do this it needs a Type called `Rivet` that can be handeled over the `Air` 🤔. So how do we make this `Rivet` Type?
+__AirRivet__ is a service layer build in Swift by using generics. The idea is that you have `Air` which is a class that performs the request for an `Environment`. To do this it needs a Type called `Rivet` that can be handeled over the `Air` 🤔. So how do we make this `Rivet` Type?
 
-`AnyThing` can be a `Rivet` if they are `Rivetable`. `Rivetable` is a combination of protocols that you have to conform to. You are `Rivetable` if you are:
+`AnyThing` can be a `Rivet` if they are `Rivetable`. `Rivetable` is a combination of protocols that the Rivet (Type) has to conform to. The `Rivet` is `Rivetable` if:
 
 - `Mitigatable` -> Receive requests to make anything that can go wrong less severe.
 - `Parsable` -> You get Dictionaries that you use to set the variables
