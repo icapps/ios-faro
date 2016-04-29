@@ -16,10 +16,10 @@ You can retreive a single instance or an array of objects
 ## Handle response via `ResponseController`
 The response controllers does the actual parsing. In theory you can parse any kind of reponse, for now we only support JSON.
 
-## Pass errors to the errorController of `Type`
+## Pass errors to the `Mitigator`
 Any type can decide to handle error in a specific way that is suited for that `Type` by conforming to protocol `Mitigatable`.
 
-You can inspect how error handling is expected to behave by looking at `AirSpec` in the tests of the Example project.
+You can inspect how error handling is expected to behave by looking at `DefaultMitigatorSpec` in the tests of the Example project.
 
 # Mocking
 
@@ -50,17 +50,12 @@ public class Air{
 			return
 		}
 
-		guard let bodyObject = body.toDictionary() else {
-			try Rivet.requestMitigator().invalidBodyError()
-			return
-		}
-
 		let request = environment.request
 
-		do {
-			request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(bodyObject, options: .PrettyPrinted)
-		}catch {
-			try Rivet.requestMitigator().invalidBodyError()
+		try Rivet.requestMitigator().mitigate {
+			if let dict = try body.toDictionary() {
+				request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+			}
 		}
 
 		request.HTTPMethod = "POST"

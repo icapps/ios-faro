@@ -45,11 +45,11 @@ public class GameScore: NSObject, UniqueAble,  Mitigatable, Parsable, Environmen
 
 	//MARK: Mitigatable
 	
-	public func responseMitigator() -> ResponseMitigatable {
+	public func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
 		return DefaultMitigator()
 	}
 
-	public static func requestMitigator() -> RequestMitigatable {
+	public static func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
 		return DefaultMitigator()
 	}
 

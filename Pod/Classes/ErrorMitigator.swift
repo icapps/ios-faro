@@ -6,7 +6,7 @@ An `ErrorMitigator` recieves errors that happen. Mitigate means ‘make (somethi
 
 So do that or rethrow what you cannot handle.
 */
-public protocol Mitigator: RequestMitigatable, ResponseMitigatable
+public protocol Mitigator
 {
 	/**
 	Handle throws by calling the corresponding functions to a  throw.

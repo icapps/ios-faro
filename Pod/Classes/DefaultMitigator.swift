@@ -1,6 +1,6 @@
 import Foundation
 
-public class DefaultMitigator: Mitigator {
+public class DefaultMitigator: Mitigator, ResponseMitigatable, RequestMitigatable {
 
 	public init () {
 		

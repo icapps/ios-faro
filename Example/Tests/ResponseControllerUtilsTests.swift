@@ -18,7 +18,7 @@ class DummyMitigator: DefaultMitigator {
 //TODO refactor to nimble
 class ResponseControllerUtilsTests: XCTestCase {
     
-    lazy var errorController:Mitigator = DefaultMitigator()
+    lazy var errorController = DefaultMitigator()
 
     func testNoResponseNoError() {
         do {
