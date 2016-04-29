@@ -66,11 +66,10 @@ public class ResponseController {
 			let mitigator = entity.responseMitigator()
 			var result: TransformController?
 			try mitigator.mitigate {
-				guard let data = try self.checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail) else {
-					return
+				if let _ = try self.checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail){
+					let transformController = entity.environment().transformController()
+					result =  transformController
 				}
-				let transformController = entity.environment().transformController()
-				result =  transformController
 			}
 			return result
 		}catch {
