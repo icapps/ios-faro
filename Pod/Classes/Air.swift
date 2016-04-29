@@ -57,10 +57,9 @@ public class Air{
 			if let dict = try entity.toDictionary() {
 				request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
 			}
+			request.HTTPMethod = "POST"
+			performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
 		}
-
-		request.HTTPMethod = "POST"
-		performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
 	}
 
 
