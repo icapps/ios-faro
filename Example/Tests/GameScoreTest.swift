@@ -65,9 +65,12 @@ class GameScoreSpec: QuickSpec {
 
 				var result = MockGameScore()
 				let objectId = "1275"
-				try! Air.retrieve(objectId, succeed: { (response: MockGameScore) in
+				try! Air.retrieve(objectId, succeed: { (response) in
 					result = response
+					}, fail: { (error) in
+						XCTFail("Failed with \(error)")
 				})
+
 				expect(result.objectId).to(equal(objectId))
 			}
 
