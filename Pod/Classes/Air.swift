@@ -135,14 +135,18 @@ public class Air{
 
 	private class func mockDataFromUrl <Rivet: Rivetable> (url: String, transformController: TransformController, responseController: ResponseController,
 	                                    succeed:(response: [Rivet])->(), fail:((ResponseError)->())? ) throws {
-		let data = try dataAtUrl(url, transformController: transformController)
-		responseController.respond(data, succeed: succeed, fail: fail)
+		try Rivet.requestMitigator().mitigate {
+			let data = try dataAtUrl(url, transformController: transformController)
+			responseController.respond(data, succeed: succeed, fail: fail)
+		}
 	}
 
 	private class func mockDataFromUrl <Rivet: Rivetable> (url: String, transformController: TransformController, responseController: ResponseController,
 	                                    succeed:(response: Rivet)->(), fail:((ResponseError)->())?) throws {
-		let data = try dataAtUrl(url, transformController: transformController)
-		responseController.respond(data, succeed: succeed, fail: fail)
+		try Rivet.requestMitigator().mitigate {
+			let data = try dataAtUrl(url, transformController: transformController)
+			responseController.respond(data, succeed: succeed, fail: fail)
+		}
 	}
 	
 	private class func performAsychonousRequest<Rivet: Rivetable> (request: NSURLRequest,
