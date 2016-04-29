@@ -23,7 +23,7 @@ class ExampleBaseModel: UniqueAble, Mitigatable, Parsable {
             identifier = json["identifier"] as? String {
                 self.objectId = identifier
 		}else {
-			throw ResponseError.InvalidResponseData
+			throw ResponseError.InvalidDictionary(dictionary: json)
 		}
     }
     

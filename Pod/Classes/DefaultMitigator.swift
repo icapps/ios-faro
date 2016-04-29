@@ -13,10 +13,14 @@ public class DefaultMitigator: Mitigator {
 			try invalidBodyError()
 		}catch RequestError.General{
 			try generalError()
-		}catch ResponseError.InvalidResponseData{
-			try invalidResponseData()
+		}catch ResponseError.InvalidResponseData(let data){
+			try invalidResponseData(data)
+		}catch ResponseError.InvalidDictionary(dictionary: let dict) {
+			try invalidDictionary(dict)
+		} catch ResponseError.ResponseError(error: let error) {
+			try responseError(error)
 		}catch {
-
+			//TODO
 		}
 	}
 
@@ -40,13 +44,13 @@ public class DefaultMitigator: Mitigator {
 		throw ResponseError.InvalidAuthentication
 	}
 
-    public func invalidResponseData() throws {
-        print("-----------Invalid response data-----")
-        throw ResponseError.InvalidResponseData
+	public func invalidResponseData(data: NSData?) throws {
+        print("💣Invalid response data 💣")
+        throw ResponseError.InvalidResponseData(data: data)
     }
     
 
-	public func responseInvalidDictionary(dictionary: AnyObject) throws -> AnyObject? {
+	public func invalidDictionary(dictionary: AnyObject) throws -> AnyObject? {
 		print("-------- Received invalid dictionary \(dictionary)-------")
 		throw ResponseError.InvalidDictionary(dictionary: dictionary)
 		return nil

@@ -22,8 +22,31 @@ class DefaultMitigatorSpec: QuickSpec {
 
 			it("should throw for response errors") {
 			
-				expect { try mitigator.mitigate {throw ResponseError.InvalidResponseData} }.to(throwError(closure: { (error) in
-					expect(error).to(matchError(ResponseError.InvalidResponseData))
+				expect { try mitigator.mitigate {throw ResponseError.InvalidResponseData(data: nil)} }.to(throwError(closure: { (error) in
+					switch error {
+					case ResponseError.InvalidResponseData(_):
+							break
+					default:
+						XCTFail("Should not throw \(error)")
+					}
+				}))
+
+				expect { try mitigator.mitigate {throw ResponseError.InvalidDictionary(dictionary: ["bla": "bla"]) } }.to(throwError(closure: { (error) in
+					switch error {
+					case ResponseError.InvalidDictionary(dictionary: _):
+						break
+					default:
+						XCTFail("Should not throw \(error)")
+					}
+				}))
+
+				expect { try mitigator.mitigate {throw ResponseError.ResponseError(error: nil) } }.to(throwError(closure: { (error) in
+					switch error {
+					case ResponseError.ResponseError(error: _):
+						break
+					default:
+						XCTFail("Should not throw \(error)")
+					}
 				}))
 
 			}

@@ -32,7 +32,7 @@ public class TransformController {
 			try model!.parseFromDict(json)
 			succeed(model!)
 		}catch ResponseError.InvalidDictionary(dictionary: let dict) {
-			if let correctedDictionary = try mitigator.responseInvalidDictionary(dict) {
+			if let correctedDictionary = try mitigator.invalidDictionary(dict) {
 				try model!.parseFromDict(correctedDictionary)
 			}
 			succeed(model!)
@@ -83,7 +83,7 @@ public class TransformController {
 			jsonWithoutRoot = json[rootKey]{
 
 			if jsonWithoutRoot == nil {
-				if let correctedJson = try mitigator.responseInvalidDictionary(json) {
+				if let correctedJson = try mitigator.invalidDictionary(json) {
 					json = correctedJson
 				}else {
 					throw ResponseError.InvalidDictionary(dictionary: json)

@@ -175,7 +175,7 @@ func dataAtUrl(url: String, transformController: TransformController) throws -> 
 	guard let
 		fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue),
 		data = NSData(contentsOfURL: fileURL) else {
-			throw ResponseError.InvalidResponseData
+			throw ResponseError.InvalidResponseData(data: nil)
 			return nil
 	}
 

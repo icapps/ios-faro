@@ -49,7 +49,7 @@ class ResponseControllerSpec: QuickSpec {
 				}
 
 				class MockMitigator: DefaultMitigator {
-					override func responseInvalidDictionary(dictionary: AnyObject) throws -> AnyObject?{
+					override func invalidDictionary(dictionary: AnyObject) throws -> AnyObject?{
 						return dictionary["writeNode"]
 					}
 				}

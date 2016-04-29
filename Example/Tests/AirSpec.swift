@@ -36,7 +36,12 @@ class AirSpec: QuickSpec {
 						XCTFail() // we should not complete
 					})
 				}.to(throwError { (error) in
-					expect(error).to(matchError(ResponseError.InvalidResponseData))
+					switch error {
+						case ResponseError.InvalidResponseData(_):
+							break
+						default:
+							XCTFail("Should not throw \(error)")
+					}
 				})
 			}
 		}

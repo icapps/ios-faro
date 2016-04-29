@@ -25,7 +25,7 @@ public protocol RequestMitigatable {
 
 public protocol ResponseMitigatable {
 
-    func invalidResponseData() throws -> ()
+	func invalidResponseData(data: NSData?) throws -> ()
 	func invalidAuthenticationError() throws -> ()
 	func responseError(error: NSError?) throws -> ()
 	func generalError() throws -> ()
@@ -35,7 +35,7 @@ public protocol ResponseMitigatable {
 	- returns : a valid dictionary that can be transformed
 	- throws: When you cannot interpret the dictionary throw an error
 	*/
-	func responseInvalidDictionary(dictionary: AnyObject) throws -> AnyObject?
+	func invalidDictionary(dictionary: AnyObject) throws -> AnyObject?
 }
 
 
@@ -46,7 +46,7 @@ public enum RequestError: ErrorType {
 }
 
 public enum ResponseError:ErrorType {
-	case InvalidResponseData
+	case InvalidResponseData(data: NSData?)
 	case InvalidDictionary(dictionary: AnyObject)
 	case ResponseError(error: NSError?)
 	case InvalidAuthentication
