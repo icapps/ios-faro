@@ -23,17 +23,12 @@ public class ResponseController {
 	             succeed: (Rivet)->(), fail:((ResponseError)->())?) {
 
 		let entity = useBodyOrCreateEntity(body)
-		let mitigator = entity.responseMitigator()
-
-		do {
-			try mitigator.mitigate {
-				guard let data = try self.checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail) else {
-					return
-				}
-				try entity.environment().transformController().transform(data, entity: entity, succeed: succeed)
+		if let transformController = prepareTransFormOnEntity(data, urlResponse: urlResponse, error: error, entity: entity, fail: fail) {
+			do {
+				try transformController.transform(data!, entity: entity, succeed: succeed)
+			}catch {
+				respondWithfail(error, fail: fail)
 			}
-		}catch {
-			respondWithfail(error, fail: fail)
 		}
 	}
 
@@ -41,20 +36,32 @@ public class ResponseController {
 	             succeed: ([Rivet])->(),  fail:((ResponseError)->())?){
 
 		let entity = useBodyOrCreateEntity(body)
-		let mitigator = entity.responseMitigator()
+		if let transformController = prepareTransFormOnEntity(data, urlResponse: urlResponse, error: error, entity: entity, fail: fail) {
+			do {
+				try transformController.transform(data!, entity: entity, succeed: succeed)
+			}catch {
+				respondWithfail(error, fail: fail)
+			}
+		}
+	}
 
+	private func prepareTransFormOnEntity<Rivet: Rivetable>(data: NSData?,urlResponse: NSURLResponse?, error: NSError?, entity: Rivet, fail:((ResponseError)->())?) -> TransformController? {
 		do {
+			let mitigator = entity.responseMitigator()
+			var result: TransformController?
 			try mitigator.mitigate {
 				guard let data = try self.checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail) else {
 					return
 				}
-				try entity.environment().transformController().transform(data, entity: entity, succeed: succeed)
+				let transformController = entity.environment().transformController()
+				result =  transformController
 			}
+			return result
 		}catch {
 			respondWithfail(error, fail: fail)
+			return nil
 		}
-    }
-
+	}
 
 	//MARK: Private
 	private func checkErrorAndReturnValidData(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponseMitigatable, fail:((ResponseError)->())?) throws -> NSData?{
