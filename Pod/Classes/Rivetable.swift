@@ -37,13 +37,15 @@ public protocol Parsable {
 	
 	/**
 	Set all properties from the data
+	- throws : `ResponseError.InvalidDictionary(dictionary: AnyObject)`
 	*/
 	func parseFromDict(dict: AnyObject) throws
 
 	/**
 	From a dictionary containing properties of the object
+	- throws: `RequestError.InvalidBody`
 	*/
-	func toDictionary()-> NSDictionary?
+	func toDictionary() throws -> NSDictionary?
 
 	/**
 	Should provide key in JSON to node of dict that can be parsed.
