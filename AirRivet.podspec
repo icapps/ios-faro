@@ -28,8 +28,5 @@ If you do the above (there are default implementation provided in the example).
   s.platform     = :ios, '8.0'
   s.requires_arc = true
 
-  s.source_files = 'Pod/Classes/**/*'
-  s.resource_bundles = {
-    'AirRivet' => ['Pod/Assets/*.png']
-  }
+  s.source_files = 'Sources/**/*'
 end
