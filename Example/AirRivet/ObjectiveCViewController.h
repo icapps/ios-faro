@@ -1,5 +1,5 @@
 //
-//  ICAOBJCViewController.h
+//  ObjectiveCViewController.h
 //  AirRivet
 //
 //  Created by Stijn Willems on 07/04/16.
@@ -8,8 +8,5 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ICAOBJCViewController : UIViewController
-
-@property (strong, nonatomic) IBOutlet UILabel *label;
-
+@interface ObjectiveCViewController : UIViewController
 @end

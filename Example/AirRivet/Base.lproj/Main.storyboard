@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="3BO-sD-WEa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="3BO-sD-WEa">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -8,7 +8,7 @@
         <!--Swift-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController title="Swift" id="vXZ-lx-hvc" customClass="ViewController" customModule="AirRivet_Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Swift" id="vXZ-lx-hvc" customClass="SwiftViewController" customModule="AirRivet_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -69,7 +69,7 @@
         <!--Objective-C-->
         <scene sceneID="jyg-7Q-l2o">
             <objects>
-                <viewController title="Objective-C" id="Xkh-7v-cvp" customClass="ICAOBJCViewController" sceneMemberID="viewController">
+                <viewController title="Objective-C" id="Xkh-7v-cvp" customClass="ObjectiveCViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ISi-fh-svl"/>
                         <viewControllerLayoutGuide type="bottom" id="QTu-78-T3z"/>

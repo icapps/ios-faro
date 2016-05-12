@@ -7,15 +7,23 @@ In this example GameScore has to inherit from NSObject to be usable in Objective
 */
 public class GameScore: NSObject, UniqueAble,  Mitigatable, Parsable, EnvironmentConfigurable {
 
+    // MARK: - Game variables
+    
 	public var score: Int?
 	public var cheatMode: Bool?
 	public var playerName: String?
+    
+    // MARK: - UniqueAble
 
 	public var objectId: String?
+    
+    // MARK: - Init
 
 	public required override init() {
 		super.init()
 	}
+    
+    // MARK: - Parsable
 
 	public func toDictionary()-> NSDictionary? {
 		return [
@@ -43,7 +51,7 @@ public class GameScore: NSObject, UniqueAble,  Mitigatable, Parsable, Environmen
 		}
 	}
 
-	//MARK: Mitigatable
+	// MARK: - Mitigatable
 	
 	public func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
 		return DefaultMitigator()
@@ -53,7 +61,8 @@ public class GameScore: NSObject, UniqueAble,  Mitigatable, Parsable, Environmen
 		return DefaultMitigator()
 	}
 
-	//MARK: EnvironmentConfigurable
+	// MARK: - EnvironmentConfigurable
+    
 	public func contextPath() -> String {
 		return "GameScore"
 	}

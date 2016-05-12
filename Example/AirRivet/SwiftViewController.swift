@@ -9,9 +9,13 @@
 import UIKit
 import AirRivet
 
-class ViewController: UIViewController {
+class SwiftViewController: UIViewController {
+    
+    // MARK: - Outlets
+    
 	@IBOutlet var label: UILabel!
 
+    // MARK: - View flow
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,12 +30,10 @@ class ViewController: UIViewController {
 
 			try Air.retrieveWithUniqueId("pyqCt2ZHWT", succeed: { (response: GameScore) in
 				print("🎉 successfully retreived one object \(response.objectId)")
-				})
-
-		}catch {
+            })
+		} catch {
 			print("-------Error with request------")
 		}
-
     }
 	
 }

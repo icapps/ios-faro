@@ -12,17 +12,23 @@ import AirRivet
 /**
 This class is used to bridge to swift generic classes to retreive and save GameScore objects.
 */
-
 public class GameScoreController: NSObject {
 
+    // MARK: - Variables
+    
 	public let generalErrorDomain = "com.icapps.generalError"
 	public let generalErrorCode = 50000
 	public let gameScore : GameScore?
+    
+    // MARK: - Init
 
 	public override init() {
 		self.gameScore = nil
+        
 		super.init()
 	}
+    
+    // MARK: - Fetching
 	
 	public func retrieve(completion:(response: [GameScore])->(), failure:((error: NSError)->())? = nil) {
 		do {
@@ -39,6 +45,8 @@ public class GameScoreController: NSObject {
 			}
 		}
 	}
+    
+    // MARK: - Error handling
 
 	private func transferResponseErrorToNSErrorForError(error: ErrorType, failure:((NSError) ->())){
 		//TODO: Split and unit test this better and complete

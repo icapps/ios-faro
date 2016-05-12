@@ -1,30 +1,40 @@
 //
-//  ICAOBJCViewController.m
+//  ObjectiveCViewController.m
 //  AirRivet
 //
 //  Created by Stijn Willems on 07/04/16.
 //  Copyright © 2016 CocoaPods. All rights reserved.
 //
 
-#import "ICAOBJCViewController.h"
+#import "ObjectiveCViewController.h"
 /**
  In build settings look at the Module Identifier. This is the one you should use to import swift files from the same target.
  */
 #import "AirRivet_Example-Swift.h"
 
-@implementation ICAOBJCViewController
+@interface ObjectiveCViewController ()
+
+@property (strong, nonatomic) IBOutlet UILabel *label;
+
+@end
+
+@implementation ObjectiveCViewController
+
+#pragma mark - View flow
 
 - (void)viewDidLoad {
-	[ super viewDidLoad];
+	[super viewDidLoad];
+    
 	GameScoreController * controller = [[GameScoreController alloc] init];
-
 	[controller retrieve:^(NSArray<GameScore *> * _Nonnull response) {
-		[[NSOperationQueue mainQueue]addOperationWithBlock:^{
-			self.label.text = [NSString stringWithFormat:@"Received %lu objects", (unsigned long)response.count];
-		}];
-		NSLog(@"%@", response);
+        NSLog(@"%@", response);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.label.text = [NSString stringWithFormat:@"Received %lu objects", (unsigned long)response.count];
+        });
 	} failure:^(NSError * _Nonnull error) {
 		NSLog(@"%@", error);
 	}];
 }
+
 @end
