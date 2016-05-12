@@ -1,3 +1,11 @@
+//
+//  Parse.swift
+//  AirRivet
+//
+//  Created by Stijn Willems on 04/01/2016.
+//  2016 iCapps. MIT Licensed.
+//
+
 import AirRivet
 
 /**

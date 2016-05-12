@@ -3,7 +3,7 @@
 //  AirRivet
 //
 //  Created by StijnWillems on 04/01/2016.
-//  Copyright (c) 2016 StijnWillems. All rights reserved.
+//  2016 iCapps. MIT Licensed.
 //
 
 import UIKit
