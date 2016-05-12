@@ -11,13 +11,17 @@ import Nimble
 import AirRivet
 import Foundation
 
+// MARK: - Mocks
+
 class Mock: Environment, Mockable, Transformable {
-	var serverUrl = ""
+	
+    var serverUrl = ""
 	var request = NSMutableURLRequest()
 
 	func shouldMock() -> Bool {
 		return true
 	}
+    
 }
 
 class MockGameScore: GameScore {
@@ -29,15 +33,16 @@ class MockGameScore: GameScore {
 	override func environment() -> protocol<Environment, Mockable, Transformable> {
 		return Mock ()
 	}
+    
 }
+
+// MARK: - Specs
 
 class GameScoreSpec: QuickSpec {
     override func spec() {
         describe("GameScore") {
 
-
 			it ("Should be synchronous because we implement the Mockable protocol") {
-
 				try! Air.retrieve(succeed: { (response: [MockGameScore]) in
 					expect(response).to(haveCount(5))
 				})
@@ -53,8 +58,8 @@ class GameScoreSpec: QuickSpec {
 				})
 
 			})
+            
             it("save succeeds by mocking") {
-
 				var success = false
 				let gameScore = MockGameScore()
 				gameScore.score = 1
@@ -63,18 +68,17 @@ class GameScoreSpec: QuickSpec {
 				
 				try! Air.save(gameScore, succeed: { (response) in
 					success = true
-					})
+                })
 				expect(success).to(equal(true))
             }
 
 			it("retrieve a single gamescore by objectID"){
-
 				var result = MockGameScore()
 				let objectId = "1275"
 				try! Air.retrieveWithUniqueId(objectId, succeed: { (response) in
 					result = response
-					}, fail: { (error) in
-						XCTFail("Failed with \(error)")
+                }, fail: { (error) in
+                    XCTFail("Failed with \(error)")
 				})
 
 				expect(result.objectId).to(equal(objectId))

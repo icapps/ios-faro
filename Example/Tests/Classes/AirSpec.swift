@@ -11,6 +11,8 @@ import Nimble
 
 @testable import AirRivet
 
+// MARK: - Mocks
+
 class MockEntity: GameScore {
 
 	override func contextPath() -> String {
@@ -25,13 +27,12 @@ class MockEntity: GameScore {
 		guard let
 			dict = json as? [String: AnyObject],
 			_ = dict["playername"] else  {
-
-		throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
-
+            throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
 		}
 	}
 }
 
+// MARK: - Specs
 
 class AirSpec: QuickSpec {
 
@@ -41,7 +42,7 @@ class AirSpec: QuickSpec {
 			it("should fail when contextPaht does not exist") {
 				expect {
 					try Air.retrieve(succeed: { (response: [MockEntity]) in
-						XCTFail() // we should not complete
+						XCTFail()
 					})
 				}.to(throwError { (error) in
 					switch error {
@@ -52,8 +53,8 @@ class AirSpec: QuickSpec {
 					}
 				})
 			}
+            
 		}
 	}
-
 
 }

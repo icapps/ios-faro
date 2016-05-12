@@ -7,9 +7,13 @@
 //
 
 import XCTest
+
 @testable import AirRivet
 
+// MARK: - Mocks
+
 class DummyMitigator: DefaultMitigator {
+    
 	override func invalidResponseData(data: NSData?) throws {
 		throw ResponseError.InvalidResponseData(data: data)
     }
@@ -21,9 +25,12 @@ class DummyMitigator: DefaultMitigator {
     override func generalError() throws {
         throw RequestError.General
     }
+    
 }
 
-//TODO refactor to nimble
+// MARK: - Specs
+
+//TODO: Refactor to nimble
 class ResponseControllerUtilsTests: XCTestCase {
     
     lazy var errorController = DefaultMitigator()
@@ -77,8 +84,6 @@ class ResponseControllerUtilsTests: XCTestCase {
     
     func testValidResponse200WithData() {
         let url = NSURL(string: "https://some.url")
-        
-        //Some random data
         var random = NSInteger(arc4random_uniform(99) + 1)
         let data = NSData(bytes: &random, length: 3)
         
@@ -93,8 +98,6 @@ class ResponseControllerUtilsTests: XCTestCase {
     
     func testValidResponse201WithData() {
         let url = NSURL(string: "https://some.url")
-        
-        //Some random data
         var random = NSInteger(arc4random_uniform(99) + 1)
         let data = NSData(bytes: &random, length: 3)
         
@@ -106,4 +109,5 @@ class ResponseControllerUtilsTests: XCTestCase {
             XCTFail("call should not fail")
         }
     }
+    
 }
