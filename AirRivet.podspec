@@ -1,10 +1,7 @@
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
-  s.name             = "AirRivet"
-  s.version          = "0.2.0"
-  s.summary          = "AirRivet is a service layer to transfer data over the `Air`."
+  s.name             = 'AirRivet'
+  s.version          = '0.2.0'
+  s.summary          = 'AirRivet is a service layer to transfer data over the `Air`.'
 
   s.description      = <<-DESC
 __AirRivet__ is a service layer build in Swift by using generics. The idea is that you have `Air` which is a class that performs the request for an `Environment`. To do this it needs a Type called `Rivet` that can be handeled over the `Air` 🤔. So how do we make this `Rivet` Type?
@@ -20,9 +17,12 @@ __AirRivet__ is a service layer build in Swift by using generics. The idea is th
 If you do the above (there are default implementation provided in the example).
                        DESC
  s.license          = 'MIT'
-  s.homepage         = "https://github.com/icapps/ios-air-rivet"
-  s.author           = { "Leroy" => "development@icapps.com" }
-  s.source           = { :git => "https://github.com/icapps/ios-air-rivet.git", :tag => s.version.to_s }
+  s.homepage         = 'https://github.com/icapps/ios-air-rivet'
+  s.author           = { 'Leroy Jenkins' => 'development@icapps.com' }
+  s.source           = {
+    git: 'https://github.com/icapps/ios-air-rivet.git',
+    tag: s.version.to_s
+  }
   s.social_media_url = 'https://twitter.com/icapps'
 
   s.platform     = :ios, '8.0'
