@@ -21,7 +21,8 @@ public class DefaultMitigator: Mitigator, ResponseMitigatable, RequestMitigatabl
 		
 	}
 
-	//MARK: Mitigator
+	// MARK: Mitigator
+    
 	public func mitigate(thrower: ()throws -> ()) throws  {
 		do {
 			try thrower()
@@ -40,7 +41,8 @@ public class DefaultMitigator: Mitigator, ResponseMitigatable, RequestMitigatabl
 		}
 	}
 
-    //MARK: RequestMitigatable
+    // MARK: RequestMitigatable
+    
 	public func invalidBodyError() throws -> () {
 		print("-----------Error building up body-----")
 		throw RequestError.InvalidBody
@@ -52,7 +54,8 @@ public class DefaultMitigator: Mitigator, ResponseMitigatable, RequestMitigatabl
 	}
 
     
-    //MARK: ResponseMitigatable
+    // MARK: ResponseMitigatable
+    
 	public func invalidAuthenticationError() throws {
 		print("-----------Authentication error-----")
 		throw ResponseError.InvalidAuthentication
@@ -73,4 +76,5 @@ public class DefaultMitigator: Mitigator, ResponseMitigatable, RequestMitigatabl
 		print("-----------Request failed with error-----")
 		throw ResponseError.ResponseError(error: error)
 	}
+    
 }

@@ -13,8 +13,7 @@ A `Mitigator` recieves errors that happen. Mitigate means ‘make (something bad
 
 So do that or rethrow what you cannot handle.
 */
-public protocol Mitigator
-{
+public protocol Mitigator {
 	/**
 	See `DefaultMitigator` for an example implementation of this function. 
 	
