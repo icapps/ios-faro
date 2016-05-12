@@ -1,0 +1,17 @@
+language: objective-c
+osx_image: xcode7.3
+
+before_install:
+    - gem install xcpretty -N --no-ri --no-rdoc
+
+script:
+    - set -o pipefail
+    - xcodebuild clean test -workspace Example/AirRivet.xcworkspace -scheme AirRivet-Example -destination "platform=iOS Simulator,name=iPhone 6 Plus" -enableCodeCoverage YES | xcpretty
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: ./scripts/deploy.sh
+  on:
+    tags: true
+    branch: master
