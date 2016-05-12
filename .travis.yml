@@ -1,8 +1,6 @@
 language: objective-c
 osx_image: xcode7.3
 
-script: set -o pipefail && xcodebuild test -workspace Example/AirRivet.xcworkspace -scheme AirRivet-Example -sdk iphonesimulator9.3 | xcpretty
-
 deploy:
   skip_cleanup: true
   provider: script
