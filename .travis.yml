@@ -14,3 +14,4 @@ deploy:
   script: ./scripts/deploy.sh
   on:
     tags: true
+    branch: master
