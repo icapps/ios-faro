@@ -1,4 +1,5 @@
-# AirRivet
+AirRivet [![CI Status](http://img.shields.io/travis/icapps/ios-air-rivet.svg?style=flat)](https://travis-ci.org/icapps/ios-air-rivet) [![Version](https://img.shields.io/cocoapods/v/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet) [![License](https://img.shields.io/cocoapods/l/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet) [![Platform](https://img.shields.io/cocoapods/p/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet)
+======
 
 For quick start follow the instructions below. For more in dept info on why and how we build this AirRivet stuff you are more then welcome on the [wiki](https://github.com/icapps/ios-air-rivet/wiki)
 
