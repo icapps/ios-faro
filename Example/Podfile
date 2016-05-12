@@ -1,17 +1,13 @@
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
-def common_pods
-    pod 'AirRivet', :path => '../'
-end
+target 'AirRivet_Example' do
+  pod "AirRivet", :path => "../"
 
-target 'AirRivet_Example', exclusive: true do
-    common_pods
-end
+  target 'AirRivet_Tests' do
+    inherit! :search_paths
 
-target 'AirRivet_Tests', exclusive: true do
-    common_pods
-
-    pod 'Quick', '~> 0.9'
+    pod 'Quick',  '~> 0.9'
     pod 'Nimble', '~> 4.0'
+  end
 end
