@@ -1,9 +1,8 @@
 //
-//  BaseModel.swift
-//  Umbrella
+//  AirRivet
 //
-//  Created by Stijn Willems on 29/11/15.
-//  Copyright © 2015 dooz. All rights reserved.
+//  Created by Stijn Willems on 07/04/16.
+//  2016 iCapps. MIT Licensed.
 //
 
 import Foundation

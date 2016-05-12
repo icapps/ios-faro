@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '8D8F267FC1C471DFABDDA0AE'
+               BlueprintIdentifier = 'B1C05C44777509BE27084283'
                BlueprintName = 'AirRivet'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'AirRivet.framework'>

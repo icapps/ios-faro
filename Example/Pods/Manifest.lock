@@ -1,5 +1,5 @@
 PODS:
-  - AirRivet (0.0.6)
+  - AirRivet (0.1.0)
   - Nimble (4.0.1)
   - Quick (0.9.1)
 
@@ -13,7 +13,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  AirRivet: 4c56d7b242128a04bfb2044f1e93fde9f06b0ec7
+  AirRivet: 539b29647f3d5f54ac3909e6dedf037cc754f983
   Nimble: 0f3c8b8b084cda391209c3c5efbb48bedeeb920a
   Quick: a5221fc21788b6aeda934805e68b061839bc3165
 
