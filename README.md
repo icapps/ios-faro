@@ -23,11 +23,31 @@ If you do the above (there are default implementation provided in the example). 
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-1. Create a Model object that complies to protocol `BaseModel`.
-2. Create a class that complies to `Environment`.
+1. Create a generic class that complies to `Environment, Mockable, Transformable`.
+2. Create a Model object that complies to protocol `Rivetable`.
 
 ### Swift
+#### 1. Environment
+```swift
+class Environment <Rivet: EnvironmentConfigurable>: Environment, Mockable, Transformable  {
+	//You should use the contextPath as your API works. For this Environment we have "<base>/contextPath"
+	var serverUrl = "http:// ...\(Rivet().contextPath())"
+	var request: NSMutableURLRequest
 
+	init() {
+		request = NSMutableURLRequest(URL: NSURL(string: serverUrl)!)
+	}
+
+	func shouldMock() -> Bool {
+		return false
+	}
+
+	func transformController() -> TransformController {
+		return TransformController()
+	}
+}
+```
+#### 2. Rivetable
 ```swift
 class Foo: Rivetable {
 	// Implement protocols.
