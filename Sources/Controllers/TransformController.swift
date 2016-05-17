@@ -111,7 +111,7 @@ public class TransformController {
 	- parameter mitigator: will deal with invalid data errors or throw an error.
 	- returns: A Foundation object that can be used while parsing
 	*/
-	func foundationObjectFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject {
+	public func foundationObjectFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject {
 
 		var json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
 
