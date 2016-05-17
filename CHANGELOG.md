@@ -1,6 +1,6 @@
 # AirRivet
 
-## Version 0.4.0
+## Version 0.4.1
 
 * Made function on TransformController public that we could use to intercept the data before it is mapped to the object.
 
