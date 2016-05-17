@@ -56,7 +56,7 @@ public class TransformController {
 
 		do {
 			try mitigator.mitigate {
-				let json =  try self.getJSONFromData(data, rootKey: Rivet.rootKey(), mitigator: mitigator)
+				let json =  try self.foundationObjectFromData(data, rootKey: Rivet.rootKey(), mitigator: mitigator)
 				try model!.parseFromDict(json)
 				succeed(model!)
 			}
@@ -88,7 +88,7 @@ public class TransformController {
 
 		let mitigator = model!.responseMitigator()
 		try mitigator.mitigate {
-			let json = try self.getJSONFromData(data, rootKey: Rivet.rootKey(), mitigator: mitigator)
+			let json = try self.foundationObjectFromData(data, rootKey: Rivet.rootKey(), mitigator: mitigator)
 
 			if let array = json as? [[String:AnyObject]] {
 				succeed(try self.dictToArray(array))
@@ -105,7 +105,13 @@ public class TransformController {
 		}
 	}
 
-	private func getJSONFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject {
+	/**
+	Create a Foundation object from data. This data can be JSON. The default implementation of the `TransformController` deals only with JSON data.
+	- parameter: (optional) used to extract the needed data from the `blob` of data that you provide. In JSON this would be `{ "rootKey": "data to parse"}.`
+	- parameter mitigator: will deal with invalid data errors or throw an error.
+	- returns: A Foundation object that can be used while parsing
+	*/
+	func foundationObjectFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject {
 
 		var json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
 
