@@ -167,7 +167,22 @@ class TransformControllerSpec: QuickSpec {
                     expect(error.code).to(equal(3840))
                 }))
             }
-            
+
+            context("Foundation object", { 
+				it("should return JSON when valid JSON data is provided", closure: {
+					let key = "rootKey"
+					let value = "valid json"
+
+					let dict = [key: value]
+
+					let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+
+					let json = try! transformController.foundationObjectFromData(jsonData, rootKey: nil, mitigator: DefaultMitigator()) as! [String:String]
+
+					expect(json[key]).to(equal(value))
+
+				})
+			})
         }
     }
 }
