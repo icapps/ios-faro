@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'AirRivet'
-  s.version          = '0.4.1'
+  s.version          = '0.4.2'
   s.summary          = 'AirRivet is a service layer to transfer data over the `Air`.'
 
   s.description      = <<-DESC
