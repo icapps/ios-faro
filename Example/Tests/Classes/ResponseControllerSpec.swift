@@ -26,8 +26,8 @@ class MockEntityWithErrorMitigator: GameScore {
             try super.parseFromDict(json)
         }
     }
-    
-    override func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+
+    override class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
         return MockMitigator()
     }
 }

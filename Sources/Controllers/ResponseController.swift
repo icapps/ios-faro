@@ -71,7 +71,7 @@ public class ResponseController {
 
 	private func prepareTransFormOnEntity<Rivet: Rivetable>(data: NSData?,urlResponse: NSURLResponse?, error: NSError?, entity: Rivet, fail:((ResponseError)->())?) -> TransformController? {
 		do {
-			let mitigator = entity.responseMitigator()
+			let mitigator = Rivet.responseMitigator()
 			var result: TransformController?
 			try mitigator.mitigate {
 				if let _ = try self.checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail){

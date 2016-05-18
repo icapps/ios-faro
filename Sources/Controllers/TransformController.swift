@@ -52,7 +52,7 @@ public class TransformController {
 			model = Rivet()
 		}
 
-		let mitigator = model!.responseMitigator()
+		let mitigator = Rivet.responseMitigator()
 
 		do {
 			try mitigator.mitigate {
@@ -86,7 +86,7 @@ public class TransformController {
 			model = Rivet()
 		}
 
-		let mitigator = model!.responseMitigator()
+		let mitigator = Rivet.responseMitigator()
 		try mitigator.mitigate {
 			let json = try self.foundationObjectFromData(data, rootKey: Rivet.rootKey(), mitigator: mitigator)
 
