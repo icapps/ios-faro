@@ -7,7 +7,7 @@
 //
 
 import AirRivet
-
+import CoreData
 /**
 Model object that implements protocol `BaseModel` that can be fount in pod `AirRivet`.
 
@@ -27,7 +27,7 @@ public class GameScore: NSObject, Rivetable {
     
     // MARK: - Init
 
-	public required init(json: AnyObject) throws {
+	public required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = GameScore.managedObjectContext()) throws {
 		super.init()
 		try self.map(json)
 	}
@@ -60,6 +60,10 @@ public class GameScore: NSObject, Rivetable {
 		if let playerName = internalJSON["playerName"] as? String {
 			self.playerName = playerName
 		}
+	}
+
+	public class func managedObjectContext() -> NSManagedObjectContext? {
+		return nil
 	}
 
 	// MARK: - Mitigatable

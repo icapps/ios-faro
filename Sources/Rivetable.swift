@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import CoreData
 
 /**
 React and/or solve errors that could arrise while the entity that conforms to `Mitigatable` is handeled.
@@ -33,7 +33,16 @@ Implement so we can set data on your variables in the `TransformController`.
 public protocol Parsable {
 
 
-	init(json: AnyObject) throws
+	/**
+	Required initializer that throwns when the json or the managedObjectContext. You do not have to use a managedObjectContext. You can use this protocol without the need for a managed object context.
+	
+	- parameter json: valid json that can be mapped to the object being initialized
+	- parameter managedObjectContext: (optional) you could use this for use with CoreData. But that is optional
+	- returns: a `Parsable` instance
+	- throws: errors when managedObjectContext of json are not usable to initialize a `Parsable` instance
+	*/
+
+	init(json: AnyObject, managedObjectContext: NSManagedObjectContext?) throws
 
 	/**
 	Set all properties from the data
@@ -57,6 +66,12 @@ public protocol Parsable {
 	```
 	*/
 	static func rootKey() -> String?
+
+	/**
+	You can choose to return something when you use core data.
+	- returns: `NSManagedObjectContext` that is used by the `TranformController` to create `Parsable` instances
+	*/
+	static func managedObjectContext() -> NSManagedObjectContext?
 }
 
 

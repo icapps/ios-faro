@@ -9,16 +9,15 @@
 import XCTest
 import Nimble
 import Quick
+import CoreData
 
 @testable import AirRivet
-
-// MARK: - Mocks
 
 class ExampleBaseModel: UniqueAble, Mitigatable, Parsable {
     
     var objectId: String?
 
-	required init(json: AnyObject) throws {
+	required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = ExampleBaseModel.managedObjectContext()) throws {
 		try self.map(json)
 	}
 	
@@ -37,6 +36,10 @@ class ExampleBaseModel: UniqueAble, Mitigatable, Parsable {
             "identifier": objectId!,
         ]
     }
+
+	class func managedObjectContext() -> NSManagedObjectContext? {
+		return nil
+	}
 
 	static func rootKey() -> String? {
 		return "results"

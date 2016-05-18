@@ -57,12 +57,12 @@ public class TransformController {
 		do {
 			try mitigator.mitigate {
 				let json =  try self.foundationObjectFromData(data, rootKey: Rivet.rootKey(), mitigator: mitigator)
-				succeed(try Rivet(json:json))
+				succeed(try Rivet(json:json, managedObjectContext: Rivet.managedObjectContext()))
 			}
 
 		}catch ResponseError.InvalidDictionary(dictionary: let dict) {
 			if let correctedDictionary = try mitigator.invalidDictionary(dict) {
-				succeed(try Rivet(json:correctedDictionary))
+				succeed(try Rivet(json:correctedDictionary, managedObjectContext:  Rivet.managedObjectContext()))
 			}else {
 				throw ResponseError.InvalidDictionary(dictionary: dict)
 			}
@@ -89,7 +89,7 @@ public class TransformController {
 			if let array = json as? [[String:AnyObject]] {
 				succeed(try self.dictToArray(array))
 			}else if let dict = json as? [String:AnyObject] {
-				let model = try Rivet(json:dict)
+				let model = try Rivet(json:dict, managedObjectContext: Rivet.managedObjectContext())
 				succeed([model])
 			}else if let array = json as? [[String:AnyObject]] {
 				succeed(try self.dictToArray(array))
@@ -133,7 +133,7 @@ public class TransformController {
 	private func dictToArray<Rivet: Parsable>(array: [[String:AnyObject]]) throws -> [Rivet] {
 		var concreteObjectArray = [Rivet]()
 		for dict in array {
-			let model = try Rivet(json:dict)
+			let model = try Rivet(json:dict, managedObjectContext: Rivet.managedObjectContext())
 			concreteObjectArray.append(model)
 		}
 		return concreteObjectArray
