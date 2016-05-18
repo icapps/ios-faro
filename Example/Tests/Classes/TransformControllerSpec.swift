@@ -18,11 +18,11 @@ class ExampleBaseModel: UniqueAble, Mitigatable, Parsable {
     
     var objectId: String?
 
-	required init () {
-
+	required init(json: AnyObject) throws {
+		try self.map(json)
 	}
 	
-    func parseFromDict(json: AnyObject) throws {
+    func map(json: AnyObject) throws {
         if let
             json = json as? NSDictionary,
             identifier = json["identifier"] as? String {
@@ -84,9 +84,7 @@ class TransformControllerSpec: QuickSpec {
         var data = NSData()
         
         describe("TransformController") {
-            
-            let inputModel : ExampleBaseModel = ExampleBaseModel()
-            
+
             it("should not return error at loadingData") {
                 expect {try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())
             }
@@ -99,13 +97,13 @@ class TransformControllerSpec: QuickSpec {
             }
             
             it("should not return error at parseFromDict") {
-                expect{ try inputModel.parseFromDict(["identifier" : "test123"])}.notTo(throwError())
+				expect{ try ExampleBaseModel(json:["identifier" : "test123"])}.notTo(throwError())
             }
             
             it("should return correct objectId at transform with body") {
                 expect {try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())
                 
-                try! transformController.transform(data, entity: inputModel, succeed: {
+                try! transformController.transform(data, succeed: {
 					(result : ExampleBaseModel) in
 					expect(result.objectId).to(equal("123456ABCdef"))
                 })

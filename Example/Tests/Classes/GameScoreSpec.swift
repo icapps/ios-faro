@@ -61,7 +61,7 @@ class GameScoreSpec: QuickSpec {
             
             it("save succeeds by mocking") {
 				var success = false
-				let gameScore = MockGameScore()
+				let gameScore = try! MockGameScore(json: ["":""])
 				gameScore.score = 1
 				gameScore.cheatMode = false
 				gameScore.playerName = "Foo"
@@ -73,7 +73,7 @@ class GameScoreSpec: QuickSpec {
             }
 
 			it("retrieve a single gamescore by objectID"){
-				var result = MockGameScore()
+				var result = try! MockGameScore(json: ["":""])
 				let objectId = "1275"
 				try! Air.retrieveWithUniqueId(objectId, succeed: { (response) in
 					result = response

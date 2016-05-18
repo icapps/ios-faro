@@ -13,7 +13,7 @@ public enum TransformType: String {
 }
 
 /**
-Transformations of data to concrete objects. This implementation expects data to be valid JSON.
+Transformations of data to an initialized object(s). This implementation expects data to be valid JSON.
 Any Type using these functions should be :
 
 - `Parsable`
@@ -45,27 +45,22 @@ public class TransformController {
 	- returns: Via the completion block a parsed object of `Type` is returned.
 	- throws: JSON errors that are not `Mitigatable`
 	*/
-	public func transform<Rivet: protocol<Parsable, Mitigatable>>(data: NSData, entity: Rivet? = nil, succeed:(Rivet)->()) throws {
-
-		var model = entity
-		if entity == nil {
-			model = Rivet()
-		}
+	public func transform<Rivet: protocol<Parsable, Mitigatable>>(data: NSData, succeed:(Rivet)->()) throws {
 
 		let mitigator = Rivet.responseMitigator()
 
 		do {
 			try mitigator.mitigate {
 				let json =  try self.foundationObjectFromData(data, rootKey: Rivet.rootKey(), mitigator: mitigator)
-				try model!.parseFromDict(json)
-				succeed(model!)
+				succeed(try Rivet(json:json))
 			}
 
 		}catch ResponseError.InvalidDictionary(dictionary: let dict) {
 			if let correctedDictionary = try mitigator.invalidDictionary(dict) {
-				try model!.parseFromDict(correctedDictionary)
+				succeed(try Rivet(json:correctedDictionary))
+			}else {
+				throw ResponseError.InvalidDictionary(dictionary: dict)
 			}
-			succeed(model!)
 		}catch {
 			throw error
 		}
@@ -79,12 +74,8 @@ public class TransformController {
 	- returns: Via the completion block an array of parsed objects of `Type`.
 	- throws: JSON errors that are not `Mitigatable`
 	*/
-    public func transform<Rivet: protocol<Parsable, Mitigatable>>(data: NSData, entity: Rivet? = nil, succeed:([Rivet])->()) throws{
 
-		var model = entity
-		if entity == nil {
-			model = Rivet()
-		}
+    public func transform<Rivet: protocol<Parsable, Mitigatable>>(data: NSData, succeed:([Rivet])->()) throws{
 
 		let mitigator = Rivet.responseMitigator()
 		try mitigator.mitigate {
@@ -93,8 +84,7 @@ public class TransformController {
 			if let array = json as? [[String:AnyObject]] {
 				succeed(try self.dictToArray(array))
 			}else if let dict = json as? [String:AnyObject] {
-				let model = Rivet()
-				try model.parseFromDict(dict)
+				let model = try Rivet(json:dict)
 				succeed([model])
 			}else if let array = json as? [[String:AnyObject]] {
 				succeed(try self.dictToArray(array))
@@ -137,9 +127,8 @@ public class TransformController {
 	private func dictToArray<Rivet: Parsable>(array: [[String:AnyObject]]) throws -> [Rivet] {
 		var concreteObjectArray = [Rivet]()
 		for dict in array {
-			let entity = Rivet()
-			try entity.parseFromDict(dict)
-			concreteObjectArray.append(entity)
+			let model = try Rivet(json:dict)
+			concreteObjectArray.append(model)
 		}
 		return concreteObjectArray
 	}

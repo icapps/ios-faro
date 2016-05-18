@@ -19,11 +19,11 @@ class MockEntityWithErrorMitigator: GameScore {
         return Mock()
     }
     
-    override func parseFromDict(json: AnyObject) throws {
+    override func map(json: AnyObject) throws  {
         if let _ = json["wrong"] {
             throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
         }else {
-            try super.parseFromDict(json)
+			return try super.map(json)
         }
     }
 

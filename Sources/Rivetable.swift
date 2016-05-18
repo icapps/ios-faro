@@ -31,13 +31,15 @@ public protocol Mitigatable: class {
 Implement so we can set data on your variables in the `TransformController`.
 */
 public protocol Parsable {
-	init ()
-	
+
+
+	init(json: AnyObject) throws
+
 	/**
 	Set all properties from the data
 	- throws : `ResponseError.InvalidDictionary(dictionary: AnyObject)`
 	*/
-	func parseFromDict(dict: AnyObject) throws
+	func map(json: AnyObject) throws
 
 	/**
 	From a dictionary containing properties of the object
@@ -78,4 +80,5 @@ public protocol UniqueAble {
 /**
 An `Air` should be able to build up a request when your model object complies to the protocols below.
 */
+public typealias RivetParsable = protocol<Parsable, Mitigatable>
 public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable>

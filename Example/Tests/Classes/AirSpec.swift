@@ -23,7 +23,7 @@ class MockEntity: GameScore {
 		return Mock ()
 	}
 
-	override func parseFromDict(json: AnyObject) throws {
+	override func map(json: AnyObject) throws {
 		guard let
 			dict = json as? [String: AnyObject],
 			_ = dict["playername"] else  {
