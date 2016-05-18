@@ -24,18 +24,22 @@ Any Type using these functions should be :
 ### Transform data to `Rivetable` instances.
 
 */
+
 public class TransformController {
 
 	public init() {
 	}
+
 	/**
 	- returns: A type of transformer. By default we tranform JSON. But you could provide another to transform any `NSData`.
 	*/
+
 	public func type () -> TransformType {
 		return .JSON
 	}
 
 	//MARK: - Transform data to `Rivetable` instances.
+
 	/**
 	On success returns an instance of type `Rivet` initialized with `data`.
 
@@ -45,6 +49,7 @@ public class TransformController {
 	- returns: Via the completion block a parsed object of `Type` is returned.
 	- throws: JSON errors that are not `Mitigatable`
 	*/
+
 	public func transform<Rivet: protocol<Parsable, Mitigatable>>(data: NSData, succeed:(Rivet)->()) throws {
 
 		let mitigator = Rivet.responseMitigator()
@@ -101,6 +106,7 @@ public class TransformController {
 	- parameter mitigator: will deal with invalid data errors or throw an error.
 	- returns: A Foundation object that can be used while parsing
 	*/
+
 	public func foundationObjectFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject {
 
 		var json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
