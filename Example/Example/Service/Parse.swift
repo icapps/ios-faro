@@ -17,7 +17,7 @@ public class Parse <Rivet: EnvironmentConfigurable>: Environment, Mockable, Tran
     
 	public var serverUrl = "https://api.parse.com/1/classes/"
 	public var request: NSMutableURLRequest {
-		let URL = NSURL(string: "\(serverUrl)\(Rivet().contextPath())")
+		let URL = NSURL(string: "\(serverUrl)\(Rivet.contextPath())")
 		let request = NSMutableURLRequest(URL: URL!)
 
 		// Set the custom authorization headers.

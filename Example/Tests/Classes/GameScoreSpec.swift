@@ -26,11 +26,11 @@ class Mock: Environment, Mockable, Transformable {
 
 class MockGameScore: GameScore {
 
-	override func contextPath() -> String {
+	override class func contextPath() -> String {
 		return "gameScoreArray"
 	}
 
-	override func environment() -> protocol<Environment, Mockable, Transformable> {
+	override class func environment() -> protocol<Environment, Mockable, Transformable> {
 		return Mock ()
 	}
     

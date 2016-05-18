@@ -15,11 +15,11 @@ import Nimble
 
 class MockEntity: GameScore {
 
-	override func contextPath() -> String {
+	override class func contextPath() -> String {
 		return "non existing"
 	}
 
-	override func environment() -> protocol<Environment, Mockable, Transformable> {
+	override class func environment() -> protocol<Environment, Mockable, Transformable> {
 		return Mock ()
 	}
 

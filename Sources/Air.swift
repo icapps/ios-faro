@@ -51,8 +51,7 @@ public class Air {
 	                         session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                         responseController: ResponseController = ResponseController(),
 	                         succeed:(response: Rivet)->(), fail:((ResponseError) ->())? = nil) throws {
-		let entity = Rivet()
-		let environment = Rivet().environment()
+		let environment = Rivet.environment()
 
 		guard !environment.shouldMock() else {
 			succeed(response: entity)
@@ -84,9 +83,8 @@ public class Air {
 	public class func retrieve<Rivet: Rivetable> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                     responseController: ResponseController = ResponseController(),
 	                     succeed:(response: [Rivet])->(), fail:((ResponseError)->())? = nil) throws{
-		let entity = Rivet()
-		let environment = Rivet().environment()
-		let mockUrl = "\(environment.request.HTTPMethod)_\(entity.contextPath())"
+		let environment = Rivet.environment()
+		let mockUrl = "\(environment.request.HTTPMethod)_\(Rivet.contextPath())"
 		environment.request.HTTPMethod = "GET"
 
 		try mockOrPerform(mockUrl, request: environment.request,
@@ -105,15 +103,14 @@ public class Air {
 	public class func retrieveWithUniqueId <Rivet: Rivetable> (uniqueId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                      responseController: ResponseController = ResponseController(),
 	                      succeed:(response: Rivet)->(), fail:((ResponseError)->())? = nil) throws{
-		let entity = Rivet()
-		let environment = Rivet().environment()
+		let environment = Rivet.environment()
 		let request = environment.request
 		request.HTTPMethod = "GET"
 		if let _ = request.URL {
 			request.URL = request.URL!.URLByAppendingPathComponent(uniqueId)
 		}
 
-		let mockUrl = "\(environment.request.HTTPMethod)_\(entity.contextPath())_\(uniqueId)"
+		let mockUrl = "\(environment.request.HTTPMethod)_\(Rivet.contextPath())_\(uniqueId)"
 		try mockOrPerform(mockUrl, request: request,
 		                  environment: environment, responseController: responseController, session: session,
 		                  succeed: succeed, fail: fail)

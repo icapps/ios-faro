@@ -53,11 +53,11 @@ class ExampleBaseModel: UniqueAble, Mitigatable, Parsable {
 
 extension ExampleBaseModel: EnvironmentConfigurable {
 
-	func contextPath() -> String {
+	class func contextPath() -> String {
 		return "something"
 	}
 	
-	func environment() -> protocol<Environment, Mockable, Transformable> {
+	class func environment() -> protocol<Environment, Mockable, Transformable> {
 		return Parse<GameScore>() //TODO make this a mock
 	}
     

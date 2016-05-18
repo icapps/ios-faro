@@ -75,7 +75,7 @@ public class ResponseController {
 			var result: TransformController?
 			try mitigator.mitigate {
 				if let _ = try self.checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail){
-					let transformController = entity.environment().transformController()
+					let transformController = Rivet.environment().transformController()
 					result =  transformController
 				}
 			}

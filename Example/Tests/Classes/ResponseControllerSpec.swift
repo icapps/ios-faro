@@ -15,7 +15,7 @@ import Quick
 // MARK: - Mocks
 
 class MockEntityWithErrorMitigator: GameScore {
-    override func environment() -> protocol<Environment, Mockable, Transformable> {
+    override class func environment() -> protocol<Environment, Mockable, Transformable> {
         return Mock()
     }
     

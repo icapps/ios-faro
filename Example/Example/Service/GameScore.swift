@@ -71,15 +71,15 @@ public class GameScore: NSObject, UniqueAble,  Mitigatable, Parsable, Environmen
 
 	// MARK: - EnvironmentConfigurable
     
-	public func contextPath() -> String {
+	public class func contextPath() -> String {
 		return "GameScore"
 	}
 
-	public func environment()-> protocol<Environment, Mockable, Transformable> {
+	public class func environment()-> protocol<Environment, Mockable, Transformable> {
 		return Parse<GameScore>()
 	}
 
-	public static func rootKey() -> String? {
+	public class func rootKey() -> String? {
 		return "results"
 	}
 }
