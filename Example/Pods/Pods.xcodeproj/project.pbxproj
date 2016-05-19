@@ -252,7 +252,7 @@
 		BFA23D56E5600B4488DBCBC854433373 /* BeGreaterThanOrEqualTo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeGreaterThanOrEqualTo.swift; path = Sources/Nimble/Matchers/BeGreaterThanOrEqualTo.swift; sourceTree = "<group>"; };
 		BFBFEF4A9D6B6E9AB4F11211B430A31B /* QuickSelectedTestSuiteBuilder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = QuickSelectedTestSuiteBuilder.swift; path = Sources/Quick/QuickSelectedTestSuiteBuilder.swift; sourceTree = "<group>"; };
 		C0D142051CEDE58E00DF9266 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
-		C0D142061CEDE58E00DF9266 /* TransformCoreData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformCoreData.swift; sourceTree = "<group>"; };
+		C0D142061CEDE58E00DF9266 /* TransformCoreData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TransformCoreData.swift; path = ../TransformCoreData.swift; sourceTree = "<group>"; };
 		C0D142071CEDE58E00DF9266 /* Transform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
 		C9A2B49200AC2BB9CDDAD982C13EF8B5 /* AsyncMatcherWrapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsyncMatcherWrapper.swift; path = Sources/Nimble/Matchers/AsyncMatcherWrapper.swift; sourceTree = "<group>"; };
 		C9F4D546F0BC92855F4C0DE3BDCC6195 /* AirRivet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AirRivet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -480,7 +480,6 @@
 				C0D142051CEDE58E00DF9266 /* Response.swift */,
 				AFF6714DF5C9D1E07E06F2F8DE521F51 /* Rivetable.swift */,
 				C0D142071CEDE58E00DF9266 /* Transform.swift */,
-				C0D142061CEDE58E00DF9266 /* TransformCoreData.swift */,
 				C9082C73F78EA5FC8A5690D217D0A306 /* Utilities */,
 			);
 			path = Sources;
@@ -577,6 +576,7 @@
 		C0D142021CEDE51300DF9266 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				C0D142061CEDE58E00DF9266 /* TransformCoreData.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";

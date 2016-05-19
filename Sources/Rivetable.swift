@@ -78,8 +78,12 @@ public protocol Parsable {
 Handle the data that you receive. Data can be anything you want
 - returns: By default a `TransformJSON` is returned that does: 'data ~> JSON ~> entities of your type'.
 */
-public protocol TransformJSONable {
+public protocol Transformable {
 
+	/**
+	For now we only support JSON
+	*/
+	
 	static func transform() -> TransformJSON
 }
 
@@ -103,4 +107,4 @@ public protocol UniqueAble {
 /**
 An `Air` should be able to build up a request when your model object complies to the protocols below.
 */
-public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable, TransformJSONable>
+public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable, Transformable>

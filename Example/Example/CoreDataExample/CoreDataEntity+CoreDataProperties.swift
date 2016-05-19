@@ -11,9 +11,9 @@
 
 import Foundation
 import CoreData
+import AirRivet
 
-extension CoreDataEntity {
+extension CoreDataEntity: UniqueAble {
 
     @NSManaged var objectId: String?
-
 }

@@ -34,6 +34,16 @@ class SwiftViewController: UIViewController {
 		} catch {
 			print("-------Error with request------")
 		}
+
+		//Core data
+
+		do {
+			let coreDataEntity = try CoreDataEntity(json: ["objectId": "something fun"])
+			print("🏪 Core data entity made successfully. \(coreDataEntity.objectId!)")
+		}catch {
+			print("💣 \(error)")
+		}
+
     }
 	
 }
