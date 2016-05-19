@@ -60,7 +60,7 @@ extension ExampleBaseModel: EnvironmentConfigurable {
 		return "something"
 	}
 	
-	class func environment() -> protocol<Environment, Mockable, Transformable> {
+	class func environment() -> protocol<Environment, Mockable> {
 		return EnvironmentParse<GameScore>() 
 	}
     

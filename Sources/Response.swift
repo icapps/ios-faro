@@ -39,7 +39,7 @@ public class Response {
 			let mitigator = Rivet.responseMitigator()
 			try mitigator.mitigate {
 				if let _ = try self.checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail){
-					let transformController = Rivet.environment().transformController()
+					let transformController = Rivet.transform()
 					try transformController.transform(data!, succeed: succeed)
 				}
 			}
@@ -64,7 +64,7 @@ public class Response {
 			let mitigator = Rivet.responseMitigator()
 			try mitigator.mitigate {
 				if let _ = try self.checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail){
-					let transformController = Rivet.environment().transformController()
+					let transformController = Rivet.transform()
 					try transformController.transform(data!, succeed: succeed)
 				}
 			}

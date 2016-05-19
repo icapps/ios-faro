@@ -30,18 +30,3 @@ When a type conforms to Mockable the environment you provide by conforming to `E
 public protocol Mockable {
 	func shouldMock() -> Bool
 }
-
-/**
-	Handle the data that you receive. Data can be anything you want
-	- returns: By default a `Transform` is returned that does: 'data ~> JSON ~> entities of your type'.
-*/
-public protocol Transformable {
-
-	func transformController() -> Transform
-}
-
-public extension Transformable {
-	func transformController() -> Transform {
-		return Transform()
-	}
-}

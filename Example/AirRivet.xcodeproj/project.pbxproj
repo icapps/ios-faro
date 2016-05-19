@@ -134,7 +134,7 @@
 		607FACD21AFB9204008FA782 /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				62AF6B0E1CE47E3D00339275 /* Modules */,
+				62AF6B0E1CE47E3D00339275 /* ViewControllers */,
 				62AF6B0F1CE47E4900339275 /* Service */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 				62AF6B0C1CE47E2E00339275 /* UI */,
@@ -198,12 +198,13 @@
 			path = Swift;
 			sourceTree = "<group>";
 		};
-		62AF6B0E1CE47E3D00339275 /* Modules */ = {
+		62AF6B0E1CE47E3D00339275 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				C05296101CB665F1007E1111 /* Objective-C */,
 				62AF6B0D1CE47E3800339275 /* Swift */,
 			);
+			name = ViewControllers;
 			path = Modules;
 			sourceTree = "<group>";
 		};

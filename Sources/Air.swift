@@ -117,11 +117,11 @@ public class Air {
 	}
 
 	private class func mockOrPerform <Rivet: Rivetable> (mockUrl: String, request: NSURLRequest,
-	                                  environment: protocol<Environment, Mockable, Transformable>,
+	                                  environment: protocol<Environment, Mockable>,
 	                                  responseController: Response, session: NSURLSession,
 	                                  succeed:(response: [Rivet])->(), fail:((ResponseError)->())?) throws {
 		guard !environment.shouldMock() else {
-			try mockDataFromUrl(mockUrl, transformController: environment.transformController(), responseController: responseController, succeed: succeed, fail: fail)
+			try mockDataFromUrl(mockUrl, transformController: Rivet.transform(), responseController: responseController, succeed: succeed, fail: fail)
 			return
 		}
 
@@ -129,11 +129,11 @@ public class Air {
 	}
 
 	private class func mockOrPerform <Rivet: Rivetable> (mockUrl: String, request: NSURLRequest,
-	                                  environment: protocol<Environment, Mockable, Transformable>,
+	                                  environment: protocol<Environment, Mockable>,
 	                                  responseController: Response, session: NSURLSession,
 	                                  succeed:(response: Rivet)->(), fail:((ResponseError)->())?) throws {
 		guard !environment.shouldMock() else {
-			try mockDataFromUrl(mockUrl, transformController: environment.transformController(), responseController: responseController, succeed: succeed, fail: fail)
+			try mockDataFromUrl(mockUrl, transformController: Rivet.transform(), responseController: responseController, succeed: succeed, fail: fail)
 			return
 		}
 

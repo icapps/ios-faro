@@ -19,7 +19,7 @@ class MockEntity: GameScore {
 		return "non existing"
 	}
 
-	override class func environment() -> protocol<Environment, Mockable, Transformable> {
+	override class func environment() -> protocol<Environment, Mockable> {
 		return Mock ()
 	}
 

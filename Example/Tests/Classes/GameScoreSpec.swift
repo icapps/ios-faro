@@ -13,7 +13,7 @@ import Foundation
 
 // MARK: - Mocks
 
-class Mock: Environment, Mockable, Transformable {
+class Mock: Environment, Mockable {
 	
     var serverUrl = ""
 	var request = NSMutableURLRequest()
@@ -30,8 +30,8 @@ class MockGameScore: GameScore {
 		return "gameScoreArray"
 	}
 
-	override class func environment() -> protocol<Environment, Mockable, Transformable> {
-		return Mock ()
+	override class func environment() -> protocol<Environment, Mockable> {
+		return Mock()
 	}
     
 }

@@ -74,10 +74,18 @@ public protocol Parsable {
 	static func managedObjectContext() -> NSManagedObjectContext?
 }
 
+/**
+Handle the data that you receive. Data can be anything you want
+- returns: By default a `Transform` is returned that does: 'data ~> JSON ~> entities of your type'.
+*/
+public protocol Transformable {
+
+	static func transform() -> Transform
+}
 
 public protocol EnvironmentConfigurable {
 
-	static func environment() ->  protocol<Environment, Mockable, Transformable>
+	static func environment() ->  protocol<Environment, Mockable>
 
 	/**
 	* An url is formed from <ServiceParameter.serverURL+BaseModel.contextPath>.
@@ -95,5 +103,4 @@ public protocol UniqueAble {
 /**
 An `Air` should be able to build up a request when your model object complies to the protocols below.
 */
-public typealias RivetParsable = protocol<Parsable, Mitigatable>
-public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable>
+public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable, Transformable>
