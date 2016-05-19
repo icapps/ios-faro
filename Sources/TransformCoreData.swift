@@ -1,5 +1,5 @@
 //
-//  TransformerCoreData.swift
+//  TransformJSONerCoreData.swift
 //  Pods
 //
 //  Created by Stijn Willems on 19/05/16.

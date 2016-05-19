@@ -15,7 +15,7 @@ Deal with the errors of the response and interpret the response.
 
 ## Handle errors in response
 Errors cause an throw
-## Pass response to the `Transform`
+## Pass response to the `TransformJSON`
 Responses are interpretted in the `TransFormController`
 */
 public class Response {

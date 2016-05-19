@@ -140,7 +140,7 @@ public class Air {
 		performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
 	}
 
-	private class func mockDataFromUrl <Rivet: Rivetable> (url: String, transformController: Transform, responseController: Response,
+	private class func mockDataFromUrl <Rivet: Rivetable> (url: String, transformController: TransformJSON, responseController: Response,
 	                                    succeed:(response: [Rivet])->(), fail:((ResponseError)->())? ) throws {
 		try Rivet.requestMitigator().mitigate {
 			let data = try dataAtUrl(url, transformController: transformController)
@@ -148,7 +148,7 @@ public class Air {
 		}
 	}
 
-	private class func mockDataFromUrl <Rivet: Rivetable> (url: String, transformController: Transform, responseController: Response,
+	private class func mockDataFromUrl <Rivet: Rivetable> (url: String, transformController: TransformJSON, responseController: Response,
 	                                    succeed:(response: Rivet)->(), fail:((ResponseError)->())?) throws {
 		try Rivet.requestMitigator().mitigate {
 			let data = try dataAtUrl(url, transformController: transformController)
@@ -177,7 +177,7 @@ public class Air {
 	}
 }
 
-func dataAtUrl(url: String, transformController: Transform) throws -> NSData?  {
+func dataAtUrl(url: String, transformController: TransformJSON) throws -> NSData?  {
 	if let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue) {
 		return  NSData(contentsOfURL: fileURL)
 	}else {

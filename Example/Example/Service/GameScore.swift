@@ -91,7 +91,7 @@ public class GameScore: NSObject, Rivetable {
 	}
 
 	//MARK: - Transfromable
-	public class func transform() -> Transform {
-		return Transform()
+	public class func transform() -> TransformJSON {
+		return TransformJSON()
 	}
 }

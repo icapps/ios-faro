@@ -1,5 +1,5 @@
 //
-//  TransformTests.swift
+//  TransformJSONTests.swift
 //  AirRivet
 //
 //  Created by Hans Van Herreweghe on 21/04/16.
@@ -68,7 +68,7 @@ extension ExampleBaseModel: EnvironmentConfigurable {
 
 // MARK: - Specs
 
-class TransformSpec: QuickSpec {
+class TransformJSONSpec: QuickSpec {
     
 	private func loadDataFromUrl(url: String) throws -> NSData? {
 		guard
@@ -83,10 +83,10 @@ class TransformSpec: QuickSpec {
     //MARK: transform
     
     override func spec() {
-        let transformController = Transform()
+        let transformController = TransformJSON()
         var data = NSData()
         
-        describe("Transform") {
+        describe("TransformJSON") {
 
             it("should not return error at loadingData") {
                 expect {try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())

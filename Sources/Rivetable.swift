@@ -28,7 +28,7 @@ public protocol Mitigatable: class {
 }
 
 /**
-Implement so we can set data on your variables in the `Transform`.
+Implement so we can set data on your variables in the `TransformJSON`.
 */
 public protocol Parsable {
 
@@ -76,11 +76,11 @@ public protocol Parsable {
 
 /**
 Handle the data that you receive. Data can be anything you want
-- returns: By default a `Transform` is returned that does: 'data ~> JSON ~> entities of your type'.
+- returns: By default a `TransformJSON` is returned that does: 'data ~> JSON ~> entities of your type'.
 */
-public protocol Transformable {
+public protocol TransformJSONable {
 
-	static func transform() -> Transform
+	static func transform() -> TransformJSON
 }
 
 public protocol EnvironmentConfigurable {
@@ -103,4 +103,4 @@ public protocol UniqueAble {
 /**
 An `Air` should be able to build up a request when your model object complies to the protocols below.
 */
-public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable, Transformable>
+public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable, TransformJSONable>

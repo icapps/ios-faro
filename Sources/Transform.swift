@@ -1,5 +1,5 @@
 //
-//  Transform.swift
+//  TransformJSON.swift
 //  AirRivet
 //
 //  Created by Stijn Willems on 07/04/16.
@@ -13,7 +13,7 @@ public enum TransformType: String {
 }
 
 /**
-Transformations of data to an initialized object(s). This implementation expects data to be valid JSON.
+TransformJSONations of data to an initialized object(s). This implementation expects data to be valid JSON.
 Any Type using these functions should be :
 
 - `Parsable`
@@ -21,11 +21,11 @@ Any Type using these functions should be :
 
 ## Tasks
 
-### Transform data to `Rivetable` instances.
+### TransformJSON data to `Rivetable` instances.
 
 */
 
-public class Transform {
+public class TransformJSON {
 
 	public init() {
 	}
@@ -38,7 +38,7 @@ public class Transform {
 		return .JSON
 	}
 
-	//MARK: - Transform data to `Rivetable` instances.
+	//MARK: - TransformJSON data to `Rivetable` instances.
 
 	/**
 	On success returns an instance of type `Rivet` initialized with `data`.
@@ -101,7 +101,7 @@ public class Transform {
 	}
 
 	/**
-	Create a Foundation object from data. This data can be JSON. The default implementation of the `Transform` deals only with JSON data.
+	Create a Foundation object from data. This data can be JSON. The default implementation of the `TransformJSON` deals only with JSON data.
 	- parameter: (optional) used to extract the needed data from the `blob` of data that you provide. In JSON this would be `{ "rootKey": "data to parse"}.`
 	- parameter mitigator: will deal with invalid data errors or throw an error.
 	- returns: A Foundation object that can be used while parsing

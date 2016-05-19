@@ -17,7 +17,7 @@ public protocol Mitigator {
 	/**
 	See `DefaultMitigator` for an example implementation of this function. 
 	
-	- parameter thrower: A function used as a wrapper around throwing functions in `Air`, `Response` and `Transform`.
+	- parameter thrower: A function used as a wrapper around throwing functions in `Air`, `Response` and `TransformJSON`.
 	*/
 	func mitigate(thrower: ()throws -> ()) throws
 }
