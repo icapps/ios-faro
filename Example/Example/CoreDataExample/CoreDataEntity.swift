@@ -53,6 +53,26 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 		return "CoreDataEntity"
 	}
 
+	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) throws -> Self? {
+
+		guard let managedObjectContext = managedObjectContext else {
+			return nil
+		}
+
+		let uniqueKey = json["CoreDataEntityObjectId"] as! String
+		let fetchrequest = NSFetchRequest(entityName: "CoreDataEntity")
+		let predicate = NSPredicate(format: "objectId == %@", uniqueKey)
+		fetchrequest.predicate = predicate
+
+		let entities = try managedObjectContext.executeFetchRequest(fetchrequest) as! [CoreDataEntity]
+		if !entities.isEmpty && entities.count == 1 {
+				return autocast(entities.first)
+		}else {
+			throw ResponseError.GeneralWithResponseJSON(statuscode: 205, responseJSON: json)
+		}
+	}
+
+
 	// MARK: - Mitigatable
 
 	class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
@@ -68,3 +88,4 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 		return TransformCoreData()
 	}
 }
+

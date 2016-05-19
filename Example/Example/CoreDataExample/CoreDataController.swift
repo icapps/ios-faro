@@ -15,6 +15,7 @@ Very basic wrapper arround core data. You can provide your own. This is just and
 class CoreDataController {
 
 	static let sharedInstance = CoreDataController()
+	var storeType = NSSQLiteStoreType
 	
 	lazy var applicationDocumentsDirectory: NSURL = {
 

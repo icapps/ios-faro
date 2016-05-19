@@ -34,6 +34,7 @@
 		C0D142341CEDEF0900DF9266 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C0D142321CEDEF0900DF9266 /* Model.xcdatamodeld */; };
 		C0D142371CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D142351CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift */; };
 		C0D142381CEDEF5800DF9266 /* CoreDataEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D142361CEDEF5800DF9266 /* CoreDataEntity.swift */; };
+		C0D1423D1CEE203300DF9266 /* CoreDataEntitySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1423B1CEE1EA100DF9266 /* CoreDataEntitySpec.swift */; };
 		F924E5F5066EA9BA137B76BB /* Pods_AirRivet_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F774C6787D6C13BC02F7A8B2 /* Pods_AirRivet_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +84,7 @@
 		C0D142331CEDEF0900DF9266 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		C0D142351CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CoreDataEntity+CoreDataProperties.swift"; path = "../CoreDataExample/CoreDataEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C0D142361CEDEF5800DF9266 /* CoreDataEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataEntity.swift; path = ../CoreDataExample/CoreDataEntity.swift; sourceTree = "<group>"; };
+		C0D1423B1CEE1EA100DF9266 /* CoreDataEntitySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataEntitySpec.swift; sourceTree = "<group>"; };
 		C3040FA8A4C2EBA96AF8B20A /* Pods-AirRivet_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirRivet_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirRivet_Example/Pods-AirRivet_Example.release.xcconfig"; sourceTree = "<group>"; };
 		F28FE425E9CA20CB4C7DE52F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../../LICENSE; sourceTree = "<group>"; };
 		F774C6787D6C13BC02F7A8B2 /* Pods_AirRivet_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AirRivet_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -267,6 +269,7 @@
 				C0D1422F1CEDEDA200DF9266 /* CoreDataController.swift */,
 				C0D142361CEDEF5800DF9266 /* CoreDataEntity.swift */,
 				C0D142351CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift */,
+				C0D1423B1CEE1EA100DF9266 /* CoreDataEntitySpec.swift */,
 				C0D142321CEDEF0900DF9266 /* Model.xcdatamodeld */,
 			);
 			name = CoreData;
@@ -512,6 +515,7 @@
 				A4D85BC41CC8FAB00046AF29 /* TransformControllerSpec.swift in Sources */,
 				A4D85BDB1CCA6B470046AF29 /* ResponseControllerUtilsTests.swift in Sources */,
 				C08BF3941CCE4AF8005CAD3F /* AirSpec.swift in Sources */,
+				C0D1423D1CEE203300DF9266 /* CoreDataEntitySpec.swift in Sources */,
 				C0A3DB101CAEBBB600978DBD /* GameScore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

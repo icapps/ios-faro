@@ -13,28 +13,28 @@ Model object that implements protocol `BaseModel` that can be fount in pod `AirR
 
 In this example GameScore has to inherit from NSObject to be usable in Objective-C. In a pure Swift project this is not needed.
 */
-public class GameScore: NSObject, Rivetable {
+class GameScore: NSObject, Rivetable {
 
     // MARK: - Game variables
     
-	public var score: Int?
-	public var cheatMode: Bool?
-	public var playerName: String?
+	var score: Int?
+	var cheatMode: Bool?
+	 var playerName: String?
     
     // MARK: - UniqueAble
 
-	public var objectId: String?
+	var objectId: String?
     
     // MARK: - Init
 
-	public required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = GameScore.managedObjectContext()) throws {
+	required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = GameScore.managedObjectContext()) throws {
 		super.init()
 		try self.map(json)
 	}
     
     // MARK: - Parsable
 
-	public func toDictionary()-> NSDictionary? {
+	func toDictionary()-> NSDictionary? {
 		return [
 			"score": score!,
 			"cheatMode": cheatMode!,
@@ -42,7 +42,7 @@ public class GameScore: NSObject, Rivetable {
 		]
 	}
 
-	public func map(json: AnyObject) throws {
+	func map(json: AnyObject) throws {
 		guard let internalJSON = json as? NSDictionary else {
 			throw ResponseError.InvalidDictionary(dictionary: json)
 		}
@@ -62,36 +62,40 @@ public class GameScore: NSObject, Rivetable {
 		}
 	}
 
-	public class func managedObjectContext() -> NSManagedObjectContext? {
+	class func managedObjectContext() -> NSManagedObjectContext? {
+		return nil
+	}
+
+	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) -> Self? {
 		return nil
 	}
 
 	// MARK: - Mitigatable
 	
-	public class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+	class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
 		return DefaultMitigator()
 	}
 
-	public class func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
+	class func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
 		return DefaultMitigator()
 	}
 
 	// MARK: - EnvironmentConfigurable
     
-	public class func contextPath() -> String {
+	class func contextPath() -> String {
 		return "GameScore"
 	}
 
-	public class func environment()-> protocol<Environment, Mockable> {
+	class func environment()-> protocol<Environment, Mockable> {
 		return EnvironmentParse<GameScore>()
 	}
 
-	public class func rootKey() -> String? {
+	class func rootKey() -> String? {
 		return "results"
 	}
 
 	//MARK: - Transfromable
-	public class func transform() -> TransformJSON {
+	class func transform() -> TransformJSON {
 		return TransformJSON()
 	}
 }

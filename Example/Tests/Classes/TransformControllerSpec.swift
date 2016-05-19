@@ -41,6 +41,11 @@ class ExampleBaseModel: UniqueAble, Mitigatable, Parsable {
 		return nil
 	}
 
+	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) -> Self? {
+		return nil
+	}
+
+
 	static func rootKey() -> String? {
 		return "results"
 	}

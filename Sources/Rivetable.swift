@@ -72,6 +72,8 @@ public protocol Parsable {
 	- returns: `NSManagedObjectContext` that is used by the `TranformController` to create `Parsable` instances
 	*/
 	static func managedObjectContext() -> NSManagedObjectContext?
+
+	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) throws -> Self?
 }
 
 /**

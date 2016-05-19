@@ -57,6 +57,7 @@ public class TransformJSON {
 		do {
 			try mitigator.mitigate {
 				let json =  try self.foundationObjectFromData(data, rootKey: nil, mitigator: mitigator)
+				
 				succeed(try Rivet(json:json, managedObjectContext: Rivet.managedObjectContext()))
 			}
 
