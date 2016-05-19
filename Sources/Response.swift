@@ -15,10 +15,10 @@ Deal with the errors of the response and interpret the response.
 
 ## Handle errors in response
 Errors cause an throw
-## Pass response to the `TransformController`
+## Pass response to the `Transform`
 Responses are interpretted in the `TransFormController`
 */
-public class ResponseController {
+public class Response {
 
 
 	public init() {
@@ -80,7 +80,7 @@ public class ResponseController {
 			respondWithfail(error!, fail: fail, mitigator: mitigator)
 			return nil
 		}
-		guard let data = try ResponseControllerUtils.checkStatusCodeAndData(data, urlResponse: urlResponse, error: error, mitigator: mitigator) else {
+		guard let data = try ResponseUtils.checkStatusCodeAndData(data, urlResponse: urlResponse, error: error, mitigator: mitigator) else {
 			return nil
 		}
 		return data
@@ -104,7 +104,7 @@ public class ResponseController {
 	}
 }
 
-internal class ResponseControllerUtils {
+internal class ResponseUtils {
 	class func checkStatusCodeAndData(data: NSData? = nil, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponseMitigatable) throws -> NSData? {
         if let httpResponse = urlResponse as? NSHTTPURLResponse {
             

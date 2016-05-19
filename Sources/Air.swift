@@ -21,7 +21,7 @@ This class is intentionally stateless.
 
 You can retreive a single instance or an array of objects
 
-## Handle response via `ResponseController`
+## Handle response via `Response`
 The response controllers does the actual parsing. In theory you can parse any kind of reponse, for now we only support JSON.
 
 ## Pass errors to the `Mitigator`
@@ -42,14 +42,14 @@ public class Air {
 	
 	- parameter entity: The `Rivet` is converted to JSON and send to the server.
 	- parameter session : Default NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()
-	- parameter responseController: default is  ResponseController = ResponseController(),
+	- parameter responseController: default is  Response = Response(),
 	- parameter succeed: Closure is called when service request successfully returns - !__Called on a background queue___!
 	- parameter fail: Optional Closure called when something in the response fails. - !__Called on a background queue___!
 	- throws : Errors related to the request construction.
 */
 	public  class func save <Rivet: Rivetable>  (entity: Rivet,
 	                         session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
-	                         responseController: ResponseController = ResponseController(),
+	                         responseController: Response = Response(),
 	                         succeed:(response: Rivet)->(), fail:((ResponseError) ->())? = nil) throws {
 		let environment = Rivet.environment()
 
@@ -75,13 +75,13 @@ public class Air {
  Retreive all items of `Type`. Closures are called on a background queue!
 	
 	- parameter session : Default NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()
-	- parameter responseController: default is  ResponseController = ResponseController(),
+	- parameter responseController: default is  Response = Response(),
 	- parameter succeed: Closure is called when service request successfully returns - !__Called on a background queue___!
 	- parameter fail: Closure called when something in the response fails. - !__Called on a background queue___!
 	- throws : Errors related to the request construction.
 	*/
 	public class func retrieve<Rivet: Rivetable> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
-	                     responseController: ResponseController = ResponseController(),
+	                     responseController: Response = Response(),
 	                     succeed:(response: [Rivet])->(), fail:((ResponseError)->())? = nil) throws{
 		let environment = Rivet.environment()
 		let mockUrl = "\(environment.request.HTTPMethod)_\(Rivet.contextPath())"
@@ -101,7 +101,7 @@ public class Air {
 	- throws : Errors related to the request construction.
 	*/
 	public class func retrieveWithUniqueId <Rivet: Rivetable> (uniqueId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
-	                      responseController: ResponseController = ResponseController(),
+	                      responseController: Response = Response(),
 	                      succeed:(response: Rivet)->(), fail:((ResponseError)->())? = nil) throws{
 		let environment = Rivet.environment()
 		let request = environment.request
@@ -118,7 +118,7 @@ public class Air {
 
 	private class func mockOrPerform <Rivet: Rivetable> (mockUrl: String, request: NSURLRequest,
 	                                  environment: protocol<Environment, Mockable, Transformable>,
-	                                  responseController: ResponseController, session: NSURLSession,
+	                                  responseController: Response, session: NSURLSession,
 	                                  succeed:(response: [Rivet])->(), fail:((ResponseError)->())?) throws {
 		guard !environment.shouldMock() else {
 			try mockDataFromUrl(mockUrl, transformController: environment.transformController(), responseController: responseController, succeed: succeed, fail: fail)
@@ -130,7 +130,7 @@ public class Air {
 
 	private class func mockOrPerform <Rivet: Rivetable> (mockUrl: String, request: NSURLRequest,
 	                                  environment: protocol<Environment, Mockable, Transformable>,
-	                                  responseController: ResponseController, session: NSURLSession,
+	                                  responseController: Response, session: NSURLSession,
 	                                  succeed:(response: Rivet)->(), fail:((ResponseError)->())?) throws {
 		guard !environment.shouldMock() else {
 			try mockDataFromUrl(mockUrl, transformController: environment.transformController(), responseController: responseController, succeed: succeed, fail: fail)
@@ -140,7 +140,7 @@ public class Air {
 		performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
 	}
 
-	private class func mockDataFromUrl <Rivet: Rivetable> (url: String, transformController: TransformController, responseController: ResponseController,
+	private class func mockDataFromUrl <Rivet: Rivetable> (url: String, transformController: Transform, responseController: Response,
 	                                    succeed:(response: [Rivet])->(), fail:((ResponseError)->())? ) throws {
 		try Rivet.requestMitigator().mitigate {
 			let data = try dataAtUrl(url, transformController: transformController)
@@ -148,7 +148,7 @@ public class Air {
 		}
 	}
 
-	private class func mockDataFromUrl <Rivet: Rivetable> (url: String, transformController: TransformController, responseController: ResponseController,
+	private class func mockDataFromUrl <Rivet: Rivetable> (url: String, transformController: Transform, responseController: Response,
 	                                    succeed:(response: Rivet)->(), fail:((ResponseError)->())?) throws {
 		try Rivet.requestMitigator().mitigate {
 			let data = try dataAtUrl(url, transformController: transformController)
@@ -157,7 +157,7 @@ public class Air {
 	}
 	
 	private class func performAsychonousRequest<Rivet: Rivetable> (request: NSURLRequest,
-	                                            session: NSURLSession, responseController: ResponseController,
+	                                            session: NSURLSession, responseController: Response,
 	                                            succeed:(response: Rivet)->(), fail:((ResponseError)->())? = nil ) {
 		let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
 			responseController.respond(data, urlResponse: response, error: error, succeed: succeed, fail: fail)
@@ -167,7 +167,7 @@ public class Air {
 	}
 
 	private class func performAsychonousRequest<Rivet: Rivetable> (request: NSURLRequest,
-	                                            session: NSURLSession, responseController: ResponseController,
+	                                            session: NSURLSession, responseController: Response,
 	                                            succeed:(response: [Rivet])->(), fail:((ResponseError)->())? = nil ) {
 		let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
 			responseController.respond(data, urlResponse: response, error: error, succeed: succeed, fail: fail)
@@ -177,7 +177,7 @@ public class Air {
 	}
 }
 
-func dataAtUrl(url: String, transformController: TransformController) throws -> NSData?  {
+func dataAtUrl(url: String, transformController: Transform) throws -> NSData?  {
 	if let fileURL = NSBundle.mainBundle().URLForResource(url, withExtension: transformController.type().rawValue) {
 		return  NSData(contentsOfURL: fileURL)
 	}else {

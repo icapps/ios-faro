@@ -1,5 +1,5 @@
 //
-//  ResponseControllerSpec.swift
+//  ResponseSpec.swift
 //  AirRivet
 //
 //  Created by Stijn Willems on 07/04/16.
@@ -40,7 +40,7 @@ class MockMitigator: DefaultMitigator {
 
 // MARK: - Specs
 
-class ResponseControllerSpec: QuickSpec {
+class ResponseSpec: QuickSpec {
 
 	override func spec () {
 		describe ("Response controller  ") {
@@ -49,7 +49,7 @@ class ResponseControllerSpec: QuickSpec {
 				let invalidDict = ["wrong": "json"]
 				let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
 
-				ResponseController().respond(data, succeed: { (response: MockEntity) in
+				Response().respond(data, succeed: { (response: MockEntity) in
 					XCTFail()
                 }, fail: { (error) in
                     switch error {
@@ -68,7 +68,7 @@ class ResponseControllerSpec: QuickSpec {
 					let invalidDict = ["wrong": "json", "writeNode": ["objectId":expectedObjectId]]
 					let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
 
-					ResponseController().respond(data, succeed: { (response: MockEntityWithErrorMitigator) in
+					Response().respond(data, succeed: { (response: MockEntityWithErrorMitigator) in
 						expect(response.objectId).to(equal(expectedObjectId))
                     }, fail: { (error) in
                         XCTFail("Should not raise \(error)")
@@ -81,7 +81,7 @@ class ResponseControllerSpec: QuickSpec {
                     let invalidDict = ["wrong": "json", "writeNode": [["objectId":expectedObjectId], ["objectId":expectedObjectId2]]]
                     let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
                     
-                    ResponseController().respond(data, succeed: { (result: [MockEntityWithErrorMitigator]) in
+                    Response().respond(data, succeed: { (result: [MockEntityWithErrorMitigator]) in
                         expect(result[0].objectId).to(equal(expectedObjectId))
                         expect(result[1].objectId).to(equal(expectedObjectId2))
                         expect(result.count).to(equal(2))

@@ -1,5 +1,5 @@
 //
-//  TransformControllerTests.swift
+//  TransformTests.swift
 //  AirRivet
 //
 //  Created by Hans Van Herreweghe on 21/04/16.
@@ -68,7 +68,7 @@ extension ExampleBaseModel: EnvironmentConfigurable {
 
 // MARK: - Specs
 
-class TransformControllerSpec: QuickSpec {
+class TransformSpec: QuickSpec {
     
 	private func loadDataFromUrl(url: String) throws -> NSData? {
 		guard
@@ -83,10 +83,10 @@ class TransformControllerSpec: QuickSpec {
     //MARK: transform
     
     override func spec() {
-        let transformController = TransformController()
+        let transformController = Transform()
         var data = NSData()
         
-        describe("TransformController") {
+        describe("Transform") {
 
             it("should not return error at loadingData") {
                 expect {try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())

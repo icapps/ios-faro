@@ -33,15 +33,15 @@ public protocol Mockable {
 
 /**
 	Handle the data that you receive. Data can be anything you want
-	- returns: By default a `TransformController` is returned that does: 'data ~> JSON ~> entities of your type'.
+	- returns: By default a `Transform` is returned that does: 'data ~> JSON ~> entities of your type'.
 */
 public protocol Transformable {
 
-	func transformController() -> TransformController
+	func transformController() -> Transform
 }
 
 public extension Transformable {
-	func transformController() -> TransformController {
-		return TransformController()
+	func transformController() -> Transform {
+		return Transform()
 	}
 }

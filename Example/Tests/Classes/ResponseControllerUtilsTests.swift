@@ -1,5 +1,5 @@
 //
-//  ResponseControllerUtilsTests.swift
+//  ResponseUtilsTests.swift
 //  AirRivet
 //
 //  Created by Stijn Willems on 07/04/16.
@@ -31,13 +31,13 @@ class DummyMitigator: DefaultMitigator {
 // MARK: - Specs
 
 //TODO: Refactor to nimble
-class ResponseControllerUtilsTests: XCTestCase {
+class ResponseUtilsTests: XCTestCase {
     
     lazy var errorController = DefaultMitigator()
 
     func testNoResponseNoError() {
         do {
-            try ResponseControllerUtils.checkStatusCodeAndData( mitigator: errorController)
+            try ResponseUtils.checkStatusCodeAndData( mitigator: errorController)
         }  catch {
             XCTFail("We should not fail when an empty urlResponse is given")
         }
@@ -47,7 +47,7 @@ class ResponseControllerUtilsTests: XCTestCase {
         let url = NSURL(string: "https://some.url")
         let response = NSHTTPURLResponse(URL:url!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
         do {
-            try ResponseControllerUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
+            try ResponseUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
             XCTFail("call should fail")
         } catch ResponseError.InvalidAuthentication {
             XCTAssertTrue(true)
@@ -60,7 +60,7 @@ class ResponseControllerUtilsTests: XCTestCase {
         let url = NSURL(string: "https://some.url")
         let response = NSHTTPURLResponse(URL:url!, statusCode: 310, HTTPVersion: nil, headerFields: nil)
         do {
-            try ResponseControllerUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
+            try ResponseUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
             XCTFail("call should fail")
         } catch RequestError.General {
             XCTAssertTrue(true)
@@ -73,7 +73,7 @@ class ResponseControllerUtilsTests: XCTestCase {
         let url = NSURL(string: "https://some.url")
         let response = NSHTTPURLResponse(URL:url!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
         do {
-            try ResponseControllerUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
+            try ResponseUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
             XCTFail("call should fail")
         } catch ResponseError.InvalidResponseData {
             XCTAssertTrue(true)
@@ -89,7 +89,7 @@ class ResponseControllerUtilsTests: XCTestCase {
         
         let response = NSHTTPURLResponse(URL:url!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
         do {
-            try ResponseControllerUtils.checkStatusCodeAndData(data, urlResponse:response, mitigator: errorController)
+            try ResponseUtils.checkStatusCodeAndData(data, urlResponse:response, mitigator: errorController)
             XCTAssertTrue(true)
         } catch {
             XCTFail("call should not fail")
@@ -103,7 +103,7 @@ class ResponseControllerUtilsTests: XCTestCase {
         
         let response = NSHTTPURLResponse(URL:url!, statusCode: 201, HTTPVersion: nil, headerFields: nil)
         do {
-            try ResponseControllerUtils.checkStatusCodeAndData(data, urlResponse:response, mitigator: errorController)
+            try ResponseUtils.checkStatusCodeAndData(data, urlResponse:response, mitigator: errorController)
             XCTAssertTrue(true)
         } catch {
             XCTFail("call should not fail")

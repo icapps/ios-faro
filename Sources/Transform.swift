@@ -1,5 +1,5 @@
 //
-//  TransformController.swift
+//  Transform.swift
 //  AirRivet
 //
 //  Created by Stijn Willems on 07/04/16.
@@ -25,7 +25,7 @@ Any Type using these functions should be :
 
 */
 
-public class TransformController {
+public class Transform {
 
 	public init() {
 	}
@@ -101,7 +101,7 @@ public class TransformController {
 	}
 
 	/**
-	Create a Foundation object from data. This data can be JSON. The default implementation of the `TransformController` deals only with JSON data.
+	Create a Foundation object from data. This data can be JSON. The default implementation of the `Transform` deals only with JSON data.
 	- parameter: (optional) used to extract the needed data from the `blob` of data that you provide. In JSON this would be `{ "rootKey": "data to parse"}.`
 	- parameter mitigator: will deal with invalid data errors or throw an error.
 	- returns: A Foundation object that can be used while parsing

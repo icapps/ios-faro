@@ -11,7 +11,7 @@ import CoreData
 /**
 React and/or solve errors that could arrise while the entity that conforms to `Mitigatable` is handeled.
 
-You can inspect how error mitigation is expected to behave by looking at `DefaultMitigatorSpec` and `ResponseControllerSpec` in the tests of the Example project.
+You can inspect how error mitigation is expected to behave by looking at `DefaultMitigatorSpec` and `ResponseSpec` in the tests of the Example project.
 */
 public protocol Mitigatable: class {
 
@@ -28,7 +28,7 @@ public protocol Mitigatable: class {
 }
 
 /**
-Implement so we can set data on your variables in the `TransformController`.
+Implement so we can set data on your variables in the `Transform`.
 */
 public protocol Parsable {
 
