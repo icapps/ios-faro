@@ -25,9 +25,9 @@
 		C052960D1CB6629E007E1111 /* ObjectiveCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */; };
 		C05296121CB6661E007E1111 /* GameSoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05296111CB6661E007E1111 /* GameSoreController.swift */; };
 		C08BF3941CCE4AF8005CAD3F /* AirSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08BF3931CCE4AF8005CAD3F /* AirSpec.swift */; };
-		C0A3DB0D1CAEBBB200978DBD /* Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* Parse.swift */; };
+		C0A3DB0D1CAEBBB200978DBD /* EnvironmentParse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */; };
 		C0A3DB0E1CAEBBB200978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
-		C0A3DB0F1CAEBBB600978DBD /* Parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* Parse.swift */; };
+		C0A3DB0F1CAEBBB600978DBD /* EnvironmentParse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */; };
 		C0A3DB101CAEBBB600978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
 		C0A3DB121CAEBBCA00978DBD /* GameScoreSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB111CAEBBCA00978DBD /* GameScoreSpec.swift */; };
 		F924E5F5066EA9BA137B76BB /* Pods_AirRivet_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F774C6787D6C13BC02F7A8B2 /* Pods_AirRivet_Example.framework */; };
@@ -72,7 +72,7 @@
 		C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectiveCViewController.m; sourceTree = "<group>"; };
 		C05296111CB6661E007E1111 /* GameSoreController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSoreController.swift; sourceTree = "<group>"; };
 		C08BF3931CCE4AF8005CAD3F /* AirSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirSpec.swift; sourceTree = "<group>"; };
-		C0A3DB0B1CAEBBB200978DBD /* Parse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parse.swift; sourceTree = "<group>"; };
+		C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentParse.swift; sourceTree = "<group>"; };
 		C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScore.swift; sourceTree = "<group>"; };
 		C0A3DB111CAEBBCA00978DBD /* GameScoreSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScoreSpec.swift; sourceTree = "<group>"; };
 		C3040FA8A4C2EBA96AF8B20A /* Pods-AirRivet_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirRivet_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirRivet_Example/Pods-AirRivet_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -211,7 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */,
-				C0A3DB0B1CAEBBB200978DBD /* Parse.swift */,
+				C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -472,7 +472,7 @@
 				C05296121CB6661E007E1111 /* GameSoreController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* SwiftViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
-				C0A3DB0D1CAEBBB200978DBD /* Parse.swift in Sources */,
+				C0A3DB0D1CAEBBB200978DBD /* EnvironmentParse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,7 +483,7 @@
 				A4D85BDA1CCA6B450046AF29 /* ResponseControllerSpec.swift in Sources */,
 				C0A3DB121CAEBBCA00978DBD /* GameScoreSpec.swift in Sources */,
 				A4D85BC11CC8E00B0046AF29 /* DefaultMitigatorSpec.swift in Sources */,
-				C0A3DB0F1CAEBBB600978DBD /* Parse.swift in Sources */,
+				C0A3DB0F1CAEBBB600978DBD /* EnvironmentParse.swift in Sources */,
 				A4D85BC41CC8FAB00046AF29 /* TransformControllerSpec.swift in Sources */,
 				A4D85BDB1CCA6B470046AF29 /* ResponseControllerUtilsTests.swift in Sources */,
 				C08BF3941CCE4AF8005CAD3F /* AirSpec.swift in Sources */,

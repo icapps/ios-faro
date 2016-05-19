@@ -83,7 +83,7 @@ public class GameScore: NSObject, Rivetable {
 	}
 
 	public class func environment()-> protocol<Environment, Mockable, Transformable> {
-		return Parse<GameScore>()
+		return EnvironmentParse<GameScore>()
 	}
 
 	public class func rootKey() -> String? {

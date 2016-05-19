@@ -11,7 +11,7 @@ import AirRivet
 /**
 This is an example implementation of the protocol `Environment`. 
 */
-public class Parse <Rivet: EnvironmentConfigurable>: Environment, Mockable, Transformable {
+public class EnvironmentParse <Rivet: EnvironmentConfigurable>: Environment, Mockable, Transformable {
     
     // MARK: - Environment
     
