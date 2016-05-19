@@ -39,7 +39,8 @@ class SwiftViewController: UIViewController {
 
 		do {
 			let coreDataEntity = try CoreDataEntity(json: ["CoreDataEntityObjectId": "something fun"])
-			print("🏪 Core data entity made successfully. \(coreDataEntity.objectId!)")
+			coreDataEntity.username = "Fons"
+			print("🏪 Core data entity made successfully. \(coreDataEntity.username!)")
 //Saving all the time is no fun. But it works:). Uncomment if you want to save
 
 //			try Air.save(coreDataEntity,

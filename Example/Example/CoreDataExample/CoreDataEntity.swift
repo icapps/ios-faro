@@ -24,17 +24,21 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 	// MARK: - Parsable
 
 	func toDictionary()-> NSDictionary? {
-		return ["CoreDataEntityObjectId": objectId!]
+		return ["CoreDataEntityObjectId": objectId!, "username": username!]
 	}
 
 	func map(json: AnyObject) throws {
 		if let objectId = json["CoreDataEntityObjectId"] as? String {
 			self.objectId = objectId
 		}
+
+		if let username = json["username"] as? String {
+			self.username = username
+		}
 	}
 
 	static func rootKey() -> String? {
-		return nil
+		return "results"
 	}
 
 	class func managedObjectContext() -> NSManagedObjectContext? {

@@ -90,6 +90,8 @@ public class TransformJSON {
 				succeed(try self.dictToArray(array))
 			}else if let dict = json as? [String:AnyObject] {
 				let model = try Rivet(json:dict, managedObjectContext: Rivet.managedObjectContext())
+				print("\(model)")
+
 				succeed([model])
 			}else if let array = json as? [[String:AnyObject]] {
 				succeed(try self.dictToArray(array))
