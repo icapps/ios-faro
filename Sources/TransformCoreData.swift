@@ -7,3 +7,10 @@
 //
 
 import Foundation
+import
+
+public class TransformCoreData: TransformJSON {
+
+	public init() {
+	}
+}

@@ -13,7 +13,7 @@ public enum TransformType: String {
 }
 
 /**
-TransformJSONations of data to an initialized object(s). This implementation expects data to be valid JSON.
+Transformations of data to an initialized object(s). This implementation expects data to be valid JSON.
 Any Type using these functions should be :
 
 - `Parsable`
