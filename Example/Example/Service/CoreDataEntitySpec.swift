@@ -40,11 +40,14 @@ class CoreDataEntitySpec: QuickSpec {
 
 				expect(entity.objectID).to(equal(sameEntity?.objectID))
 
-				//TODO: fetch all entities and see if there are only 1
+				let fetch = NSFetchRequest(entityName: "CoreDataEntity")
+				let allEntities = try! coreDataController.managedObjectContext.executeFetchRequest(fetch) as! [CoreDataEntity]
+
+				expect(allEntities).to(haveCount(1))
 
 				//TODO: let init fail if there is a unique object present
 
-				
+				//TODO: Test with transformer
 
 			}
 		}
