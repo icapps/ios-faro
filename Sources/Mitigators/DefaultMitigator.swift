@@ -68,7 +68,7 @@ public class DefaultMitigator: Mitigator, ResponseMitigatable, RequestMitigatabl
     
 
 	public func invalidDictionary(dictionary: AnyObject) throws -> AnyObject? {
-		print("-------- Received invalid dictionary \(dictionary)-------")
+		print("🤔 Received invalid dictionary \(dictionary)")
 		throw ResponseError.InvalidDictionary(dictionary: dictionary)
 	}
 
