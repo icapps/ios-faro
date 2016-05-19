@@ -91,7 +91,7 @@ public class Response {
 			fail?(responseError)
 		}else {
 			print("💣 failed response with error: \(error)")
-			fail?(ResponseError.General)
+			fail?(ResponseError.General(statuscode: 0))
 		}
 	}
 	private func respondWithfail(taskError: NSError ,fail:((ResponseError) ->())?, mitigator: ResponseMitigatable) {
@@ -109,14 +109,25 @@ internal class ResponseUtils {
         if let httpResponse = urlResponse as? NSHTTPURLResponse {
             
             let statusCode = httpResponse.statusCode
-            
+
             guard statusCode != 404 else {
                 try mitigator.invalidAuthenticationError()
                 return nil
             }
             
             guard 200...201 ~= statusCode else {
-                try mitigator.generalError()
+				if let data = data{
+					do {
+						let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+						try mitigator.generalError(statusCode, responseJSON: json)
+					}catch {
+						print("🤔 Received some response data for error but it is no JSON.")
+						try mitigator.generalError(statusCode)
+					}
+
+				}else {
+					try mitigator.generalError(statusCode)
+				}
                 return nil
             }
             

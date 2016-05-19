@@ -24,11 +24,11 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 	// MARK: - Parsable
 
 	func toDictionary()-> NSDictionary? {
-		return nil
+		return ["CoreDataEntityObjectId": objectId!]
 	}
 
 	func map(json: AnyObject) throws {
-		if let objectId = json["objectId"] as? String {
+		if let objectId = json["CoreDataEntityObjectId"] as? String {
 			self.objectId = objectId
 		}
 	}
@@ -61,6 +61,6 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 
 	//MARK: - Transfromable
 	class func transform() -> TransformJSON {
-		return TransformJSON()
+		return TransformCoreData()
 	}
 }

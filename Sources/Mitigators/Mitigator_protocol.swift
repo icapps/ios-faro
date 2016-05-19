@@ -38,7 +38,8 @@ public protocol ResponseMitigatable {
 	func invalidResponseData(data: NSData?) throws -> ()
 	func invalidAuthenticationError() throws -> ()
 	func responseError(error: NSError?) throws -> ()
-	func generalError() throws -> ()
+	func generalError(statusCode: Int) throws -> ()
+	func generalError(statusCode: Int , responseJSON: AnyObject) throws -> ()
 
 	/**
 	Your chance to intercept dictionary data that cannot is irregular. You can fix it and don't trow.
@@ -60,5 +61,6 @@ public enum ResponseError:ErrorType {
 	case InvalidDictionary(dictionary: AnyObject)
 	case ResponseError(error: NSError?)
 	case InvalidAuthentication
-	case General
+	case General(statuscode: Int)
+	case GeneralWithResponseJSON(statuscode: Int, responseJSON: AnyObject)
 }

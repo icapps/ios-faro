@@ -47,9 +47,9 @@ public class DefaultMitigator: Mitigator, ResponseMitigatable, RequestMitigatabl
 		print("-----------Error building up body-----")
 		throw RequestError.InvalidBody
 	}
-	
+
 	public func generalError() throws {
-		print("-----------General error-----")
+		print("💣 General request error")
 		throw RequestError.General
 	}
 
@@ -57,12 +57,12 @@ public class DefaultMitigator: Mitigator, ResponseMitigatable, RequestMitigatabl
     // MARK: ResponseMitigatable
     
 	public func invalidAuthenticationError() throws {
-		print("-----------Authentication error-----")
+		print("🙃 Authentication error")
 		throw ResponseError.InvalidAuthentication
 	}
 
 	public func invalidResponseData(data: NSData?) throws {
-        print("💣Invalid response data 💣")
+        print("🤔 Invalid response data")
         throw ResponseError.InvalidResponseData(data: data)
     }
     
@@ -73,8 +73,21 @@ public class DefaultMitigator: Mitigator, ResponseMitigatable, RequestMitigatabl
 	}
 
 	public func responseError(error: NSError?) throws {
-		print("-----------Request failed with error-----")
+		print("💣 Request failed with error \(error)")
 		throw ResponseError.ResponseError(error: error)
+	}
+
+
+	public func generalError(statusCode: Int) throws -> (){
+		print("💣 General response error with statusCode: \(statusCode)")
+		throw RequestError.General
+	}
+
+
+	public func generalError(statusCode: Int , responseJSON: AnyObject) throws -> () {
+		print("💣 General response error with statusCode: \(statusCode) and responseJSON: \(responseJSON)")
+		throw RequestError.General
+
 	}
     
 }

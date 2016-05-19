@@ -32,17 +32,27 @@ class SwiftViewController: UIViewController {
 				print("🎉 successfully retreived one object \(response.objectId)")
             })
 		} catch {
-			print("-------Error with request------")
+			print("💣 Error with request \(error)")
 		}
 
 		//Core data
 
 		do {
-			let coreDataEntity = try CoreDataEntity(json: ["objectId": "something fun"])
+			let coreDataEntity = try CoreDataEntity(json: ["CoreDataEntityObjectId": "something fun"])
 			print("🏪 Core data entity made successfully. \(coreDataEntity.objectId!)")
+//Saving all the time is no fun. But it works:). Uncomment if you want to save
+
+//			try Air.save(coreDataEntity,
+//			             succeed: { (response) in
+//					print("🎉 saved CoreDataEntity")
+//				})
+			try Air.retrieve(succeed: { (response: [CoreDataEntity]) in
+				print("🎉 retreived CoreDataEntity with objecId: \(response)")
+			})
 		}catch {
 			print("💣 \(error)")
 		}
+
 
     }
 	
