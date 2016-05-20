@@ -1,5 +1,10 @@
 # AirRivet
 
+## Version 0.5.0
+* Added support for CoreData
+* Mitigator Example with a non printing Version
+* Introduced MapError
+
 ## Version 0.4.3
 * Usable with CoreData. Unfortunately we have to expose some of the CoreData internals in AirRivet. Otherwise Rivetable instances would not be testable.
 
