@@ -15,6 +15,6 @@ import AirRivet
 
 extension CoreDataEntity: UniqueAble {
 
-    @NSManaged var objectId: String?
+    @NSManaged var uniqueValue: String?
 	@NSManaged var username: String?
 }

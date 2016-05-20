@@ -15,7 +15,7 @@ import CoreData
 
 class MockModel: UniqueAble, Mitigatable, Parsable {
     
-    var objectId: String?
+    var uniqueValue: String?
 
 	required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = MockModel.managedObjectContext()) throws {
 		try self.map(json)
@@ -25,7 +25,7 @@ class MockModel: UniqueAble, Mitigatable, Parsable {
         if let
             json = json as? NSDictionary,
             identifier = json["identifier"] as? String {
-            self.objectId = identifier
+            self.uniqueValue = identifier
 		} else {
 			throw ResponseError.InvalidDictionary(dictionary: json)
 		}
@@ -33,7 +33,7 @@ class MockModel: UniqueAble, Mitigatable, Parsable {
     
     func toDictionary()-> NSDictionary? {
         return [
-            "identifier": objectId!,
+            "identifier": uniqueValue!,
         ]
     }
 
@@ -97,10 +97,10 @@ class TransformJSONSpec: QuickSpec {
                 expect {try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())
             }
             
-            it ("should return correct objectId at transformation"){
+            it ("should return correct uniqueValue at transformation"){
                 try! transformController.transform(data, succeed: {
                     (model: MockModel) in
-					expect(model.objectId).to(equal("123456ABCdef"))
+					expect(model.uniqueValue).to(equal("123456ABCdef"))
                 })
             }
             
@@ -108,12 +108,12 @@ class TransformJSONSpec: QuickSpec {
 				expect{ try MockModel(json:["identifier" : "test123"])}.notTo(throwError())
             }
 
-            it("should return correct objectId at transform with body") {
+            it("should return correct uniqueValue at transform with body") {
                 expect {try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())
                 
                 try! transformController.transform(data, succeed: {
 					(result : MockModel) in
-					expect(result.objectId).to(equal("123456ABCdef"))
+					expect(result.uniqueValue).to(equal("123456ABCdef"))
                 })
             }
 
@@ -133,9 +133,9 @@ class TransformJSONSpec: QuickSpec {
                 expect{ try data = self.loadDataFromUrl("exampleBaseModelResultsArray")!}.notTo(throwError())
                 try! transformController.transform(data, succeed: { (results: [MockModel]) in
                     expect{results.count}.to(equal(3))
-                    expect{results[0].objectId}.to(equal("123a"))
-                    expect{results[1].objectId}.to(equal("456b"))
-                    expect{results[2].objectId}.to(equal("789c"))
+                    expect{results[0].uniqueValue}.to(equal("123a"))
+                    expect{results[1].uniqueValue}.to(equal("456b"))
+                    expect{results[2].uniqueValue}.to(equal("789c"))
                 })
             }
 
@@ -157,7 +157,7 @@ class TransformJSONSpec: QuickSpec {
                 expect{ try data = self.loadDataFromUrl("exampleBaseModelResultsArray")!}.notTo(throwError())
                 try! transformController.transform(data, succeed: {(results: [MockModel]) in
                     expect(results.count).to(equal(3))
-                    expect(results[0].objectId).to(equal("123a"))
+                    expect(results[0].uniqueValue).to(equal("123a"))
                 })
             }
             

@@ -24,12 +24,12 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 	// MARK: - Parsable
 
 	func toDictionary()-> NSDictionary? {
-		return ["CoreDataEntityObjectId": objectId!, "username": username!]
+		return ["uniqueValue": uniqueValue!, "username": username!]
 	}
 
 	func map(json: AnyObject) throws {
-		if let objectId = json["CoreDataEntityObjectId"] as? String {
-			self.objectId = objectId
+		if let uniqueValue = json["uniqueValue"] as? String {
+			self.uniqueValue = uniqueValue
 		}
 
 		if let username = json["username"] as? String {
@@ -59,9 +59,9 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 			return nil
 		}
 
-		let uniqueKey = json["CoreDataEntityObjectId"] as! String
+		let uniqueKey = json["uniqueValue"] as! String
 		let fetchrequest = NSFetchRequest(entityName: "CoreDataEntity")
-		let predicate = NSPredicate(format: "objectId == %@", uniqueKey)
+		let predicate = NSPredicate(format: "uniqueValue == %@", uniqueKey)
 		fetchrequest.predicate = predicate
 
 		let entities = try managedObjectContext.executeFetchRequest(fetchrequest) as! [CoreDataEntity]

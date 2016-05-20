@@ -29,7 +29,7 @@ class SwiftViewController: UIViewController {
 			})
 
 			try Air.fetchWithUniqueId("pyqCt2ZHWT", succeed: { (response: GameScore) in
-				print("🎉 successfully fetched one object \(response.objectId)")
+				print("🎉 successfully fetched one object \(response.uniqueValue)")
             })
 		} catch {
 			print("💣 Error with request \(error)")
@@ -38,7 +38,7 @@ class SwiftViewController: UIViewController {
 		//Core data
 
 		do {
-			let coreDataEntity = try CoreDataEntity(json: ["CoreDataEntityObjectId": "something fun"])
+			let coreDataEntity = try CoreDataEntity(json: ["uniqueValue": "something fun"])
 			coreDataEntity.username = "Fons"
 			print("🏪 Core data entity made successfully. \(coreDataEntity.username!)")
 //Saving all the time is no fun. But it works:). Uncomment if you want to save
@@ -48,7 +48,7 @@ class SwiftViewController: UIViewController {
 //					print("🎉 saved CoreDataEntity")
 //				})
 			try Air.fetch(succeed: { (response: [CoreDataEntity]) in
-				print("🎉 fetched CoreDataEntity with objecId: \(response)")
+				print("🎉 fetched CoreDataEntities: \(response)")
 			})
 		}catch {
 			print("💣 \(error)")

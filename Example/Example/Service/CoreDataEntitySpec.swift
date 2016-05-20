@@ -40,7 +40,7 @@ class CoreDataEntitySpec: QuickSpec {
 				coreDataController.managedObjectContext.reset()
 			})
 
-			let json = ["CoreDataEntityObjectId":"unique id", "username": "Fons"]
+			let json = ["uniqueValue":"unique id", "username": "Fons"]
 
 			it("Create instanse with username") {
 				let entity = try! CoreDataEntity(json: ["username": "Fons"], managedObjectContext: coreDataController.managedObjectContext)
