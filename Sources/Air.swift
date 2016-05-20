@@ -27,7 +27,7 @@ The response controllers does the actual parsing. In theory you can parse any ki
 ## Pass errors to the `Mitigator`
 Any type can decide to handle error in a specific way that is suited for that `Type` by conforming to protocol `Mitigatable`.
 
-You can inspect how error handling is expected to behave by looking at `DefaultMitigatorSpec` in the tests of the Example project.
+You can inspect how error handling is expected to behave by looking at `MitigatorDefaultSpec` in the tests of the Example project.
 
 # Mocking
 

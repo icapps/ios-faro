@@ -1,5 +1,5 @@
 //
-//  DefaultMitigatorSpec.swift
+//  MitigatorDefaultSpec.swift
 //  AirRivet
 //
 //  Created by Stijn Willems on 07/04/16.
@@ -14,7 +14,7 @@ import XCTest
 
 // MARK: - Specs
 
-class DefaultMitigatorSpec: QuickSpec {
+class MitigatorDefaultSpec: QuickSpec {
 
 	override func spec () {
 		describe("Throwing behaviour on mitigation") {

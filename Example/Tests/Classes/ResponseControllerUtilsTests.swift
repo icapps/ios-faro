@@ -12,7 +12,7 @@ import XCTest
 
 // MARK: - Mocks
 
-class DummyMitigator: DefaultMitigator {
+class DummyMitigator: MitigatorDefault {
     
 	override func invalidResponseData(data: NSData?) throws {
 		throw ResponseError.InvalidResponseData(data: data)

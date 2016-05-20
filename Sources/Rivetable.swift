@@ -11,18 +11,18 @@ import CoreData
 /**
 React and/or solve errors that could arrise while the entity that conforms to `Mitigatable` is handeled.
 
-You can inspect how error mitigation is expected to behave by looking at `DefaultMitigatorSpec` and `ResponseSpec` in the tests of the Example project.
+You can inspect how error mitigation is expected to behave by looking at `MitigatorDefaultSpec` and `ResponseSpec` in the tests of the Example project.
 */
 public protocol Mitigatable: class {
 
 	/**
 	By returning an error controller you can handle parsing errors.
-	- returns: By default an implementation of `DefaultMitigator` is returned via a protocol extension
+	- returns: By default an implementation of `MitigatorDefault` is returned via a protocol extension
 	*/
 	static func responseMitigator() -> protocol<ResponseMitigatable, Mitigator>
 	/**
 	If an error happens while constructing an entity this error controller could handle the error if needed.
-	 - returns: By default an implementation of `DefaultMitigator` is returned via a protocol extension
+	 - returns: By default an implementation of `MitigatorDefault` is returned via a protocol extension
 	*/
 	static func requestMitigator()-> protocol<RequestMitigatable, Mitigator>
 }

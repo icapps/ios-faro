@@ -9,11 +9,11 @@
 import Foundation
 
 /**
-Use this for instance in tests to disable printing. This is a subclass from `DefaultMitigator`. 
+Use this for instance in tests to disable printing. This is a subclass from `MitigatorDefault`. 
 It has the same throwing behaviour but does not print.
 */
 
-public class MitigatorNoPrinting: DefaultMitigator {
+public class MitigatorNoPrinting: MitigatorDefault {
 
 	// MARK: RequestMitigatable
 

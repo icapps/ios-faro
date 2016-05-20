@@ -182,7 +182,7 @@ class TransformJSONSpec: QuickSpec {
 
 					let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
 
-					let json = try! transformController.foundationObjectFromData(jsonData, rootKey: nil, mitigator: DefaultMitigator()) as! [String:String]
+					let json = try! transformController.foundationObjectFromData(jsonData, rootKey: nil, mitigator: MitigatorDefault()) as! [String:String]
 
 					expect(json[key]).to(equal(value))
 

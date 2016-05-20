@@ -73,11 +73,11 @@ class GameScore: NSObject, Rivetable {
 	// MARK: - Mitigatable
 	
 	class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
-		return DefaultMitigator()
+		return MitigatorDefault()
 	}
 
 	class func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
-		return DefaultMitigator()
+		return MitigatorDefault()
 	}
 
 	// MARK: - EnvironmentConfigurable

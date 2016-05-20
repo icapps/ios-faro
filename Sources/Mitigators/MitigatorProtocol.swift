@@ -15,7 +15,7 @@ So do that or rethrow what you cannot handle.
 */
 public protocol Mitigator {
 	/**
-	See `DefaultMitigator` for an example implementation of this function. 
+	See `MitigatorDefault` for an example implementation of this function. 
 	
 	- parameter thrower: A function used as a wrapper around throwing functions in `Air`, `Response` and `TransformJSON`.
 	*/
@@ -23,7 +23,7 @@ public protocol Mitigator {
 }
 
 /**
-Try to handle errors gracefully or rethrow them. The `DefaultMitigator` implements these methods.
+Try to handle errors gracefully or rethrow them. The `MitigatorDefault` implements these methods.
 */
 public protocol RequestMitigatable {
     func invalidBodyError() throws -> ()
@@ -31,7 +31,7 @@ public protocol RequestMitigatable {
 }
 
 /**
-Try to handle errors gracefully or rethrow them. The `DefaultMitigator` implements these methods.
+Try to handle errors gracefully or rethrow them. The `MitigatorDefault` implements these methods.
 */
 public protocol ResponseMitigatable {
 

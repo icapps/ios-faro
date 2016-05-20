@@ -1,5 +1,5 @@
 //
-//  DefaultMitigator.swift
+//  MitigatorDefault.swift
 //  AirRivet
 //
 //  Created by Stijn Willems on 07/04/16.
@@ -15,7 +15,7 @@ A mitigator tries to make a problem less servere. This is a default implementati
 - `ResponseMitigatable` -> Try to handle response errors. By default errors are printed and rethrown.
 - `RequestMitigatable` -> Try to handle request errors.  By default errors are printed and rethrown.
 */
-public class DefaultMitigator: Mitigator, ResponseMitigatable, RequestMitigatable {
+public class MitigatorDefault: Mitigator, ResponseMitigatable, RequestMitigatable {
 
 	public init () {
 		
