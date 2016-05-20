@@ -67,8 +67,11 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 		let entities = try managedObjectContext.executeFetchRequest(fetchrequest) as! [CoreDataEntity]
 		if !entities.isEmpty && entities.count == 1 {
 				return autocast(entities.first)
+		}else if entities.count > 1  {
+			let name =  typeName(CoreDataEntity)
+			throw MapError.EnityShouldBeUniqueForJSON(json: json, typeName: name)
 		}else {
-			throw ResponseError.GeneralWithResponseJSON(statuscode: 205, responseJSON: json)
+			return nil
 		}
 	}
 
