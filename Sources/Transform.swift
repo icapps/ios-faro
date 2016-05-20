@@ -57,8 +57,12 @@ public class TransformJSON {
 		do {
 			try mitigator.mitigate {
 				let json =  try self.foundationObjectFromData(data, rootKey: nil, mitigator: mitigator)
-				
-				succeed(try Rivet(json:json, managedObjectContext: Rivet.managedObjectContext()))
+
+				if let entity = try Rivet.lookupExistingObjectFromJSON(json, managedObjectContext: Rivet.managedObjectContext()) {
+					succeed(entity)
+				}else {
+					succeed(try Rivet(json:json, managedObjectContext: Rivet.managedObjectContext()))
+				}
 			}
 
 		}catch ResponseError.InvalidDictionary(dictionary: let dict) {
@@ -90,10 +94,11 @@ public class TransformJSON {
 			if let array = json as? [[String:AnyObject]] {
 				succeed(try self.dictToArray(array))
 			}else if let dict = json as? [String:AnyObject] {
-				let model = try Rivet(json:dict, managedObjectContext: Rivet.managedObjectContext())
-				print("\(model)")
-
-				succeed([model])
+				if let entity = try Rivet.lookupExistingObjectFromJSON(json, managedObjectContext: Rivet.managedObjectContext()) {
+					succeed([entity])
+				}else {
+					succeed([try Rivet(json:json, managedObjectContext: Rivet.managedObjectContext())])
+				}
 			}else if let array = json as? [[String:AnyObject]] {
 				succeed(try self.dictToArray(array))
 			}
@@ -135,9 +140,13 @@ public class TransformJSON {
 
 	private func dictToArray<Rivet: Parsable>(array: [[String:AnyObject]]) throws -> [Rivet] {
 		var concreteObjectArray = [Rivet]()
-		for dict in array {
-			let model = try Rivet(json:dict, managedObjectContext: Rivet.managedObjectContext())
-			concreteObjectArray.append(model)
+		for json in array {
+
+			if let entity = try Rivet.lookupExistingObjectFromJSON(json, managedObjectContext: Rivet.managedObjectContext()) {
+				concreteObjectArray.append(entity)
+			}else {
+				concreteObjectArray.append(try Rivet(json:json, managedObjectContext: Rivet.managedObjectContext()))
+			}
 		}
 		return concreteObjectArray
 	}
