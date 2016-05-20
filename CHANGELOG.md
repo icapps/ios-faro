@@ -1,5 +1,8 @@
 # AirRivet
 
+## Version 0.5.2
+* Version mistake fixed
+
 ## Version 0.5.0
 * Added support for CoreData
 * Mitigator Example with a non printing Version
