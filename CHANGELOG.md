@@ -1,8 +1,5 @@
 # AirRivet
 
-## Version 0.5.2
-* Fixed problem at startup when unique value was not present
-
 ## Version 0.5.0
 * Added support for CoreData
 * Mitigator Example with a non printing Version
