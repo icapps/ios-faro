@@ -59,7 +59,10 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 			return nil
 		}
 
-		let uniqueKey = json["uniqueValue"] as! String
+		guard let uniqueKey = json["uniqueValue"] as? String else {
+			throw MapError.JSONHasNoUniqueValue(json: json)
+		}
+
 		let fetchrequest = NSFetchRequest(entityName: "CoreDataEntity")
 		let predicate = NSPredicate(format: "uniqueValue == %@", uniqueKey)
 		fetchrequest.predicate = predicate

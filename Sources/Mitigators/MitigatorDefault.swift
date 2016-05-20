@@ -42,6 +42,8 @@ public class MitigatorDefault: Mitigator, ResponseMitigatable, RequestMitigatabl
 			try generalError(code, responseJSON: json)
 		}catch MapError.EnityShouldBeUniqueForJSON(json: let json, typeName: let typeName) {
 			try enityShouldBeUniqueForJSON(json, typeName: typeName)
+		}catch MapError.JSONHasNoUniqueValue(json: let json) {
+			try jsonHasNoUniqueValue(json)
 		}catch {
 			throw error
 		}
@@ -98,5 +100,10 @@ public class MitigatorDefault: Mitigator, ResponseMitigatable, RequestMitigatabl
 	public func enityShouldBeUniqueForJSON(json: AnyObject, typeName: String) throws {
 		print("🤔 We should have a unique entity in database for type: \(typeName) and responseJSON: \(json)")
 		throw MapError.EnityShouldBeUniqueForJSON(json: json, typeName: typeName)
+	}
+
+	public func jsonHasNoUniqueValue(json: AnyObject) throws {
+		print("🤔 json should contain a unique value. Received json: \(json)")
+		throw MapError.JSONHasNoUniqueValue(json: json)
 	}
 }

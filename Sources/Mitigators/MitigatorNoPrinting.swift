@@ -58,4 +58,8 @@ public class MitigatorNoPrinting: MitigatorDefault {
 	public override func enityShouldBeUniqueForJSON(json: AnyObject, typeName: String) throws {
 		throw MapError.EnityShouldBeUniqueForJSON(json: json, typeName: typeName)
 	}
+
+	public override func jsonHasNoUniqueValue(json: AnyObject) throws {
+		throw MapError.JSONHasNoUniqueValue(json: json)
+	}
 }

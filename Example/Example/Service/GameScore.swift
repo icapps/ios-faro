@@ -44,7 +44,7 @@ class GameScore: NSObject, Rivetable {
 
 	func map(json: AnyObject) throws {
 		if let json = json as? [String: AnyObject] {
-			if let uniqueValue = json["uniqueValue"] as? String {
+			if let uniqueValue = json["objectId"] as? String {
 				self.uniqueValue = uniqueValue
 			}
 			if let score = json["score"] as? Int {

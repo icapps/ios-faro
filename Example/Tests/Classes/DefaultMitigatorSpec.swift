@@ -119,7 +119,7 @@ class MitigatorDefaultSpec: QuickSpec {
 			}
 
 			context("mapError", {
-				it("should throw invalid response data error") {
+				it("should throw EnityShouldBeUniqueForJSON") {
 					expect {
 						try mitigator.mitigate {
 							throw MapError.EnityShouldBeUniqueForJSON(json: ["":""], typeName: "Type")
@@ -127,6 +127,21 @@ class MitigatorDefaultSpec: QuickSpec {
 						}.to(throwError(closure: { (error) in
 							switch error {
 							case MapError.EnityShouldBeUniqueForJSON(json: _ , typeName: _):
+								break
+							default:
+								XCTFail("Should not throw \(error)")
+							}
+						}))
+				}
+
+				it("should throw invalid response data error") {
+					expect {
+						try mitigator.mitigate {
+							throw MapError.JSONHasNoUniqueValue(json: ["":""])
+						}
+						}.to(throwError(closure: { (error) in
+							switch error {
+							case MapError.JSONHasNoUniqueValue(json: _):
 								break
 							default:
 								XCTFail("Should not throw \(error)")

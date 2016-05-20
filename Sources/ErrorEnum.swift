@@ -26,4 +26,5 @@ public enum ResponseError:ErrorType {
 
 public enum MapError: ErrorType {
 	case EnityShouldBeUniqueForJSON(json: AnyObject, typeName: String)
+	case JSONHasNoUniqueValue(json: AnyObject)
 }
