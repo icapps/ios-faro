@@ -40,7 +40,6 @@ class CoreDataEntitySpec: QuickSpec {
 				coreDataController.managedObjectContext.reset()
 			})
 
-			let json = ["uniqueValue":"unique id", "username": "Fons"]
 
 			it("Create instanse with username") {
 				let entity = try! CoreDataEntity(json: ["username": "Fons"], managedObjectContext: coreDataController.managedObjectContext)
@@ -48,6 +47,8 @@ class CoreDataEntitySpec: QuickSpec {
 			}
 
 			it("should fetch an existing object") {
+				let json = ["uniqueValue":"unique id", "username": "Fons"]
+
 				let entity = try! CoreDataEntity(json: json, managedObjectContext: coreDataController.managedObjectContext)
 
 				let sameEntity = try! CoreDataEntity.lookupExistingObjectFromJSON(json, managedObjectContext: coreDataController.managedObjectContext)
@@ -60,14 +61,18 @@ class CoreDataEntitySpec: QuickSpec {
 				expect(allEntities).to(haveCount(1))
 			}
 
-			it("should not throw when no instance is found", closure: { 
+			it("should not throw when no instance is found", closure: {
+				let json = ["uniqueValue":"unique id", "username": "Fons"]
+
 				let entity = try! CoreDataEntity.lookupExistingObjectFromJSON(json, managedObjectContext: coreDataController.managedObjectContext)
 				expect(entity).to(beNil())
 			})
 
 			it("should throw when more then one instance is found", closure: {
-				let _ = try! CoreDataEntity(json: ["":""], managedObjectContext: coreDataController.managedObjectContext)
-				let _ = try! CoreDataEntity(json: ["":""], managedObjectContext: coreDataController.managedObjectContext)
+				let json = ["uniqueValue":"1"]
+				let _ = try! CoreDataEntity(json:json , managedObjectContext: coreDataController.managedObjectContext)
+				let _ = try! CoreDataEntity(json: json, managedObjectContext: coreDataController.managedObjectContext)
+				
 				expect(expression: { try CoreDataEntity.lookupExistingObjectFromJSON(json, managedObjectContext: coreDataController.managedObjectContext)}).to(throwError{ (error) in
 					switch error {
 					case MapError.EnityShouldBeUniqueForJSON(json: _, typeName: _):
