@@ -64,6 +64,19 @@ class CoreDataEntitySpec: QuickSpec {
 				let entity = try! CoreDataEntity.lookupExistingObjectFromJSON(json, managedObjectContext: coreDataController.managedObjectContext)
 				expect(entity).to(beNil())
 			})
+
+			it("should throw when more then one instance is found", closure: {
+				let _ = try! CoreDataEntity(json: ["":""], managedObjectContext: coreDataController.managedObjectContext)
+				let _ = try! CoreDataEntity(json: ["":""], managedObjectContext: coreDataController.managedObjectContext)
+				expect(expression: { try CoreDataEntity.lookupExistingObjectFromJSON(json, managedObjectContext: coreDataController.managedObjectContext)}).to(throwError{ (error) in
+					switch error {
+					case MapError.EnityShouldBeUniqueForJSON(json: _, typeName: _):
+						break
+					default:
+						XCTFail("Should not throw \(error)")
+					}
+					})
+			})
 		}
 	}
 
