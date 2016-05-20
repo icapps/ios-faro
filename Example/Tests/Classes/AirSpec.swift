@@ -51,7 +51,7 @@ class AirSpec: QuickSpec {
 
 			it("should fail when contextPaht does not exist") {
 				expect {
-					try Air.retrieve(succeed: { (response: [MockEntity]) in
+					try Air.fetch(succeed: { (response: [MockEntity]) in
 						XCTFail()
 					})
 				}.to(throwError { (error) in

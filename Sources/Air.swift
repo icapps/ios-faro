@@ -19,7 +19,7 @@ This class is intentionally stateless.
 `Type` is converted to JSON and send as the body of a request
 ## Retrieve
 
-You can retreive a single instance or an array of objects
+You can fetch a single instance or an array of objects
 
 ## Handle response via `Response`
 The response controllers does the actual parsing. In theory you can parse any kind of reponse, for now we only support JSON.
@@ -47,7 +47,7 @@ public class Air {
 	- parameter fail: Optional Closure called when something in the response fails. - !__Called on a background queue___!
 	- throws : Errors related to the request construction.
 */
-	public  class func save <Rivet: Rivetable>  (entity: Rivet,
+	public  class func post <Rivet: Rivetable>  (entity: Rivet,
 	                         session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                         responseController: Response = Response(),
 	                         succeed:(response: Rivet)->(), fail:((ResponseError) ->())? = nil) throws {
@@ -80,7 +80,7 @@ public class Air {
 	- parameter fail: Closure called when something in the response fails. - !__Called on a background queue___!
 	- throws : Errors related to the request construction.
 	*/
-	public class func retrieve<Rivet: Rivetable> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
+	public class func fetch<Rivet: Rivetable> (session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                     responseController: Response = Response(),
 	                     succeed:(response: [Rivet])->(), fail:((ResponseError)->())? = nil) throws{
 		let environment = Rivet.environment()
@@ -100,7 +100,7 @@ public class Air {
 	- parameter fail: Closure called when something in the response fails.
 	- throws : Errors related to the request construction.
 	*/
-	public class func retrieveWithUniqueId <Rivet: Rivetable> (uniqueId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
+	public class func fetchWithUniqueId <Rivet: Rivetable> (uniqueId:String, session: NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()),
 	                      responseController: Response = Response(),
 	                      succeed:(response: Rivet)->(), fail:((ResponseError)->())? = nil) throws{
 		let environment = Rivet.environment()

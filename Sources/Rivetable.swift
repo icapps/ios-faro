@@ -100,7 +100,7 @@ public protocol EnvironmentConfigurable {
 }
 
 /**
- Every `Rivetable` instance should have an unique identifier so we can retreive the object in a collection.
+ Every `Rivetable` instance should have an unique identifier so we can fetch the object in a collection.
  */
 public protocol UniqueAble {
 	var objectId: String? {get set}

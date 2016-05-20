@@ -52,14 +52,14 @@ class GameScoreSpec: QuickSpec {
         describe("GameScore") {
 
 			it ("Should be synchronous because we implement the Mockable protocol") {
-				try! Air.retrieve(succeed: { (response: [MockGameScore]) in
+				try! Air.fetch(succeed: { (response: [MockGameScore]) in
 					expect(response).to(haveCount(5))
 				})
 			}
 
 			it("all gamescores should be parsed", closure: {
 				let expected = ["Bob", "Daniel", "Hans", "Stijn", "Jelle"]
-				try! Air.retrieve(succeed: { (response: [MockGameScore]) in
+				try! Air.fetch(succeed: { (response: [MockGameScore]) in
 					for i in 0..<response.count {
 						let gameScore = response[i]
 						expect(gameScore.playerName).to(equal(expected[i]))
@@ -75,7 +75,7 @@ class GameScoreSpec: QuickSpec {
 				gameScore.cheatMode = false
 				gameScore.playerName = "Foo"
 				
-				try! Air.save(gameScore, succeed: { (response) in
+				try! Air.post(gameScore, succeed: { (response) in
 					success = true
                 })
 				expect(success).to(equal(true))
@@ -84,7 +84,7 @@ class GameScoreSpec: QuickSpec {
 			
 			it("retrieve a single gamescore by objectID"){
 				let objectId = "1275"
-				try! Air.retrieveWithUniqueId(objectId, succeed: { (response: MockGameScore) in
+				try! Air.fetchWithUniqueId(objectId, succeed: { (response: MockGameScore) in
 					expect(response.objectId).to(equal(objectId))
                 }, fail: { (error) in
                     XCTFail("Failed with \(error)")

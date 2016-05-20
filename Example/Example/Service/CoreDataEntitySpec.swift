@@ -57,12 +57,9 @@ class CoreDataEntitySpec: QuickSpec {
 				let allEntities = try! coreDataController.managedObjectContext.executeFetchRequest(fetch) as! [CoreDataEntity]
 
 				expect(allEntities).to(haveCount(1))
-
-				//TODO: let init fail if there is a unique object present
-
-				//TODO: Test with transformer
-
 			}
+
+//			it("should ", closure: <#T##() -> ()#>)
 		}
 	}
 

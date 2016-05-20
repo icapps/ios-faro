@@ -10,7 +10,7 @@ import Foundation
 import AirRivet
 
 /**
-This class is used to bridge to swift generic classes to retreive and save GameScore objects.
+This class is used to bridge to swift generic classes to fetch and save GameScore objects.
 */
 class GameScoreController: NSObject {
 
@@ -32,7 +32,7 @@ class GameScoreController: NSObject {
 	
 	func retrieve(completion:(response: [GameScore])->(), failure:((error: NSError)->())? = nil) {
 		do {
-			try Air.retrieve(succeed: { (response: [GameScore]) in
+			try Air.fetch(succeed: { (response: [GameScore]) in
 					completion(response: response)
 				}, fail: { (requestError) in
 					if let failure = failure {

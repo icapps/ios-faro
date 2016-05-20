@@ -21,15 +21,15 @@ class SwiftViewController: UIViewController {
         super.viewDidLoad()
 
 		do {
-			try Air.retrieve(succeed: { (response: [GameScore]) in
-				print("🎉 successfully retreived \(response.count) objects")
+			try Air.fetch(succeed: { (response: [GameScore]) in
+				print("🎉 successfully fetched \(response.count) objects")
 				dispatch.async.main({
 					self.label.text = "Received \(response.count) objects"
 				})
 			})
 
-			try Air.retrieveWithUniqueId("pyqCt2ZHWT", succeed: { (response: GameScore) in
-				print("🎉 successfully retreived one object \(response.objectId)")
+			try Air.fetchWithUniqueId("pyqCt2ZHWT", succeed: { (response: GameScore) in
+				print("🎉 successfully fetched one object \(response.objectId)")
             })
 		} catch {
 			print("💣 Error with request \(error)")
@@ -43,12 +43,12 @@ class SwiftViewController: UIViewController {
 			print("🏪 Core data entity made successfully. \(coreDataEntity.username!)")
 //Saving all the time is no fun. But it works:). Uncomment if you want to save
 
-//			try Air.save(coreDataEntity,
+//			try Air.post(coreDataEntity,
 //			             succeed: { (response) in
 //					print("🎉 saved CoreDataEntity")
 //				})
-			try Air.retrieve(succeed: { (response: [CoreDataEntity]) in
-				print("🎉 retreived CoreDataEntity with objecId: \(response)")
+			try Air.fetch(succeed: { (response: [CoreDataEntity]) in
+				print("🎉 fetched CoreDataEntity with objecId: \(response)")
 			})
 		}catch {
 			print("💣 \(error)")
