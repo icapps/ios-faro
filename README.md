@@ -65,6 +65,30 @@ do {
 }
 ```
 
+#### 3. Mitigatable
+Use this to change the default error handling. Default handling is:
+1. `Print` the error
+2. `throw` the error back up
+
+If you want different error handling you can provide a different Mititagor instance.
+As an example we provide the `MitigatorNoPrinting`. Handy to use in Unit tests
+
+```swift
+class MockFoo: Foo {
+	// Implement protocols.
+	// See GameScore class in Example project.
+
+	// Override to disable printing
+
+	class override func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+		return MitigatorNoPrinting()
+	}
+
+	class override func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
+		return MitigatorNoPrinting()
+	}
+}
+```
 ### Objective-C
 
 We use generics so you cannot directly use AirRivet in Objective-C. You can bypass this by writing a wrapper.
@@ -98,7 +122,7 @@ AirRivet is available through [CocoaPods](http://cocoapods.org) and the [Swift P
 To install it with CocoaPods, add the following line to your Podfile:
 
 ```ruby
-pod "AirRivet", '~> 0.2'
+pod "AirRivet"
 ```
 
 ## Contribution
