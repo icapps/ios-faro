@@ -45,11 +45,17 @@ public class MitigatorNoPrinting: MitigatorDefault {
 		throw ResponseError.ResponseError(error: error)
 	}
 
+
 	public override func generalError(statusCode: Int) throws -> (){
-		throw RequestError.General
+		throw ResponseError.General(statuscode: statusCode)
 	}
 
+
 	public override func generalError(statusCode: Int , responseJSON: AnyObject) throws -> () {
-		throw RequestError.General
+		throw ResponseError.GeneralWithResponseJSON(statuscode: statusCode, responseJSON: responseJSON)
+	}
+
+	public override func enityShouldBeUniqueForJSON(json: AnyObject, typeName: String) throws {
+		throw MapError.EnityShouldBeUniqueForJSON(json: json, typeName: typeName)
 	}
 }

@@ -40,7 +40,7 @@ class MitigatorDefaultSpec: QuickSpec {
 			}
 
 			context("response errors") {
-                
+
                 it("should throw invalid response data error") {
                     expect {
                         try mitigator.mitigate {
@@ -85,8 +85,55 @@ class MitigatorDefaultSpec: QuickSpec {
                         }
                     }))
                 }
-                
+
+				it("should throw general error with code and json") {
+					expect {
+						try mitigator.mitigate {
+							throw ResponseError.GeneralWithResponseJSON(statuscode: 0, responseJSON: ["":""])
+						}
+						}.to(throwError(closure: { (error) in
+							switch error {
+							case ResponseError.GeneralWithResponseJSON(statuscode: _ , responseJSON: _):
+								break
+							default:
+								XCTFail("Did throw wrong error \(error)")
+							}
+						}))
+				}
+
+				it("should throw invalid response error") {
+					expect {
+						try mitigator.mitigate {
+							throw ResponseError.General(statuscode: 0)
+						}
+						}.to(throwError(closure: { (error) in
+							switch error {
+							case ResponseError.General(statuscode: _):
+								break
+							default:
+								XCTFail("Should not throw \(error)")
+							}
+						}))
+				}
+
 			}
+
+			context("mapError", {
+				it("should throw invalid response data error") {
+					expect {
+						try mitigator.mitigate {
+							throw MapError.EnityShouldBeUniqueForJSON(json: ["":""], typeName: "Type")
+						}
+						}.to(throwError(closure: { (error) in
+							switch error {
+							case MapError.EnityShouldBeUniqueForJSON(json: _ , typeName: _):
+								break
+							default:
+								XCTFail("Should not throw \(error)")
+							}
+						}))
+				}
+			})
 
 			it("should throw any other errror", closure: {
 				enum RandomError: ErrorType {

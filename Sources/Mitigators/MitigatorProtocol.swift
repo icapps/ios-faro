@@ -47,20 +47,8 @@ public protocol ResponseMitigatable {
 	- throws: When you cannot interpret the dictionary throw an error
 	*/
 	func invalidDictionary(dictionary: AnyObject) throws -> AnyObject?
+
+	func enityShouldBeUniqueForJSON(json: AnyObject, typeName: String) throws
 }
 
 
-public enum RequestError: ErrorType {
-	case InvalidBody
-	case InvalidUrl
-	case General
-}
-
-public enum ResponseError:ErrorType {
-	case InvalidResponseData(data: NSData?)
-	case InvalidDictionary(dictionary: AnyObject)
-	case ResponseError(error: NSError?)
-	case InvalidAuthentication
-	case General(statuscode: Int)
-	case GeneralWithResponseJSON(statuscode: Int, responseJSON: AnyObject)
-}

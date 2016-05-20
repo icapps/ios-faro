@@ -36,6 +36,12 @@ public class MitigatorDefault: Mitigator, ResponseMitigatable, RequestMitigatabl
 			try invalidDictionary(dict)
 		} catch ResponseError.ResponseError(error: let error) {
 			try responseError(error)
+		}catch ResponseError.General(statuscode: let code) {
+			try generalError(code)
+		}catch ResponseError.GeneralWithResponseJSON(statuscode: let code, responseJSON: let json) {
+			try generalError(code, responseJSON: json)
+		}catch MapError.EnityShouldBeUniqueForJSON(json: let json, typeName: let typeName) {
+			try enityShouldBeUniqueForJSON(json, typeName: typeName)
 		}catch {
 			throw error
 		}
@@ -80,14 +86,17 @@ public class MitigatorDefault: Mitigator, ResponseMitigatable, RequestMitigatabl
 
 	public func generalError(statusCode: Int) throws -> (){
 		print("💣 General response error with statusCode: \(statusCode)")
-		throw RequestError.General
+		throw ResponseError.General(statuscode: statusCode)
 	}
 
 
 	public func generalError(statusCode: Int , responseJSON: AnyObject) throws -> () {
 		print("💣 General response error with statusCode: \(statusCode) and responseJSON: \(responseJSON)")
-		throw RequestError.General
-
+		throw ResponseError.GeneralWithResponseJSON(statuscode: statusCode, responseJSON: responseJSON)
 	}
-    
+
+	public func enityShouldBeUniqueForJSON(json: AnyObject, typeName: String) throws {
+		print("🤔 We should have a unique entity in database for type: \(typeName) and responseJSON: \(json)")
+		throw MapError.EnityShouldBeUniqueForJSON(json: json, typeName: typeName)
+	}
 }
