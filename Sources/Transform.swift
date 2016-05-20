@@ -93,7 +93,7 @@ public class TransformJSON {
 
 			if let array = json as? [[String:AnyObject]] {
 				succeed(try self.dictToArray(array))
-			}else if let dict = json as? [String:AnyObject] {
+			}else if let json = json as? [String:AnyObject] {
 				if let entity = try Rivet.lookupExistingObjectFromJSON(json, managedObjectContext: Rivet.managedObjectContext()) {
 					succeed([entity])
 				}else {
