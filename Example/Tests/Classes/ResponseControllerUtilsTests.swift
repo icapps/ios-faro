@@ -62,10 +62,10 @@ class ResponseUtilsTests: XCTestCase {
         do {
             try ResponseUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
             XCTFail("call should fail")
-        } catch RequestError.General {
+        } catch ResponseError.General(_) {
             XCTAssertTrue(true)
         } catch {
-            XCTFail("wrong error type")
+            XCTFail("wrong error type \(error)")
         }
     }
     
