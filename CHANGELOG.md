@@ -1,5 +1,8 @@
 # AirRivet
 
+## Version 0.5.3
+* Added utility function to fetch unique entities from core data
+
 ## Version 0.5.0
 * Added support for CoreData
 * Mitigator Example with a non printing Version
