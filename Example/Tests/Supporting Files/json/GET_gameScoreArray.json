@@ -1,21 +1,25 @@
 {"results":
 	[
     {
+	  "objectId": "1",
       "score": 985,
       "cheatMode": true,
       "playerName": "Bob"
     },
     {
+	  "objectId": "2",
       "score": 985,
       "cheatMode": true,
       "playerName": "Daniel"
     },
     {
+	  "objectId": "3",
       "score": 1,
       "cheatMode": true,
       "playerName": "Hans"
     },
     {
+	  "objectId": "4",
       "score": 10,
       "cheatMode": false,
       "playerName": "Stijn"

@@ -75,11 +75,11 @@ class ResponseSpec: QuickSpec {
                         XCTFail("Should not raise \(error)")
 					})
 				}
-                
+
                 it("Should succeed with invalid json if the mitigator handles the error with an array") {
                     let expectedObjectId = "expectedObjectId"
                     let expectedObjectId2 = "expectedObjectId2"
-                    let invalidDict = ["wrong": "json", "writeNode": [["uniqueValue":expectedObjectId], ["uniqueValue":expectedObjectId2]]]
+                    let invalidDict = ["wrong": "json", "writeNode": [["objectId":expectedObjectId], ["objectId":expectedObjectId2]]]
                     let data = try! NSJSONSerialization.dataWithJSONObject(invalidDict, options: .PrettyPrinted)
                     
                     Response().respond(data, succeed: { (result: [MockEntityWithErrorMitigator]) in
