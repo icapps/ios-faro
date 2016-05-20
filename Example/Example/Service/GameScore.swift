@@ -19,7 +19,7 @@ class GameScore: NSObject, Rivetable {
     
 	var score: Int?
 	var cheatMode: Bool?
-	 var playerName: String?
+	var playerName: String?
     
     // MARK: - UniqueAble
 
