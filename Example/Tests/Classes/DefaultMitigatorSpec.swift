@@ -19,7 +19,7 @@ class DefaultMitigatorSpec: QuickSpec {
 	override func spec () {
 		describe("Throwing behaviour on mitigation") {
             
-			let mitigator = DefaultMitigator()
+			let mitigator = MitigatorNoPrinting()
 
 			it("should rethrow request errors") {
 				expect {

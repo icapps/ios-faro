@@ -33,7 +33,7 @@ class DummyMitigator: DefaultMitigator {
 //TODO: Refactor to nimble
 class ResponseUtilsTests: XCTestCase {
     
-    lazy var errorController = DefaultMitigator()
+    lazy var errorController = MitigatorNoPrinting()
 
     func testNoResponseNoError() {
         do {

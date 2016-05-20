@@ -10,9 +10,22 @@ import Foundation
 import Quick
 import Nimble
 import CoreData
+import AirRivet
 
 @testable import AirRivet_Example
 
+class MockCoreDataEntity: CoreDataEntity {
+
+	// MARK: - Mitigatable
+
+	class override func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+		return MitigatorNoPrinting()
+	}
+
+	class override func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
+		return MitigatorNoPrinting()
+	}
+}
 
 // MARK: - Specs
 

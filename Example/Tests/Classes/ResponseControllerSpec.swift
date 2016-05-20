@@ -30,9 +30,10 @@ class MockEntityWithErrorMitigator: GameScore {
     override class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
         return MockMitigator()
     }
+	
 }
 
-class MockMitigator: DefaultMitigator {
+class MockMitigator: MitigatorNoPrinting {
     override func invalidDictionary(dictionary: AnyObject) throws -> AnyObject?{
         return dictionary["writeNode"]
     }

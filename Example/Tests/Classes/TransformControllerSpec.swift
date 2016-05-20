@@ -51,11 +51,11 @@ class MockModel: UniqueAble, Mitigatable, Parsable {
 	}
 
 	class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
-		return DefaultMitigator()
+		return MitigatorNoPrinting()
 	}
 
 	class func requestMitigator()-> protocol<RequestMitigatable, Mitigator> {
-		return DefaultMitigator()
+		return MitigatorNoPrinting()
 	}
 }
 

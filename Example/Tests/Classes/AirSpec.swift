@@ -30,6 +30,16 @@ class MockEntity: GameScore {
             throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
 		}
 	}
+
+	// MARK: - Mitigatable
+
+	class override func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+		return MitigatorNoPrinting()
+	}
+
+	class override func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
+		return MitigatorNoPrinting()
+	}
 }
 
 // MARK: - Specs
