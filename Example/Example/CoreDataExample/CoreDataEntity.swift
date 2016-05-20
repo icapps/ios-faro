@@ -55,29 +55,12 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 
 	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) throws -> Self? {
 
-		guard let managedObjectContext = managedObjectContext else {
+		guard let managedObjectContext = managedObjectContext else  {
 			return nil
 		}
 
-		guard let uniqueKey = json["uniqueValue"] as? String else {
-			throw MapError.JSONHasNoUniqueValue(json: json)
-		}
-
-		let fetchrequest = NSFetchRequest(entityName: "CoreDataEntity")
-		let predicate = NSPredicate(format: "uniqueValue == %@", uniqueKey)
-		fetchrequest.predicate = predicate
-
-		let entities = try managedObjectContext.executeFetchRequest(fetchrequest) as! [CoreDataEntity]
-		if !entities.isEmpty && entities.count == 1 {
-				return autocast(entities.first)
-		}else if entities.count > 1  {
-			let name =  typeName(CoreDataEntity)
-			throw MapError.EnityShouldBeUniqueForJSON(json: json, typeName: name)
-		}else {
-			return nil
-		}
+		return autocast(try fetchInCoreDataFromJSON(json, managedObjectContext: managedObjectContext, entityName: "CoreDataEntity", uniqueValueKey: "uniqueValue"))
 	}
-
 
 	// MARK: - Mitigatable
 

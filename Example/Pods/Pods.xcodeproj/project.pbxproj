@@ -91,10 +91,11 @@
 		BD61DF4D5F55CFE185B879AA3C8F7781 /* ErrorUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EBB75B641349590983492BDE1226103 /* ErrorUtility.swift */; };
 		BEA76FA499D5899BD98DBD891FF921D4 /* SatisfyAnyOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1CBF7E0E8ADEA394A70089D7FF3009 /* SatisfyAnyOf.swift */; };
 		BF858701915EA372537319572DF981B5 /* World+DSL.h in Headers */ = {isa = PBXBuildFile; fileRef = 63E6E3E3DF9187D64CA37D6900545211 /* World+DSL.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		C03B8DDB1CEF5E98003BD3E8 /* TransformCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03B8DDA1CEF5E98003BD3E8 /* TransformCoreData.swift */; };
+		C03B8DDD1CEF5EC7003BD3E8 /* CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03B8DDC1CEF5EC7003BD3E8 /* CoreData.swift */; };
 		C0854CF71CEF1242004C791E /* MitigatorNoPrinting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0854CF61CEF1242004C791E /* MitigatorNoPrinting.swift */; };
 		C0854CF91CEF2805004C791E /* ErrorEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0854CF81CEF2805004C791E /* ErrorEnum.swift */; };
 		C0D142081CEDE58E00DF9266 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D142051CEDE58E00DF9266 /* Response.swift */; };
-		C0D142091CEDE58E00DF9266 /* TransformCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D142061CEDE58E00DF9266 /* TransformCoreData.swift */; };
 		C0D1420A1CEDE58E00DF9266 /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D142071CEDE58E00DF9266 /* Transform.swift */; };
 		C0D1420B1CEDE70400DF9266 /* MitigatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63DEBCC864D40EC4074E7D7BCA9827C /* MitigatorProtocol.swift */; };
 		C0D1423F1CEE27AC00DF9266 /* AutoCast.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1423E1CEE27AC00DF9266 /* AutoCast.swift */; };
@@ -254,10 +255,11 @@
 		B9C6B0239F0F891F694575875BB7775A /* Pods-AirRivet_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AirRivet_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		BFA23D56E5600B4488DBCBC854433373 /* BeGreaterThanOrEqualTo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeGreaterThanOrEqualTo.swift; path = Sources/Nimble/Matchers/BeGreaterThanOrEqualTo.swift; sourceTree = "<group>"; };
 		BFBFEF4A9D6B6E9AB4F11211B430A31B /* QuickSelectedTestSuiteBuilder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = QuickSelectedTestSuiteBuilder.swift; path = Sources/Quick/QuickSelectedTestSuiteBuilder.swift; sourceTree = "<group>"; };
+		C03B8DDA1CEF5E98003BD3E8 /* TransformCoreData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformCoreData.swift; sourceTree = "<group>"; };
+		C03B8DDC1CEF5EC7003BD3E8 /* CoreData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreData.swift; sourceTree = "<group>"; };
 		C0854CF61CEF1242004C791E /* MitigatorNoPrinting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MitigatorNoPrinting.swift; sourceTree = "<group>"; };
 		C0854CF81CEF2805004C791E /* ErrorEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorEnum.swift; sourceTree = "<group>"; };
 		C0D142051CEDE58E00DF9266 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
-		C0D142061CEDE58E00DF9266 /* TransformCoreData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TransformCoreData.swift; path = ../TransformCoreData.swift; sourceTree = "<group>"; };
 		C0D142071CEDE58E00DF9266 /* Transform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
 		C0D1423E1CEE27AC00DF9266 /* AutoCast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AutoCast.swift; path = Utilities/AutoCast.swift; sourceTree = "<group>"; };
 		C9A2B49200AC2BB9CDDAD982C13EF8B5 /* AsyncMatcherWrapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsyncMatcherWrapper.swift; path = Sources/Nimble/Matchers/AsyncMatcherWrapper.swift; sourceTree = "<group>"; };
@@ -482,13 +484,13 @@
 			children = (
 				6353A738B67E7E21C85A9DB5260B9375 /* Air.swift */,
 				C0D1423E1CEE27AC00DF9266 /* AutoCast.swift */,
-				C0D142021CEDE51300DF9266 /* CoreData */,
 				CD98C16DFF7FB92476E8A4F829F1F8D0 /* Environment.swift */,
 				C0854CF81CEF2805004C791E /* ErrorEnum.swift */,
 				443F1A1688CFF7776A373C10F0BEE0E1 /* Mitigators */,
 				C0D142051CEDE58E00DF9266 /* Response.swift */,
 				AFF6714DF5C9D1E07E06F2F8DE521F51 /* Rivetable.swift */,
 				C0D142071CEDE58E00DF9266 /* Transform.swift */,
+				C03B8DDA1CEF5E98003BD3E8 /* TransformCoreData.swift */,
 				C9082C73F78EA5FC8A5690D217D0A306 /* Utilities */,
 			);
 			path = Sources;
@@ -582,18 +584,11 @@
 			path = Nimble;
 			sourceTree = "<group>";
 		};
-		C0D142021CEDE51300DF9266 /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-				C0D142061CEDE58E00DF9266 /* TransformCoreData.swift */,
-			);
-			path = CoreData;
-			sourceTree = "<group>";
-		};
 		C9082C73F78EA5FC8A5690D217D0A306 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
 				80FE36A7A5802CA07F28E17CF498C043 /* dispatch.swift */,
+				C03B8DDC1CEF5EC7003BD3E8 /* CoreData.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -815,9 +810,10 @@
 				C0D1423F1CEE27AC00DF9266 /* AutoCast.swift in Sources */,
 				C0D1420B1CEDE70400DF9266 /* MitigatorProtocol.swift in Sources */,
 				C0D142081CEDE58E00DF9266 /* Response.swift in Sources */,
-				C0D142091CEDE58E00DF9266 /* TransformCoreData.swift in Sources */,
+				C03B8DDD1CEF5EC7003BD3E8 /* CoreData.swift in Sources */,
 				C0D1420A1CEDE58E00DF9266 /* Transform.swift in Sources */,
 				C0854CF91CEF2805004C791E /* ErrorEnum.swift in Sources */,
+				C03B8DDB1CEF5E98003BD3E8 /* TransformCoreData.swift in Sources */,
 				6B80E92343981770D80E240815F7A3D2 /* Air.swift in Sources */,
 				D0E04B7DB2091742A26919EB9B8D2F09 /* AirRivet-dummy.m in Sources */,
 				6BEB38BB703877D8BB3172F0C7BA49B6 /* MitigatorDefault.swift in Sources */,
