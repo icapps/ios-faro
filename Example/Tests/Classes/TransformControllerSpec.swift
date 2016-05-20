@@ -13,11 +13,11 @@ import CoreData
 
 @testable import AirRivet
 
-class ExampleBaseModel: UniqueAble, Mitigatable, Parsable {
+class MockModel: UniqueAble, Mitigatable, Parsable {
     
     var objectId: String?
 
-	required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = ExampleBaseModel.managedObjectContext()) throws {
+	required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = MockModel.managedObjectContext()) throws {
 		try self.map(json)
 	}
 	
@@ -59,14 +59,14 @@ class ExampleBaseModel: UniqueAble, Mitigatable, Parsable {
 	}
 }
 
-extension ExampleBaseModel: EnvironmentConfigurable {
+extension MockModel: EnvironmentConfigurable {
 
 	class func contextPath() -> String {
 		return "something"
 	}
 	
 	class func environment() -> protocol<Environment, Mockable> {
-		return EnvironmentParse<GameScore>() 
+		return Mock()
 	}
     
 }
@@ -99,39 +99,39 @@ class TransformJSONSpec: QuickSpec {
             
             it ("should return correct objectId at transformation"){
                 try! transformController.transform(data, succeed: {
-                    (model: ExampleBaseModel) in
+                    (model: MockModel) in
 					expect(model.objectId).to(equal("123456ABCdef"))
                 })
             }
             
             it("should not return error at parseFromDict") {
-				expect{ try ExampleBaseModel(json:["identifier" : "test123"])}.notTo(throwError())
+				expect{ try MockModel(json:["identifier" : "test123"])}.notTo(throwError())
             }
-            
+
             it("should return correct objectId at transform with body") {
                 expect {try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())
                 
                 try! transformController.transform(data, succeed: {
-					(result : ExampleBaseModel) in
+					(result : MockModel) in
 					expect(result.objectId).to(equal("123456ABCdef"))
                 })
             }
-            
+
             it("should throw error at transform with wrong data") {
                 var random = NSInteger(arc4random_uniform(99) + 1)
                 data = NSData(bytes: &random, length: 3)
                 
-                expect { try transformController.transform(data, succeed: { (model : ExampleBaseModel) in
+                expect { try transformController.transform(data, succeed: { (model : MockModel) in
                     XCTFail("Should not complete") 
                 })}.to(throwError(closure: { (error) in
                     let error = error as NSError
                     expect(error.code).to(equal(3840))
                 }))
             }
-            
+
             it("should not throw errror at transform with array of objects") {
                 expect{ try data = self.loadDataFromUrl("exampleBaseModelResultsArray")!}.notTo(throwError())
-                try! transformController.transform(data, succeed: { (results: [ExampleBaseModel]) in
+                try! transformController.transform(data, succeed: { (results: [MockModel]) in
                     expect{results.count}.to(equal(3))
                     expect{results[0].objectId}.to(equal("123a"))
                     expect{results[1].objectId}.to(equal("456b"))
@@ -141,7 +141,7 @@ class TransformJSONSpec: QuickSpec {
 
             it ("should throw error at transform with invalid root key") {
                 expect{ try data = self.loadDataFromUrl("exampleBaseModelResultsArrayCustomRootKey")!}.notTo(throwError())
-                expect { try transformController.transform(data, succeed: { (model : [ExampleBaseModel]) in
+                expect { try transformController.transform(data, succeed: { (model : [MockModel]) in
                     XCTFail("Should not complete") 
                 })}.to(throwError(closure: { (error) in
 					switch error {
@@ -152,12 +152,12 @@ class TransformJSONSpec: QuickSpec {
 					}
                 }))
             }
-            
+
             it("should not throw error at transform with single item") {
-                expect{ try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())
-                try! transformController.transform(data, succeed: {(results: [ExampleBaseModel]) in
-                    expect(results.count).to(equal(1))
-                    expect(results[0].objectId).to(equal("123456ABCdef"))
+                expect{ try data = self.loadDataFromUrl("exampleBaseModelResultsArray")!}.notTo(throwError())
+                try! transformController.transform(data, succeed: {(results: [MockModel]) in
+                    expect(results.count).to(equal(3))
+                    expect(results[0].objectId).to(equal("123a"))
                 })
             }
             
@@ -165,7 +165,7 @@ class TransformJSONSpec: QuickSpec {
                 var random = NSInteger(arc4random_uniform(99) + 1)
                 data = NSData(bytes: &random, length: 3)
                 
-                expect { try transformController.transform(data, succeed: { (model : [ExampleBaseModel]) in
+                expect { try transformController.transform(data, succeed: { (model : [MockModel]) in
                                         XCTFail("Should not complete")
                 })}.to(throwError(closure: { (error) in
                     let error = error as NSError
