@@ -72,16 +72,15 @@ class GameScoreSpec: QuickSpec {
 				expect(success).to(equal(true))
             }
 
+			
 			it("retrieve a single gamescore by objectID"){
-				var result = try! MockGameScore(json: ["":""])
 				let objectId = "1275"
-				try! Air.retrieveWithUniqueId(objectId, succeed: { (response) in
-					result = response
+				try! Air.retrieveWithUniqueId(objectId, succeed: { (response: MockGameScore) in
+					expect(response.objectId).to(equal(objectId))
                 }, fail: { (error) in
                     XCTFail("Failed with \(error)")
 				})
 
-				expect(result.objectId).to(equal(objectId))
 			}
 
         }

@@ -43,22 +43,22 @@ class GameScore: NSObject, Rivetable {
 	}
 
 	func map(json: AnyObject) throws {
-		guard let internalJSON = json as? NSDictionary else {
+		if let json = json as? [String: AnyObject] {
+			if let objectId = json["objectId"] as? String {
+				self.objectId = objectId
+			}
+			if let score = json["score"] as? Int {
+				self.score = score
+			}
+			if let cheatMode = json["cheatMode"] as? Bool {
+				self.cheatMode = cheatMode
+			}
+
+			if let playerName = json["playerName"] as? String {
+				self.playerName = playerName
+			}
+		}else {
 			throw ResponseError.InvalidDictionary(dictionary: json)
-		}
-
-		if let objectId = internalJSON["objectId"] as? String {
-			self.objectId = objectId
-		}
-		if let score = internalJSON["score"] as? Int {
-			self.score = score
-		}
-		if let cheatMode = internalJSON["cheatMode"] as? Bool {
-			self.cheatMode = cheatMode
-		}
-
-		if let playerName = internalJSON["playerName"] as? String {
-			self.playerName = playerName
 		}
 	}
 
