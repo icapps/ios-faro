@@ -40,13 +40,14 @@ class CoreDataEntitySpec: QuickSpec {
 				coreDataController.managedObjectContext.reset()
 			})
 
+			let json = ["CoreDataEntityObjectId":"unique id", "username": "Fons"]
+
 			it("Create instanse with username") {
 				let entity = try! CoreDataEntity(json: ["username": "Fons"], managedObjectContext: coreDataController.managedObjectContext)
 				expect(entity.username).to(equal("Fons"))
 			}
 
 			it("should fetch an existing object") {
-				let json = ["CoreDataEntityObjectId":"unique id", "username": "Fons"]
 				let entity = try! CoreDataEntity(json: json, managedObjectContext: coreDataController.managedObjectContext)
 
 				let sameEntity = try! CoreDataEntity.lookupExistingObjectFromJSON(json, managedObjectContext: coreDataController.managedObjectContext)
@@ -59,7 +60,10 @@ class CoreDataEntitySpec: QuickSpec {
 				expect(allEntities).to(haveCount(1))
 			}
 
-//			it("should ", closure: <#T##() -> ()#>)
+			it("should not throw when no instance is found", closure: { 
+				let entity = try! CoreDataEntity.lookupExistingObjectFromJSON(json, managedObjectContext: coreDataController.managedObjectContext)
+				expect(entity).to(beNil())
+			})
 		}
 	}
 
