@@ -10,16 +10,19 @@ import UIKit
 import AirRivet
 
 class SwiftViewController: UIViewController {
-    
-    // MARK: - Outlets
-    
-	@IBOutlet var label: UILabel!
 
-    // MARK: - View flow
+	@IBOutlet var label: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+		doExample()
+		doCoreDataExample()
+		doStoreJSONExample()
+
+    }
+
+	func doExample() {
 		do {
 			try Air.fetch(succeed: { (response: [GameScore]) in
 				print("🎉 successfully fetched \(response.count) objects")
@@ -30,32 +33,43 @@ class SwiftViewController: UIViewController {
 
 			try Air.fetchWithUniqueId("pyqCt2ZHWT", succeed: { (response: GameScore) in
 				print("🎉 successfully fetched one object \(response.uniqueValue)")
-            })
+			})
 		} catch {
 			print("💣 Error with request \(error)")
 		}
+	}
 
-		//Core data
-
+	func doCoreDataExample()  {
 		do {
 			let coreDataEntity = try CoreDataEntity(json: ["uniqueValue": "something fun"])
 			coreDataEntity.username = "Fons"
 			print("🏪 Core data entity made successfully. \(coreDataEntity.username!)")
-//Saving all the time is no fun. But it works:). Uncomment if you want to save
+			//Saving all the time is no fun. But it works:). Uncomment if you want to save
 
-//			try Air.post(coreDataEntity,
-//			             succeed: { (response) in
-//					print("🎉 saved CoreDataEntity")
-//				})
+			//			try Air.post(coreDataEntity,
+			//			             succeed: { (response) in
+			//					print("🎉 saved CoreDataEntity")
+			//				})
 			try Air.fetch(succeed: { (response: [CoreDataEntity]) in
 				print("🎉 fetched CoreDataEntities: \(response)")
 			})
 		}catch {
 			print("💣 \(error)")
 		}
+	}
 
-
-    }
+	func doStoreJSONExample (){
+		do {
+			try Air.fetch(succeed: { (response: [GameScoreStore]) in
+				print("🎉 fetched 'GameScoreStore' objects")
+				print("Go take a look at the JSON file")
+				print("1. Go to appliction bundle")
+				print("2. Go to documents folder")
+			})
+		}catch {
+			print("💣 [doStoreJSONExample] error: \(error)")
+		}
+	}
 	
 }
 
