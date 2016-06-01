@@ -13,6 +13,13 @@ import AirRivet
 
 class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitigatable, Transformable {
 
+	/**
+	You should override this method. Swift does not inherit the initializers from its superclass.
+	*/
+	override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+		super.init(entity: entity, insertIntoManagedObjectContext: context)
+	}
+
 	// MARK: - Init
 
 	required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = CoreDataEntity.managedObjectContext()) throws {

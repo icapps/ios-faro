@@ -10,7 +10,9 @@ import Nimble
 import Quick
 import XCTest
 
-@testable import AirRivet
+import AirRivet
+@testable import AirRivet_Example
+
 
 // MARK: - Specs
 

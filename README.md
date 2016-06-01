@@ -11,11 +11,22 @@ The idea is that you have `Air` which is a class that performs the request for a
 
 `AnyThing` can be a `Rivet` if they are `Rivetable`. `Rivetable` is a combination of protocols that the Rivet (Type) has to conform to. The `Rivet` is `Rivetable` if:
 
-- `Mitigatable`: Receive requests to make anything that can go wrong less severe.
+- `Mitigatable`: Receive requests to make anything that can go wrong less severe. `AirRivet` includes 2 `Mitigator`:
+
+	1. `MitigatorDefault` prints any error that is thrown
+	2. `MitigatorNoPrinting` does not print anyting. Handy for testing!
+
 - `Parsable`: You get Dictionaries that you use to set the variables.
 - `EnvironmentConfigurable`: We could get the data over the `Air` from a _production_ or a _development_ environment.
 - `Mockable`: There is also a special case where the environment can be mocked. Than your request are loaded from local files _(dummy files)_
 - `UniqueAble`: If your `AnyThing` is in a _collection_ you can find your entity by complying to `UniqueAble`
+- `Transformable`: We need to be able to _transform_ data to a `Rivetable` type. A default transformer is `TransformJSON` but you can provide your own. AirRivet include 3 transformers you could use:
+
+	1. `TransformJSON` the default
+	2. `TransfromCoreData` -> used to transform to core data object.
+	3. `TransformAndStore` -> use to store a JSON file when fetching
+	4. `TransformAndStoreCoreData` -> equal to 3 but for CoreData
+
 
 If you do the above (there are default implementation provided in the example). Then you could use the code like below.
 
@@ -23,13 +34,13 @@ If you do the above (there are default implementation provided in the example). 
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-1. Create a generic class that complies to `Environment, Mockable, Transformable`.
+1. Create a generic class that complies to `Environment, Mockable`.
 2. Create a Model object that complies to protocol `Rivetable`.
 
 ### Swift
 #### 1. Environment
 ```swift
-class Environment <Rivet: EnvironmentConfigurable>: Environment, Mockable, Transformable  {
+class Environment <Rivet: EnvironmentConfigurable>: Environment, Mockable  {
 	//You should use the contextPath as your API works. For this Environment we have "<base>/contextPath"
 	var serverUrl = "http:// ...\(Rivet().contextPath())"
 	var request: NSMutableURLRequest
@@ -40,10 +51,6 @@ class Environment <Rivet: EnvironmentConfigurable>: Environment, Mockable, Trans
 
 	func shouldMock() -> Bool {
 		return false
-	}
-
-	func transformController() -> TransformController {
-		return TransformController()
 	}
 }
 ```
@@ -70,6 +77,20 @@ Use this to change the default error handling. Default handling is:
 1. `Print` the error
 2. `throw` the error back up
 
+```swift
+class Foo: Foo {
+	// Implement protocols.
+	// See GameScore class in Example project.
+
+	class override func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+		return MitigatorDefault()
+	}
+
+	class override func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
+		return MitigatorDefault()
+	}
+}
+```
 If you want different error handling you can provide a different Mititagor instance.
 As an example we provide the `MitigatorNoPrinting`. Handy to use in Unit tests
 

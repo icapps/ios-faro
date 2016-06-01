@@ -11,7 +11,8 @@ import Nimble
 import Quick
 import CoreData
 
-@testable import AirRivet
+import AirRivet
+@testable import AirRivet_Example
 
 class MockModel: UniqueAble, Mitigatable, Parsable {
     

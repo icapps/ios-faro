@@ -11,6 +11,8 @@ import Nimble
 import AirRivet
 import Foundation
 
+@testable import AirRivet_Example
+
 // MARK: - Mocks
 
 class Mock: Environment, Mockable {

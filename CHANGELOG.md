@@ -1,5 +1,10 @@
 # AirRivet
 
+## Version 0.5.4
+* Added transformer that can store JSON files
+* Update unit test imports
+* Updated ReadMe
+
 ## Version 0.5.3
 * Added utility function to fetch unique entities from core data
 

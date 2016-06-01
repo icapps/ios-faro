@@ -34,7 +34,7 @@ class CoreDataEntitySpec: QuickSpec {
 	override func spec() {
 		describe("Create core data") {
 
-			let coreDataController = CoreDataController.sharedInstance
+			let coreDataController = CoreDataController()
 			coreDataController.storeType = NSInMemoryStoreType
 			beforeEach({
 				coreDataController.managedObjectContext.reset()

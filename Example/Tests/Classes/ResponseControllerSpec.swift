@@ -10,7 +10,9 @@ import XCTest
 import Nimble
 import Quick
 
-@testable import AirRivet
+import AirRivet
+@testable import AirRivet_Example
+
 
 // MARK: - Mocks
 
