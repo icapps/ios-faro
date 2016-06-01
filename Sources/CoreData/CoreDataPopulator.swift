@@ -25,10 +25,17 @@ public class CoreDataPopulator: NSObject {
 	Initialazes a convinience class for dealing with CoreData.
 	- parameter modelName: name of youe model.
 	*/
-	init(modelName: String) {
+	public init(modelName: String) {
 		self.modelName = modelName
 		super.init()
 	}
+
+	public lazy var managedObjectContext: NSManagedObjectContext = {
+		let coordinator = self.persistentStoreCoordinator
+		var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+		managedObjectContext.persistentStoreCoordinator = coordinator
+		return managedObjectContext
+	}()
 
 	private lazy var applicationDocumentsDirectory: NSURL = {
 
@@ -68,12 +75,7 @@ public class CoreDataPopulator: NSObject {
 		return coordinator
 	}()
 
-	public lazy var managedObjectContext: NSManagedObjectContext = {
-		let coordinator = self.persistentStoreCoordinator
-		var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-		managedObjectContext.persistentStoreCoordinator = coordinator
-		return managedObjectContext
-	}()
+
 
 	// MARK: - Core Data Saving support
 

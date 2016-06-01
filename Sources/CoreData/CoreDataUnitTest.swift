@@ -14,17 +14,22 @@ import CoreData
 Simple core data controller just to create a model that we can reuse.
 */
 
-//TODO: ARA-44 Move to AirRivet or icapps/swift-core-data-populator
-
-class CoreDataUnitTest: NSObject {
+public class CoreDataUnitTest: NSObject {
 
 	private let  storeType = NSInMemoryStoreType
 
 	let modelName: String
 
-	init(modelName: String) {
+	public init(modelName: String) {
 		self.modelName = modelName
 	}
+
+	public lazy var managedObjectContext: NSManagedObjectContext = {
+		let coordinator = self.persistentStoreCoordinator
+		var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+		managedObjectContext.persistentStoreCoordinator = coordinator
+		return managedObjectContext
+	}()
 
 	private lazy var applicationDocumentsDirectory: NSURL = {
 		let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
@@ -59,12 +64,4 @@ class CoreDataUnitTest: NSObject {
 
 		return coordinator
 	}()
-
-	lazy var managedObjectContext: NSManagedObjectContext = {
-		let coordinator = self.persistentStoreCoordinator
-		var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-		managedObjectContext.persistentStoreCoordinator = coordinator
-		return managedObjectContext
-	}()
-
 }
