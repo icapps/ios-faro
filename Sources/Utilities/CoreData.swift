@@ -20,21 +20,24 @@ Fetch a unique entity in core data or nil if no entity can be found. We look for
 
 public func fetchInCoreDataFromJSON<T: NSManagedObject>(json: AnyObject, managedObjectContext: NSManagedObjectContext, entityName: String, uniqueValueKey: String) throws -> T? {
 
-	guard let uniqueKey = json[uniqueValueKey] as? String else {
+	guard let value = json[uniqueValueKey] as? String else {
 		throw MapError.JSONHasNoUniqueValue(json: json)
 	}
 
 	let fetchrequest = NSFetchRequest(entityName: entityName)
-	let predicate = NSPredicate(format: "\(uniqueValueKey) == %@", uniqueKey)
+	let predicate = NSPredicate(format: "uniqueValue == %@", value)
 	fetchrequest.predicate = predicate
 
-	let entities = try managedObjectContext.executeFetchRequest(fetchrequest) as! [T]
-	if !entities.isEmpty && entities.count == 1 {
-		return entities.first
-	}else if entities.count > 1  {
-		let name =  typeName(T)
-		throw MapError.EnityShouldBeUniqueForJSON(json: json, typeName: name)
-	}else {
-		return nil
+	if let entities = try managedObjectContext.executeFetchRequest(fetchrequest) as? [T] {
+		if !entities.isEmpty && entities.count == 1 {
+			return autocast(entities.first)
+		}else if entities.count > 1  {
+			let name =  typeName(T)
+			throw MapError.EnityShouldBeUniqueForJSON(json: json, typeName: name)
+		}else {
+			return nil
+		}
 	}
+
+	return nil
 }

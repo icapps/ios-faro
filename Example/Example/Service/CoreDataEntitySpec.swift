@@ -54,7 +54,7 @@ class CoreDataEntitySpec: QuickSpec {
 
 					let sameEntity = try! CoreDataEntity.lookupExistingObjectFromJSON(json, managedObjectContext: coreDataController.managedObjectContext)
 
-					expect(entity.objectID).to(equal(sameEntity?.objectID))
+					expect(entity.objectID).to(equal(sameEntity!.objectID))
 
 					let fetch = NSFetchRequest(entityName: "CoreDataEntity")
 					let allEntities = try! coreDataController.managedObjectContext.executeFetchRequest(fetch) as! [CoreDataEntity]
