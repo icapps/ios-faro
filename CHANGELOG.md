@@ -1,5 +1,8 @@
 # AirRivet
 
+## Version 0.5.5
+* fixed crash in unique lookup
+
 ## Version 0.5.4
 * Added transformer that can store JSON files
 * Update unit test imports
