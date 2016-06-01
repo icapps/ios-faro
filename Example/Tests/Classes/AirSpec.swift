@@ -9,7 +9,10 @@
 import Quick
 import Nimble
 
-@testable import AirRivet
+import AirRivet
+
+@testable import AirRivet_Example
+
 
 // MARK: - Mocks
 

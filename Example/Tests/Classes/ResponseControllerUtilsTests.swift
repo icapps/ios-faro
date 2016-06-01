@@ -9,6 +9,7 @@
 import XCTest
 
 @testable import AirRivet
+@testable import AirRivet_Example
 
 // MARK: - Mocks
 

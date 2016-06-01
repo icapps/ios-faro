@@ -28,7 +28,6 @@
 		C0A3DB0D1CAEBBB200978DBD /* EnvironmentParse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */; };
 		C0A3DB0E1CAEBBB200978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
 		C0A3DB0F1CAEBBB600978DBD /* EnvironmentParse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */; };
-		C0A3DB101CAEBBB600978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
 		C0A3DB121CAEBBCA00978DBD /* GameScoreSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB111CAEBBCA00978DBD /* GameScoreSpec.swift */; };
 		C0D142301CEDEDA200DF9266 /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1422F1CEDEDA200DF9266 /* CoreDataController.swift */; };
 		C0D142341CEDEF0900DF9266 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C0D142321CEDEF0900DF9266 /* Model.xcdatamodeld */; };
@@ -221,9 +220,9 @@
 		62AF6B0F1CE47E4900339275 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */,
-				C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */,
 				C0D142311CEDEDA800DF9266 /* CoreData */,
+				C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */,
+				C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -516,7 +515,6 @@
 				A4D85BDB1CCA6B470046AF29 /* ResponseControllerUtilsTests.swift in Sources */,
 				C08BF3941CCE4AF8005CAD3F /* AirSpec.swift in Sources */,
 				C0D1423D1CEE203300DF9266 /* CoreDataEntitySpec.swift in Sources */,
-				C0A3DB101CAEBBB600978DBD /* GameScore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
