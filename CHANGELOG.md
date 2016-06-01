@@ -1,8 +1,10 @@
 # AirRivet
 
+## Version 0.5.6
+* fixed crash in unique lookup
+
 ## Version 0.5.5
 * Added support for OS X, watchOS and tvOS.
-* fixed crash in unique lookup
 
 ## Version 0.5.4
 * Added transformer that can store JSON files
