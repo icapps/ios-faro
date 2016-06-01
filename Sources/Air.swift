@@ -70,7 +70,7 @@ public class Air {
 	}
 
 
-	//MARK: - Retrieve
+	//MARK: - Fetch
 	/**
  Retreive all items of `Type`. Closures are called on a background queue!
 	
@@ -95,7 +95,7 @@ public class Air {
 	/**
  Retreive a single item of `Rivet`. Closures are called on a background queue!
 	
-	- parameter objectID: Something that uniquely defines the object you are asking for of `Rivet`
+	- parameter uniqueId: Something that uniquely defines the object you are asking for of `Rivet`
 	- parameter succeed: Closure is called when service request successfully returns. Closures are called on a background queue!
 	- parameter fail: Closure called when something in the response fails.
 	- throws : Errors related to the request construction.
