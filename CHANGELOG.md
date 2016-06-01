@@ -1,5 +1,8 @@
 # AirRivet
 
+## Version 0.5.8
+* added some convinience methods for core data
+
 ## Version 0.5.7
 * fixed crash in unique lookup
 
