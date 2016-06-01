@@ -1,5 +1,8 @@
 # AirRivet
 
+## Version 0.5.9
+* made stuff public
+
 ## Version 0.5.8
 * added some convinience methods for core data
 
