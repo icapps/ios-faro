@@ -36,8 +36,8 @@ public class dispatch {
         }
     }
     
-    public class func after(seconds:CGFloat,_ block: dispatch_block_t) {
-        let dispatchTime = Int64(seconds * CGFloat(NSEC_PER_SEC))
+    public class func after(seconds: Float,_ block: dispatch_block_t) {
+        let dispatchTime = Int64(seconds * Float(NSEC_PER_SEC))
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, dispatchTime), dispatch_get_main_queue(), block)
     }    
 }

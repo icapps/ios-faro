@@ -1,7 +1,10 @@
 # AirRivet
 
-## Version 0.5.6
+## Version 0.5.7
 * fixed crash in unique lookup
+
+## Version 0.5.6
+* Fix a bug when buiding for watchOS.
 
 ## Version 0.5.5
 * Added support for OS X, watchOS and tvOS.
