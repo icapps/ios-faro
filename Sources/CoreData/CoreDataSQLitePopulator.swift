@@ -15,7 +15,7 @@ import CoreData
 Creates a sqlite store named `modelName.sqlite` that can be found in the application bundle documents folder.
 */
 
-public class CoreDataPopulator: NSObject {
+public class CoreDataSQLitePopulator: NSObject {
 
 	var storeType = NSSQLiteStoreType
 	let modelName: String

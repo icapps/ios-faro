@@ -16,7 +16,7 @@ Use the `CoreDataPopulator` to create the _sqlite_ file with `modelName`.
 
 */
 
-public class CoreDataPopulated: NSObject {
+public class CoreDataFromFilledSQLite: NSObject {
 
 	var storeType = NSSQLiteStoreType
 	let modelName: String
