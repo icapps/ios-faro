@@ -1,5 +1,8 @@
 # AirRivet
 
+## Version 0.5.10
+* renames in core data
+
 ## Version 0.5.9
 * made stuff public
 
