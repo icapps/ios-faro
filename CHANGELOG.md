@@ -1,5 +1,8 @@
 # AirRivet
 
+## Version 0.5.12
+* fixed problem with unit tests and singleton of managedObjectContext
+
 ## Version 0.5.11
 * fixes and documentation for core data unit tests
 
