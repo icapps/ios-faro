@@ -129,7 +129,60 @@ GameScoreController * controller = [[GameScoreController alloc] init];
 	NSLog(@"%@", error);
 }];
 ```
-> *See "(project root)/Example" *
+> *See "(project root)/Example"*
+
+## Unit tests
+AirRivet provides a way to mock data when writing unit tests.
+### Rivetable enum/ struct / class
+
+Mock the enviroment you use with `Air`. This you can do in 2 steps
+1. using a `MockEnvironment` like below.
+2. Subclasses the rivetable instance
+
+```swift
+class MockEnvironment<Rivet: EnvironmentConfigurable>: ApplictionEnvironment <Rivet> {
+	override class shouldMock () {
+		return true
+	}
+}
+```
+
+```swift
+
+class MockFoo: Foo {
+	override class func environment() -> protocol<Environment, Mockable> {
+		return MockEnvironment<MockFoo>()
+	}
+
+	override class func transform() -> TransformJSON {
+		return TransformJSON()
+	}
+}
+```
+
+
+### Core Data entities
+Writing unit tests with Core Data can be hard. With AirRivet you can write unit test for CoreData but it is still combursome.
+Do the stepps like above but make sure to provide the managedObjectContext for unit tests. See `CoreDataUnitTests`.
+Make sure you create a singleton for your `CoreDataUnitTests` instance.
+
+```swift
+class MockCoreDataEntity: CoreDataEntity {
+	override class func environment() -> protocol<Environment, Mockable> {
+		return MockEnvironment<MockCoreDataEntity>()
+	}
+
+	override class func transform() -> TransformJSON {
+		return TransformJSON()
+	}
+	override class func managedObjectContext() -> NSManagedObjectContext?  {
+		return coredataUnitTests.sharedInstance.managedObjectContext
+	}
+}
+```
+
+## Write unit tests
+In the example project you can find examples writen with `Nimbel` for both CoreData and others.
 
 ## Requirements
 

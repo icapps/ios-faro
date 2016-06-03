@@ -12,6 +12,18 @@ import CoreData
 
 /**
 Simple core data controller just to create a model that we can reuse.
+
+For your unit tests create a singleton that you can use
+
+```
+class StoreUnitTests: CoreDataUnitTest {
+	static let sharedInstance = StoreUnitTests()
+
+	init(){
+		super.init(modelName:"ModelName")
+	}
+}
+```
 */
 
 public class CoreDataUnitTest: NSObject {

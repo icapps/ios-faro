@@ -25,6 +25,17 @@ class MockCoreDataEntity: CoreDataEntity {
 	class override func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
 		return MitigatorNoPrinting()
 	}
+
+	/**
+	Transform should be overridden because TransFormCoreData is async.
+	*/
+	class override func transform() -> TransformJSON {
+		return TransformJSON()
+	}
+	
+	class  override func managedObjectContext() -> NSManagedObjectContext? {
+		return StoreUnitTests.sharedInstance.managedObjectContext
+	}
 }
 
 // MARK: - Specs
@@ -34,8 +45,7 @@ class CoreDataEntitySpec: QuickSpec {
 	override func spec() {
 		describe("Create core data") {
 
-			let coreDataController = CoreDataController()
-			coreDataController.storeType = NSInMemoryStoreType
+			let coreDataController = StoreUnitTests.sharedInstance
 			beforeEach({
 				coreDataController.managedObjectContext.reset()
 			})

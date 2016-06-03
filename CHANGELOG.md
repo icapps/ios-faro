@@ -1,5 +1,8 @@
 # AirRivet
 
+## Version 0.5.11
+* fixes and documentation for core data unit tests
+
 ## Version 0.5.10
 * renames in core data
 
