@@ -25,6 +25,7 @@
 		C052960D1CB6629E007E1111 /* ObjectiveCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */; };
 		C05296121CB6661E007E1111 /* GameSoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05296111CB6661E007E1111 /* GameSoreController.swift */; };
 		C08BF3941CCE4AF8005CAD3F /* AirSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08BF3931CCE4AF8005CAD3F /* AirSpec.swift */; };
+		C09B12491D01ECFE0006DB91 /* MockEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09B12481D01ECFE0006DB91 /* MockEntities.swift */; };
 		C0A3DB0D1CAEBBB200978DBD /* EnvironmentParse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */; };
 		C0A3DB0E1CAEBBB200978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
 		C0A3DB0F1CAEBBB600978DBD /* EnvironmentParse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */; };
@@ -78,6 +79,7 @@
 		C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectiveCViewController.m; sourceTree = "<group>"; };
 		C05296111CB6661E007E1111 /* GameSoreController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSoreController.swift; sourceTree = "<group>"; };
 		C08BF3931CCE4AF8005CAD3F /* AirSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirSpec.swift; sourceTree = "<group>"; };
+		C09B12481D01ECFE0006DB91 /* MockEntities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockEntities.swift; sourceTree = "<group>"; };
 		C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentParse.swift; sourceTree = "<group>"; };
 		C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScore.swift; sourceTree = "<group>"; };
 		C0A3DB111CAEBBCA00978DBD /* GameScoreSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScoreSpec.swift; sourceTree = "<group>"; };
@@ -85,7 +87,7 @@
 		C0D142331CEDEF0900DF9266 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		C0D142351CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CoreDataEntity+CoreDataProperties.swift"; path = "../CoreDataExample/CoreDataEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C0D142361CEDEF5800DF9266 /* CoreDataEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataEntity.swift; path = ../CoreDataExample/CoreDataEntity.swift; sourceTree = "<group>"; };
-		C0D1423B1CEE1EA100DF9266 /* CoreDataEntitySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataEntitySpec.swift; sourceTree = "<group>"; };
+		C0D1423B1CEE1EA100DF9266 /* CoreDataEntitySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataEntitySpec.swift; path = ../../Example/Service/CoreDataEntitySpec.swift; sourceTree = "<group>"; };
 		C0D9FC241D019E7300644982 /* StoreUnitTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreUnitTest.swift; sourceTree = "<group>"; };
 		C0EA6CF81CFEE0FE00585FF7 /* GameScoreStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScoreStore.swift; sourceTree = "<group>"; };
 		C3040FA8A4C2EBA96AF8B20A /* Pods-AirRivet_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirRivet_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirRivet_Example/Pods-AirRivet_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -236,12 +238,14 @@
 			isa = PBXGroup;
 			children = (
 				C08BF3931CCE4AF8005CAD3F /* AirSpec.swift */,
+				C0D1423B1CEE1EA100DF9266 /* CoreDataEntitySpec.swift */,
 				A4D85BC01CC8E00B0046AF29 /* DefaultMitigatorSpec.swift */,
 				C0A3DB111CAEBBCA00978DBD /* GameScoreSpec.swift */,
+				C09B12481D01ECFE0006DB91 /* MockEntities.swift */,
 				A4D85BD61CCA6AE60046AF29 /* ResponseControllerSpec.swift */,
 				A4D85BD71CCA6AE60046AF29 /* ResponseControllerUtilsTests.swift */,
-				A4D85BC31CC8FAB00046AF29 /* TransformControllerSpec.swift */,
 				C0D9FC241D019E7300644982 /* StoreUnitTest.swift */,
+				A4D85BC31CC8FAB00046AF29 /* TransformControllerSpec.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -274,7 +278,6 @@
 				C0D1422F1CEDEDA200DF9266 /* CoreDataController.swift */,
 				C0D142361CEDEF5800DF9266 /* CoreDataEntity.swift */,
 				C0D142351CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift */,
-				C0D1423B1CEE1EA100DF9266 /* CoreDataEntitySpec.swift */,
 				C0D142321CEDEF0900DF9266 /* Model.xcdatamodeld */,
 			);
 			name = CoreData;
@@ -522,6 +525,7 @@
 				A4D85BC41CC8FAB00046AF29 /* TransformControllerSpec.swift in Sources */,
 				A4D85BDB1CCA6B470046AF29 /* ResponseControllerUtilsTests.swift in Sources */,
 				C08BF3941CCE4AF8005CAD3F /* AirSpec.swift in Sources */,
+				C09B12491D01ECFE0006DB91 /* MockEntities.swift in Sources */,
 				C0D1423D1CEE203300DF9266 /* CoreDataEntitySpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

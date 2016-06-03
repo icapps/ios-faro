@@ -52,7 +52,7 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 		return CoreDataController.sharedInstance.managedObjectContext
 	}
 
-	static func environment() -> protocol<Environment, Mockable> {
+	class func environment() -> protocol<Environment, Mockable> {
 		return EnvironmentParse<CoreDataEntity>()
 	}
 

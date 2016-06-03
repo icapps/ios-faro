@@ -9,8 +9,12 @@
 import Foundation
 import AirRivet
 
+/**
+Every unit test class should have its own managedObjectContext.
+Look at CoreDataEntitySpec for an example.
+*/
+
 class StoreUnitTests: CoreDataUnitTest {
-	static let sharedInstance = StoreUnitTests()
 
 	init(){
 		super.init(modelName:"Model")

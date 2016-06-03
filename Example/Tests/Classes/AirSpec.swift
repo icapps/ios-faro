@@ -13,38 +13,6 @@ import AirRivet
 
 @testable import AirRivet_Example
 
-
-// MARK: - Mocks
-
-class MockEntity: GameScore {
-
-	override class func contextPath() -> String {
-		return "non existing"
-	}
-
-	override class func environment() -> protocol<Environment, Mockable> {
-		return Mock ()
-	}
-
-	override func map(json: AnyObject) throws {
-		guard let
-			dict = json as? [String: AnyObject],
-			_ = dict["playername"] else  {
-            throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
-		}
-	}
-
-	// MARK: - Mitigatable
-
-	class override func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
-		return MitigatorNoPrinting()
-	}
-
-	class override func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
-		return MitigatorNoPrinting()
-	}
-}
-
 // MARK: - Specs
 
 class AirSpec: QuickSpec {
