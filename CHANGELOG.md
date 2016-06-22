@@ -1,5 +1,8 @@
 # AirRivet
 
+## Version 0.5.13
+* CoreDataPopulatedSqlite now throws when you forget to add a sqlite file to the application bundle
+*
 ## Version 0.5.12
 * fixed problem with unit tests and singleton of managedObjectContext
 
