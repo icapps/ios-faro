@@ -16,6 +16,10 @@ Use the `CoreDataPopulator` to create the _sqlite_ file with `modelName`.
 
 */
 
+enum CoreDataFromPopulatedSQLiteError: ErrorType {
+	case MissingSQLiteFile(fileName: String)
+}
+
 public class CoreDataFromPopulatedSQLite: NSObject {
 
 	var storeType = NSSQLiteStoreType
@@ -57,13 +61,15 @@ public class CoreDataFromPopulatedSQLite: NSObject {
 	private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = { [unowned self] in
 		let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
 
-		let sqliteURL = self.usePrefilledSQLLiteFromApplicationBundle()
-
 		var failureReason = "There was an error creating or loading the application's saved data."
+
 		do {
 
+			let sqliteURL = try self.usePrefilledSQLLiteFromApplicationBundle()
 			try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: sqliteURL, options: self.options)
+
 		} catch {
+
 			var dict = [String: AnyObject]()
 			dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
 			dict[NSLocalizedFailureReasonErrorKey] = failureReason
@@ -72,21 +78,26 @@ public class CoreDataFromPopulatedSQLite: NSObject {
 			let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
 			NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
 			abort()
+
 		}
 
 		return coordinator
 		}()
 
-	private func usePrefilledSQLLiteFromApplicationBundle() -> NSURL {
+	private func usePrefilledSQLLiteFromApplicationBundle() throws -> NSURL  {
 		let sqliteURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent("\(modelName).sqlite")
 
 		let fileManager = NSFileManager.defaultManager()
 		if !fileManager.fileExistsAtPath(sqliteURL.path!){
 			print("🗼 moving sqlite database into place for reuse.")
-			//Copy file from application bundle and move to documents directory
+			guard let bundleUrl = NSBundle.mainBundle().URLForResource(modelName, withExtension: ".sqlite") else {
+				print("💣 we could not find \(modelName).sqlite in your application bundle. Make sure it is added to the target and in your project.")
+				throw CoreDataFromPopulatedSQLiteError.MissingSQLiteFile(fileName: "\(modelName).sqlite")
+			}
+
 			do {
-				let bundleUrl = NSBundle.mainBundle().URLForResource(modelName, withExtension: ".sqlite")
-				try fileManager.copyItemAtURL(bundleUrl!, toURL: sqliteURL)
+				try fileManager.copyItemAtURL(bundleUrl, toURL: sqliteURL)
+
 			}catch {
 				print("💣 failed to preload database. Using database without data.")
 				print("💣 error \(error)")
