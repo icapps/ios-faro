@@ -1,5 +1,12 @@
 # AirRivet
 
+## Version 0.6.0
+### WARNING
+
+Breaking changes
+
+* CoreDataFromPopulatedSqlite works with version string to solve problems with update
+
 ## Version 0.5.13
 * CoreDataPopulatedSqlite now throws when you forget to add a sqlite file to the application bundle
 *
