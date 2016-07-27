@@ -95,18 +95,49 @@ public class CoreDataFromPopulatedSQLite: NSObject {
         if fileManager.fileExistsAtPath(sqliteURL.path!) {
             return [sqliteURL]
         } else {
-            //TODO: return alle sqlite files die modelName hebben
+            let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+            let documentsDirectory = urls.last!
+            do {
+                if let filesNameInDocumentsDirectory: [NSURL] = try fileManager.contentsOfDirectoryAtURL(documentsDirectory, includingPropertiesForKeys: nil, options: .SkipsHiddenFiles) {
+                    let files = filesNameInDocumentsDirectory.map{$0}
+                    let modelFiles = files.filter({ (element) -> Bool in
+                        if let fileName = element.lastPathComponent{
+                            return fileName.containsString("modelName")
+                        }else {
+                            return false
+                        }
+                    })
+                    return modelFiles
+                }
+                
+            }catch {
+                print("Error retreiving files in documents with \(error)")
+                return nil
+            }
             return nil
         }
     }
     
     public func reuseSQLite() -> Bool {
-        let allModelNameSQLiteFiles = allModelNameSQLiteFilesInDocumentsFolder()
-        if allModelNameSQLiteFiles?.count == 1 {
-            let filename = allModelNameSQLiteFiles?.first?.lastPathComponent
-            if filename == "\(version)_\(modelName).sqlite" {
-                return true
+        if let allModelNameSQLiteFiles = allModelNameSQLiteFilesInDocumentsFolder() {
+            if allModelNameSQLiteFiles.count == 1 {
+                let filename = allModelNameSQLiteFiles.first?.lastPathComponent
+                if filename == "\(version)_\(modelName).sqlite" {
+                    return true
+                }else {
+                    return false
+                }
             }else {
+                
+                //Delete all files
+                do {
+                    for url in allModelNameSQLiteFiles {
+                        try fileManager.removeItemAtURL(url)
+                    }
+                }catch {
+                    print("💣 error deleting file \(error)")
+                }
+                
                 return false
             }
         }else {
