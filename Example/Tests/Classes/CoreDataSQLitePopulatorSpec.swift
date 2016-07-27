@@ -79,6 +79,15 @@ class CoreDataSQLitePopulatorSpec: QuickSpec {
                 expect(populator.reuseSQLite()).to(beFalse())
             })
             
+            it("should retreive allFiles with modelName") {
+                let files = ["1_modelName.sqlite", "modelName.sqlite", "bla.sqlite"]
+                let modelFiles = files.filter({ (element) -> Bool in
+                    return element.containsString("modelName")
+                })
+                
+                expect(modelFiles.count).to(equal(2))
+            }
+            
         }
     }
     
