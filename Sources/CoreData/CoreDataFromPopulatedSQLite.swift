@@ -26,14 +26,20 @@ public class CoreDataFromPopulatedSQLite: NSObject {
 	let modelName: String
 	let options = [NSMigratePersistentStoresAutomaticallyOption: true,
 	               NSInferMappingModelAutomaticallyOption: true]
+    let version: String
 
 	/**
 	Initialazes a convinience class for dealing with CoreData.
 	- parameter modelName: name of youe model. 
 	*/
-	public init(modelName: String) {
-		self.modelName = modelName
-		super.init()
+    public init(modelName: String, version: String) {
+        
+        self.modelName = modelName
+		self.version = version
+        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+        let documentsDirectory = urls.last!
+        self.sqliteURL = documentsDirectory.URLByAppendingPathComponent("\(version)_\(modelName).sqlite")
+        super.init()
 	}
 
 	public lazy var managedObjectContext: NSManagedObjectContext = {
@@ -41,13 +47,6 @@ public class CoreDataFromPopulatedSQLite: NSObject {
 		var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
 		managedObjectContext.persistentStoreCoordinator = coordinator
 		return managedObjectContext
-	}()
-
-
-	private lazy var applicationDocumentsDirectory: NSURL = {
-
-		let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-		return urls.last!
 	}()
 
 	private lazy var managedObjectModel: NSManagedObjectModel = { [unowned self] in
@@ -84,11 +83,40 @@ public class CoreDataFromPopulatedSQLite: NSObject {
 		return coordinator
 		}()
 
-	private func usePrefilledSQLLiteFromApplicationBundle() throws -> NSURL  {
-		let sqliteURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent("\(modelName).sqlite")
+    private let sqliteURL: NSURL
+    private let fileManager = NSFileManager.defaultManager()
 
-		let fileManager = NSFileManager.defaultManager()
-		if !fileManager.fileExistsAtPath(sqliteURL.path!){
+    /**
+     - returns: Yes of we can reuse the sqlite file in the documents folder.
+     */
+    
+    public func allModelNameSQLiteFilesInDocumentsFolder () -> [NSURL]? {
+        
+        if fileManager.fileExistsAtPath(sqliteURL.path!) {
+            return [sqliteURL]
+        } else {
+            //TODO: return alle sqlite files die modelName hebben
+            return nil
+        }
+    }
+    
+    public func reuseSQLite() -> Bool {
+        let allModelNameSQLiteFiles = allModelNameSQLiteFilesInDocumentsFolder()
+        if allModelNameSQLiteFiles?.count == 1 {
+            let filename = allModelNameSQLiteFiles?.first?.lastPathComponent
+            if filename == "\(version)_\(modelName).sqlite" {
+                return true
+            }else {
+                return false
+            }
+        }else {
+            return false
+        }
+    }
+    
+	private func usePrefilledSQLLiteFromApplicationBundle() throws -> NSURL  {
+		
+		if !reuseSQLite(){
 			print("🗼 moving sqlite database into place for reuse.")
 			guard let bundleUrl = NSBundle.mainBundle().URLForResource(modelName, withExtension: ".sqlite") else {
 				print("💣 we could not find \(modelName).sqlite in your application bundle. Make sure it is added to the target and in your project.")

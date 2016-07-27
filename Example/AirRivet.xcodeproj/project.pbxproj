@@ -12,6 +12,7 @@
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
+		843471D61D48B48F00729E40 /* CoreDataSQLitePopulatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843471D51D48B48F00729E40 /* CoreDataSQLitePopulatorSpec.swift */; };
 		8B4B8BC9FD0FD43B2D7A02F4 /* Pods_AirRivet_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B4D102C77C64869ADE3E97 /* Pods_AirRivet_Tests.framework */; };
 		A4D85BC11CC8E00B0046AF29 /* DefaultMitigatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BC01CC8E00B0046AF29 /* DefaultMitigatorSpec.swift */; };
 		A4D85BC41CC8FAB00046AF29 /* TransformControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BC31CC8FAB00046AF29 /* TransformControllerSpec.swift */; };
@@ -64,6 +65,7 @@
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* AirRivet_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AirRivet_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		843471D51D48B48F00729E40 /* CoreDataSQLitePopulatorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataSQLitePopulatorSpec.swift; sourceTree = "<group>"; };
 		A4D85BC01CC8E00B0046AF29 /* DefaultMitigatorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultMitigatorSpec.swift; sourceTree = "<group>"; };
 		A4D85BC31CC8FAB00046AF29 /* TransformControllerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformControllerSpec.swift; sourceTree = "<group>"; };
 		A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModel.json; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 			children = (
 				C08BF3931CCE4AF8005CAD3F /* AirSpec.swift */,
 				C0D1423B1CEE1EA100DF9266 /* CoreDataEntitySpec.swift */,
+				843471D51D48B48F00729E40 /* CoreDataSQLitePopulatorSpec.swift */,
 				A4D85BC01CC8E00B0046AF29 /* DefaultMitigatorSpec.swift */,
 				C0A3DB111CAEBBCA00978DBD /* GameScoreSpec.swift */,
 				C09B12481D01ECFE0006DB91 /* MockEntities.swift */,
@@ -523,6 +526,7 @@
 				A4D85BC11CC8E00B0046AF29 /* DefaultMitigatorSpec.swift in Sources */,
 				C0A3DB0F1CAEBBB600978DBD /* EnvironmentParse.swift in Sources */,
 				A4D85BC41CC8FAB00046AF29 /* TransformControllerSpec.swift in Sources */,
+				843471D61D48B48F00729E40 /* CoreDataSQLitePopulatorSpec.swift in Sources */,
 				A4D85BDB1CCA6B470046AF29 /* ResponseControllerUtilsTests.swift in Sources */,
 				C08BF3941CCE4AF8005CAD3F /* AirSpec.swift in Sources */,
 				C09B12491D01ECFE0006DB91 /* MockEntities.swift in Sources */,
