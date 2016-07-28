@@ -1,5 +1,8 @@
 # AirRivet
 
+## Version 0.6.1
+* minor fix
+
 ## Version 0.6.0
 ### WARNING
 
