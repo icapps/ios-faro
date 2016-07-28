@@ -108,7 +108,7 @@ open class CoreDataFromPopulatedSQLite: NSObject {
                     let files = filesNameInDocumentsDirectory.map{$0}
                     let modelFiles = files.filter({ (element) -> Bool in
                         if let fileName = element.lastPathComponent{
-                            return fileName.containsString("modelName")
+                            return fileName.containsString(modelName)
                         }else {
                             return false
                         }
@@ -139,6 +139,7 @@ open class CoreDataFromPopulatedSQLite: NSObject {
                 do {
                     for url in allModelNameSQLiteFiles {
                         try fileManager.removeItemAtURL(url)
+                                                print("😀 delete succeeded")
                     }
                 }catch {
                     print("💣 error deleting file \(error)")
