@@ -3,12 +3,10 @@ import Foundation
 /** 
 `Air` handles interactions with a model of a specific Type called `Rivet`. 
 
-This class is intentionally stateless.
-
 # Tasks
 
 ## Save
-`Type` is converted to JSON and send as the body of a request
+`Rivet` is converted to JSON and send as the body of a request
 ## Retrieve
 
 You can fetch a single instance or an array of objects
@@ -64,7 +62,7 @@ public class Air {
 
 	//MARK: - Fetch
 	/**
- Retreive all items of `Type`. Closures are called on a background queue!
+ Retreive all items of `Rivet`. Closures are called on a background queue!
 	
 	- parameter session : Default NSURLSession = NSURLSession(configuration:NSURLSessionConfiguration.defaultSessionConfiguration()
 	- parameter responseController: default is  Response = Response(),

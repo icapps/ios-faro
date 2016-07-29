@@ -6,7 +6,7 @@ import CoreData
 import Faro
 @testable import Faro_Example
 
-class MockModel: UniqueAble, Mitigatable, Parsable {
+class MockModel: UniqueAble, Mitigatable, Parsable, CoreDataMapable {
     
     var uniqueValue: String?
 
