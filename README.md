@@ -1,7 +1,7 @@
-Faro [![CI Status](http://img.shields.io/travis/icapps/ios-air-rivet.svg?style=flat)](https://travis-ci.org/icapps/ios-air-rivet) [![Version](https://img.shields.io/cocoapods/v/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet) [![License](https://img.shields.io/cocoapods/l/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet) [![Platform](https://img.shields.io/cocoapods/p/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet)
+Faro [![CI Status](http://img.shields.io/travis/icapps/ios-faro.svg?style=flat)](https://travis-ci.org/icapps/ios-faro) [![Version](https://img.shields.io/cocoapods/v/Faro.svg?style=flat)](http://cocoapods.org/pods/Faro) [![License](https://img.shields.io/cocoapods/l/Faro.svg?style=flat)](http://cocoapods.org/pods/Faro) [![Platform](https://img.shields.io/cocoapods/p/Faro.svg?style=flat)](http://cocoapods.org/pods/Faro)
 ======
 
-For a quick start follow the instructions below. For more in depth information on why and how we build Faro, the [wiki](https://github.com/icapps/ios-air-rivet/wiki) page.
+For a quick start follow the instructions below. For more in depth information on why and how we build Faro, the [wiki](https://github.com/icapps/ios-faro/wiki) page.
 
 ## Concept
 
@@ -203,7 +203,7 @@ pod "Faro"
 
 > Don't think to hard, try hard!
 
-More info on the [contribution guidelines](https://github.com/icapps/ios-air-rivet/wiki/Contribution) wiki page.
+More info on the [contribution guidelines](https://github.com/icapps/ios-faro/wiki/Contribution) wiki page.
 
 ## License
 
