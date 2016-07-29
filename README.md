@@ -11,7 +11,7 @@ The idea is that you have `Air` which is a class that performs the request for a
 
 `AnyThing` can be a `Rivet` if they are `Rivetable`. `Rivetable` is a combination of protocols that the Rivet (Type) has to conform to. The `Rivet` is `Rivetable` if:
 
-- `Mitigatable`: Receive requests to make anything that can go wrong less severe. `AirRivet` includes 2 `Mitigator`:
+- `Mitigatable`: Receive requests to make anything that can go wrong less severe. `Faro` includes 2 `Mitigator`:
 
 	1. `MitigatorDefault` prints any error that is thrown
 	2. `MitigatorNoPrinting` does not print anyting. Handy for testing!
@@ -20,7 +20,7 @@ The idea is that you have `Air` which is a class that performs the request for a
 - `EnvironmentConfigurable`: We could get the data over the `Air` from a _production_ or a _development_ environment.
 - `Mockable`: There is also a special case where the environment can be mocked. Than your request are loaded from local files _(dummy files)_
 - `UniqueAble`: If your `AnyThing` is in a _collection_ you can find your entity by complying to `UniqueAble`
-- `Transformable`: We need to be able to _transform_ data to a `Rivetable` type. A default transformer is `TransformJSON` but you can provide your own. AirRivet include 3 transformers you could use:
+- `Transformable`: We need to be able to _transform_ data to a `Rivetable` type. A default transformer is `TransformJSON` but you can provide your own. Faro include 3 transformers you could use:
 
 	1. `TransformJSON` the default
 	2. `TransfromCoreData` -> used to transform to core data object.
@@ -61,7 +61,7 @@ class Foo: Rivetable {
 	// See GameScore class in Example project.
 }
 
-import AirRivet
+import Faro
 
 do {
 	try Air.retrieve({ (response : Foo) in
@@ -112,7 +112,7 @@ class MockFoo: Foo {
 ```
 ### Objective-C
 
-We use generics so you cannot directly use AirRivet in Objective-C. You can bypass this by writing a wrapper.
+We use generics so you cannot directly use Faro in Objective-C. You can bypass this by writing a wrapper.
 
 In our Example `GameScoreController` is the wrapper class.
 
@@ -132,7 +132,7 @@ GameScoreController * controller = [[GameScoreController alloc] init];
 > *See "(project root)/Example"*
 
 ## Unit tests
-AirRivet provides a way to mock data when writing unit tests.
+Faro provides a way to mock data when writing unit tests.
 ### Rivetable enum/ struct / class
 
 Mock the enviroment you use with `Air`. This you can do in 2 steps
@@ -162,7 +162,7 @@ class MockFoo: Foo {
 
 
 ### Core Data entities
-Writing unit tests with Core Data can be hard. With AirRivet you can write unit test for CoreData but it is still combursome.
+Writing unit tests with Core Data can be hard. With Faro you can write unit test for CoreData but it is still combursome.
 Do the stepps like above but make sure to provide the managedObjectContext for unit tests. See `CoreDataUnitTests`.
 Make sure you create a singleton for your `CoreDataUnitTests` instance.
 
@@ -191,7 +191,7 @@ In the example project you can find examples written with `Nimbel` for both Core
 
 ## Installation
 
-AirRivet is available through [CocoaPods](http://cocoapods.org) and the [Swift Package Manager](https://swift.org/package-manager/).
+Faro is available through [CocoaPods](http://cocoapods.org) and the [Swift Package Manager](https://swift.org/package-manager/).
 
 To install it with CocoaPods, add the following line to your Podfile:
 
