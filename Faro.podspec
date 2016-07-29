@@ -1,18 +1,18 @@
 Pod::Spec.new do |s|
-  s.name             = 'AirRivet'
+  s.name             = 'Faro'
   s.version          = '0.5.13'
-  s.summary          = 'AirRivet is a service layer to transfer data over the `Air`.'
+  s.summary          = 'Faro defines the contract to fetch data from an asynchronous source that can be mapped any model object.'
 
   s.description      = <<-DESC
-__AirRivet__ is a service layer build in Swift by using generics. The idea is that you have `Air` which is a class that performs the request for an `Environment`. To do this it needs a Type called `Rivet` that can be handeled over the `Air` 🤔. So how do we make this `Rivet` Type?
+__Faro__ is a service layer build in Swift by using generics. Its main starting point is the class `Air`. The idea is that you have `Air` which is a class that performs the request for an `Environment`. To do this it needs a Type called `Rivet` that can be handeled over the `Air` 🤔. So how do we make this `Rivet` Type?
 
-`AnyThing` can be a `Rivet` if they are `Rivetable`. `Rivetable` is a combination of protocols that the Rivet (Type) has to conform to. The `Rivet` is `Rivetable` if:
+`Any model object` can be a `Rivet` if they are `Rivetable`. `Rivetable` is a combination of protocols that the Rivet (Type) has to conform to. The `Rivet` is `Rivetable` if:
 
 - `Mitigatable` -> Receive requests to make anything that can go wrong less severe.
 - `Parsable` -> You get Dictionaries that you use to set the variables
 - `EnvironmentConfigurable` -> We could get the data over the `Air` from a _production_ or a _development_ environment
 - There is also a special case where the environment is `Mockable` then your request are loaded from local files _(dummy files)_
-- `UniqueAble` -> If your `AnyThing` is in a _collection_ you can find your entitiy by complying to `UniqueAble`
+- `UniqueAble` -> If your `AnyThing` is in a _collection_ you can find your entity by complying to `UniqueAble`
 
 If you do the above (there are default implementation provided in the example).
                        DESC
