@@ -11,7 +11,7 @@ import CoreData
 import Faro
 
 
-class FaroCoreDataParent: NSManagedObject, Transformable {
+class FaroCoreDataParent: NSManagedObject, Transformable, Mitigatable {
 
 
 	//MARK: - Transformable
@@ -22,5 +22,15 @@ class FaroCoreDataParent: NSManagedObject, Transformable {
 	class func rootKey() -> String? {
 		CoreDataError.ProvideARootKey
 		return nil
+	}
+
+	// MARK: - Mitigatable
+
+	class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+		return MitigatorDefault()
+	}
+
+	class func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
+		return MitigatorDefault()
 	}
 }

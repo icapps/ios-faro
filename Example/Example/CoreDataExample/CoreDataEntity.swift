@@ -3,7 +3,7 @@ import CoreData
 
 import Faro
 
-class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, Mitigatable, CoreDataParsable {
+class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, CoreDataParsable {
 
 	/**
 	You should override this method. Swift does not inherit the initializers from its superclass.
@@ -61,15 +61,7 @@ class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, Mitigatable, 
 		return autocast(try fetchInCoreDataFromJSON(json, managedObjectContext: managedObjectContext, entityName: "CoreDataEntity", uniqueValueKey: "uniqueValue"))
 	}
 
-	// MARK: - Mitigatable
 
-	class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
-		return MitigatorDefault()
-	}
-
-	class func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
-		return MitigatorDefault()
-	}
 
 	}
 
