@@ -12,7 +12,6 @@ import XCTest
 class Faro_Tests: XCTestCase {
     
     override func setUp() {
-
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -23,6 +22,7 @@ class Faro_Tests: XCTestCase {
     }
     
     func testExample() {
+		let _ = try! GameScore(json: ["test":"test"])
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
