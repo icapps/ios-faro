@@ -1,4 +1,9 @@
-# AirRivet
+# Faro
+
+## Version 0.7.1
+* deprecating AirRivet in favor of the name Faro
+* Renaming the github repo to Faro
+* Pointing the podspec to the renamed repo
 
 ## Version 0.6.1
 * minor fix

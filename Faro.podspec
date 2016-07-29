@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Faro'
-  s.version          = '0.7.0'
+  s.version          = '0.7.1'
   s.summary          = 'Faro defines the contract to fetch data from an asynchronous source that can be mapped any model object.'
 
   s.description      = <<-DESC
@@ -17,10 +17,10 @@ __Faro__ is a service layer build in Swift by using generics. Its main starting 
 If you do the above (there are default implementation provided in the example).
                        DESC
  s.license          = 'MIT'
-  s.homepage         = 'https://github.com/icapps/ios-air-rivet'
+  s.homepage         = 'https://github.com/icapps/ios-faro'
   s.author           = { 'Leroy Jenkins' => 'development@icapps.com' }
   s.source           = {
-    git: 'https://github.com/icapps/ios-air-rivet.git',
+    git: 'https://github.com/icapps/ios-faro.git',
     tag: s.version.to_s
   }
   s.social_media_url = 'https://twitter.com/icapps'
