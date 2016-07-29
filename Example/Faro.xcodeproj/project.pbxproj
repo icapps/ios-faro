@@ -16,11 +16,11 @@
 		A4D85BC91CC9106A0046AF29 /* exampleBaseModel.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */; };
 		A4D85BCB1CCA150F0046AF29 /* exampleBaseModelResultsArray.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */; };
 		A4D85BCD1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */; };
+		C00C293D1D4B947E0080AEBA /* ResponseUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BD71CCA6AE60046AF29 /* ResponseUtilsTests.swift */; };
 		C012EA4D1CCA5E2700B298D7 /* GET_gameScoreArray.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */; };
 		C012EA501CCA8A5B00B298D7 /* GET_gameScoreArray_1275.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */; };
 		C052960D1CB6629E007E1111 /* ObjectiveCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */; };
 		C05296121CB6661E007E1111 /* GameSoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05296111CB6661E007E1111 /* GameSoreController.swift */; };
-		C05EBF721D4B8E3000B950EB /* Faro_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05EBF711D4B8E3000B950EB /* Faro_Tests.swift */; };
 		C09323811D4B92E100DF291E /* MockEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09B12481D01ECFE0006DB91 /* MockEntities.swift */; };
 		C09323821D4B930500DF291E /* AirSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08BF3931CCE4AF8005CAD3F /* AirSpec.swift */; };
 		C09323831D4B930E00DF291E /* CoreDataEntitySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1423B1CEE1EA100DF9266 /* CoreDataEntitySpec.swift */; };
@@ -79,7 +79,6 @@
 		C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectiveCViewController.m; sourceTree = "<group>"; };
 		C05296111CB6661E007E1111 /* GameSoreController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSoreController.swift; sourceTree = "<group>"; };
 		C05EBF6F1D4B8E3000B950EB /* Faro_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Faro_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C05EBF711D4B8E3000B950EB /* Faro_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Faro_Tests.swift; sourceTree = "<group>"; };
 		C05EBF731D4B8E3000B950EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C08BF3931CCE4AF8005CAD3F /* AirSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirSpec.swift; sourceTree = "<group>"; };
 		C09B12481D01ECFE0006DB91 /* MockEntities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockEntities.swift; sourceTree = "<group>"; };
@@ -290,7 +289,6 @@
 		C05EBF701D4B8E3000B950EB /* Faro_Tests */ = {
 			isa = PBXGroup;
 			children = (
-				C05EBF711D4B8E3000B950EB /* Faro_Tests.swift */,
 				C05EBF731D4B8E3000B950EB /* Info.plist */,
 			);
 			path = Faro_Tests;
@@ -531,11 +529,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C09323811D4B92E100DF291E /* MockEntities.swift in Sources */,
-				C05EBF721D4B8E3000B950EB /* Faro_Tests.swift in Sources */,
 				C09323831D4B930E00DF291E /* CoreDataEntitySpec.swift in Sources */,
 				C09323881D4B937000DF291E /* TransformControllerSpec.swift in Sources */,
 				C09323861D4B934100DF291E /* DefaultMitigatorSpec.swift in Sources */,
 				C09323821D4B930500DF291E /* AirSpec.swift in Sources */,
+				C00C293D1D4B947E0080AEBA /* ResponseUtilsTests.swift in Sources */,
 				C09323871D4B936D00DF291E /* ResponseControllerSpec.swift in Sources */,
 				C09323851D4B932C00DF291E /* CoreDataSQLitePopulatorSpec.swift in Sources */,
 				C09323841D4B931B00DF291E /* StoreUnitTest.swift in Sources */,
