@@ -1,5 +1,9 @@
 # Faro
 
+## Version 0.7.2
+* renamed everything Faro
+* Distributable to CocoaPods via travis
+
 ## Version 0.7.1
 * deprecating AirRivet in favor of the name Faro
 * Renaming the github repo to Faro
