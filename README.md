@@ -1,11 +1,11 @@
-AirRivet [![CI Status](http://img.shields.io/travis/icapps/ios-air-rivet.svg?style=flat)](https://travis-ci.org/icapps/ios-air-rivet) [![Version](https://img.shields.io/cocoapods/v/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet) [![License](https://img.shields.io/cocoapods/l/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet) [![Platform](https://img.shields.io/cocoapods/p/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet)
+Faro [![CI Status](http://img.shields.io/travis/icapps/ios-air-rivet.svg?style=flat)](https://travis-ci.org/icapps/ios-air-rivet) [![Version](https://img.shields.io/cocoapods/v/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet) [![License](https://img.shields.io/cocoapods/l/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet) [![Platform](https://img.shields.io/cocoapods/p/AirRivet.svg?style=flat)](http://cocoapods.org/pods/AirRivet)
 ======
 
-For a quick start follow the instructions below. For more in depth information on why and how we build AirRivet, you are more then welcome on the [wiki](https://github.com/icapps/ios-air-rivet/wiki) page.
+For a quick start follow the instructions below. For more in depth information on why and how we build Faro, the [wiki](https://github.com/icapps/ios-air-rivet/wiki) page.
 
 ## Concept
 
-__AirRivet__ is a service layer build in Swift using generics.
+__Faro__ is a service layer build in Swift using generics.
 
 The idea is that you have `Air` which is a class that performs the request for an `Environment`. To do this it needs a Type called `Rivet` that can be handled over the `Air` 🤔. So how do we make this `Rivet` Type?
 
@@ -120,7 +120,7 @@ In our Example `GameScoreController` is the wrapper class.
 // In build settings look at the Module Identifier.
 // This is the one you should use to import swift files from the same target.
 
-#import "AirRivet_Example-Swift.h"
+#import "Faro_Example-Swift.h"
 
 GameScoreController * controller = [[GameScoreController alloc] init];
 [controller retrieve:^(NSArray<Foo *> * _Nonnull response) {
@@ -182,7 +182,7 @@ class MockCoreDataEntity: CoreDataEntity {
 ```
 
 ## Write unit tests
-In the example project you can find examples writen with `Nimbel` for both CoreData and others.
+In the example project you can find examples written with `Nimbel` for both CoreData and others.
 
 ## Requirements
 
@@ -196,7 +196,7 @@ AirRivet is available through [CocoaPods](http://cocoapods.org) and the [Swift P
 To install it with CocoaPods, add the following line to your Podfile:
 
 ```ruby
-pod "AirRivet"
+pod "Faro"
 ```
 
 ## Contribution
@@ -207,4 +207,4 @@ More info on the [contribution guidelines](https://github.com/icapps/ios-air-riv
 
 ## License
 
-AirRivet is available under the MIT license. See the LICENSE file for more info.
+Faro is available under the MIT license. See the LICENSE file for more info.
