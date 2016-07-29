@@ -5,9 +5,7 @@ target 'Faro_Example' do
   pod "Faro", :path => "../"
 
   target 'Faro_Tests' do
-    inherit! :search_paths
-
-    pod 'Quick',  '~> 0.9.2'
-    pod 'Nimble', '~> 4.0.1'
+    pod 'Quick',  '~> 0.9.3'
+    pod 'Nimble', '~> 4.1.0'
   end
 end

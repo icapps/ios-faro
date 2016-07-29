@@ -1,0 +1,6 @@
+framework module Pods_Faro_Example_Faro_Tests {
+  umbrella header "Pods-Faro_Example-Faro_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

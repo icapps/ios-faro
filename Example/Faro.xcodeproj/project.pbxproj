@@ -7,55 +7,45 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0322BA4FF702212706BBFEFA /* Pods_Faro_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC90AD624FAA835D9600386A /* Pods_Faro_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* SwiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* SwiftViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
-		843471D61D48B48F00729E40 /* CoreDataSQLitePopulatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843471D51D48B48F00729E40 /* CoreDataSQLitePopulatorSpec.swift */; };
-		A4D85BC11CC8E00B0046AF29 /* DefaultMitigatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BC01CC8E00B0046AF29 /* DefaultMitigatorSpec.swift */; };
-		A4D85BC41CC8FAB00046AF29 /* TransformControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BC31CC8FAB00046AF29 /* TransformControllerSpec.swift */; };
+		A051E3A30390467ACFA79290 /* Pods_Faro_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC90AD624FAA835D9600386A /* Pods_Faro_Tests.framework */; };
 		A4D85BC91CC9106A0046AF29 /* exampleBaseModel.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */; };
 		A4D85BCB1CCA150F0046AF29 /* exampleBaseModelResultsArray.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */; };
 		A4D85BCD1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */; };
-		A4D85BDA1CCA6B450046AF29 /* ResponseControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BD61CCA6AE60046AF29 /* ResponseControllerSpec.swift */; };
-		A4D85BDB1CCA6B470046AF29 /* ResponseControllerUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BD71CCA6AE60046AF29 /* ResponseControllerUtilsTests.swift */; };
 		C012EA4D1CCA5E2700B298D7 /* GET_gameScoreArray.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */; };
 		C012EA501CCA8A5B00B298D7 /* GET_gameScoreArray_1275.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */; };
 		C052960D1CB6629E007E1111 /* ObjectiveCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */; };
 		C05296121CB6661E007E1111 /* GameSoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05296111CB6661E007E1111 /* GameSoreController.swift */; };
-		C08BF3941CCE4AF8005CAD3F /* AirSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08BF3931CCE4AF8005CAD3F /* AirSpec.swift */; };
-		C09B12491D01ECFE0006DB91 /* MockEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09B12481D01ECFE0006DB91 /* MockEntities.swift */; };
+		C05EBF721D4B8E3000B950EB /* Faro_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05EBF711D4B8E3000B950EB /* Faro_Tests.swift */; };
+		C05EBF791D4B8E9200B950EB /* GameScoreSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB111CAEBBCA00978DBD /* GameScoreSpec.swift */; };
 		C0A3DB0D1CAEBBB200978DBD /* EnvironmentParse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */; };
 		C0A3DB0E1CAEBBB200978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
-		C0A3DB0F1CAEBBB600978DBD /* EnvironmentParse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */; };
-		C0A3DB121CAEBBCA00978DBD /* GameScoreSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB111CAEBBCA00978DBD /* GameScoreSpec.swift */; };
-		C0A8236E1D4B87AF00487D2D /* CoreDataEntitySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1423B1CEE1EA100DF9266 /* CoreDataEntitySpec.swift */; };
 		C0D142301CEDEDA200DF9266 /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1422F1CEDEDA200DF9266 /* CoreDataController.swift */; };
 		C0D142341CEDEF0900DF9266 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C0D142321CEDEF0900DF9266 /* Model.xcdatamodeld */; };
 		C0D142371CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D142351CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift */; };
 		C0D142381CEDEF5800DF9266 /* CoreDataEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D142361CEDEF5800DF9266 /* CoreDataEntity.swift */; };
-		C0D9FC261D019E9B00644982 /* StoreUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D9FC241D019E7300644982 /* StoreUnitTest.swift */; };
 		C0EA6CF91CFEE0FE00585FF7 /* GameScoreStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EA6CF81CFEE0FE00585FF7 /* GameScoreStore.swift */; };
 		CC5B4DF4DE77EE1821304CC2 /* Pods_Faro_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766D79527F2045B39755023B /* Pods_Faro_Example.framework */; };
+		ED8FB1B515BC8511416CA7B6 /* Pods_Faro_Example_Faro_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A43460654C9BFD9486F701BD /* Pods_Faro_Example_Faro_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		607FACE61AFB9204008FA782 /* PBXContainerItemProxy */ = {
+		C05EBF741D4B8E3000B950EB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
-			remoteInfo = AirRivet;
+			remoteInfo = Faro_Example;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0189A4D8BBF36152BA5E778B /* Pods-Faro_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Tests/Pods-Faro_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		38E15B4FD18F5D6A6B5505AC /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
-		3D835759DADDAB9EACB1A9B9 /* Pods-Faro_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Tests/Pods-Faro_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		4478F229B453DEBBE23930B1 /* AirRivet.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = AirRivet.podspec; path = ../../AirRivet.podspec; sourceTree = "<group>"; };
+		38E15B4FD18F5D6A6B5505AC /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		4478F229B453DEBBE23930B1 /* Faro.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = Faro.podspec; path = ../Faro.podspec; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* Faro_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Faro_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -63,17 +53,18 @@
 		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		607FACE51AFB9204008FA782 /* Faro_Example.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Faro_Example.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		70FC167135665F7A1AA086AA /* Pods-Faro_Example-Faro_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example-Faro_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		766D79527F2045B39755023B /* Pods_Faro_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Faro_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		843471D51D48B48F00729E40 /* CoreDataSQLitePopulatorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataSQLitePopulatorSpec.swift; sourceTree = "<group>"; };
+		A43460654C9BFD9486F701BD /* Pods_Faro_Example_Faro_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Faro_Example_Faro_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4D85BC01CC8E00B0046AF29 /* DefaultMitigatorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultMitigatorSpec.swift; sourceTree = "<group>"; };
 		A4D85BC31CC8FAB00046AF29 /* TransformControllerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformControllerSpec.swift; sourceTree = "<group>"; };
 		A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModel.json; sourceTree = "<group>"; };
 		A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArray.json; sourceTree = "<group>"; };
 		A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArrayCustomRootKey.json; sourceTree = "<group>"; };
 		A4D85BD61CCA6AE60046AF29 /* ResponseControllerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseControllerSpec.swift; sourceTree = "<group>"; };
-		A4D85BD71CCA6AE60046AF29 /* ResponseControllerUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseControllerUtilsTests.swift; sourceTree = "<group>"; };
+		A4D85BD71CCA6AE60046AF29 /* ResponseUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseUtilsTests.swift; sourceTree = "<group>"; };
 		AC90AD624FAA835D9600386A /* Pods_Faro_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Faro_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5BFB5ECE6B5DDF39A6BF754 /* Pods-Faro_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example/Pods-Faro_Example.release.xcconfig"; sourceTree = "<group>"; };
 		C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray.json; sourceTree = "<group>"; };
@@ -82,6 +73,9 @@
 		C052960B1CB6629E007E1111 /* ObjectiveCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectiveCViewController.h; sourceTree = "<group>"; };
 		C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectiveCViewController.m; sourceTree = "<group>"; };
 		C05296111CB6661E007E1111 /* GameSoreController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSoreController.swift; sourceTree = "<group>"; };
+		C05EBF6F1D4B8E3000B950EB /* Faro_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Faro_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C05EBF711D4B8E3000B950EB /* Faro_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Faro_Tests.swift; sourceTree = "<group>"; };
+		C05EBF731D4B8E3000B950EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C08BF3931CCE4AF8005CAD3F /* AirSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirSpec.swift; sourceTree = "<group>"; };
 		C09B12481D01ECFE0006DB91 /* MockEntities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockEntities.swift; sourceTree = "<group>"; };
 		C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentParse.swift; sourceTree = "<group>"; };
@@ -95,7 +89,8 @@
 		C0D9FC241D019E7300644982 /* StoreUnitTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreUnitTest.swift; sourceTree = "<group>"; };
 		C0EA6CF81CFEE0FE00585FF7 /* GameScoreStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScoreStore.swift; sourceTree = "<group>"; };
 		DC359A688A28AD5D01C570A3 /* Pods-Faro_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example/Pods-Faro_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		F28FE425E9CA20CB4C7DE52F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../../LICENSE; sourceTree = "<group>"; };
+		F28FE425E9CA20CB4C7DE52F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		FCB79CE0C319BC39C0B26CEF /* Pods-Faro_Example-Faro_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example-Faro_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,11 +102,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		607FACE21AFB9204008FA782 /* Frameworks */ = {
+		C05EBF6C1D4B8E3000B950EB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0322BA4FF702212706BBFEFA /* Pods_Faro_Tests.framework in Frameworks */,
+				A051E3A30390467ACFA79290 /* Pods_Faro_Tests.framework in Frameworks */,
+				ED8FB1B515BC8511416CA7B6 /* Pods_Faro_Example_Faro_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +119,7 @@
 			children = (
 				766D79527F2045B39755023B /* Pods_Faro_Example.framework */,
 				AC90AD624FAA835D9600386A /* Pods_Faro_Tests.framework */,
+				A43460654C9BFD9486F701BD /* Pods_Faro_Example_Faro_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -132,8 +129,8 @@
 			children = (
 				DC359A688A28AD5D01C570A3 /* Pods-Faro_Example.debug.xcconfig */,
 				B5BFB5ECE6B5DDF39A6BF754 /* Pods-Faro_Example.release.xcconfig */,
-				0189A4D8BBF36152BA5E778B /* Pods-Faro_Tests.debug.xcconfig */,
-				3D835759DADDAB9EACB1A9B9 /* Pods-Faro_Tests.release.xcconfig */,
+				FCB79CE0C319BC39C0B26CEF /* Pods-Faro_Example-Faro_Tests.debug.xcconfig */,
+				70FC167135665F7A1AA086AA /* Pods-Faro_Example-Faro_Tests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -143,6 +140,7 @@
 			children = (
 				607FACD21AFB9204008FA782 /* Example */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
+				C05EBF701D4B8E3000B950EB /* Faro_Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				18BFAFCFA31E53E2A99B0345 /* Pods */,
@@ -154,7 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				607FACD01AFB9204008FA782 /* Faro_Example.app */,
-				607FACE51AFB9204008FA782 /* Faro_Example.xctest */,
+				C05EBF6F1D4B8E3000B950EB /* Faro_Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -201,7 +199,7 @@
 		607FACF51AFB993E008FA782 /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
-				4478F229B453DEBBE23930B1 /* AirRivet.podspec */,
+				4478F229B453DEBBE23930B1 /* Faro.podspec */,
 				F28FE425E9CA20CB4C7DE52F /* LICENSE */,
 				38E15B4FD18F5D6A6B5505AC /* README.md */,
 			);
@@ -257,7 +255,7 @@
 				C0A3DB111CAEBBCA00978DBD /* GameScoreSpec.swift */,
 				C09B12481D01ECFE0006DB91 /* MockEntities.swift */,
 				A4D85BD61CCA6AE60046AF29 /* ResponseControllerSpec.swift */,
-				A4D85BD71CCA6AE60046AF29 /* ResponseControllerUtilsTests.swift */,
+				A4D85BD71CCA6AE60046AF29 /* ResponseUtilsTests.swift */,
 				C0D9FC241D019E7300644982 /* StoreUnitTest.swift */,
 				A4D85BC31CC8FAB00046AF29 /* TransformControllerSpec.swift */,
 			);
@@ -284,6 +282,15 @@
 				C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */,
 			);
 			path = "Objective-C";
+			sourceTree = "<group>";
+		};
+		C05EBF701D4B8E3000B950EB /* Faro_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				C05EBF711D4B8E3000B950EB /* Faro_Tests.swift */,
+				C05EBF731D4B8E3000B950EB /* Info.plist */,
+			);
+			path = Faro_Tests;
 			sourceTree = "<group>";
 		};
 		C0D142311CEDEDA800DF9266 /* CoreData */ = {
@@ -320,25 +327,25 @@
 			productReference = 607FACD01AFB9204008FA782 /* Faro_Example.app */;
 			productType = "com.apple.product-type.application";
 		};
-		607FACE41AFB9204008FA782 /* Faro_Tests */ = {
+		C05EBF6E1D4B8E3000B950EB /* Faro_Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Faro_Tests" */;
+			buildConfigurationList = C05EBF761D4B8E3000B950EB /* Build configuration list for PBXNativeTarget "Faro_Tests" */;
 			buildPhases = (
-				7BF1BD57514D02F910EF6614 /* [CP] Check Pods Manifest.lock */,
-				607FACE11AFB9204008FA782 /* Sources */,
-				607FACE21AFB9204008FA782 /* Frameworks */,
-				607FACE31AFB9204008FA782 /* Resources */,
-				C14584E7237EFA4788BFBFC7 /* [CP] Embed Pods Frameworks */,
-				B88A59F2504581A670A4820E /* [CP] Copy Pods Resources */,
+				4378BB58DC4970D825EC3871 /* [CP] Check Pods Manifest.lock */,
+				C05EBF6B1D4B8E3000B950EB /* Sources */,
+				C05EBF6C1D4B8E3000B950EB /* Frameworks */,
+				C05EBF6D1D4B8E3000B950EB /* Resources */,
+				6C3A8A8695B22CC87FFDF610 /* [CP] Embed Pods Frameworks */,
+				DE7D4B8D84A0281436B04327 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				607FACE71AFB9204008FA782 /* PBXTargetDependency */,
+				C05EBF751D4B8E3000B950EB /* PBXTargetDependency */,
 			);
 			name = Faro_Tests;
-			productName = Tests;
-			productReference = 607FACE51AFB9204008FA782 /* Faro_Example.xctest */;
+			productName = Faro_Tests;
+			productReference = C05EBF6F1D4B8E3000B950EB /* Faro_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -354,8 +361,8 @@
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 					};
-					607FACE41AFB9204008FA782 = {
-						CreatedOnToolsVersion = 6.3.1;
+					C05EBF6E1D4B8E3000B950EB = {
+						CreatedOnToolsVersion = 7.3.1;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 				};
@@ -374,7 +381,7 @@
 			projectRoot = "";
 			targets = (
 				607FACCF1AFB9204008FA782 /* Faro_Example */,
-				607FACE41AFB9204008FA782 /* Faro_Tests */,
+				C05EBF6E1D4B8E3000B950EB /* Faro_Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -395,7 +402,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		607FACE31AFB9204008FA782 /* Resources */ = {
+		C05EBF6D1D4B8E3000B950EB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -405,6 +412,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4378BB58DC4970D825EC3871 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		6532E58D7995A26CF619EF5A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -420,19 +442,19 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		7BF1BD57514D02F910EF6614 /* [CP] Check Pods Manifest.lock */ = {
+		6C3A8A8695B22CC87FFDF610 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		80AA7510C437D2D7116289DD /* [CP] Copy Pods Resources */ = {
@@ -465,7 +487,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Faro_Example/Pods-Faro_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B88A59F2504581A670A4820E /* [CP] Copy Pods Resources */ = {
+		DE7D4B8D84A0281436B04327 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -477,22 +499,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Faro_Tests/Pods-Faro_Tests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C14584E7237EFA4788BFBFC7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Faro_Tests/Pods-Faro_Tests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -516,31 +523,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		607FACE11AFB9204008FA782 /* Sources */ = {
+		C05EBF6B1D4B8E3000B950EB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4D85BDA1CCA6B450046AF29 /* ResponseControllerSpec.swift in Sources */,
-				C0A3DB121CAEBBCA00978DBD /* GameScoreSpec.swift in Sources */,
-				C0D9FC261D019E9B00644982 /* StoreUnitTest.swift in Sources */,
-				A4D85BC11CC8E00B0046AF29 /* DefaultMitigatorSpec.swift in Sources */,
-				C0A8236E1D4B87AF00487D2D /* CoreDataEntitySpec.swift in Sources */,
-				C0A3DB0F1CAEBBB600978DBD /* EnvironmentParse.swift in Sources */,
-				A4D85BC41CC8FAB00046AF29 /* TransformControllerSpec.swift in Sources */,
-				843471D61D48B48F00729E40 /* CoreDataSQLitePopulatorSpec.swift in Sources */,
-				A4D85BDB1CCA6B470046AF29 /* ResponseControllerUtilsTests.swift in Sources */,
-				C08BF3941CCE4AF8005CAD3F /* AirSpec.swift in Sources */,
-				C09B12491D01ECFE0006DB91 /* MockEntities.swift in Sources */,
+				C05EBF721D4B8E3000B950EB /* Faro_Tests.swift in Sources */,
+				C05EBF791D4B8E9200B950EB /* GameScoreSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		607FACE71AFB9204008FA782 /* PBXTargetDependency */ = {
+		C05EBF751D4B8E3000B950EB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 607FACCF1AFB9204008FA782 /* Faro_Example */;
-			targetProxy = 607FACE61AFB9204008FA782 /* PBXContainerItemProxy */;
+			targetProxy = C05EBF741D4B8E3000B950EB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -604,6 +602,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MODULE_NAME = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -642,6 +641,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MODULE_NAME = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -654,9 +654,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = "Example/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MODULE_NAME = ExampleApp;
+				MODULEMAP_FILE = Faro_Example;
+				MODULEMAP_PRIVATE_FILE = Faro_Example;
+				MODULE_NAME = Faro_Example;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Faro_Example;
 				SWIFT_OBJC_BRIDGING_HEADER = "Example/Supporting Files/Faro_Example-Bridging-Header.h";
@@ -670,43 +673,45 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = "Example/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MODULE_NAME = ExampleApp;
+				MODULEMAP_FILE = Faro_Example;
+				MODULEMAP_PRIVATE_FILE = Faro_Example;
+				MODULE_NAME = Faro_Example;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Faro_Example;
 				SWIFT_OBJC_BRIDGING_HEADER = "Example/Supporting Files/Faro_Example-Bridging-Header.h";
 			};
 			name = Release;
 		};
-		607FACF31AFB9204008FA782 /* Debug */ = {
+		C05EBF771D4B8E3000B950EB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0189A4D8BBF36152BA5E778B /* Pods-Faro_Tests.debug.xcconfig */;
+			baseConfigurationReference = FCB79CE0C319BC39C0B26CEF /* Pods-Faro_Example-Faro_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "Tests/Supporting Files/Info.plist";
+				CLANG_ANALYZER_NONNULL = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = Faro_Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = Faro_Example;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.icapps.Faro-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Faro_Example.app/Faro_Example";
 			};
 			name = Debug;
 		};
-		607FACF41AFB9204008FA782 /* Release */ = {
+		C05EBF781D4B8E3000B950EB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3D835759DADDAB9EACB1A9B9 /* Pods-Faro_Tests.release.xcconfig */;
+			baseConfigurationReference = 70FC167135665F7A1AA086AA /* Pods-Faro_Example-Faro_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Tests/Supporting Files/Info.plist";
+				CLANG_ANALYZER_NONNULL = YES;
+				INFOPLIST_FILE = Faro_Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = Faro_Example;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.icapps.Faro-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Faro_Example.app/Faro_Example";
 			};
 			name = Release;
@@ -732,11 +737,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Faro_Tests" */ = {
+		C05EBF761D4B8E3000B950EB /* Build configuration list for PBXNativeTarget "Faro_Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				607FACF31AFB9204008FA782 /* Debug */,
-				607FACF41AFB9204008FA782 /* Release */,
+				C05EBF771D4B8E3000B950EB /* Debug */,
+				C05EBF781D4B8E3000B950EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
