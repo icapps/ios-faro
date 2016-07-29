@@ -3,7 +3,7 @@ import CoreData
 
 import Faro
 
-class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitigatable, Transformable, CoreDataMapable {
+class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Mitigatable, Transformable, CoreDataParsable {
 
 	/**
 	You should override this method. Swift does not inherit the initializers from its superclass.

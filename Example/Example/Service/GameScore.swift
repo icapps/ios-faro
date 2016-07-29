@@ -19,7 +19,8 @@ class GameScore: NSObject, Rivetable {
     
     // MARK: - Init
 
-	required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = GameScore.managedObjectContext()) throws {
+
+	required init(json: AnyObject) throws {
 		super.init()
 		try self.map(json)
 	}
@@ -58,7 +59,7 @@ class GameScore: NSObject, Rivetable {
 		return nil
 	}
 
-	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) -> Self? {
+	static func lookupExistingObjectFromJSON(json: AnyObject) -> Self? {
 		return nil
 	}
 

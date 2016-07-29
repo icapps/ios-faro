@@ -42,7 +42,7 @@ class SwiftViewController: UIViewController {
 			//			             succeed: { (response) in
 			//					print("🎉 saved CoreDataEntity")
 			//				})
-			try Air.fetch(succeed: { (response: [CoreDataEntity]) in
+			try Air.fetchCoreData(succeed: { (response: [CoreDataEntity]) in
 				print("🎉 fetched CoreDataEntities: \(response)")
 			})
 		}catch {

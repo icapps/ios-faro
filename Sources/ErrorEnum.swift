@@ -28,3 +28,7 @@ public enum MapError: ErrorType {
 	case EnityShouldBeUniqueForJSON(json: AnyObject, typeName: String)
 	case JSONHasNoUniqueValue(json: AnyObject)
 }
+
+public enum CoreDataError: ErrorType {
+	case ShouldNotInitializeWithoutManagedObjectContext
+}

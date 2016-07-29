@@ -6,7 +6,7 @@ import CoreData
 import Faro
 @testable import Faro_Example
 
-class MockModel: UniqueAble, Mitigatable, Parsable, CoreDataMapable {
+class MockModel: UniqueAble, Mitigatable, CoreDataParsable {
     
     var uniqueValue: String?
 
@@ -91,7 +91,7 @@ class TransformJSONSpec: QuickSpec {
             }
             
             it ("should return correct uniqueValue at transformation"){
-                try! transformController.transform(data, succeed: {
+                try! transformController.transformCoreData(data, succeed: {
                     (model: MockModel) in
 					expect(model.uniqueValue).to(equal("123456ABCdef"))
                 })
@@ -104,7 +104,7 @@ class TransformJSONSpec: QuickSpec {
             it("should return correct uniqueValue at transform with body") {
                 expect {try data = self.loadDataFromUrl("exampleBaseModel")!}.notTo(throwError())
                 
-                try! transformController.transform(data, succeed: {
+                try! transformController.transformCoreData(data, succeed: {
 					(result : MockModel) in
 					expect(result.uniqueValue).to(equal("123456ABCdef"))
                 })
@@ -114,7 +114,7 @@ class TransformJSONSpec: QuickSpec {
                 var random = NSInteger(arc4random_uniform(99) + 1)
                 data = NSData(bytes: &random, length: 3)
                 
-                expect { try transformController.transform(data, succeed: { (model : MockModel) in
+                expect { try transformController.transformCoreData(data, succeed: { (model : MockModel) in
                     XCTFail("Should not complete") 
                 })}.to(throwError(closure: { (error) in
                     let error = error as NSError
@@ -124,7 +124,7 @@ class TransformJSONSpec: QuickSpec {
 
             it("should not throw errror at transform with array of objects") {
                 expect{ try data = self.loadDataFromUrl("exampleBaseModelResultsArray")!}.notTo(throwError())
-                try! transformController.transform(data, succeed: { (results: [MockModel]) in
+                try! transformController.transformCoreData(data, succeed: { (results: [MockModel]) in
                     expect{results.count}.to(equal(3))
                     expect{results[0].uniqueValue}.to(equal("123a"))
                     expect{results[1].uniqueValue}.to(equal("456b"))
@@ -134,7 +134,7 @@ class TransformJSONSpec: QuickSpec {
 
             it ("should throw error at transform with invalid root key") {
                 expect{ try data = self.loadDataFromUrl("exampleBaseModelResultsArrayCustomRootKey")!}.notTo(throwError())
-                expect { try transformController.transform(data, succeed: { (model : [MockModel]) in
+                expect { try transformController.transformCoreData(data, succeed: { (model : [MockModel]) in
                     XCTFail("Should not complete") 
                 })}.to(throwError(closure: { (error) in
 					switch error {
@@ -148,7 +148,7 @@ class TransformJSONSpec: QuickSpec {
 
             it("should not throw error at transform with single item") {
                 expect{ try data = self.loadDataFromUrl("exampleBaseModelResultsArray")!}.notTo(throwError())
-                try! transformController.transform(data, succeed: {(results: [MockModel]) in
+                try! transformController.transformCoreData(data, succeed: {(results: [MockModel]) in
                     expect(results.count).to(equal(3))
                     expect(results[0].uniqueValue).to(equal("123a"))
                 })
@@ -158,7 +158,7 @@ class TransformJSONSpec: QuickSpec {
                 var random = NSInteger(arc4random_uniform(99) + 1)
                 data = NSData(bytes: &random, length: 3)
                 
-                expect { try transformController.transform(data, succeed: { (model : [MockModel]) in
+                expect { try transformController.transformCoreData(data, succeed: { (model : [MockModel]) in
                                         XCTFail("Should not complete")
                 })}.to(throwError(closure: { (error) in
                     let error = error as NSError

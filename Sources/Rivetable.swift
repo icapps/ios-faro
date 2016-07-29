@@ -20,13 +20,51 @@ public protocol Mitigatable: class {
 	static func requestMitigator()-> protocol<RequestMitigatable, Mitigator>
 }
 
-public protocol CoreDataMapable {
+public protocol CoreDataParsable {
 
 	/**
 	You can choose to return something when you use core data.
 	- returns: `NSManagedObjectContext` that is used by the `TranformController` to create `Parsable` instances
 	*/
 	static func managedObjectContext() -> NSManagedObjectContext?
+
+	/**
+	Required initializer that throwns when the json or the managedObjectContext. You do not have to use a managedObjectContext. You can use this protocol without the need for a managed object context.
+
+	- parameter json: valid json that can be mapped to the object being initialized
+	- parameter managedObjectContext: (optional) you could use this for use with CoreData. But that is optional
+	- returns: a `Parsable` instance
+	- throws: errors when managedObjectContext of json are not usable to initialize a `Parsable` instance
+	*/
+
+	init(json: AnyObject, managedObjectContext: NSManagedObjectContext?) throws
+
+	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) throws -> Self?
+
+	/**
+	Set all properties from the data
+	- throws : `ResponseError.InvalidDictionary(dictionary: AnyObject)`
+	*/
+	func map(json: AnyObject) throws
+
+	/**
+	From a dictionary containing properties of the object
+	- throws: `RequestError.InvalidBody`
+	*/
+	func toDictionary() throws -> NSDictionary?
+
+	/**
+	Should provide key in JSON to node of dict that can be parsed.
+
+	```
+	{
+	"rootKey": {<dictToParse>}
+	}
+	```
+	*/
+	static func rootKey() -> String?
+
+	
 }
 /**
 Implement so we can set data on your variables in the `TransformJSON`.
@@ -43,7 +81,7 @@ public protocol Parsable {
 	- throws: errors when managedObjectContext of json are not usable to initialize a `Parsable` instance
 	*/
 
-	init(json: AnyObject, managedObjectContext: NSManagedObjectContext?) throws
+	init(json: AnyObject) throws
 
 	/**
 	Set all properties from the data
@@ -68,7 +106,7 @@ public protocol Parsable {
 	*/
 	static func rootKey() -> String?
 
-	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) throws -> Self?
+	static func lookupExistingObjectFromJSON(json: AnyObject) throws -> Self?
 }
 
 /**
@@ -104,4 +142,6 @@ public protocol UniqueAble {
 /**
 An `Air` should be able to build up a request when your model object complies to the protocols below.
 */
-public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable, Transformable, CoreDataMapable>
+public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable, Transformable>
+
+public typealias RivetableCoreData = protocol<UniqueAble, EnvironmentConfigurable, Mitigatable, Transformable, CoreDataParsable>

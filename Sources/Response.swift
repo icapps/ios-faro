@@ -41,6 +41,32 @@ public class Response {
 	}
 
 	/**
+	On success it returns an updated instance of type `Rivet`.
+
+	- parameter data: The data to transform to type `Rivetable`
+	- paramater urlResponse: The response from the `Environment`
+	- parameter error: Any error that occured before calling this method
+	- parameter succeed: Closure called on success
+	- parameter fail: Closure called on failure
+	*/
+	public func respondCoreData<Rivet: RivetableCoreData>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil,
+	                    succeed: (Rivet)->(), fail:((ResponseError)->())?) {
+
+		do {
+			let mitigator = Rivet.responseMitigator()
+			try mitigator.mitigate {
+				if let _ = try self.checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail){
+					let transformController = Rivet.transform()
+					try transformController.transformCoreData(data!, succeed: succeed)
+				}
+			}
+		}catch {
+			respondWithfail(error, fail: fail)
+		}
+	}
+
+
+	/**
 	On success it returns an array of type `Rivet`.
 	
 	- parameter data: The data to transform to type `Rivetable`
@@ -58,6 +84,31 @@ public class Response {
 				if let _ = try self.checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail){
 					let transformController = Rivet.transform()
 					try transformController.transform(data!, succeed: succeed)
+				}
+			}
+		}catch {
+			respondWithfail(error, fail: fail)
+		}
+	}
+
+	/**
+	On success it returns an array of type `Rivet`.
+
+	- parameter data: The data to transform to type `Rivetable`
+	- paramater urlResponse: The response from the `Environment`
+	- parameter error: Any error that occured before calling this method
+	- parameter succeed: Closure called on success
+	- parameter fail: Closure called on failure
+	*/
+	public func respondCoreData<Rivet: RivetableCoreData>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, entity: Rivet? = nil,
+	                    succeed: ([Rivet])->(),  fail:((ResponseError)->())?){
+
+		do {
+			let mitigator = Rivet.responseMitigator()
+			try mitigator.mitigate {
+				if let _ = try self.checkErrorAndReturnValidData(data, urlResponse: urlResponse, error: error, mitigator: mitigator, fail: fail){
+					let transformController = Rivet.transform()
+					try transformController.transformCoreData(data!, succeed: succeed)
 				}
 			}
 		}catch {
