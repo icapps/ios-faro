@@ -6,7 +6,7 @@ before_install:
 
 script:
     - set -o pipefail
-    - xcodebuild clean test -workspace Example/AirRivet.xcworkspace -scheme AirRivet-Example -destination "platform=iOS Simulator,name=iPhone 6 Plus" -enableCodeCoverage YES | xcpretty
+    - xcodebuild clean test -workspace Example/Faro.xcworkspace -scheme Faro-Example -destination "platform=iOS Simulator,name=iPhone 6 Plus" -enableCodeCoverage YES | xcpretty
 
 deploy:
   skip_cleanup: true
