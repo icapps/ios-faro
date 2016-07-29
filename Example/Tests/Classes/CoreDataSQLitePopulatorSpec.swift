@@ -2,8 +2,8 @@ import Foundation
 import Quick
 import Nimble
 import CoreData
-import Faro
 
+import Faro
 @testable import Faro_Example
 
 class CoreDataSQLitePopulatorSpec: QuickSpec {

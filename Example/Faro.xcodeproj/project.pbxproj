@@ -21,6 +21,14 @@
 		C052960D1CB6629E007E1111 /* ObjectiveCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */; };
 		C05296121CB6661E007E1111 /* GameSoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05296111CB6661E007E1111 /* GameSoreController.swift */; };
 		C05EBF721D4B8E3000B950EB /* Faro_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05EBF711D4B8E3000B950EB /* Faro_Tests.swift */; };
+		C09323811D4B92E100DF291E /* MockEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09B12481D01ECFE0006DB91 /* MockEntities.swift */; };
+		C09323821D4B930500DF291E /* AirSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08BF3931CCE4AF8005CAD3F /* AirSpec.swift */; };
+		C09323831D4B930E00DF291E /* CoreDataEntitySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1423B1CEE1EA100DF9266 /* CoreDataEntitySpec.swift */; };
+		C09323841D4B931B00DF291E /* StoreUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D9FC241D019E7300644982 /* StoreUnitTest.swift */; };
+		C09323851D4B932C00DF291E /* CoreDataSQLitePopulatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843471D51D48B48F00729E40 /* CoreDataSQLitePopulatorSpec.swift */; };
+		C09323861D4B934100DF291E /* DefaultMitigatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BC01CC8E00B0046AF29 /* DefaultMitigatorSpec.swift */; };
+		C09323871D4B936D00DF291E /* ResponseControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BD61CCA6AE60046AF29 /* ResponseControllerSpec.swift */; };
+		C09323881D4B937000DF291E /* TransformControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BC31CC8FAB00046AF29 /* TransformControllerSpec.swift */; };
 		C0A3DB0D1CAEBBB200978DBD /* EnvironmentParse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */; };
 		C0A3DB0E1CAEBBB200978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
 		C0D142301CEDEDA200DF9266 /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1422F1CEDEDA200DF9266 /* CoreDataController.swift */; };
@@ -522,7 +530,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C09323811D4B92E100DF291E /* MockEntities.swift in Sources */,
 				C05EBF721D4B8E3000B950EB /* Faro_Tests.swift in Sources */,
+				C09323831D4B930E00DF291E /* CoreDataEntitySpec.swift in Sources */,
+				C09323881D4B937000DF291E /* TransformControllerSpec.swift in Sources */,
+				C09323861D4B934100DF291E /* DefaultMitigatorSpec.swift in Sources */,
+				C09323821D4B930500DF291E /* AirSpec.swift in Sources */,
+				C09323871D4B936D00DF291E /* ResponseControllerSpec.swift in Sources */,
+				C09323851D4B932C00DF291E /* CoreDataSQLitePopulatorSpec.swift in Sources */,
+				C09323841D4B931B00DF291E /* StoreUnitTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

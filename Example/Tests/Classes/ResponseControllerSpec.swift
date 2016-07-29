@@ -5,12 +5,11 @@ import Quick
 import Faro
 @testable import Faro_Example
 
-
 // MARK: - Mocks
 
 class MockEntityWithErrorMitigator: GameScore {
     override class func environment() -> protocol<Environment, Mockable> {
-        return Mock()
+        return MockEnvironment()
     }
     
     override func map(json: AnyObject) throws  {

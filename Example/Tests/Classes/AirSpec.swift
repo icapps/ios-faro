@@ -5,7 +5,6 @@ import Quick
 import Nimble
 
 import Faro
-
 @testable import Faro_Example
 
 // MARK: - Specs

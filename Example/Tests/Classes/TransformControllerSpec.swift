@@ -59,7 +59,7 @@ extension MockModel: EnvironmentConfigurable {
 	}
 	
 	class func environment() -> protocol<Environment, Mockable> {
-		return Mock()
+		return MockEnvironment()
 	}
     
 }

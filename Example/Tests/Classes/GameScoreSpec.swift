@@ -1,22 +1,11 @@
+import XCTest
 import Quick
 import Nimble
 import Foundation
 
-import Faro
 @testable import Faro_Example
 
 // MARK: - Mocks
-
-class Mock: Environment, Mockable {
-	
-    var serverUrl = ""
-	var request = NSMutableURLRequest()
-
-	func shouldMock() -> Bool {
-		return true
-	}
-    
-}
 
 class MockGameScore: GameScore {
 

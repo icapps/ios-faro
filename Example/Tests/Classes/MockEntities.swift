@@ -2,6 +2,17 @@ import Foundation
 import Faro
 @testable import Faro_Example
 
+class MockEnvironment: Environment, Mockable {
+
+	var serverUrl = ""
+	var request = NSMutableURLRequest()
+
+	func shouldMock() -> Bool {
+		return true
+	}
+
+}
+
 /**
 Example of a mock without CoreData
 */
@@ -13,7 +24,7 @@ class MockEntity: GameScore {
 	}
 
 	override class func environment() -> protocol<Environment, Mockable> {
-		return Mock ()
+		return MockEnvironment()
 	}
 
 	override func map(json: AnyObject) throws {
@@ -40,7 +51,7 @@ CoreData entity mock. You should provide a managedObjectContext in your Spec
 class MockCoreDataEntity: CoreDataEntity {
 
 	override class func environment() -> protocol<Environment, Mockable> {
-		return Mock()
+		return MockEnvironment()
 	}
 
 	class override func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
