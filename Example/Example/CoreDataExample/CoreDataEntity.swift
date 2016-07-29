@@ -3,8 +3,15 @@ import CoreData
 
 import Faro
 
-class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, CoreDataParsable {
+class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, CoreDataParsable, CoreDataEntityDescription {
 
+	class func entityName() -> String {
+		return typeName(CoreDataEntity)
+	}
+
+	class func uniqueValueKey() -> String {
+		return "uniqueValue"
+	}
 	/**
 	You should override this method. Swift does not inherit the initializers from its superclass.
 	*/
@@ -13,11 +20,10 @@ class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, CoreDataParsa
 	}
 
 	required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = CoreDataEntity.managedObjectContext()) throws {
-		let entity = NSEntityDescription.entityForName("CoreDataEntity", inManagedObjectContext: managedObjectContext!)
+		let entity = NSEntityDescription.entityForName(CoreDataEntity.entityName(), inManagedObjectContext: managedObjectContext!)
 		super.init(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
 		try self.map(json)
 	}
-
 
 	func toDictionary()-> NSDictionary? {
 		return ["uniqueValue": uniqueValue!, "username": username!]
@@ -43,7 +49,7 @@ class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, CoreDataParsa
 			return nil
 		}
 
-		return autocast(try fetchInCoreDataFromJSON(json, managedObjectContext: managedObjectContext, entityName: "CoreDataEntity", uniqueValueKey: "uniqueValue"))
+		return autocast(try fetchInCoreDataFromJSON(json, managedObjectContext: managedObjectContext, entityName: CoreDataEntity.entityName(), uniqueValueKey: CoreDataEntity.uniqueValueKey()))
 	}
 
 	class func managedObjectContext() -> NSManagedObjectContext? {
@@ -57,7 +63,7 @@ class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, CoreDataParsa
 	}
 
 	static func contextPath() -> String {
-		return "CoreDataEntity"
+		return CoreDataEntity.entityName()
 	}
 
 }

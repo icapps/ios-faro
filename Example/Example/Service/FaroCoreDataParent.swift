@@ -13,7 +13,6 @@ import Faro
 
 class FaroCoreDataParent: NSManagedObject, Transformable, Mitigatable {
 
-
 	//MARK: - Transformable
 	class func transform() -> TransformJSON {
 		return TransformCoreData()

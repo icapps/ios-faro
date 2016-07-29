@@ -20,6 +20,11 @@ public protocol Mitigatable: class {
 	static func requestMitigator()-> protocol<RequestMitigatable, Mitigator>
 }
 
+public protocol CoreDataEntityDescription {
+	static func entityName() -> String
+	static func uniqueValueKey() -> String
+}
+
 public protocol CoreDataParsable {
 
 	/**
