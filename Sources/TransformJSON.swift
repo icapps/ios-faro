@@ -42,7 +42,7 @@ public class TransformJSON {
 	- throws: JSON errors that are not `Mitigatable`
 	*/
 
-	public func transform<Rivet: protocol<Parsable, Mitigatable>>(data: NSData, succeed:(Rivet)->()) throws {
+	public func transform<Rivet: protocol<Parsable, Transformable, Mitigatable>>(data: NSData, succeed:(Rivet)->()) throws {
 
 		let mitigator = Rivet.responseMitigator()
 
@@ -77,7 +77,7 @@ public class TransformJSON {
 	- throws: JSON errors that are not `Mitigatable`
 	*/
 
-	public func transform<Rivet: protocol<Parsable, Mitigatable>>(data: NSData, succeed:([Rivet])->()) throws{
+	public func transform<Rivet: protocol<Parsable, Transformable, Mitigatable>>(data: NSData, succeed:([Rivet])->()) throws{
 
 		let mitigator = Rivet.responseMitigator()
 		try mitigator.mitigate {
@@ -112,7 +112,7 @@ public class TransformJSON {
 	- throws: JSON errors that are not `Mitigatable`
 	*/
 
-	public func transformCoreData<Rivet: protocol<CoreDataParsable, Mitigatable>>(data: NSData, succeed:(Rivet)->()) throws {
+	public func transformCoreData<Rivet: protocol<CoreDataParsable, Transformable, Mitigatable>>(data: NSData, succeed:(Rivet)->()) throws {
 
 		let mitigator = Rivet.responseMitigator()
 
@@ -147,7 +147,7 @@ public class TransformJSON {
 	- throws: JSON errors that are not `Mitigatable`
 	*/
 
-    public func transformCoreData<Rivet: protocol<CoreDataParsable, Mitigatable>>(data: NSData, succeed:([Rivet])->()) throws{
+    public func transformCoreData<Rivet: protocol<CoreDataParsable, Transformable, Transformable, Mitigatable>>(data: NSData, succeed:([Rivet])->()) throws{
 
 		let mitigator = Rivet.responseMitigator()
 		try mitigator.mitigate {

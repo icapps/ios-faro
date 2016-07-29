@@ -8,10 +8,19 @@
 
 import Foundation
 import CoreData
+import Faro
 
 
-class FaroCoreDataParent: NSManagedObject {
+class FaroCoreDataParent: NSManagedObject, Transformable {
 
-// Insert code here to add functionality to your managed object subclass
 
+	//MARK: - Transformable
+	class func transform() -> TransformJSON {
+		return TransformCoreData()
+	}
+
+	class func rootKey() -> String? {
+		CoreDataError.ProvideARootKey
+		return nil
+	}
 }

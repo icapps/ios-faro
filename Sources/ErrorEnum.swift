@@ -31,4 +31,5 @@ public enum MapError: ErrorType {
 
 public enum CoreDataError: ErrorType {
 	case ShouldNotInitializeWithoutManagedObjectContext
+	case ProvideARootKey
 }

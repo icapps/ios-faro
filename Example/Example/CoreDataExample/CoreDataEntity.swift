@@ -3,7 +3,7 @@ import CoreData
 
 import Faro
 
-class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, Mitigatable, Transformable, CoreDataParsable {
+class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, Mitigatable, CoreDataParsable {
 
 	/**
 	You should override this method. Swift does not inherit the initializers from its superclass.
@@ -36,7 +36,7 @@ class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, Mitigatable, 
 		}
 	}
 
-	static func rootKey() -> String? {
+	override class func rootKey() -> String? {
 		return "results"
 	}
 
@@ -71,9 +71,5 @@ class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, Mitigatable, 
 		return MitigatorDefault()
 	}
 
-	//MARK: - Transfromable
-	class func transform() -> TransformJSON {
-		return TransformCoreData()
 	}
-}
 

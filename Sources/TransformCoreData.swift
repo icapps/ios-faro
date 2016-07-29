@@ -16,7 +16,7 @@ You could provide a class that performs operations on the background queue here.
 
 public class TransformCoreData: TransformJSON {
 
-	public override func transformCoreData<Rivet: protocol<CoreDataParsable, Mitigatable>>(data: NSData, succeed:(Rivet)->()) throws {
+	public override func transformCoreData<Rivet: protocol<CoreDataParsable, Transformable, Mitigatable>>(data: NSData, succeed:(Rivet)->()) throws {
 		dispatch.async.main { 
 			do {
 				try super.transformCoreData(data, succeed: succeed)
@@ -26,7 +26,7 @@ public class TransformCoreData: TransformJSON {
 		}
 	}
 
-	public override func transformCoreData<Rivet : protocol<CoreDataParsable, Mitigatable>>(data: NSData, succeed: ([Rivet]) -> ()) throws {
+	public override func transformCoreData<Rivet : protocol<CoreDataParsable, Transformable, Mitigatable>>(data: NSData, succeed: ([Rivet]) -> ()) throws {
 		dispatch.async.main {
 			do {
 				try super.transformCoreData(data, succeed: succeed)

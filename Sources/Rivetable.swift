@@ -53,17 +53,6 @@ public protocol CoreDataParsable {
 	*/
 	func toDictionary() throws -> NSDictionary?
 
-	/**
-	Should provide key in JSON to node of dict that can be parsed.
-
-	```
-	{
-	"rootKey": {<dictToParse>}
-	}
-	```
-	*/
-	static func rootKey() -> String?
-
 	
 }
 /**
@@ -95,17 +84,6 @@ public protocol Parsable {
 	*/
 	func toDictionary() throws -> NSDictionary?
 
-	/**
-	Should provide key in JSON to node of dict that can be parsed.
-	
-	```
-	{
-		"rootKey": {<dictToParse>}
-	}
-	```
-	*/
-	static func rootKey() -> String?
-
 	static func lookupExistingObjectFromJSON(json: AnyObject) throws -> Self?
 }
 
@@ -120,6 +98,17 @@ public protocol Transformable {
 	*/
 	
 	static func transform() -> TransformJSON
+
+	/**
+	Should provide key in JSON to node of dict that can be parsed.
+
+	```
+	{
+	"rootKey": {<dictToParse>}
+	}
+	```
+	*/
+	static func rootKey() -> String?
 }
 
 public protocol EnvironmentConfigurable {

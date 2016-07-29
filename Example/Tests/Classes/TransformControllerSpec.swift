@@ -6,7 +6,7 @@ import CoreData
 import Faro
 @testable import Faro_Example
 
-class MockModel: UniqueAble, Mitigatable, CoreDataParsable {
+class MockModel: UniqueAble, Mitigatable, CoreDataParsable, Transformable {
     
     var uniqueValue: String?
 
@@ -49,6 +49,10 @@ class MockModel: UniqueAble, Mitigatable, CoreDataParsable {
 
 	class func requestMitigator()-> protocol<RequestMitigatable, Mitigator> {
 		return MitigatorNoPrinting()
+	}
+
+	static func transform() -> TransformJSON {
+		return TransformJSON()
 	}
 }
 
