@@ -17,6 +17,8 @@
 		A4D85BCB1CCA150F0046AF29 /* exampleBaseModelResultsArray.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */; };
 		A4D85BCD1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */; };
 		C00C293D1D4B947E0080AEBA /* ResponseUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D85BD71CCA6AE60046AF29 /* ResponseUtilsTests.swift */; };
+		C00C29401D4BAC0C0080AEBA /* FaroCoreDataParent+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00C293E1D4BAC0C0080AEBA /* FaroCoreDataParent+CoreDataProperties.swift */; };
+		C00C29411D4BAC0C0080AEBA /* FaroCoreDataParent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00C293F1D4BAC0C0080AEBA /* FaroCoreDataParent.swift */; };
 		C012EA4D1CCA5E2700B298D7 /* GET_gameScoreArray.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */; };
 		C012EA501CCA8A5B00B298D7 /* GET_gameScoreArray_1275.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */; };
 		C052960D1CB6629E007E1111 /* ObjectiveCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */; };
@@ -72,6 +74,8 @@
 		A4D85BD61CCA6AE60046AF29 /* ResponseControllerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseControllerSpec.swift; sourceTree = "<group>"; };
 		A4D85BD71CCA6AE60046AF29 /* ResponseUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseUtilsTests.swift; sourceTree = "<group>"; };
 		A9820385A9A7E4CFDE5B9F68 /* Pods-Faro_Example-Faro_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example-Faro_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		C00C293E1D4BAC0C0080AEBA /* FaroCoreDataParent+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FaroCoreDataParent+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C00C293F1D4BAC0C0080AEBA /* FaroCoreDataParent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaroCoreDataParent.swift; sourceTree = "<group>"; };
 		C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray.json; sourceTree = "<group>"; };
 		C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray_1275.json; sourceTree = "<group>"; };
 		C052960A1CB6629E007E1111 /* Faro_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Faro_Example-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -297,6 +301,8 @@
 		C0D142311CEDEDA800DF9266 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				C00C293E1D4BAC0C0080AEBA /* FaroCoreDataParent+CoreDataProperties.swift */,
+				C00C293F1D4BAC0C0080AEBA /* FaroCoreDataParent.swift */,
 				C0D1422F1CEDEDA200DF9266 /* CoreDataController.swift */,
 				C0D142361CEDEF5800DF9266 /* CoreDataEntity.swift */,
 				C0D142351CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift */,
@@ -513,9 +519,11 @@
 				C0A3DB0E1CAEBBB200978DBD /* GameScore.swift in Sources */,
 				C052960D1CB6629E007E1111 /* ObjectiveCViewController.m in Sources */,
 				C05296121CB6661E007E1111 /* GameSoreController.swift in Sources */,
+				C00C29411D4BAC0C0080AEBA /* FaroCoreDataParent.swift in Sources */,
 				C0D142381CEDEF5800DF9266 /* CoreDataEntity.swift in Sources */,
 				C0D142341CEDEF0900DF9266 /* Model.xcdatamodeld in Sources */,
 				C0D142301CEDEDA200DF9266 /* CoreDataController.swift in Sources */,
+				C00C29401D4BAC0C0080AEBA /* FaroCoreDataParent+CoreDataProperties.swift in Sources */,
 				C0D142371CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift in Sources */,
 				607FACD81AFB9204008FA782 /* SwiftViewController.swift in Sources */,
 				C0EA6CF91CFEE0FE00585FF7 /* GameScoreStore.swift in Sources */,
