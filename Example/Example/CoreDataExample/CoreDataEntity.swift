@@ -12,15 +12,12 @@ class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, CoreDataParsa
 		super.init(entity: entity, insertIntoManagedObjectContext: context)
 	}
 
-	// MARK: - Init
-
 	required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = CoreDataEntity.managedObjectContext()) throws {
 		let entity = NSEntityDescription.entityForName("CoreDataEntity", inManagedObjectContext: managedObjectContext!)
 		super.init(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
 		try self.map(json)
 	}
 
-	// MARK: - Parsable
 
 	func toDictionary()-> NSDictionary? {
 		return ["uniqueValue": uniqueValue!, "username": username!]
@@ -40,18 +37,6 @@ class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, CoreDataParsa
 		return "results"
 	}
 
-	class func managedObjectContext() -> NSManagedObjectContext? {
-		return CoreDataController.sharedInstance.managedObjectContext
-	}
-
-	class func environment() -> protocol<Environment, Mockable> {
-		return EnvironmentParse<CoreDataEntity>()
-	}
-
-	static func contextPath() -> String {
-		return "CoreDataEntity"
-	}
-
 	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) throws -> Self? {
 
 		guard let managedObjectContext = managedObjectContext else  {
@@ -61,7 +46,19 @@ class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, CoreDataParsa
 		return autocast(try fetchInCoreDataFromJSON(json, managedObjectContext: managedObjectContext, entityName: "CoreDataEntity", uniqueValueKey: "uniqueValue"))
 	}
 
-
-
+	class func managedObjectContext() -> NSManagedObjectContext? {
+		return CoreDataController.sharedInstance.managedObjectContext
 	}
+
+	//MARK: - EnvironmentConfigurable
+
+	class func environment() -> protocol<Environment, Mockable> {
+		return EnvironmentParse<CoreDataEntity>()
+	}
+
+	static func contextPath() -> String {
+		return "CoreDataEntity"
+	}
+
+}
 
