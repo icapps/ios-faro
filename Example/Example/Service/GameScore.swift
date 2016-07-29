@@ -1,15 +1,7 @@
-//
-//  GameScore.swift
-//  AirRivet
-//
-//  Created by Stijn Willems on 04/01/2016.
-//  2016 iCapps. MIT Licensed.
-//
-
-import AirRivet
+import Faro
 import CoreData
 /**
-Model object that implements protocol `BaseModel` that can be fount in pod `AirRivet`.
+Model object that implements protocol `BaseModel` that can be fount in pod `Faro`.
 
 In this example GameScore has to inherit from NSObject to be usable in Objective-C. In a pure Swift project this is not needed.
 */

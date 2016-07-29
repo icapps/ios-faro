@@ -1,11 +1,3 @@
-//
-//  CoreDataController.swift
-//  AirRivet
-//
-//  Created by Stijn Willems on 19/05/16.
-//  Copyright © 2016 CocoaPods. All rights reserved.
-//
-
 import Foundation
 import CoreData
 

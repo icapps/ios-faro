@@ -1,14 +1,6 @@
-//
-//  GameScoreStore.swift
-//  AirRivet
-//
-//  Created by Stijn Willems on 01/06/16.
-//  Copyright © 2016 CocoaPods. All rights reserved.
-//
-
 import Foundation
 
-import AirRivet
+import Faro
 
 /**
 Example of `GameScore` that can be used with a Transformer that stores json in a file in the documents folder

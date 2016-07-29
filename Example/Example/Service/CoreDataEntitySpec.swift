@@ -1,18 +1,10 @@
-//
-//  CoreDataEntitySpec.swift
-//  AirRivet
-//
-//  Created by Stijn Willems on 19/05/16.
-//  Copyright © 2016 CocoaPods. All rights reserved.
-//
-
 import Foundation
 import Quick
 import Nimble
 import CoreData
-import AirRivet
+import Faro
 
-@testable import AirRivet_Example
+@testable import Faro_Example
 
 class CoreDataEntitySpec: QuickSpec {
 

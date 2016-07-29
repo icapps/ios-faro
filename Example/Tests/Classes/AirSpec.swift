@@ -1,17 +1,12 @@
-//
-//  Airspec.swift
-//  AirRivet
-//
-//  Created by Stijn Willems on 07/04/16.
-//  2016 iCapps. MIT Licensed.
+
 //
 
 import Quick
 import Nimble
 
-import AirRivet
+import Faro
 
-@testable import AirRivet_Example
+@testable import Faro_Example
 
 // MARK: - Specs
 

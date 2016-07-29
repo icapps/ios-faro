@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  AirRivet
-//
-//  Created by StijnWillems on 04/01/2016.
-//  2016 iCapps. MIT Licensed.
-//
-
 import UIKit
 
 @UIApplicationMain

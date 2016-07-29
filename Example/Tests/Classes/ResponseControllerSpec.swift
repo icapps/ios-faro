@@ -1,17 +1,9 @@
-//
-//  ResponseSpec.swift
-//  AirRivet
-//
-//  Created by Stijn Willems on 07/04/16.
-//  2016 iCapps. MIT Licensed.
-//
-
 import XCTest
 import Nimble
 import Quick
 
-import AirRivet
-@testable import AirRivet_Example
+import Faro
+@testable import Faro_Example
 
 
 // MARK: - Mocks

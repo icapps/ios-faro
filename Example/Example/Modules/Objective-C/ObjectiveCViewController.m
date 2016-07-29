@@ -1,16 +1,8 @@
-//
-//  ObjectiveCViewController.m
-//  AirRivet
-//
-//  Created by Stijn Willems on 07/04/16.
-//  2016 iCapps. MIT Licensed.
-//
-
 #import "ObjectiveCViewController.h"
 /**
  In build settings look at the Module Identifier. This is the one you should use to import swift files from the same target.
  */
-#import "AirRivet_Example-Swift.h"
+#import "Faro_Example-Swift.h"
 
 @interface ObjectiveCViewController ()
 

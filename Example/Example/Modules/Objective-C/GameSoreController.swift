@@ -1,13 +1,5 @@
-//
-//  GameSoreController.swift
-//  AirRivet
-//
-//  Created by Stijn Willems on 07/04/16.
-//  2016 iCapps. MIT Licensed.
-//
-
 import Foundation
-import AirRivet
+import Faro
 
 /**
 This class is used to bridge to swift generic classes to fetch and save GameScore objects.

@@ -1,22 +1,22 @@
 PODS:
-  - AirRivet (0.4.2)
+  - Faro (0.7.1)
   - Nimble (4.0.1)
   - Quick (0.9.2)
 
 DEPENDENCIES:
-  - AirRivet (from `../`)
+  - Faro (from `../`)
   - Nimble (~> 4.0.1)
   - Quick (~> 0.9.2)
 
 EXTERNAL SOURCES:
-  AirRivet:
+  Faro:
     :path: "../"
 
 SPEC CHECKSUMS:
-  AirRivet: d114020318796b806b3ac63d97b48f78c5036eaa
+  Faro: f8026af2b521aa384c1e2c9beb99308729dddf69
   Nimble: 0f3c8b8b084cda391209c3c5efbb48bedeeb920a
   Quick: 18d057bc66451eedd5d1c8dc99ba2a5db6e60226
 
-PODFILE CHECKSUM: d27528f5de7e265268c088c90afdfae041e6ddf0
+PODFILE CHECKSUM: 51ad1692370919784ac88c5358da0276194dc8cc
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.0.1

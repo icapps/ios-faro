@@ -1,14 +1,6 @@
-//
-//  MockEntities.swift
-//  AirRivet
-//
-//  Created by Stijn Willems on 03/06/16.
-//  Copyright © 2016 CocoaPods. All rights reserved.
-//
-
 import Foundation
-import AirRivet
-@testable import AirRivet_Example
+import Faro
+@testable import Faro_Example
 
 /**
 Example of a mock without CoreData
