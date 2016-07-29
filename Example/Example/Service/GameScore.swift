@@ -1,33 +1,16 @@
 import Faro
 import CoreData
 /**
-Model object that implements protocol `BaseModel` that can be fount in pod `Faro`.
-
 In this example GameScore has to inherit from NSObject to be usable in Objective-C. In a pure Swift project this is not needed.
 */
-class GameScore: NSObject, Rivetable {
+class GameScore: FaroParent, EnvironmentConfigurable {
 
-    // MARK: - Game variables
-    
 	var score: Int?
 	var cheatMode: Bool?
 	var playerName: String?
-    
-    // MARK: - UniqueAble
 
-	var uniqueValue: String?
-    
-    // MARK: - Init
-
-
-	required init(json: AnyObject) throws {
-		super.init()
-		try self.map(json)
-	}
-    
-    // MARK: - Parsable
-
-	func toDictionary()-> NSDictionary? {
+	//MARK: - Parsable override
+	override func toDictionary()-> NSDictionary? {
 		return [
 			"score": score!,
 			"cheatMode": cheatMode!,
@@ -35,7 +18,7 @@ class GameScore: NSObject, Rivetable {
 		]
 	}
 
-	func map(json: AnyObject) throws {
+	override func map(json: AnyObject) throws {
 		if let json = json as? [String: AnyObject] {
 			if let uniqueValue = json["objectId"] as? String {
 				self.uniqueValue = uniqueValue
@@ -55,24 +38,10 @@ class GameScore: NSObject, Rivetable {
 		}
 	}
 
-	class func managedObjectContext() -> NSManagedObjectContext? {
-		return nil
+	//MARK: - Transformable override
+	override class func rootKey() -> String? {
+		return "results"
 	}
-
-	static func lookupExistingObjectFromJSON(json: AnyObject) -> Self? {
-		return nil
-	}
-
-	// MARK: - Mitigatable
-	
-	class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
-		return MitigatorDefault()
-	}
-
-	class func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
-		return MitigatorDefault()
-	}
-
 	// MARK: - EnvironmentConfigurable
     
 	class func contextPath() -> String {
@@ -81,14 +50,5 @@ class GameScore: NSObject, Rivetable {
 
 	class func environment()-> protocol<Environment, Mockable> {
 		return EnvironmentParse<GameScore>()
-	}
-
-	class func rootKey() -> String? {
-		return "results"
-	}
-
-	//MARK: - Transfromable
-	class func transform() -> TransformJSON {
-		return TransformJSON()
 	}
 }

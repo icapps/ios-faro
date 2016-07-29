@@ -97,6 +97,7 @@
 		BA7362188C5D17958A5080EE299A90FC /* BeginWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94C50A90B1870905CCE35F998288E99 /* BeginWith.swift */; };
 		BBF88FA3F28C0906DBB78314A8E50A01 /* AssertionRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1474DB694C67A1CABB7194D53E6B727 /* AssertionRecorder.swift */; };
 		BEA76FA499D5899BD98DBD891FF921D4 /* SatisfyAnyOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1CBF7E0E8ADEA394A70089D7FF3009 /* SatisfyAnyOf.swift */; };
+		C0C3E7E51D4BC7BF00AEDB0C /* FaroParent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C3E7E41D4BC7BF00AEDB0C /* FaroParent.swift */; };
 		C44FA4A9F06C2823EBEFEBD1AEF07382 /* TransformJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CC394A5591F8AD105FD215472D7EF9 /* TransformJSON.swift */; };
 		C755136BFCDFA000C44C8BBCA065E4BE /* HaveCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BD573AFAA7965C23360DBCA4BB88E6 /* HaveCount.swift */; };
 		C80FF3813F014A8E43E2B4DB2FC29375 /* Callsite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8629AD3F9BCCC6E902F2F76E4164FDAC /* Callsite.swift */; };
@@ -277,6 +278,7 @@
 		BE2EAAB6C759B4B2DF11C9B2F34DCD20 /* Faro-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Faro-prefix.pch"; sourceTree = "<group>"; };
 		BFA23D56E5600B4488DBCBC854433373 /* BeGreaterThanOrEqualTo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeGreaterThanOrEqualTo.swift; path = Sources/Nimble/Matchers/BeGreaterThanOrEqualTo.swift; sourceTree = "<group>"; };
 		BFBFEF4A9D6B6E9AB4F11211B430A31B /* QuickSelectedTestSuiteBuilder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = QuickSelectedTestSuiteBuilder.swift; path = Sources/Quick/QuickSelectedTestSuiteBuilder.swift; sourceTree = "<group>"; };
+		C0C3E7E41D4BC7BF00AEDB0C /* FaroParent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaroParent.swift; sourceTree = "<group>"; };
 		C878C32F9D24D1635771870A1731A21F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9A2B49200AC2BB9CDDAD982C13EF8B5 /* AsyncMatcherWrapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsyncMatcherWrapper.swift; path = Sources/Nimble/Matchers/AsyncMatcherWrapper.swift; sourceTree = "<group>"; };
 		CBC9A93F83F96271A3BBC4D2B6BED0E0 /* NMBExceptionCapture.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NMBExceptionCapture.m; path = Sources/Nimble/Adapters/ObjectiveC/NMBExceptionCapture.m; sourceTree = "<group>"; };
@@ -391,15 +393,16 @@
 			isa = PBXGroup;
 			children = (
 				299B1CBE8E7C0D8EA179616CCD472152 /* Air.swift */,
+				4FCA38FC0031A6FC31392F794483B93C /* CoreData */,
 				A9B9F56C2F2DA0E20675A0C872AC0B1E /* Environment.swift */,
 				54A234ECF453DB5B41FE6CF3E98D4E9E /* ErrorEnum.swift */,
+				C0C3E7E41D4BC7BF00AEDB0C /* FaroParent.swift */,
+				6727E58226C7059B3D79965279FBA41D /* Mitigators */,
 				F6FCFB435573C872A5D27E9C9766BB39 /* Response.swift */,
 				2439966182A39DD071F8756A5205469D /* Rivetable.swift */,
 				E464E4AA79AFD17DE608A58C5E271F87 /* TransformAndStore.swift */,
 				8EF753F0E11A805DC816A73F848B2540 /* TransformCoreData.swift */,
 				43CC394A5591F8AD105FD215472D7EF9 /* TransformJSON.swift */,
-				4FCA38FC0031A6FC31392F794483B93C /* CoreData */,
-				6727E58226C7059B3D79965279FBA41D /* Mitigators */,
 				BBC4FC93D7B2C21DB0F93B34940FBC4F /* Utilities */,
 			);
 			path = Sources;
@@ -914,6 +917,7 @@
 				A8F46C2A387F2744114622BD08CAC85C /* Response.swift in Sources */,
 				2469B7C62A206B84C6F8D7DAD6BC62EE /* Rivetable.swift in Sources */,
 				CCB479B06E15BC5B4C8FC58E58835DA3 /* TransformAndStore.swift in Sources */,
+				C0C3E7E51D4BC7BF00AEDB0C /* FaroParent.swift in Sources */,
 				CC8C2B0BF84DDEA93B93E1627BD20554 /* TransformCoreData.swift in Sources */,
 				C44FA4A9F06C2823EBEFEBD1AEF07382 /* TransformJSON.swift in Sources */,
 			);
