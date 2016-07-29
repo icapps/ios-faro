@@ -20,6 +20,14 @@ public protocol Mitigatable: class {
 	static func requestMitigator()-> protocol<RequestMitigatable, Mitigator>
 }
 
+public protocol CoreDataManagedObjectContextRequestable {
+	/**
+	You can choose to return something when you use core data.
+	- returns: `NSManagedObjectContext` that is used by the `TranformController` to create `Parsable` instances
+	*/
+	static func managedObjectContext() -> NSManagedObjectContext?
+}
+
 public protocol CoreDataEntityDescription {
 	static func entityName() -> String
 	static func uniqueValueKey() -> String
@@ -27,11 +35,6 @@ public protocol CoreDataEntityDescription {
 
 public protocol CoreDataParsable {
 
-	/**
-	You can choose to return something when you use core data.
-	- returns: `NSManagedObjectContext` that is used by the `TranformController` to create `Parsable` instances
-	*/
-	static func managedObjectContext() -> NSManagedObjectContext?
 
 	/**
 	Required initializer that throwns when the json or the managedObjectContext. You do not have to use a managedObjectContext. You can use this protocol without the need for a managed object context.
@@ -138,4 +141,4 @@ An `Air` should be able to build up a request when your model object complies to
 */
 public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable, Transformable>
 
-public typealias RivetableCoreData = protocol<UniqueAble, EnvironmentConfigurable, Mitigatable, Transformable, CoreDataParsable>
+public typealias RivetableCoreData = protocol<UniqueAble, EnvironmentConfigurable, Mitigatable, Transformable, CoreDataParsable, CoreDataEntityDescription, CoreDataManagedObjectContextRequestable>

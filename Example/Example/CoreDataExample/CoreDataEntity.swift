@@ -5,6 +5,9 @@ import Faro
 
 class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, CoreDataParsable, CoreDataEntityDescription {
 
+
+	//MARK: - CoreDataEntityDescription
+
 	class func entityName() -> String {
 		return typeName(CoreDataEntity)
 	}
@@ -12,6 +15,9 @@ class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, CoreDataParsa
 	class func uniqueValueKey() -> String {
 		return "uniqueValue"
 	}
+
+	//MARK: - CoreDataParsable
+
 	/**
 	You should override this method. Swift does not inherit the initializers from its superclass.
 	*/
@@ -39,10 +45,6 @@ class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, CoreDataParsa
 		}
 	}
 
-	override class func rootKey() -> String? {
-		return "results"
-	}
-
 	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) throws -> Self? {
 
 		guard let managedObjectContext = managedObjectContext else  {
@@ -52,8 +54,9 @@ class CoreDataEntity: FaroCoreDataParent, EnvironmentConfigurable, CoreDataParsa
 		return autocast(try fetchInCoreDataFromJSON(json, managedObjectContext: managedObjectContext, entityName: CoreDataEntity.entityName(), uniqueValueKey: CoreDataEntity.uniqueValueKey()))
 	}
 
-	class func managedObjectContext() -> NSManagedObjectContext? {
-		return CoreDataController.sharedInstance.managedObjectContext
+	//MARK: - Transformable override
+	override class func rootKey() -> String? {
+		return "results"
 	}
 
 	//MARK: - EnvironmentConfigurable

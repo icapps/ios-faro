@@ -112,7 +112,7 @@ public class TransformJSON {
 	- throws: JSON errors that are not `Mitigatable`
 	*/
 
-	public func transformCoreData<Rivet: protocol<CoreDataParsable, Transformable, Mitigatable>>(data: NSData, succeed:(Rivet)->()) throws {
+	public func transformCoreData<Rivet: protocol<CoreDataParsable, Transformable, CoreDataManagedObjectContextRequestable, Mitigatable>>(data: NSData, succeed:(Rivet)->()) throws {
 
 		let mitigator = Rivet.responseMitigator()
 
@@ -147,7 +147,7 @@ public class TransformJSON {
 	- throws: JSON errors that are not `Mitigatable`
 	*/
 
-    public func transformCoreData<Rivet: protocol<CoreDataParsable, Transformable, Transformable, Mitigatable>>(data: NSData, succeed:([Rivet])->()) throws{
+    public func transformCoreData<Rivet: protocol<CoreDataParsable, Transformable, Transformable, CoreDataManagedObjectContextRequestable, Mitigatable>>(data: NSData, succeed:([Rivet])->()) throws{
 
 		let mitigator = Rivet.responseMitigator()
 		try mitigator.mitigate {
@@ -200,7 +200,7 @@ public class TransformJSON {
 		return json
 	}
 
-	private func dictToArrayCoreData<Rivet: CoreDataParsable>(array: [[String:AnyObject]]) throws -> [Rivet] {
+	private func dictToArrayCoreData<Rivet: protocol<CoreDataParsable, CoreDataManagedObjectContextRequestable>>(array: [[String:AnyObject]]) throws -> [Rivet] {
 		var concreteObjectArray = [Rivet]()
 		for json in array {
 

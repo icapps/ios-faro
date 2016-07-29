@@ -11,7 +11,13 @@ import CoreData
 import Faro
 
 
-class FaroCoreDataParent: NSManagedObject, Transformable, Mitigatable {
+class FaroCoreDataParent: NSManagedObject, Transformable, Mitigatable, CoreDataManagedObjectContextRequestable {
+
+	//MARK: - CoredataManagedObjectContextRequestable
+
+	class func managedObjectContext() -> NSManagedObjectContext? {
+		return CoreDataController.sharedInstance.managedObjectContext
+	}
 
 	//MARK: - Transformable
 	class func transform() -> TransformJSON {
