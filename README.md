@@ -9,7 +9,75 @@ __Faro__ is a service layer build in Swift using generics.
 
 The idea is that you have `Air` which is a class that performs the request for an `Environment`. To do this it needs a Type called `Rivet` that can be handled over the `Air` 🤔. So how do we make this `Rivet` Type?
 
-`AnyThing` can be a `Rivet` if they are `Rivetable`. `Rivetable` is a combination of protocols that the Rivet (Type) has to conform to. The `Rivet` is `Rivetable` if:
+`AnyThing` can be a `Rivet` if they are `Rivetable`. `Rivetable` is a combination of protocols that the Rivet (Type) has to conform to.
+## Create model objects
+You have 2 options to create a model object. The first uses inheritance and is the easiast but less flexible. The second uses protocols and is more versatile.
+### 1. Models via inheritance
+
+You have to conform to the `Rivetable` protcol for non CoreData objects or to `RivetableCoreData` for CoreData objects.
+
+#### Rivetable
+In this example GameScore has to inherit from NSObject to be usable in Objective-C. In a pure Swift project this is not needed and you use `FaroParentSwift`.
+
+```swift
+
+class Foo: FaroParent, EnvironmentConfigurable {
+
+	//Add some custom variables§
+
+	//MARK: - Parsable override
+	override func toDictionary()-> NSDictionary? {
+		// Convert to dictionary if you want to be able to post
+		return nil
+	}
+
+	override func map(json: AnyObject) throws {
+		// Do your mapping
+	}
+
+	//MARK: - Transformable override
+	override class func rootKey() -> String? {
+		//See docs for how this is used
+		return nil
+	}
+	// MARK: - EnvironmentConfigurable
+
+	class func contextPath() -> String {
+		//http://www.rootapi/contextpath fill this in here
+		return "path"
+	}
+
+	class func environment()-> protocol<Environment, Mockable> {
+		return EnvironmentParse<Foo>()
+	}
+}
+
+```
+
+Use foo
+
+##### Fetch
+```swift
+do {
+	try Air.retrieve({ (response : Foo) in
+	  print(response)
+  })
+} catch {
+	print("💣Error with request construction: \(error)💣")
+}
+```
+Look the example project for more.
+
+### Rivetable CoreData
+
+See the example project.
+
+//TODO #53 (add explanation here)
+
+### 2. Models from protocols
+You have to conform to the `Rivetable` protcol for non CoreData objects or to `RivetableCoreData` for CoreData objects.
+
+#### The `Rivet` is `Rivetable` if:
 
 - `Mitigatable`: Receive requests to make anything that can go wrong less severe. `Faro` includes 2 `Mitigator`:
 
