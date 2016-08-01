@@ -1,5 +1,8 @@
 # Faro
 
+## Version 0.7.3
+* fixed #42 to add FaroParent and FaroParentSwift to make setup possible via inheritance.
+
 ## Version 0.7.2
 * renamed everything Faro
 * Distributable to CocoaPods via travis
