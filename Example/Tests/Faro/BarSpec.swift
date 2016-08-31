@@ -16,7 +16,7 @@ class BarSpec: QuickSpec {
                 var baseURL : String!
                 var service : UnitTestService!
                 var configuration : Faro.Configuration!
-                var bar : Bar <UnitTestService>!
+                var bar : Bar!
                 var mockJSON: AnyObject!
 
                 beforeEach({
