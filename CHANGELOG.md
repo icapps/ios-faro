@@ -3,9 +3,9 @@
 ## Version 1.0.0
 
 ### **WARNING**
-Version 1.0.0 is not compatible with 0.7.2. All the functions, classes, protocols, ... that we no longer support have been marked with a ```@availabel(*, deprecated = "")``` attribute.
+Version 1.0.0 is not compatible with 0.7.2. All the functions, classes, protocols, ... that we no longer support have been marked with a ```@available(*, deprecated=1.0.0, message="use the Bar class")``` attribute.
 
-In the previous versions to fire a service requet you used the ```Air``` class. Now you should use the ```Bar``` class.
+In the previous versions to fire a service request you used the ```Air``` class. Now you should use the ```Bar``` class.
 
 * first test for the ```Bar``` class
 * Deprecating all ```Air``` class functions
