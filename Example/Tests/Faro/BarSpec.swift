@@ -33,9 +33,7 @@ class BarSpec: QuickSpec {
                 }
 
                 it("should have a service") {
-
                     expect(bar.service).toNot(beNil())
-
                 }
 
                 it("should return in sync with the mock model") {
