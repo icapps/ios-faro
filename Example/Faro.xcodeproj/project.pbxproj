@@ -9,36 +9,19 @@
 /* Begin PBXBuildFile section */
 		2067CD75B0CE4B2A24BC5445 /* Pods_Faro_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73C8EDDB8E42A5F1DC42A0DD /* Pods_Faro_Example.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
-		607FACD81AFB9204008FA782 /* SwiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* SwiftViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		A4D85BC91CC9106A0046AF29 /* exampleBaseModel.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */; };
 		A4D85BCB1CCA150F0046AF29 /* exampleBaseModelResultsArray.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */; };
 		A4D85BCD1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */; };
-		C00C29401D4BAC0C0080AEBA /* FaroCoreDataParent+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00C293E1D4BAC0C0080AEBA /* FaroCoreDataParent+CoreDataProperties.swift */; };
-		C00C29411D4BAC0C0080AEBA /* FaroCoreDataParent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00C293F1D4BAC0C0080AEBA /* FaroCoreDataParent.swift */; };
 		C012EA4D1CCA5E2700B298D7 /* GET_gameScoreArray.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */; };
 		C012EA501CCA8A5B00B298D7 /* GET_gameScoreArray_1275.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */; };
 		C03280F81D76E2630047825C /* FaroSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03280F71D76E2630047825C /* FaroSpec.swift */; };
-		C032810D1D76E2950047825C /* AirSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03280FB1D76E28C0047825C /* AirSpec.swift */; };
-		C032810E1D76E2950047825C /* CoreDataSQLitePopulatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03280FC1D76E28C0047825C /* CoreDataSQLitePopulatorSpec.swift */; };
-		C032810F1D76E2950047825C /* DefaultMitigatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03280FD1D76E28C0047825C /* DefaultMitigatorSpec.swift */; };
-		C03281111D76E2950047825C /* MockEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03280FF1D76E28C0047825C /* MockEntities.swift */; };
-		C03281121D76E2950047825C /* ResponseControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281001D76E28C0047825C /* ResponseControllerSpec.swift */; };
-		C03281131D76E2950047825C /* ResponseUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281011D76E28C0047825C /* ResponseUtilsTests.swift */; };
-		C03281141D76E2950047825C /* StoreUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281021D76E28C0047825C /* StoreUnitTest.swift */; };
-		C03281151D76E2950047825C /* TransformControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281031D76E28C0047825C /* TransformControllerSpec.swift */; };
-		C03281161D76E3D00047825C /* GameScoreSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03280FE1D76E28C0047825C /* GameScoreSpec.swift */; };
-		C052960D1CB6629E007E1111 /* ObjectiveCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */; };
-		C05296121CB6661E007E1111 /* GameSoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05296111CB6661E007E1111 /* GameSoreController.swift */; };
-		C0A3DB0D1CAEBBB200978DBD /* EnvironmentParse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */; };
-		C0A3DB0E1CAEBBB200978DBD /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */; };
-		C0D142301CEDEDA200DF9266 /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1422F1CEDEDA200DF9266 /* CoreDataController.swift */; };
-		C0D142341CEDEF0900DF9266 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C0D142321CEDEF0900DF9266 /* Model.xcdatamodeld */; };
-		C0D142371CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D142351CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift */; };
-		C0D142381CEDEF5800DF9266 /* CoreDataEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D142361CEDEF5800DF9266 /* CoreDataEntity.swift */; };
-		C0EA6CF91CFEE0FE00585FF7 /* GameScoreStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EA6CF81CFEE0FE00585FF7 /* GameScoreStore.swift */; };
+		C03281421D76E6BE0047825C /* ConfigurationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281411D76E6BE0047825C /* ConfigurationSpec.swift */; };
+		C03281451D76EB590047825C /* SwiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* SwiftViewController.swift */; };
+		C03281461D76EBD00047825C /* WrapFaroController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05296111CB6661E007E1111 /* WrapFaroController.swift */; };
+		C03281471D76EBD60047825C /* ObjectiveCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */; };
 		D377DE1E7E23BDD451F1AF77 /* Pods_Faro_Example_Faro_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E1A5D1778B1450F795E6D9 /* Pods_Faro_Example_Faro_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -70,33 +53,16 @@
 		A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArray.json; sourceTree = "<group>"; };
 		A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArrayCustomRootKey.json; sourceTree = "<group>"; };
 		A9820385A9A7E4CFDE5B9F68 /* Pods-Faro_Example-Faro_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example-Faro_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		C00C293E1D4BAC0C0080AEBA /* FaroCoreDataParent+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FaroCoreDataParent+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		C00C293F1D4BAC0C0080AEBA /* FaroCoreDataParent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaroCoreDataParent.swift; sourceTree = "<group>"; };
 		C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray.json; sourceTree = "<group>"; };
 		C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray_1275.json; sourceTree = "<group>"; };
 		C03280F71D76E2630047825C /* FaroSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FaroSpec.swift; path = Faro/FaroSpec.swift; sourceTree = "<group>"; };
-		C03280FB1D76E28C0047825C /* AirSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirSpec.swift; sourceTree = "<group>"; };
-		C03280FC1D76E28C0047825C /* CoreDataSQLitePopulatorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataSQLitePopulatorSpec.swift; sourceTree = "<group>"; };
-		C03280FD1D76E28C0047825C /* DefaultMitigatorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultMitigatorSpec.swift; sourceTree = "<group>"; };
-		C03280FE1D76E28C0047825C /* GameScoreSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScoreSpec.swift; sourceTree = "<group>"; };
-		C03280FF1D76E28C0047825C /* MockEntities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockEntities.swift; sourceTree = "<group>"; };
-		C03281001D76E28C0047825C /* ResponseControllerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseControllerSpec.swift; sourceTree = "<group>"; };
-		C03281011D76E28C0047825C /* ResponseUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseUtilsTests.swift; sourceTree = "<group>"; };
-		C03281021D76E28C0047825C /* StoreUnitTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreUnitTest.swift; sourceTree = "<group>"; };
-		C03281031D76E28C0047825C /* TransformControllerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformControllerSpec.swift; sourceTree = "<group>"; };
+		C03281411D76E6BE0047825C /* ConfigurationSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfigurationSpec.swift; path = Faro/ConfigurationSpec.swift; sourceTree = "<group>"; };
 		C052960A1CB6629E007E1111 /* Faro_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Faro_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		C052960B1CB6629E007E1111 /* ObjectiveCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectiveCViewController.h; sourceTree = "<group>"; };
 		C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectiveCViewController.m; sourceTree = "<group>"; };
-		C05296111CB6661E007E1111 /* GameSoreController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSoreController.swift; sourceTree = "<group>"; };
+		C05296111CB6661E007E1111 /* WrapFaroController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapFaroController.swift; sourceTree = "<group>"; };
 		C05EBF6F1D4B8E3000B950EB /* Faro_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Faro_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05EBF731D4B8E3000B950EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentParse.swift; sourceTree = "<group>"; };
-		C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScore.swift; sourceTree = "<group>"; };
-		C0D1422F1CEDEDA200DF9266 /* CoreDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataController.swift; path = Example/CoreDataExample/CoreDataController.swift; sourceTree = SOURCE_ROOT; };
-		C0D142331CEDEF0900DF9266 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		C0D142351CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CoreDataEntity+CoreDataProperties.swift"; path = "../CoreDataExample/CoreDataEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		C0D142361CEDEF5800DF9266 /* CoreDataEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataEntity.swift; path = ../CoreDataExample/CoreDataEntity.swift; sourceTree = "<group>"; };
-		C0EA6CF81CFEE0FE00585FF7 /* GameScoreStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScoreStore.swift; sourceTree = "<group>"; };
 		D39D515CDEB600C0DEBE26E0 /* Pods-Faro_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example/Pods-Faro_Example.release.xcconfig"; sourceTree = "<group>"; };
 		DBBD94A15C031D6EAFAF4B10 /* Pods-Faro_Example-Faro_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example-Faro_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		F28FE425E9CA20CB4C7DE52F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -179,7 +145,6 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				C03280FA1D76E28C0047825C /* Air */,
 				C03280F91D76E26B0047825C /* Faro */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
@@ -236,10 +201,6 @@
 		62AF6B0F1CE47E4900339275 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				C0D142311CEDEDA800DF9266 /* CoreData */,
-				C0A3DB0B1CAEBBB200978DBD /* EnvironmentParse.swift */,
-				C0A3DB0C1CAEBBB200978DBD /* GameScore.swift */,
-				C0EA6CF81CFEE0FE00585FF7 /* GameScoreStore.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -269,30 +230,15 @@
 			isa = PBXGroup;
 			children = (
 				C03280F71D76E2630047825C /* FaroSpec.swift */,
+				C03281411D76E6BE0047825C /* ConfigurationSpec.swift */,
 			);
 			name = Faro;
-			sourceTree = "<group>";
-		};
-		C03280FA1D76E28C0047825C /* Air */ = {
-			isa = PBXGroup;
-			children = (
-				C03280FB1D76E28C0047825C /* AirSpec.swift */,
-				C03280FC1D76E28C0047825C /* CoreDataSQLitePopulatorSpec.swift */,
-				C03280FD1D76E28C0047825C /* DefaultMitigatorSpec.swift */,
-				C03280FE1D76E28C0047825C /* GameScoreSpec.swift */,
-				C03280FF1D76E28C0047825C /* MockEntities.swift */,
-				C03281001D76E28C0047825C /* ResponseControllerSpec.swift */,
-				C03281011D76E28C0047825C /* ResponseUtilsTests.swift */,
-				C03281021D76E28C0047825C /* StoreUnitTest.swift */,
-				C03281031D76E28C0047825C /* TransformControllerSpec.swift */,
-			);
-			path = Air;
 			sourceTree = "<group>";
 		};
 		C05296101CB665F1007E1111 /* Objective-C */ = {
 			isa = PBXGroup;
 			children = (
-				C05296111CB6661E007E1111 /* GameSoreController.swift */,
+				C05296111CB6661E007E1111 /* WrapFaroController.swift */,
 				C052960B1CB6629E007E1111 /* ObjectiveCViewController.h */,
 				C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */,
 			);
@@ -305,19 +251,6 @@
 				C05EBF731D4B8E3000B950EB /* Info.plist */,
 			);
 			path = Faro_Tests;
-			sourceTree = "<group>";
-		};
-		C0D142311CEDEDA800DF9266 /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-				C00C293E1D4BAC0C0080AEBA /* FaroCoreDataParent+CoreDataProperties.swift */,
-				C00C293F1D4BAC0C0080AEBA /* FaroCoreDataParent.swift */,
-				C0D1422F1CEDEDA200DF9266 /* CoreDataController.swift */,
-				C0D142361CEDEF5800DF9266 /* CoreDataEntity.swift */,
-				C0D142351CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift */,
-				C0D142321CEDEF0900DF9266 /* Model.xcdatamodeld */,
-			);
-			name = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -525,19 +458,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0A3DB0E1CAEBBB200978DBD /* GameScore.swift in Sources */,
-				C052960D1CB6629E007E1111 /* ObjectiveCViewController.m in Sources */,
-				C05296121CB6661E007E1111 /* GameSoreController.swift in Sources */,
-				C00C29411D4BAC0C0080AEBA /* FaroCoreDataParent.swift in Sources */,
-				C0D142381CEDEF5800DF9266 /* CoreDataEntity.swift in Sources */,
-				C0D142341CEDEF0900DF9266 /* Model.xcdatamodeld in Sources */,
-				C0D142301CEDEDA200DF9266 /* CoreDataController.swift in Sources */,
-				C00C29401D4BAC0C0080AEBA /* FaroCoreDataParent+CoreDataProperties.swift in Sources */,
-				C0D142371CEDEF5800DF9266 /* CoreDataEntity+CoreDataProperties.swift in Sources */,
-				607FACD81AFB9204008FA782 /* SwiftViewController.swift in Sources */,
-				C0EA6CF91CFEE0FE00585FF7 /* GameScoreStore.swift in Sources */,
+				C03281451D76EB590047825C /* SwiftViewController.swift in Sources */,
+				C03281461D76EBD00047825C /* WrapFaroController.swift in Sources */,
+				C03281471D76EBD60047825C /* ObjectiveCViewController.m in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
-				C0A3DB0D1CAEBBB200978DBD /* EnvironmentParse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,15 +470,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C03280F81D76E2630047825C /* FaroSpec.swift in Sources */,
-				C03281161D76E3D00047825C /* GameScoreSpec.swift in Sources */,
-				C03281141D76E2950047825C /* StoreUnitTest.swift in Sources */,
-				C03281151D76E2950047825C /* TransformControllerSpec.swift in Sources */,
-				C03281111D76E2950047825C /* MockEntities.swift in Sources */,
-				C032810F1D76E2950047825C /* DefaultMitigatorSpec.swift in Sources */,
-				C032810E1D76E2950047825C /* CoreDataSQLitePopulatorSpec.swift in Sources */,
-				C032810D1D76E2950047825C /* AirSpec.swift in Sources */,
-				C03281131D76E2950047825C /* ResponseUtilsTests.swift in Sources */,
-				C03281121D76E2950047825C /* ResponseControllerSpec.swift in Sources */,
+				C03281421D76E6BE0047825C /* ConfigurationSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -773,20 +689,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		C0D142321CEDEF0900DF9266 /* Model.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				C0D142331CEDEF0900DF9266 /* Model.xcdatamodel */,
-			);
-			currentVersion = C0D142331CEDEF0900DF9266 /* Model.xcdatamodel */;
-			name = Model.xcdatamodeld;
-			path = ../CoreDataExample/Model.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 607FACC81AFB9204008FA782 /* Project object */;
 }

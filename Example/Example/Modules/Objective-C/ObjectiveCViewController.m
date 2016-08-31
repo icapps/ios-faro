@@ -12,21 +12,5 @@
 
 @implementation ObjectiveCViewController
 
-#pragma mark - View flow
-
-- (void)viewDidLoad {
-	[super viewDidLoad];
-    
-	GameScoreController * controller = [[GameScoreController alloc] init];
-	[controller retrieve:^(NSArray<GameScore *> * _Nonnull response) {
-        NSLog(@"%@", response);
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.label.text = [NSString stringWithFormat:@"Received %lu objects", (unsigned long)response.count];
-        });
-	} failure:^(NSError * _Nonnull error) {
-		NSLog(@"%@", error);
-	}];
-}
 
 @end
