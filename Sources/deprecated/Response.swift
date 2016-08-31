@@ -11,7 +11,7 @@ Errors cause an throw
 Responses are interpretted in the `TransFormController`
 */
 
-@available(*, deprecated=1.0.0, message="use Bar.")
+@available(*, deprecated=1.0.0, message="use the Bar class")
 
 public class Response {
 

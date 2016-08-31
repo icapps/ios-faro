@@ -24,7 +24,7 @@ You can inspect how error handling is expected to behave by looking at `Mitigato
 You can also mock this class via its Type. Take a look at the `GameScoreTest` in example to know how.
 
 */
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use the Bar class")
 public class Air {
 
 	//MARK: - AnyObjects except CoreData

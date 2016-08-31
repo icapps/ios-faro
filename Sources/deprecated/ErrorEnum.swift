@@ -8,14 +8,14 @@
 
 import Foundation
 
-@available(*, deprecated=1.0.0, message="use Bar.")
+@available(*, deprecated=1.0.0, message="use the Bar class")
 public enum RequestError: ErrorType {
 	case InvalidBody
 	case InvalidUrl
 	case General
 }
 
-@available(*, deprecated=1.0.0, message="use Bar.")
+@available(*, deprecated=1.0.0, message="use the Bar class")
 public enum ResponseError:ErrorType {
 	case InvalidResponseData(data: NSData?)
 	case InvalidDictionary(dictionary: AnyObject)

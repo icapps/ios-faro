@@ -6,6 +6,9 @@ React and/or solve errors that could arrise while the entity that conforms to `M
 
 You can inspect how error mitigation is expected to behave by looking at `MitigatorDefaultSpec` and `ResponseSpec` in the tests of the Example project.
 */
+
+@available(*, deprecated=1.0.0, message="use the Bar class")
+
 public protocol Mitigatable: class {
 
 	/**
@@ -20,6 +23,8 @@ public protocol Mitigatable: class {
 	static func requestMitigator()-> protocol<RequestMitigatable, Mitigator>
 }
 
+@available(*, deprecated=1.0.0, message="use the Bar class")
+
 public protocol CoreDataManagedObjectContextRequestable {
 	/**
 	You can choose to return something when you use core data.
@@ -28,10 +33,14 @@ public protocol CoreDataManagedObjectContextRequestable {
 	static func managedObjectContext() -> NSManagedObjectContext?
 }
 
+@available(*, deprecated=1.0.0, message="use the Bar class")
+
 public protocol CoreDataEntityDescription {
 	static func entityName() -> String
 	static func uniqueValueKey() -> String
 }
+
+@available(*, deprecated=1.0.0, message="use the Bar class")
 
 public protocol CoreDataParsable {
 
@@ -66,7 +75,7 @@ public protocol CoreDataParsable {
 /**
 Implement so we can set data on your variables in the `TransformJSON`.
 */
-@available(*, deprecated=1.0.0, message="use Bar.")
+@available(*, deprecated=1.0.0, message="use the Bar class")
 
 public protocol Parsable {
 
