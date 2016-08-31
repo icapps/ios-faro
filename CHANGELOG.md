@@ -1,5 +1,14 @@
 # Faro
 
+## Version 1.0.0
+
+### **WARNING**
+This is a braking version. We no longer support the Air. interface as in version 0.7.2 but move to the Faro. interface.
+
+* first test for the Faro. interface
+* Deprecating all Air. functions
+
+---
 ## Version 0.7.2
 * renamed everything Faro
 * Distributable to CocoaPods via travis
