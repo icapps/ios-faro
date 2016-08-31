@@ -14,15 +14,15 @@ class BarSpec: QuickSpec {
         describe("Bar") {
             context("success") {
                 var baseURL : String!
-                var service : UnitTestService<MockModel>!
+                var service : UnitTestService!
                 var configuration : Faro.Configuration!
-                var bar : Bar <UnitTestService<MockModel>>!
-                var mockModel: MockModel!
+                var bar : Bar <UnitTestService>!
+                var mockJSON: AnyObject!
 
                 beforeEach({
-                    mockModel = MockModel()
+                    mockJSON = ["key" : "value"]
                     baseURL = "http://www.something.be"
-                    service = UnitTestService <MockModel>(mockModel: mockModel)
+                    service = UnitTestService(mockJSON: mockJSON)
                     configuration = Configuration(baseURL: baseURL)
                     bar = Bar(configuration: configuration, service: service)
                     
@@ -36,6 +36,10 @@ class BarSpec: QuickSpec {
 
                     expect(bar.service).toNot(beNil())
 
+                }
+
+                it("should return in sync with the mock model") {
+                    //TODO
                 }
             }
         }

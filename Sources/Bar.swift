@@ -11,14 +11,14 @@ import Foundation
 
 /// Serves anything you order.
 
-public class Bar <S: Serveable>  {
+public class Bar <S: JSONServeable>  {
     public let configuration: Configuration
-    public let service : S
+    public let service : S //TODO make this default to a JSON service and maybe not generic
 
     public init (configuration: Configuration, service: S) {
-
         self.configuration = configuration
         self.service = service
-        
     }
+
+
 }

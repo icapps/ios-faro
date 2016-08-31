@@ -9,16 +9,16 @@ class ServiceSpec: QuickSpec {
         describe("Service") {
             context("unit testing") {
                 it("should return mockModel in sync"){
-                    let mockModel = MockModel()
-                    let service = UnitTestService<MockModel>(mockModel: mockModel)
+                    let expected = ["key" : "value"]
+                    let service = UnitTestService(mockJSON: expected)
                     let order = Order(path: "mock")
                     var isInSync = false
 
-                    service.serve(order, delivery: { (delivery: Delivery <MockModel>) in
+                    service.serve(order, result: { (result) in
                         isInSync = true
-                        switch delivery {
-                        case .Success(let model):
-                            expect(model).to(beIdenticalTo(mockModel))
+                        switch result {
+                        case .Success(let json):
+                            expect(json).to(beIdenticalTo(expected))
                         default:
                             XCTFail("You should succeed")
                         }
