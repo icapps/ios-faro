@@ -5,10 +5,8 @@ import Faro
 @testable import Faro_Example
 
 class OrderSpec: QuickSpec {
-
     override func spec() {
         describe("Order") {
-
             context("initialisation") {
                 it("should have a path"){
                     let expected = "path"
@@ -19,5 +17,4 @@ class OrderSpec: QuickSpec {
             }
         }
     }
-    
 }

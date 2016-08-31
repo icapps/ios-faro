@@ -10,14 +10,9 @@ class MockModel {
 }
 
 class BarSpec: QuickSpec {
-
     override func spec() {
-
-
         describe("Bar") {
-
             context("success") {
-
                 var baseURL : String!
                 var service : UnitTestService<MockModel>!
                 var configuration : Faro.Configuration!
@@ -42,11 +37,7 @@ class BarSpec: QuickSpec {
                     expect(bar.service).toNot(beNil())
 
                 }
-
             }
-
         }
-        
-    }
-    
+    }    
 }

@@ -12,7 +12,6 @@ import Foundation
 /// Serves anything you order.
 
 public class Bar <S: Serveable>  {
-
     public let configuration: Configuration
     public let service : S
 
@@ -22,5 +21,4 @@ public class Bar <S: Serveable>  {
         self.service = service
         
     }
-    
 }

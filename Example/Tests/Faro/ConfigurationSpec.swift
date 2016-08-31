@@ -4,7 +4,6 @@ import Nimble
 import Faro
 
 class ConfigurationSpec: QuickSpec {
-
     override func spec() {
         describe("Configuration") {
 
@@ -17,6 +16,5 @@ class ConfigurationSpec: QuickSpec {
                 }
             }
         }
-    }
-    
+    }    
 }

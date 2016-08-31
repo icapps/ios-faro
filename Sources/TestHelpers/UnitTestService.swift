@@ -1,6 +1,5 @@
 
 public class UnitTestService <U>: Serveable {
-
     public typealias S = U
 
     public let mockModel: U
@@ -12,5 +11,4 @@ public class UnitTestService <U>: Serveable {
     public func serve(order: Order, delivery: (Delivery<S>)->()) {
         delivery(.Success(self.mockModel))
     }
-
 }
