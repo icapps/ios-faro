@@ -5,8 +5,16 @@ import Faro
 @testable import Faro_Example
 
 
-class MockModel {
+class MockModel : Parseable {
+    var value : String
 
+    required init(json : AnyObject) {
+        if let json = json as? [String : String] {
+            value = json["key"]!
+        }else {
+            value = ""
+        }
+    }
 }
 
 class BarSpec: QuickSpec {
@@ -37,7 +45,20 @@ class BarSpec: QuickSpec {
                 }
 
                 it("should return in sync with the mock model") {
-                    //TODO
+                    let order = Order(path: "unitTest")
+                    var isInSync = false
+
+                    bar.serve(order) { (result : Result <MockModel>) in
+                        isInSync = true
+                        switch result {
+                        case .Success(let model):
+                            expect(model.value).to(equal("value"))
+                        default:
+                            XCTFail("You should succeed")
+                        }
+                    }
+
+                    expect(isInSync).to(beTrue())
                 }
             }
         }
