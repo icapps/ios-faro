@@ -104,8 +104,12 @@
 		C032813C1D76E5090047825C /* AutoCast.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032812A1D76E5090047825C /* AutoCast.swift */; };
 		C032813D1D76E5090047825C /* CoreDataUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032812B1D76E5090047825C /* CoreDataUtilities.swift */; };
 		C032813E1D76E5090047825C /* dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032812C1D76E5090047825C /* dispatch.swift */; };
-		C03281401D76E5A70047825C /* Faro.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032813F1D76E5A70047825C /* Faro.swift */; };
+		C03281401D76E5A70047825C /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032813F1D76E5A70047825C /* Bar.swift */; };
 		C03281441D76E9B40047825C /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281431D76E9B40047825C /* Configuration.swift */; };
+		C032814B1D76F9220047825C /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032814A1D76F9220047825C /* Service.swift */; };
+		C032814F1D76F9D70047825C /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032814E1D76F9D70047825C /* Order.swift */; };
+		C03281511D76FA230047825C /* ResultEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281501D76FA230047825C /* ResultEnum.swift */; };
+		C03281531D76FC480047825C /* UnitTestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281521D76FC480047825C /* UnitTestService.swift */; };
 		C755136BFCDFA000C44C8BBCA065E4BE /* HaveCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BD573AFAA7965C23360DBCA4BB88E6 /* HaveCount.swift */; };
 		C80FF3813F014A8E43E2B4DB2FC29375 /* Callsite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8629AD3F9BCCC6E902F2F76E4164FDAC /* Callsite.swift */; };
 		C81BEDE79545C013BEBBA0363480FD47 /* DSL+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D87375EFC51405B2C84DC11FA00548F /* DSL+Wait.swift */; };
@@ -284,8 +288,12 @@
 		C032812A1D76E5090047825C /* AutoCast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoCast.swift; sourceTree = "<group>"; };
 		C032812B1D76E5090047825C /* CoreDataUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataUtilities.swift; sourceTree = "<group>"; };
 		C032812C1D76E5090047825C /* dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dispatch.swift; sourceTree = "<group>"; };
-		C032813F1D76E5A70047825C /* Faro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Faro.swift; sourceTree = "<group>"; };
+		C032813F1D76E5A70047825C /* Bar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
 		C03281431D76E9B40047825C /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		C032814A1D76F9220047825C /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		C032814E1D76F9D70047825C /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		C03281501D76FA230047825C /* ResultEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultEnum.swift; sourceTree = "<group>"; };
+		C03281521D76FC480047825C /* UnitTestService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UnitTestService.swift; path = TestHelpers/UnitTestService.swift; sourceTree = "<group>"; };
 		C878C32F9D24D1635771870A1731A21F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9A2B49200AC2BB9CDDAD982C13EF8B5 /* AsyncMatcherWrapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsyncMatcherWrapper.swift; path = Sources/Nimble/Matchers/AsyncMatcherWrapper.swift; sourceTree = "<group>"; };
 		CBC9A93F83F96271A3BBC4D2B6BED0E0 /* NMBExceptionCapture.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NMBExceptionCapture.m; path = Sources/Nimble/Adapters/ObjectiveC/NMBExceptionCapture.m; sourceTree = "<group>"; };
@@ -386,9 +394,13 @@
 		55B1BB857496A06ACEDCB4B78B49AD09 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				C03281171D76E5090047825C /* deprecated */,
-				C032813F1D76E5A70047825C /* Faro.swift */,
 				C03281431D76E9B40047825C /* Configuration.swift */,
+				C03281171D76E5090047825C /* deprecated */,
+				C032813F1D76E5A70047825C /* Bar.swift */,
+				C032814E1D76F9D70047825C /* Order.swift */,
+				C03281501D76FA230047825C /* ResultEnum.swift */,
+				C032814A1D76F9220047825C /* Service.swift */,
+				C03281541D76FC500047825C /* TestHelpers */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -608,6 +620,14 @@
 				C032812C1D76E5090047825C /* dispatch.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		C03281541D76FC500047825C /* TestHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				C03281521D76FC480047825C /* UnitTestService.swift */,
+			);
+			name = TestHelpers;
 			sourceTree = "<group>";
 		};
 		D24B2EA016AE4FABDB5AF17F3FD9C222 /* iOS */ = {
@@ -916,12 +936,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				C03281361D76E5090047825C /* MitigatorProtocol.swift in Sources */,
-				C03281401D76E5A70047825C /* Faro.swift in Sources */,
+				C03281401D76E5A70047825C /* Bar.swift in Sources */,
 				C03281321D76E5090047825C /* ErrorEnum.swift in Sources */,
 				C03281391D76E5090047825C /* TransformAndStore.swift in Sources */,
 				C03281301D76E5090047825C /* CoreDataUnitTest.swift in Sources */,
 				C032813B1D76E5090047825C /* TransformJSON.swift in Sources */,
 				C032813A1D76E5090047825C /* TransformCoreData.swift in Sources */,
+				C03281511D76FA230047825C /* ResultEnum.swift in Sources */,
+				C03281531D76FC480047825C /* UnitTestService.swift in Sources */,
 				C03281311D76E5090047825C /* Environment.swift in Sources */,
 				C03281371D76E5090047825C /* Response.swift in Sources */,
 				C03281441D76E9B40047825C /* Configuration.swift in Sources */,
@@ -934,6 +956,8 @@
 				93EA292BF9EE4E5A2075E36CA225C35D /* Faro-dummy.m in Sources */,
 				C03281341D76E5090047825C /* MitigatorDefault.swift in Sources */,
 				C032813C1D76E5090047825C /* AutoCast.swift in Sources */,
+				C032814B1D76F9220047825C /* Service.swift in Sources */,
+				C032814F1D76F9D70047825C /* Order.swift in Sources */,
 				C032812F1D76E5090047825C /* CoreDataSQLitePopulator.swift in Sources */,
 				C032813D1D76E5090047825C /* CoreDataUtilities.swift in Sources */,
 			);

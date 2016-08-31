@@ -8,7 +8,8 @@
 
 import Foundation
 
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
+
 public class FaroParent: NSObject, UniqueAble, Mitigatable, Transformable, Parsable {
 
 	// MARK: - Parsable
@@ -53,6 +54,8 @@ public class FaroParent: NSObject, UniqueAble, Mitigatable, Transformable, Parsa
 		return nil
 	}
 }
+
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public class FaroParentSwift {
 	

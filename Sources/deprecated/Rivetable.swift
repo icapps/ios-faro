@@ -66,7 +66,7 @@ public protocol CoreDataParsable {
 /**
 Implement so we can set data on your variables in the `TransformJSON`.
 */
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public protocol Parsable {
 
@@ -102,7 +102,7 @@ Handle the data that you receive. Data can be anything you want
 - returns: By default a `TransformJSON` is returned that does: 'data ~> JSON ~> entities of your type'.
 */
 
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public protocol Transformable {
 
@@ -124,7 +124,7 @@ public protocol Transformable {
 	static func rootKey() -> String?
 }
 
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public protocol EnvironmentConfigurable {
 
@@ -140,7 +140,7 @@ public protocol EnvironmentConfigurable {
  Every `Rivetable` instance should have an unique identifier so we can fetch the object in a collection.
  */
 
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public protocol UniqueAble {
 	var uniqueValue: String? {get set}
@@ -149,10 +149,10 @@ public protocol UniqueAble {
 /**
 An `Air` should be able to build up a request when your model object complies to the protocols below.
 */
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable, Transformable>
 
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public typealias RivetableCoreData = protocol<UniqueAble, EnvironmentConfigurable, Mitigatable, Transformable, CoreDataParsable, CoreDataEntityDescription, CoreDataManagedObjectContextRequestable>

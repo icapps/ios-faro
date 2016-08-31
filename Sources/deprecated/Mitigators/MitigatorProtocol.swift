@@ -6,7 +6,7 @@ A `Mitigator` recieves errors that happen. Mitigate means ‘make (something bad
 
 So do that or rethrow what you cannot handle.
 */
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public protocol Mitigator {
 	/**
@@ -21,7 +21,7 @@ public protocol Mitigator {
 Try to handle errors gracefully or rethrow them. The `MitigatorDefault` implements these methods.
 */
 
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public protocol RequestMitigatable {
     func invalidBodyError() throws -> ()
@@ -32,7 +32,7 @@ public protocol RequestMitigatable {
 Try to handle errors gracefully or rethrow them. The `MitigatorDefault` implements these methods.
 */
 
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public protocol ResponseMitigatable {
 

@@ -22,6 +22,8 @@
 		C03281451D76EB590047825C /* SwiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* SwiftViewController.swift */; };
 		C03281461D76EBD00047825C /* WrapFaroController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05296111CB6661E007E1111 /* WrapFaroController.swift */; };
 		C03281471D76EBD60047825C /* ObjectiveCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */; };
+		C03281491D76F82F0047825C /* ServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281481D76F82F0047825C /* ServiceSpec.swift */; };
+		C032814D1D76F9750047825C /* OrderSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032814C1D76F9750047825C /* OrderSpec.swift */; };
 		D377DE1E7E23BDD451F1AF77 /* Pods_Faro_Example_Faro_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E1A5D1778B1450F795E6D9 /* Pods_Faro_Example_Faro_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +59,8 @@
 		C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray_1275.json; sourceTree = "<group>"; };
 		C03280F71D76E2630047825C /* FaroSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FaroSpec.swift; path = Faro/FaroSpec.swift; sourceTree = "<group>"; };
 		C03281411D76E6BE0047825C /* ConfigurationSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfigurationSpec.swift; path = Faro/ConfigurationSpec.swift; sourceTree = "<group>"; };
+		C03281481D76F82F0047825C /* ServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServiceSpec.swift; path = Faro/ServiceSpec.swift; sourceTree = "<group>"; };
+		C032814C1D76F9750047825C /* OrderSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrderSpec.swift; path = Faro/OrderSpec.swift; sourceTree = "<group>"; };
 		C052960A1CB6629E007E1111 /* Faro_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Faro_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		C052960B1CB6629E007E1111 /* ObjectiveCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectiveCViewController.h; sourceTree = "<group>"; };
 		C052960C1CB6629E007E1111 /* ObjectiveCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectiveCViewController.m; sourceTree = "<group>"; };
@@ -231,6 +235,8 @@
 			children = (
 				C03280F71D76E2630047825C /* FaroSpec.swift */,
 				C03281411D76E6BE0047825C /* ConfigurationSpec.swift */,
+				C03281481D76F82F0047825C /* ServiceSpec.swift */,
+				C032814C1D76F9750047825C /* OrderSpec.swift */,
 			);
 			name = Faro;
 			sourceTree = "<group>";
@@ -470,6 +476,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C03280F81D76E2630047825C /* FaroSpec.swift in Sources */,
+				C032814D1D76F9750047825C /* OrderSpec.swift in Sources */,
+				C03281491D76F82F0047825C /* ServiceSpec.swift in Sources */,
 				C03281421D76E6BE0047825C /* ConfigurationSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

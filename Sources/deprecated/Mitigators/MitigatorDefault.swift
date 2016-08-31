@@ -7,7 +7,7 @@ A mitigator tries to make a problem less servere. This is a default implementati
 - `ResponseMitigatable` -> Try to handle response errors. By default errors are printed and rethrown.
 - `RequestMitigatable` -> Try to handle request errors.  By default errors are printed and rethrown.
 */
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public class MitigatorDefault: Mitigator, ResponseMitigatable, RequestMitigatable {
 

@@ -11,7 +11,7 @@ Example environments:
 * ...
 
 */
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public protocol Environment {
 	var serverUrl: String { get }
@@ -23,7 +23,7 @@ If you implement `Mockable` your entity can provide a default response. This can
 When a type conforms to Mockable the environment you provide by conforming to `EnvironmentConfigurable` will be ignored and files are loaded from local disk by `Air`.
 */
 
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public protocol Mockable {
 	func shouldMock() -> Bool

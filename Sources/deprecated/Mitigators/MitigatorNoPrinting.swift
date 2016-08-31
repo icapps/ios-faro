@@ -13,7 +13,7 @@ Use this for instance in tests to disable printing. This is a subclass from `Mit
 It has the same throwing behaviour but does not print.
 */
 
-@available(*, deprecated=1.0.0, message="use Faro.")
+@available(*, deprecated=1.0.0, message="use Bar.")
 
 public class MitigatorNoPrinting: MitigatorDefault {
 
