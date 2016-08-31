@@ -6,6 +6,8 @@ A `Mitigator` recieves errors that happen. Mitigate means ‘make (something bad
 
 So do that or rethrow what you cannot handle.
 */
+@available(*, deprecated=1.0.0, message="use the Bar class")
+
 public protocol Mitigator {
 	/**
 	See `MitigatorDefault` for an example implementation of this function. 
@@ -18,6 +20,9 @@ public protocol Mitigator {
 /**
 Try to handle errors gracefully or rethrow them. The `MitigatorDefault` implements these methods.
 */
+
+@available(*, deprecated=1.0.0, message="use the Bar class")
+
 public protocol RequestMitigatable {
     func invalidBodyError() throws -> ()
     func generalError() throws -> ()
@@ -26,6 +31,9 @@ public protocol RequestMitigatable {
 /**
 Try to handle errors gracefully or rethrow them. The `MitigatorDefault` implements these methods.
 */
+
+@available(*, deprecated=1.0.0, message="use the Bar class")
+
 public protocol ResponseMitigatable {
 
 	func invalidResponseData(data: NSData?) throws -> ()
