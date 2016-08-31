@@ -8,6 +8,7 @@
 
 import Foundation
 
+@available(*, deprecated=1.0.0, message="use Faro.")
 public class FaroParent: NSObject, UniqueAble, Mitigatable, Transformable, Parsable {
 
 	// MARK: - Parsable

@@ -10,6 +10,9 @@ Errors cause an throw
 ## Pass response to the `TransformJSON`
 Responses are interpretted in the `TransFormController`
 */
+
+@available(*, deprecated=1.0.0, message="use Faro.")
+
 public class Response {
 
 

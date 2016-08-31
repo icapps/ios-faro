@@ -2,6 +2,7 @@ import XCTest
 import Quick
 import Nimble
 import Foundation
+import Faro
 
 @testable import Faro_Example
 
@@ -14,7 +15,7 @@ class MockGameScore: GameScore {
 	}
 
 	override class func environment() -> protocol<Environment, Mockable> {
-		return Mock()
+		return MockEnvironment()
 	}
 
 	// MARK: - Mitigatable
