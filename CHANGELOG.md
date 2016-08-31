@@ -3,10 +3,12 @@
 ## Version 1.0.0
 
 ### **WARNING**
-This is a braking version. We no longer support the Air. interface as in version 0.7.2 but move to the Faro. interface.
+Version 1.0.0 is not compatible with 0.7.2. All the functions, classes, protocols, ... that we no longer support have been marked with a ```@availabel(*, deprecated = "")``` attribute.
 
-* first test for the Faro. interface
-* Deprecating all Air. functions
+In the previous versions to fire a service requet you used the ```Air``` class. Now you should use the ```Bar``` class.
+
+* first test for the ```Bar``` class
+* Deprecating all ```Air``` class functions
 
 ---
 ## Version 0.7.2
