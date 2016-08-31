@@ -3,8 +3,8 @@
 
 public protocol Serveable {
 
-    associatedtype T
+    associatedtype S
 
-    func serve<T>(order: Order, delivery: (Delivery<T>)->())
+    func serve(order: Order, delivery: (Delivery<S>)->())
 
 }

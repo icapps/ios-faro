@@ -1,14 +1,16 @@
 
 public class UnitTestService <U>: Serveable {
 
-    public typealias T = U
+    public typealias S = U
 
-    public init() {
+    public let mockModel: U
 
+    public init(mockModel: U) {
+        self.mockModel = mockModel
     }
 
-    public func serve<T>(order: Order, delivery: (Delivery<T>)->()) {
-        //TODO
+    public func serve(order: Order, delivery: (Delivery<S>)->()) {
+        delivery(.Success(self.mockModel))
     }
 
 }

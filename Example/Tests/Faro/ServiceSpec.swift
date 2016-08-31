@@ -14,7 +14,7 @@ class ServiceSpec: QuickSpec {
                 it("should return mockModel in sync"){
 
                     let mockModel = MockModel()
-                    let service = UnitTestService<MockModel>()
+                    let service = UnitTestService<MockModel>(mockModel: mockModel)
                     let order = Order(path: "mock")
 
                     var isInSync = false

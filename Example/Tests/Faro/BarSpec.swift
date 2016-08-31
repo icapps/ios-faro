@@ -22,11 +22,12 @@ class BarSpec: QuickSpec {
                 var service : UnitTestService<MockModel>!
                 var configuration : Faro.Configuration!
                 var bar : Bar <UnitTestService<MockModel>>!
+                var mockModel: MockModel!
 
                 beforeEach({
-
+                    mockModel = MockModel()
                     baseURL = "http://www.something.be"
-                    service = UnitTestService <MockModel>()
+                    service = UnitTestService <MockModel>(mockModel: mockModel)
                     configuration = Configuration(baseURL: baseURL)
                     bar = Bar(configuration: configuration, service: service)
                     
