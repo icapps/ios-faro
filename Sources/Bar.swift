@@ -2,6 +2,7 @@
 import Foundation
 
 /// Serves anything you order.
+/// `Bar` tries to map any JSON to a `Mappable` type.
 public class Bar {
     public let configuration : Configuration
     public let service : JSONServeable
@@ -11,7 +12,8 @@ public class Bar {
         self.service = service
     }
 
-    public func serve<T: Parseable>(order : Order, result : (Result<T>)->()) {
+    /// Receives JSON from the service and maps this to a `Result` of type `T` that is Mappable.
+    public func serve<T: Mappable>(order : Order, result : (Result<T>)->()) {
 
         service.serve(order) { (jsonResult) in
             switch jsonResult {
@@ -19,7 +21,7 @@ public class Bar {
                 let model = T(json : json)
                 result(.Success(model))
             default:
-                print("bla")
+                print("💣 damn this should not happen")
             }
         }
     }

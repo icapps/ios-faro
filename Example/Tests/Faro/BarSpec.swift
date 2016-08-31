@@ -5,7 +5,7 @@ import Faro
 @testable import Faro_Example
 
 
-class MockModel : Parseable {
+class MockModel : Mappable {
     var value : String
 
     required init(json : AnyObject) {

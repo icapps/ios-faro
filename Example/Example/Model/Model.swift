@@ -4,7 +4,7 @@ import Faro
 /// Example model
 /// TODO: we should add a more generic parser
 /// We inherit from NSObject to be useable in Objective-C
-class Model : NSObject, Parseable {
+class Model : NSObject, Mappable {
     var value : String
 
     required init(json: AnyObject) {
