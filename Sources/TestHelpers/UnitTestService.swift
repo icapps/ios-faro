@@ -7,7 +7,7 @@ public class UnitTestService <U>: Serveable {
 
     }
 
-    public func serve<T>(order: Order, delivery: ()->(Delivery<T>)) {
+    public func serve<T>(order: Order, delivery: (Delivery<T>)->()) {
         //TODO
     }
 

@@ -106,7 +106,7 @@
 		C032813E1D76E5090047825C /* dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032812C1D76E5090047825C /* dispatch.swift */; };
 		C03281401D76E5A70047825C /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032813F1D76E5A70047825C /* Bar.swift */; };
 		C03281441D76E9B40047825C /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281431D76E9B40047825C /* Configuration.swift */; };
-		C032814B1D76F9220047825C /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032814A1D76F9220047825C /* Service.swift */; };
+		C032814B1D76F9220047825C /* Serveable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032814A1D76F9220047825C /* Serveable.swift */; };
 		C032814F1D76F9D70047825C /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032814E1D76F9D70047825C /* Order.swift */; };
 		C03281511D76FA230047825C /* ResultEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281501D76FA230047825C /* ResultEnum.swift */; };
 		C03281531D76FC480047825C /* UnitTestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281521D76FC480047825C /* UnitTestService.swift */; };
@@ -290,7 +290,7 @@
 		C032812C1D76E5090047825C /* dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dispatch.swift; sourceTree = "<group>"; };
 		C032813F1D76E5A70047825C /* Bar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
 		C03281431D76E9B40047825C /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
-		C032814A1D76F9220047825C /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		C032814A1D76F9220047825C /* Serveable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serveable.swift; sourceTree = "<group>"; };
 		C032814E1D76F9D70047825C /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		C03281501D76FA230047825C /* ResultEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultEnum.swift; sourceTree = "<group>"; };
 		C03281521D76FC480047825C /* UnitTestService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UnitTestService.swift; path = TestHelpers/UnitTestService.swift; sourceTree = "<group>"; };
@@ -399,7 +399,7 @@
 				C032813F1D76E5A70047825C /* Bar.swift */,
 				C032814E1D76F9D70047825C /* Order.swift */,
 				C03281501D76FA230047825C /* ResultEnum.swift */,
-				C032814A1D76F9220047825C /* Service.swift */,
+				C032814A1D76F9220047825C /* Serveable.swift */,
 				C03281541D76FC500047825C /* TestHelpers */,
 			);
 			path = Sources;
@@ -956,7 +956,7 @@
 				93EA292BF9EE4E5A2075E36CA225C35D /* Faro-dummy.m in Sources */,
 				C03281341D76E5090047825C /* MitigatorDefault.swift in Sources */,
 				C032813C1D76E5090047825C /* AutoCast.swift in Sources */,
-				C032814B1D76F9220047825C /* Service.swift in Sources */,
+				C032814B1D76F9220047825C /* Serveable.swift in Sources */,
 				C032814F1D76F9D70047825C /* Order.swift in Sources */,
 				C032812F1D76E5090047825C /* CoreDataSQLitePopulator.swift in Sources */,
 				C032813D1D76E5090047825C /* CoreDataUtilities.swift in Sources */,
