@@ -18,8 +18,8 @@ public class JSONService : Service {
          mutableRequest.HTTPMethod = order.method.rawValue
 
         let session = NSURLSession.sharedSession()
-        task = session.dataTaskWithURL(fullUrl, completionHandler: { (data, response, error) in
-            if let data = self.checkStatusCodeAndData(data, urlResponse: response, error: error) {
+        task = session.dataTaskWithURL(fullUrl, completionHandler: { [weak self] (data, response, error) in
+            if let data = self?.checkStatusCodeAndData(data, urlResponse: response, error: error) {
                 do {
                     let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
                     result(.JSON(json))
