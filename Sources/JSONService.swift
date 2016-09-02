@@ -34,11 +34,11 @@ public class JSONService : Service {
         task?.resume()
     }
 
-    func cancel() {
+    public func cancel() {
         task?.cancel()
     }
 
-    private func checkStatusCodeAndData(data: NSData?, urlResponse: NSURLResponse?, error: NSError?) -> NSData? {
+    public func checkStatusCodeAndData(data: NSData?, urlResponse: NSURLResponse?, error: NSError?) -> NSData? {
 
         guard error == nil else {
             //TODO: handle error cases
