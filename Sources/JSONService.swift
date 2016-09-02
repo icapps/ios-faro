@@ -19,7 +19,7 @@ public class JSONService : Service {
 
         let session = NSURLSession.sharedSession()
         task = session.dataTaskWithURL(fullUrl, completionHandler: { [weak self] (data, response, error) in
-            catchThrows(result) {
+            convertAllThrowsToResult(result) {
                 if let data = try self?.checkStatusCodeAndData(data, urlResponse: response, error: error) {
                     do {
                         let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
