@@ -9,7 +9,7 @@ class WrapToObjectiveC: NSObject {
 
         bar.serve(Order(path: "model")) { (result : Result <Model>) in
             switch result {
-            case .Success(let internalModel):
+            case .Model(model: let internalModel):
                 success(model:internalModel)
             default:
                 failure()

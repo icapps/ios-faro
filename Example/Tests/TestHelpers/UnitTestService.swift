@@ -1,16 +1,14 @@
 
 import Faro
 
-public class UnitTestService: JSONServeable {
+class MockService : Service {
+    let mockJSON: AnyObject
 
-    public let mockJSON: AnyObject
-
-    public init(mockJSON: AnyObject) {
+    init(mockJSON: AnyObject) {
         self.mockJSON = mockJSON
     }
 
-    public func serve(order: Order, result: (JSONResult) -> ()) {
-        result(.Success(self.mockJSON))
+    override func serve<M : Mappable>(order: Order, result: (Result<M>) -> ()) {
+        result(.JSON(json: mockJSON))
     }
-
 }

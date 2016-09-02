@@ -108,8 +108,7 @@
 		C03281441D76E9B40047825C /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281431D76E9B40047825C /* Configuration.swift */; };
 		C032814B1D76F9220047825C /* JSONServeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032814A1D76F9220047825C /* JSONServeable.swift */; };
 		C032814F1D76F9D70047825C /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032814E1D76F9D70047825C /* Order.swift */; };
-		C03281511D76FA230047825C /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281501D76FA230047825C /* Result.swift */; };
-		C03281561D7721AE0047825C /* JSONResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281551D7721AE0047825C /* JSONResult.swift */; };
+		C03281511D76FA230047825C /* ResultEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281501D76FA230047825C /* ResultEnum.swift */; };
 		C032815B1D7725760047825C /* JSONService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815A1D7725760047825C /* JSONService.swift */; };
 		C032815D1D772C3A0047825C /* Parseable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815C1D772C3A0047825C /* Parseable.swift */; };
 		C755136BFCDFA000C44C8BBCA065E4BE /* HaveCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BD573AFAA7965C23360DBCA4BB88E6 /* HaveCount.swift */; };
@@ -294,8 +293,7 @@
 		C03281431D76E9B40047825C /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		C032814A1D76F9220047825C /* JSONServeable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONServeable.swift; sourceTree = "<group>"; };
 		C032814E1D76F9D70047825C /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
-		C03281501D76FA230047825C /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		C03281551D7721AE0047825C /* JSONResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONResult.swift; sourceTree = "<group>"; };
+		C03281501D76FA230047825C /* ResultEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultEnum.swift; sourceTree = "<group>"; };
 		C032815A1D7725760047825C /* JSONService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONService.swift; sourceTree = "<group>"; };
 		C032815C1D772C3A0047825C /* Parseable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parseable.swift; sourceTree = "<group>"; };
 		C878C32F9D24D1635771870A1731A21F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -402,9 +400,8 @@
 				C03281171D76E5090047825C /* deprecated */,
 				C032813F1D76E5A70047825C /* Bar.swift */,
 				C032814E1D76F9D70047825C /* Order.swift */,
-				C03281501D76FA230047825C /* Result.swift */,
+				C03281501D76FA230047825C /* ResultEnum.swift */,
 				C032814A1D76F9220047825C /* JSONServeable.swift */,
-				C03281551D7721AE0047825C /* JSONResult.swift */,
 				C032815A1D7725760047825C /* JSONService.swift */,
 				C032815C1D772C3A0047825C /* Parseable.swift */,
 			);
@@ -936,13 +933,12 @@
 				C03281361D76E5090047825C /* MitigatorProtocol.swift in Sources */,
 				C03281401D76E5A70047825C /* Bar.swift in Sources */,
 				C032815D1D772C3A0047825C /* Parseable.swift in Sources */,
-				C03281561D7721AE0047825C /* JSONResult.swift in Sources */,
 				C03281321D76E5090047825C /* ErrorEnum.swift in Sources */,
 				C03281391D76E5090047825C /* TransformAndStore.swift in Sources */,
 				C03281301D76E5090047825C /* CoreDataUnitTest.swift in Sources */,
 				C032813B1D76E5090047825C /* TransformJSON.swift in Sources */,
 				C032813A1D76E5090047825C /* TransformCoreData.swift in Sources */,
-				C03281511D76FA230047825C /* Result.swift in Sources */,
+				C03281511D76FA230047825C /* ResultEnum.swift in Sources */,
 				C03281311D76E5090047825C /* Environment.swift in Sources */,
 				C03281371D76E5090047825C /* Response.swift in Sources */,
 				C03281441D76E9B40047825C /* Configuration.swift in Sources */,

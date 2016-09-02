@@ -1,9 +1,9 @@
+
 import Quick
 import Nimble
 
 import Faro
 @testable import Faro_Example
-
 
 class MockModel : Mappable {
     var value : String
@@ -20,9 +20,8 @@ class MockModel : Mappable {
 class BarSpec: QuickSpec {
     override func spec() {
         describe("Bar") {
-            context("success") {
+            context(".Model") {
                 var baseURL : String!
-                var service : UnitTestService!
                 var configuration : Faro.Configuration!
                 var bar : Bar!
                 var mockJSON: AnyObject!
@@ -30,9 +29,8 @@ class BarSpec: QuickSpec {
                 beforeEach({
                     mockJSON = ["key" : "value"]
                     baseURL = "http://www.something.be"
-                    service = UnitTestService(mockJSON: mockJSON)
                     configuration = Configuration(baseURL: baseURL)
-                    bar = Bar(configuration: configuration, service: service)
+                    bar = Bar(configuration: configuration)
                     
                 })
 
@@ -40,18 +38,14 @@ class BarSpec: QuickSpec {
                     expect(bar.configuration.baseURL).to(equal(baseURL))
                 }
 
-                it("should have a service") {
-                    expect(bar.service).toNot(beNil())
-                }
-
                 it("should return in sync with the mock model") {
                     let order = Order(path: "unitTest")
                     var isInSync = false
 
-                    bar.serve(order) { (result : Result <MockModel>) in
+                    bar.serve(order, service: MockService(mockJSON: mockJSON)) { (result : Result <MockModel>) in
                         isInSync = true
                         switch result {
-                        case .Success(let model):
+                        case .Model(model : let model):
                             expect(model.value).to(equal("value"))
                         default:
                             XCTFail("You should succeed")

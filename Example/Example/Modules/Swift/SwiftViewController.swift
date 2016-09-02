@@ -12,7 +12,7 @@ class SwiftViewController: UIViewController {
 
         bar.serve(Order(path: "model")) { (result : Result <Model>) in
             switch result {
-            case .Success(let model):
+            case .Model(let model):
                 self.label.text = model.value
             default:
                 print("💣 damn should not happen")
