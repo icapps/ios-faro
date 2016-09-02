@@ -25,10 +25,21 @@ class ServiceSpec: QuickSpec {
 
                     expect(isInSync).to(beTrue())
                 }
+
+                context("Failure") {
+                    it("InvalidAuthentication when statuscode 404") {
+                        let expected = ["key" : "value"]
+                        let service = MockService(mockJSON: expected)
+
+                        let response = NSHTTPURLResponse(URL: NSURL(), statusCode: 404, HTTPVersion: nil, headerFields: nil)
+
+
+                        expect{try service.checkStatusCodeAndData(nil, urlResponse: response, error: nil)}.to(throwError(Error.InvalidAuthentication))
+                    }
+                }
             }
 
             context("JSONService Asynchronous", {
-
                 it("should fail for a wierd url") {
                     let configuration = Faro.Configuration(baseURL: "wierd")
                     let service = JSONService(configuration: configuration)
