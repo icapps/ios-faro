@@ -7,7 +7,7 @@ import Faro
 class ServiceSpec: QuickSpec {
     override func spec() {
         describe("Service") {
-            context("unit testing") {
+            context("MockService") {
                 it("should return mockModel in sync"){
                     let expected = ["key" : "value"]
                     let service = MockService(mockJSON: expected)
