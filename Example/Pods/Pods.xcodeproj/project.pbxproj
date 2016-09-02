@@ -104,7 +104,6 @@
 		C032813C1D76E5090047825C /* AutoCast.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032812A1D76E5090047825C /* AutoCast.swift */; };
 		C032813D1D76E5090047825C /* CoreDataUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032812B1D76E5090047825C /* CoreDataUtilities.swift */; };
 		C032813E1D76E5090047825C /* dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032812C1D76E5090047825C /* dispatch.swift */; };
-		C03281401D76E5A70047825C /* Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032813F1D76E5A70047825C /* Bar.swift */; };
 		C03281441D76E9B40047825C /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281431D76E9B40047825C /* Configuration.swift */; };
 		C032814B1D76F9220047825C /* JSONServeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032814A1D76F9220047825C /* JSONServeable.swift */; };
 		C032814F1D76F9D70047825C /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032814E1D76F9D70047825C /* Order.swift */; };
@@ -289,7 +288,6 @@
 		C032812A1D76E5090047825C /* AutoCast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoCast.swift; sourceTree = "<group>"; };
 		C032812B1D76E5090047825C /* CoreDataUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataUtilities.swift; sourceTree = "<group>"; };
 		C032812C1D76E5090047825C /* dispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dispatch.swift; sourceTree = "<group>"; };
-		C032813F1D76E5A70047825C /* Bar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bar.swift; sourceTree = "<group>"; };
 		C03281431D76E9B40047825C /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		C032814A1D76F9220047825C /* JSONServeable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONServeable.swift; sourceTree = "<group>"; };
 		C032814E1D76F9D70047825C /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
@@ -398,7 +396,6 @@
 			children = (
 				C03281431D76E9B40047825C /* Configuration.swift */,
 				C03281171D76E5090047825C /* deprecated */,
-				C032813F1D76E5A70047825C /* Bar.swift */,
 				C032814E1D76F9D70047825C /* Order.swift */,
 				C03281501D76FA230047825C /* ResultEnum.swift */,
 				C032814A1D76F9220047825C /* JSONServeable.swift */,
@@ -931,7 +928,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C03281361D76E5090047825C /* MitigatorProtocol.swift in Sources */,
-				C03281401D76E5A70047825C /* Bar.swift in Sources */,
 				C032815D1D772C3A0047825C /* Parseable.swift in Sources */,
 				C03281321D76E5090047825C /* ErrorEnum.swift in Sources */,
 				C03281391D76E5090047825C /* TransformAndStore.swift in Sources */,

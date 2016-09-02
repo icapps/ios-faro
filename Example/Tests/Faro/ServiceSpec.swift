@@ -26,6 +26,8 @@ class ServiceSpec: QuickSpec {
 
                     expect(isInSync).to(beTrue())
                 }
+
+
             }
         }
     }  
