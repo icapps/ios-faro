@@ -42,19 +42,19 @@ public class Service {
     }
 }
 
-///Catcheds any throws and switches if to af failure after printing the error.
+///Catches any throws and switches if to af failure after printing the error.
 public func catchThrows  <M : Mappable> (result: (Result<M>) -> (), thrower: ()throws -> ())  {
     do {
         try thrower()
-    }catch Error.ResponseError(error: let nserror){
+    }catch Error.Error(let nserror){
         print("💣 Error from service: \(nserror)")
-        result(.Failure(Error.ResponseError(error: nserror)))
+        result(.Failure(Error.Error(nserror)))
     }catch Error.General{
         print("💣 General service error")
         result(.Failure(Error.General))
     }catch Error.InvalidResponseData(let data){
         print("🤔 Invalid response data")
-        result(.Failure(Error.InvalidResponseData(data: data)))
+        result(.Failure(Error.InvalidResponseData(data)))
     }catch Error.InvalidAuthentication{
         print("🤔 Invalid response data")
         result(.Failure(Error.InvalidAuthentication))
