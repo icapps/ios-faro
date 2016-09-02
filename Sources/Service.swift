@@ -6,15 +6,15 @@ public class Service {
         self.configuration = configuration
     }
     
-    /// You should override this
+    /// You should override this and could use it like in `JSONService`
     public func serve <M : Mappable> (order: Order, result: (Result <M>)->()) {
+        result(.Failure(Error.ShouldOverride))
     }
 
     public func checkStatusCodeAndData(data: NSData?, urlResponse: NSURLResponse?, error: NSError?) throws -> NSData? {
-
         guard error == nil else {
-            //TODO: handle error cases
-            return nil
+           throw Error.Error(error)
+           return nil
         }
 
         if let httpResponse = urlResponse as? NSHTTPURLResponse {

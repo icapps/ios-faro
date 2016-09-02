@@ -5,7 +5,7 @@ public enum Error: ErrorType, Equatable {
     case InvalidResponseData(NSData?)
     case Error(NSError?)
     case InvalidAuthentication
-
+    case ShouldOverride
 }
 
 public func ==(lhs: Error, rhs: Error) -> Bool {
