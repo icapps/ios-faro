@@ -20,7 +20,7 @@ class MockModel : Mappable {
 class BarSpec: QuickSpec {
     override func spec() {
         describe("Bar") {
-            context(".Model") {
+            context("when Bar returns with Result.Model()") {
                 var baseURL : String!
                 var configuration : Faro.Configuration!
                 var bar : Bar!

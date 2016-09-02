@@ -6,7 +6,7 @@ public class JSONService : Service {
     /// Always results in .Success(["key" : "value"])
     /// This will change to a real request in the future
     override public func serve <M : Mappable> (order: Order, result: (Result<M>) -> ()) {
-        result(.JSON(json:["key": "value"]))
+        result(.JSON(["key": "value"]))
 
     }
 }

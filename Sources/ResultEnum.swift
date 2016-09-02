@@ -1,7 +1,7 @@
 
 /// `Result` is used to deliver results mapped in the `Bar`.
 public enum Result <M: Mappable> {
-    case Model(model : M)
+    case Model(M)
     /// The server returned a valid JSON response.
-    case JSON(json : AnyObject)
+    case JSON(AnyObject)
 }

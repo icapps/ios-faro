@@ -16,7 +16,7 @@ public class Bar {
             switch jsonResult {
             case .JSON(json: let json):
                 let model = M(json : json)
-                result(.Model(model : model))
+                result(.Model(model))
             default:
                 print("💣 damn this should not happen")
             }
