@@ -4,7 +4,7 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-func checkToBeError(expectedError: Error, service: Service, data: NSData? = nil, response: NSURLResponse? = nil, nsError: NSError? = nil) -> Bool {
+func checkToBeError(expectedError: Error?, service: Service, data: NSData? = nil, response: NSURLResponse? = nil, nsError: NSError? = nil) -> Bool {
 
     var error : Error?
     let result = { (result : Result <MockModel>) in
@@ -56,6 +56,11 @@ class ServiceSpec: QuickSpec {
             it("Fail for NSError") {
                 let expected =  NSError(domain: "tests", code: 101, userInfo: nil)
                 expect(checkToBeError(Error.Error(expected), service: service, nsError: expected)).to(beTrue())
+            }
+
+            it("No fail for statuscode 200") {
+                let response = NSHTTPURLResponse(URL: NSURL(), statusCode: 200, HTTPVersion: nil, headerFields: nil)
+                expect(checkToBeError(nil, service: service, response: response)).to(beTrue())
             }
         }
 
