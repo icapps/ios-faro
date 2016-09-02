@@ -62,6 +62,7 @@ class ServiceSpec: QuickSpec {
                 let response = NSHTTPURLResponse(URL: NSURL(), statusCode: 200, HTTPVersion: nil, headerFields: nil)
                 expect(checkToBeError(nil, service: service, response: response)).to(beTrue())
             }
+
         }
 
         describe("JSONService Asynchronous", {

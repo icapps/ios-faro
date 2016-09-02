@@ -17,28 +17,22 @@ public class Service {
            return nil
         }
 
-        if let httpResponse = urlResponse as? NSHTTPURLResponse {
-
-            let statusCode = httpResponse.statusCode
-
-            guard statusCode != 404 else {
-                throw Error.InvalidAuthentication
-                return nil
-            }
-
-            guard 200...201 ~= statusCode else {
-                return data
-            }
-
-            guard let data = data else {
-                return nil
-            }
-
+        guard let httpResponse = urlResponse as? NSHTTPURLResponse  else {
             return data
         }
-        else {
+        
+        let statusCode = httpResponse.statusCode
+        guard statusCode != 404 else {
+            throw Error.InvalidAuthentication
+            return nil
+        }
+        guard 200...201 ~= statusCode else {
             return data
         }
+        guard let guardData = data else {
+            return nil
+        }
+        return guardData
     }
 }
 
