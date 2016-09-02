@@ -7,12 +7,16 @@ import Faro
 class OrderSpec: QuickSpec {
     override func spec() {
         describe("Order") {
+            let expected = "path"
+            let order = Order(path: expected)
+
             context("initialisation") {
                 it("should have a path"){
-                    let expected = "path"
-                    let order = Order(path: expected)
-
                     expect(order.path).to(equal(expected))
+                }
+
+                it("should default to .GET") {
+                    expect(order.method.rawValue).to(equal("GET"))
                 }
             }
         }
