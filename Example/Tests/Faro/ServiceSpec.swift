@@ -58,12 +58,12 @@ class ServiceSpec: QuickSpec {
                     service.serve(order, result: { (result : Result <MockModel>) in
                         switch result {
                         case .JSON(let json) :
-                            if let json = json as? [String: String] {
-                                expect(json["key"]).to(equal(""))
+                            if let json = json as? [[String: AnyObject]] {
+                                expect(json.count).to(equal(100))
+                                receivedJSON = true
                             }else {
-                                XCTFail()
+                                XCTFail("\(json) is wrong")
                             }
-                            receivedJSON = true
                         default :
                             XCTFail("💣should return json")
                         }
