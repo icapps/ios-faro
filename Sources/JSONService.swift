@@ -25,7 +25,7 @@ public class JSONService : Service {
                         let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
                         result(.JSON(json))
                     }catch {
-                        result(.Failure(Error.InvalidResponseData(data: data)))
+                        result(.Failure(Error.InvalidResponseData(data)))
                     }
                 }else {
                     result(.Failure(Error.General))
