@@ -27,15 +27,14 @@ class ServiceSpec: QuickSpec {
                 }
 
                 context("Failure") {
-                    it("InvalidAuthentication when statuscode 404") {
-                        let expected = ["key" : "value"]
-                        let service = MockService(mockJSON: expected)
+                    let expected = ["key" : "value"]
+                    let service = MockService(mockJSON: expected)
 
-                        let response = NSHTTPURLResponse(URL: NSURL(), statusCode: 404, HTTPVersion: nil, headerFields: nil)
+                    func checkToBeError(expectedError: Error, data: NSData? = nil, response: NSURLResponse? = nil, nsError: NSError? = nil) {
                         let result = { (result : Result <MockModel>) in
                             switch result {
                             case .Failure(let error) :
-                                if let error = error as? Error where error == Error.InvalidAuthentication {
+                                if let error = error as? Error where error == expectedError {
                                 }else {
                                     XCTFail("Wrong error \(result)")
                                 }
@@ -44,10 +43,18 @@ class ServiceSpec: QuickSpec {
                             }
                         }
                         catchThrows(result) {
-                            try service.checkStatusCodeAndData(nil, urlResponse: response, error: nil)
+                            try service.checkStatusCodeAndData(data, urlResponse: response, error: nsError)
                         }
                     }
-                }
+
+
+                    it("InvalidAuthentication when statuscode 404") {
+
+                        let response = NSHTTPURLResponse(URL: NSURL(), statusCode: 404, HTTPVersion: nil, headerFields: nil)
+                        checkToBeError(Error.InvalidAuthentication, response: response)
+                    }
+
+              }
             }
 
             context("JSONService Asynchronous", {
