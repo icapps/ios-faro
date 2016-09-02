@@ -47,9 +47,7 @@ class ServiceSpec: QuickSpec {
                         }
                     }
 
-
                     it("InvalidAuthentication when statuscode 404") {
-
                         let response = NSHTTPURLResponse(URL: NSURL(), statusCode: 404, HTTPVersion: nil, headerFields: nil)
                         checkToBeError(Error.InvalidAuthentication, response: response)
                     }
