@@ -32,9 +32,20 @@ class ServiceSpec: QuickSpec {
                         let service = MockService(mockJSON: expected)
 
                         let response = NSHTTPURLResponse(URL: NSURL(), statusCode: 404, HTTPVersion: nil, headerFields: nil)
-
-
-                        expect{try service.checkStatusCodeAndData(nil, urlResponse: response, error: nil)}.to(throwError(Error.InvalidAuthentication))
+                        let result = { (result : Result <MockModel>) in
+                            switch result {
+                            case .Failure(let error) :
+                                if let error = error as? Error where error == Error.InvalidAuthentication {
+                                }else {
+                                    XCTFail("Wrong error \(result)")
+                                }
+                            default:
+                                XCTFail("Wrong error \(result)")
+                            }
+                        }
+                        catchThrows(result) {
+                            try service.checkStatusCodeAndData(nil, urlResponse: response, error: nil)
+                        }
                     }
                 }
             }
