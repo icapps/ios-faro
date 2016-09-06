@@ -7,7 +7,7 @@ public enum Result<M: Mappable> {
 }
 
 /// Catches any throws and switches if to af failure after printing the error.
-public func convertAllThrowsToResult<M: Mappable>(result: (Result<M>) -> (), thrower: ()throws -> ())  {
+public func convertAllThrowsToResult<M: Mappable>(result: (Result<M>) -> (), thrower: ()throws -> ()) {
     do {
         try thrower()
     }catch Error.Error(let nserror){

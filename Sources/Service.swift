@@ -1,13 +1,12 @@
-
 public class Service {
-    let configuration : Configuration
+    let configuration: Configuration
 
-    public init (configuration : Configuration) {
+    public init (configuration: Configuration) {
         self.configuration = configuration
     }
     
     /// You should override this and could use it like in `JSONService`
-    public func serve <M : Mappable> (order: Order, result: (Result <M>)->()) {
+    public func serve<M : Mappable>(order: Order, result: (Result <M>)->()) {
         result(.Failure(Error.ShouldOverride))
     }
 
@@ -34,5 +33,6 @@ public class Service {
         }
         return guardData
     }
+
 }
 
