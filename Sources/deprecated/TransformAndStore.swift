@@ -19,10 +19,11 @@ public class TransformAndStore<Rivet: EnvironmentConfigurable>: TransformJSON {
 		super.init()
 	}
 
-	override public func foundationObjectFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject  {
+	override public func foundationObjectFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject {
 		try toFile(data, contextPath: Rivet.contextPath())
 		return try super.foundationObjectFromData(data, rootKey: rootKey, mitigator: mitigator)
 	}
+    
 }
 
 /**
@@ -35,7 +36,7 @@ public class TransformAndStoreCoreData<Rivet: EnvironmentConfigurable>: Transfor
 		super.init()
 	}
 	
-	override public func foundationObjectFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject  {
+	override public func foundationObjectFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject {
 		try toFile(data, contextPath: Rivet.contextPath())
 		return try super.foundationObjectFromData(data, rootKey: rootKey, mitigator: mitigator)
 	}
@@ -44,8 +45,9 @@ public class TransformAndStoreCoreData<Rivet: EnvironmentConfigurable>: Transfor
 
 private func toFile(data: NSData, contextPath: String) throws {
 	let file = getDocumentsDirectory().stringByAppendingPathComponent("\(contextPath).json")
-	let jsonString = NSString(data: data, encoding: NSUTF8StringEncoding) as! String
-	try jsonString.writeToFile(file, atomically: false, encoding: NSUTF8StringEncoding)
+    if let jsonString = NSString(data: data, encoding: NSUTF8StringEncoding) as? String {
+        try jsonString.writeToFile(file, atomically: false, encoding: NSUTF8StringEncoding)
+    }
 }
 
 private func getDocumentsDirectory() -> NSString {

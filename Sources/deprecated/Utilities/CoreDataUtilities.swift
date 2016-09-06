@@ -31,7 +31,7 @@ public func fetchInCoreDataFromJSON<T: NSManagedObject>(json: AnyObject, managed
 	if let entities = try managedObjectContext.executeFetchRequest(fetchrequest) as? [T] {
 		if !entities.isEmpty && entities.count == 1 {
 			return autocast(entities.first)
-		}else if entities.count > 1  {
+		}else if entities.count > 1 {
 			let name =  typeName(T)
 			throw MapError.EnityShouldBeUniqueForJSON(json: json, typeName: name)
 		}else {
