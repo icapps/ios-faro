@@ -14,5 +14,4 @@ class Model: NSObject, Mappable {
             value = ""
         }
     }
-
 }

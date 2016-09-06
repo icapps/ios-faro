@@ -16,7 +16,7 @@ public enum RequestError: ErrorType {
 }
 
 @available(*, deprecated=1.0.0, message="use the Bar class")
-public enum ResponseError:ErrorType {
+public enum ResponseError: ErrorType {
 	case InvalidResponseData(data: NSData?)
 	case InvalidDictionary(dictionary: AnyObject)
 	case ResponseError(error: NSError?)

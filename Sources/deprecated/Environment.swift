@@ -25,6 +25,6 @@ When a type conforms to Mockable the environment you provide by conforming to `E
 
 @available(*, deprecated=1.0.0, message="use the Bar class")
 
-public protocol Mockable {
+public protocol Mockable{
 	func shouldMock() -> Bool
 }
