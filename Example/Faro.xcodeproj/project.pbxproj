@@ -446,7 +446,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if hash tailor 2>/dev/null; then\n    tailor --except=trailing-whitespace,terminating-newline ../Sources\n    tailor --except=trailing-whitespace,terminating-newline ../Example/Example\nelse\n  echo \"warning: Please install Tailor from https://tailor.sh\"\nfi";
+			shellScript = "if hash tailor 2>/dev/null; then\n    tailor --except=trailing-whitespace,terminating-newline ../Example/Example\nelse\n  echo \"warning: Please install Tailor from https://tailor.sh\"\nfi";
 		};
 		9E4E2588A36734BAA10B96CB /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
