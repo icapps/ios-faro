@@ -33,9 +33,10 @@ public class Order {
     }
 
     public func objectRequestConfiguration(configuration: Configuration) -> NSURLRequest? {
+        let mutableRequest = NSMutableURLRequest(URL: NSURL(string: "\(configuration.baseURL)/\(path)")!, cachePolicy: .ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0)
+        mutableRequest.HTTPMethod = method.rawValue
 
-        // TODO: add GET
-        return NSURLRequest(URL: NSURL(string: "\(configuration.baseURL)/\(path)")!)
+        return mutableRequest
     }
 
     public func collectionRequestForConfiguration(configuration: Configuration) -> NSURLRequest? {

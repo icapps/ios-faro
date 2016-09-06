@@ -10,24 +10,23 @@ class OrderSpec: QuickSpec {
         describe("Order") {
             let expected = "path"
             let order = Order(path: expected)
+            let configuration = Faro.Configuration(baseURL: "http://someURL")
 
-            context("initialisation") {
+            context("initialisation . GET") {
+
                 it("should have a path") {
                     expect(order.path).to(equal(expected))
                 }
 
                 it("should default to .GET") {
-                    expect(order.method.rawValue).to(equal("GET"))
+                    let request = order.objectRequestConfiguration(configuration)!
+                    expect(request.HTTPMethod).to(equal("GET"))
                 }
 
                 it("should configuration should make up request") {
-                    let configuration = Faro.Configuration(baseURL: "http://someURL")
 
-                    let order = Order(path: "path")
-
-                    let url = order.urlForConfiguration(configuration)
-
-                    expect(url!.absoluteString).to(equal("http://someURL/path"))
+                    let request = order.objectRequestConfiguration(configuration)!
+                    expect(request.URL!.absoluteString).to(equal("http://someURL/path"))
                 }
             }
         }
