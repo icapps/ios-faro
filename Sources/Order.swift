@@ -11,4 +11,8 @@ public class Order {
         self.method = method
     }
 
+    public func urlForConfiguration(configuration: Configuration) -> NSURL? {
+        return NSURL(string: "\(configuration.baseURL)/\(path)")
+    }
+
 }
