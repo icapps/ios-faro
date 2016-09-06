@@ -1,7 +1,6 @@
-
 import Faro
 
-class MockService : Service {
+class MockService: Service {
     let mockJSON: AnyObject
 
     init(mockJSON: AnyObject) {
@@ -9,7 +8,8 @@ class MockService : Service {
         super.init(configuration: Configuration(baseURL: ""))
     }
 
-    override func serve<M : Mappable>(order: Order, result: (Result<M>) -> ()) {
+    override func serve<M: Mappable>(order: Order, result: (Result<M>) -> ()) {
         result(.JSON(mockJSON))
     }
+
 }

@@ -4,13 +4,14 @@ import Nimble
 import Faro
 
 class ConfigurationSpec: QuickSpec {
+
     override func spec() {
         describe("Configuration") {
             let expected = "http://www.something.be"
             let configuration = Configuration(baseURL: expected)
 
             context("initialisation") {
-                it("should have a baseURL"){
+                it("should have a baseURL") {
                     expect(configuration.baseURL).to(equal(expected))
                 }
 
@@ -20,5 +21,6 @@ class ConfigurationSpec: QuickSpec {
                 }
             }
         }
-    }    
+    }
+
 }
