@@ -1,13 +1,12 @@
-
 /// Default implementation of a JSON service.
 /// Serves your `Order` to a server and parses the respons.
 /// Response is delivered to you as a `JSONResult`.
-public class JSONService : Service {
+public class JSONService: Service {
     private var task: NSURLSessionDataTask?
 
     /// Always results in .Success(["key" : "value"])
     /// This will change to a real request in the future
-    override public func serve <M : Mappable> (order: Order, result: (Result<M>) -> ()) {
+    override public func serve<M: Mappable>(order: Order, result: (Result<M>) -> ()) {
         guard let url = configuration.url else {
             result(.Failure(Error.InvalidUrl(configuration.baseURL)))
             return
@@ -39,4 +38,5 @@ public class JSONService : Service {
     public func cancel() {
         task?.cancel()
     }
+    
 }

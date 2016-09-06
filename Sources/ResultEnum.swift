@@ -1,14 +1,13 @@
-
 /// `Result` is used to deliver results mapped in the `Bar`.
-public enum Result <M: Mappable> {
+public enum Result<M: Mappable> {
     case Model(M)
     /// The server returned a valid JSON response.
     case JSON(AnyObject)
     case Failure(ErrorType)
 }
 
-///Catches any throws and switches if to af failure after printing the error.
-public func convertAllThrowsToResult  <M : Mappable> (result: (Result<M>) -> (), thrower: ()throws -> ())  {
+/// Catches any throws and switches if to af failure after printing the error.
+public func convertAllThrowsToResult<M: Mappable>(result: (Result<M>) -> (), thrower: ()throws -> ())  {
     do {
         try thrower()
     }catch Error.Error(let nserror){
