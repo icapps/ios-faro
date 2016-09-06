@@ -17,7 +17,7 @@ public func == (lhs: Error, rhs: Error) -> Bool {
         return url_lhs == url_rhs
     case (.Error(let error_lhs), .Error(let error_rhs)): // tailor:disable
         return error_lhs?.code == error_rhs?.code
-    case (.InvalidResponseData (let _), .InvalidResponseData (let _)):
+    case (.InvalidResponseData (_), .InvalidResponseData ( _)):
         return true
     default:
         return false
