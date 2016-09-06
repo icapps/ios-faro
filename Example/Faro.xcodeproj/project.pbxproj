@@ -279,6 +279,7 @@
 				9E4E2588A36734BAA10B96CB /* [CP] Embed Pods Frameworks */,
 				80AA7510C437D2D7116289DD /* [CP] Copy Pods Resources */,
 				9400C51E9BF8574AEB835DAD /* Tailor */,
+				8B4D23A1ED867CA4D4EB1D7F /* Tailor */,
 			);
 			buildRules = (
 			);
@@ -433,6 +434,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Faro_Example/Pods-Faro_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		8B4D23A1ED867CA4D4EB1D7F /* Tailor */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Tailor;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if hash tailor 2>/dev/null; then\n  tailor\nelse\n  echo \"warning: Please install Tailor from https://tailor.sh\"\nfi";
 		};
 		9400C51E9BF8574AEB835DAD /* Tailor */ = {
 			isa = PBXShellScriptBuildPhase;

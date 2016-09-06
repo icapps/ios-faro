@@ -1,0 +1,6 @@
+include:
+    - Source            # Inspect all Swift files under "Source/"
+exclude:
+    - '**Tests.swift'   # Ignore Swift files that end in "Tests"
+    - Source/Carthage   # Ignore Swift files under "Source/Carthage/"
+    - Source/Pods       # Ignore Swift files under "Source/Pods/"
