@@ -59,7 +59,7 @@ public class CoreDataSQLitePopulator: NSObject {
 
 			let options = [NSMigratePersistentStoresAutomaticallyOption: true,
 			               NSInferMappingModelAutomaticallyOption: true,
-			               NSSQLitePragmasOption:["journal_mode": "DELETE"] ] //NSSQLitePragmasOption to disable core data caching
+			               NSSQLitePragmasOption:["journal_mode": "DELETE"]] // NSSQLitePragmasOption to disable core data caching
 			try coordinator.addPersistentStoreWithType(self.storeType, configuration: nil, URL: sqliteURL, options: options)
 		} catch {
 			var dict = [String: AnyObject]()
@@ -79,7 +79,7 @@ public class CoreDataSQLitePopulator: NSObject {
 
 	// MARK: - Core Data Saving support
 
-	public func saveContext () {
+	public func saveContext() {
 		if managedObjectContext.hasChanges {
 			do {
 				try managedObjectContext.save()

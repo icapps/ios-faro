@@ -90,7 +90,7 @@ public class CoreDataFromPopulatedSQLite: NSObject {
      - returns: Yes of we can reuse the sqlite file in the documents folder.
      */
     
-    public func allModelNameSQLiteFilesInDocumentsFolder () -> [NSURL]? {
+    public func allModelNameSQLiteFilesInDocumentsFolder() -> [NSURL]? {
         
         if fileManager.fileExistsAtPath(sqliteURL.path!) {
             return [sqliteURL]
@@ -99,14 +99,14 @@ public class CoreDataFromPopulatedSQLite: NSObject {
             let documentsDirectory = urls.last!
             do {
                 if let filesNameInDocumentsDirectory: [NSURL] = try fileManager.contentsOfDirectoryAtURL(documentsDirectory, includingPropertiesForKeys: nil, options: .SkipsHiddenFiles) {
-                    let files = filesNameInDocumentsDirectory.map{$0}
-                    let modelFiles = files.filter({ (element) -> Bool in
-                        if let fileName = element.lastPathComponent{
+                    let files = filesNameInDocumentsDirectory.map { $0 }
+                    let modelFiles = files.filter { (element) -> Bool in
+                        if let fileName = element.lastPathComponent {
                             return fileName.containsString(modelName)
                         }else {
                             return false
                         }
-                    })
+                    }
                     return modelFiles
                 }
                 
@@ -129,7 +129,7 @@ public class CoreDataFromPopulatedSQLite: NSObject {
                 }
             }else {
                 
-                //Delete all files
+                // Delete all files
                 do {
                     for url in allModelNameSQLiteFiles {
                         try fileManager.removeItemAtURL(url)
@@ -146,9 +146,9 @@ public class CoreDataFromPopulatedSQLite: NSObject {
         }
     }
     
-    private func usePrefilledSQLLiteFromApplicationBundle() throws -> NSURL  {
+    private func usePrefilledSQLLiteFromApplicationBundle() throws -> NSURL {
         
-        if !reuseSQLite(){
+        if !reuseSQLite() {
             print("🗼 moving sqlite database into place for reuse.")
             guard let bundleUrl = NSBundle.mainBundle().URLForResource(modelName, withExtension: ".sqlite") else {
                 print("💣 we could not find \(modelName).sqlite in your application bundle. Make sure it is added to the target and in your project.")
@@ -169,8 +169,7 @@ public class CoreDataFromPopulatedSQLite: NSObject {
     }
     
     // MARK: - Core Data Saving support
-    
-    public func saveContext () {
+    public func saveContext() {
         if managedObjectContext.hasChanges {
             do {
                 try managedObjectContext.save()
@@ -181,4 +180,5 @@ public class CoreDataFromPopulatedSQLite: NSObject {
             }
         }
     }
+
 }
