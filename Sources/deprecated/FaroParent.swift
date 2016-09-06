@@ -8,55 +8,56 @@
 
 import Foundation
 
-@available(*, deprecated=1.0.0, message="use the Bar class")
+@available( *, deprecated = 1.0.0, message = "use the Bar class")
 
 public class FaroParent: NSObject, UniqueAble, Mitigatable, Transformable, Parsable {
 
-	// MARK: - Parsable
+    // MARK: - Parsable
 
-	public required init(json: AnyObject) throws {
-		super.init()
-		try self.map(json)
-	}
+    public required init(json: AnyObject) throws {
+        super.init()
+        try self.map(json)
+    }
 
-	public func toDictionary()-> NSDictionary? {
-		return nil
-	}
+    public func toDictionary() -> NSDictionary? {
+        return nil
+    }
 
-	public func map(json: AnyObject) throws {
+    public func map(json: AnyObject) throws {
 
-	}
+    }
 
-	public class func lookupExistingObjectFromJSON(json: AnyObject) -> Self? {
-		return nil
-	}
-	
-	// MARK: - UniqueAble
+    public class func lookupExistingObjectFromJSON(json: AnyObject) -> Self? {
+        return nil
+    }
 
-	public var uniqueValue: String?
+    // MARK: - UniqueAble
 
-	// MARK: - Mitigatable
+    public var uniqueValue: String?
 
-	public class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
-		return MitigatorDefault()
-	}
+    // MARK: - Mitigatable
 
-	public class func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
-		return MitigatorDefault()
-	}
+    public class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+        return MitigatorDefault()
+    }
 
-	//MARK: - Transfromable
-	public class func transform() -> TransformJSON {
-		return TransformJSON()
-	}
+    public class func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
+        return MitigatorDefault()
+    }
 
-	public class func rootKey() -> String? {
-		return nil
-	}
+    // MARK: - Transfromable
+    public class func transform() -> TransformJSON {
+        return TransformJSON()
+    }
+
+    public class func rootKey() -> String? {
+        return nil
+    }
+
 }
 
-@available(*, deprecated=1.0.0, message="use the Bar class")
+@available( *, deprecated = 1.0.0, message = "use the Bar class")
 
 public class FaroParentSwift {
-	
+
 }
