@@ -38,7 +38,7 @@ public class Air {
 	- parameter fail: Optional Closure called when something in the response fails. - !__Called on a background queue___!
 	- throws : Errors related to the request construction.
 */
-    public class func post <Rivet: Rivetable> (entity: Rivet,
+    public class func post<Rivet: Rivetable>(entity: Rivet,
         session: NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration()),
         responseController: Response = Response(),
         succeed: (response: Rivet) -> (), fail: ((ResponseError) -> ())? = nil) throws {
@@ -69,7 +69,7 @@ public class Air {
 	- parameter fail: Closure called when something in the response fails. - !__Called on a background queue___!
 	- throws : Errors related to the request construction.
 	*/
-    public class func fetch<Rivet: Rivetable> (session: NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration()),
+    public class func fetch<Rivet: Rivetable>(session: NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration()),
         responseController: Response = Response(),
         succeed: (response: [Rivet]) -> (), fail: ((ResponseError) -> ())? = nil) throws {
             let environment = Rivet.environment()
@@ -89,7 +89,7 @@ public class Air {
 	- parameter fail: Closure called when something in the response fails.
 	- throws : Errors related to the request construction.
 	*/
-    public class func fetchWithUniqueId <Rivet: Rivetable> (uniqueId: String, session: NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration()),
+    public class func fetchWithUniqueId<Rivet: Rivetable>(uniqueId: String, session: NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration()),
         responseController: Response = Response(),
         succeed: (response: Rivet) -> (), fail: ((ResponseError) -> ())? = nil) throws {
             let environment = Rivet.environment()
@@ -117,7 +117,7 @@ public class Air {
 	- parameter fail: Optional Closure called when something in the response fails. - !__Called on a background queue___!
 	- throws : Errors related to the request construction.
 	*/
-    public class func postCoreData <Rivet: RivetableCoreData> (entity: Rivet,
+    public class func postCoreData<Rivet: RivetableCoreData>(entity: Rivet,
         session: NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration()),
         responseController: Response = Response(),
         succeed: (response: Rivet) -> (), fail: ((ResponseError) -> ())? = nil) throws {
@@ -148,7 +148,7 @@ public class Air {
 	- parameter fail: Closure called when something in the response fails. - !__Called on a background queue___!
 	- throws : Errors related to the request construction.
 	*/
-    public class func fetchCoreData<Rivet: RivetableCoreData> (session: NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration()),
+    public class func fetchCoreData<Rivet: RivetableCoreData>(session: NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration()),
         responseController: Response = Response(),
         succeed: (response: [Rivet]) -> (), fail: ((ResponseError) -> ())? = nil) throws {
             let environment = Rivet.environment()
@@ -168,7 +168,7 @@ public class Air {
 	- parameter fail: Closure called when something in the response fails.
 	- throws : Errors related to the request construction.
 	*/
-    public class func fetchCoreDataWithUniqueId <Rivet: RivetableCoreData> (uniqueId: String, session: NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration()),
+    public class func fetchCoreDataWithUniqueId<Rivet: RivetableCoreData>(uniqueId: String, session: NSURLSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration()),
         responseController: Response = Response(),
         succeed: (response: Rivet) -> (), fail: ((ResponseError) -> ())? = nil) throws {
             let environment = Rivet.environment()
@@ -186,7 +186,7 @@ public class Air {
 
     // MARK: - Private
 
-    private class func mockOrPerform <Rivet: Rivetable> (mockUrl: String, request: NSURLRequest,
+    private class func mockOrPerform<Rivet: Rivetable>(mockUrl: String, request: NSURLRequest,
         environment: protocol<Environment, Mockable>,
         responseController: Response, session: NSURLSession,
         succeed: (response: [Rivet]) -> (), fail: ((ResponseError) -> ())?) throws {
@@ -198,7 +198,7 @@ public class Air {
             performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
     }
 
-    private class func mockOrPerformCoreData <Rivet: RivetableCoreData> (mockUrl: String, request: NSURLRequest,
+    private class func mockOrPerformCoreData<Rivet: RivetableCoreData>(mockUrl: String, request: NSURLRequest,
         environment: protocol<Environment, Mockable>,
         responseController: Response, session: NSURLSession,
         succeed: (response: [Rivet]) -> (), fail: ((ResponseError) -> ())?) throws {
@@ -210,7 +210,7 @@ public class Air {
             performAsychonousRequestCoreData(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
     }
 
-    private class func mockOrPerform <Rivet: Rivetable> (mockUrl: String, request: NSURLRequest,
+    private class func mockOrPerform<Rivet: Rivetable>(mockUrl: String, request: NSURLRequest,
         environment: protocol<Environment, Mockable>,
         responseController: Response, session: NSURLSession,
         succeed: (response: Rivet) -> (), fail: ((ResponseError) -> ())?) throws {
@@ -222,7 +222,7 @@ public class Air {
             performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
     }
 
-    private class func mockOrPerformCoreData <Rivet: RivetableCoreData> (mockUrl: String, request: NSURLRequest,
+    private class func mockOrPerformCoreData<Rivet: RivetableCoreData>(mockUrl: String, request: NSURLRequest,
         environment: protocol<Environment, Mockable>,
         responseController: Response, session: NSURLSession,
         succeed: (response: Rivet) -> (), fail: ((ResponseError) -> ())?) throws {
@@ -233,7 +233,8 @@ public class Air {
 
             performAsychonousRequestCoreData(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
     }
-    private class func mockDataFromUrl <Rivet: Rivetable> (url: String, transformController: TransformJSON, responseController: Response,
+    
+    private class func mockDataFromUrl<Rivet: Rivetable>(url: String, transformController: TransformJSON, responseController: Response,
         succeed: (response: [Rivet]) -> (), fail: ((ResponseError) -> ())?) throws {
             try Rivet.requestMitigator().mitigate {
                 let data = try dataAtUrl(url, transformController: transformController)
@@ -241,7 +242,7 @@ public class Air {
             }
     }
 
-    private class func mockDataFromUrlCoreData <Rivet: RivetableCoreData> (url: String, transformController: TransformJSON, responseController: Response,
+    private class func mockDataFromUrlCoreData<Rivet: RivetableCoreData>(url: String, transformController: TransformJSON, responseController: Response,
         succeed: (response: [Rivet]) -> (), fail: ((ResponseError) -> ())?) throws {
             try Rivet.requestMitigator().mitigate {
                 let data = try dataAtUrl(url, transformController: transformController)
@@ -249,7 +250,7 @@ public class Air {
             }
     }
 
-    private class func mockDataFromUrl <Rivet: Rivetable> (url: String, transformController: TransformJSON, responseController: Response,
+    private class func mockDataFromUrl<Rivet: Rivetable>(url: String, transformController: TransformJSON, responseController: Response,
         succeed: (response: Rivet) -> (), fail: ((ResponseError) -> ())?) throws {
             try Rivet.requestMitigator().mitigate {
                 let data = try dataAtUrl(url, transformController: transformController)
@@ -257,7 +258,7 @@ public class Air {
             }
     }
 
-    private class func mockDataFromUrlCoreData <Rivet: RivetableCoreData> (url: String, transformController: TransformJSON, responseController: Response,
+    private class func mockDataFromUrlCoreData<Rivet: RivetableCoreData>(url: String, transformController: TransformJSON, responseController: Response,
         succeed: (response: Rivet) -> (), fail: ((ResponseError) -> ())?) throws {
             try Rivet.requestMitigator().mitigate {
                 let data = try dataAtUrl(url, transformController: transformController)
@@ -265,7 +266,7 @@ public class Air {
             }
     }
 
-    private class func performAsychonousRequest<Rivet: Rivetable> (request: NSURLRequest,
+    private class func performAsychonousRequest<Rivet: Rivetable>(request: NSURLRequest,
         session: NSURLSession, responseController: Response,
         succeed: (response: Rivet) -> (), fail: ((ResponseError) -> ())? = nil) {
             let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
@@ -275,7 +276,7 @@ public class Air {
             task.resume()
     }
 
-    private class func performAsychonousRequestCoreData<Rivet: RivetableCoreData> (request: NSURLRequest,
+    private class func performAsychonousRequestCoreData<Rivet: RivetableCoreData>(request: NSURLRequest,
         session: NSURLSession, responseController: Response,
         succeed: (response: Rivet) -> (), fail: ((ResponseError) -> ())? = nil) {
             let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
@@ -285,7 +286,7 @@ public class Air {
             task.resume()
     }
 
-    private class func performAsychonousRequest<Rivet: Rivetable> (request: NSURLRequest,
+    private class func performAsychonousRequest<Rivet: Rivetable>(request: NSURLRequest,
         session: NSURLSession, responseController: Response,
         succeed: (response: [Rivet]) -> (), fail: ((ResponseError) -> ())? = nil) {
             let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
@@ -295,7 +296,7 @@ public class Air {
             task.resume()
     }
 
-    private class func performAsychonousRequestCoreData<Rivet: RivetableCoreData> (request: NSURLRequest,
+    private class func performAsychonousRequestCoreData<Rivet: RivetableCoreData>(request: NSURLRequest,
         session: NSURLSession, responseController: Response,
         succeed: (response: [Rivet]) -> (), fail: ((ResponseError) -> ())? = nil) {
             let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
@@ -304,6 +305,7 @@ public class Air {
 
             task.resume()
     }
+
 }
 
 func dataAtUrl(url: String, transformController: TransformJSON) throws -> NSData? {

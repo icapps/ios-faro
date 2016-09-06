@@ -19,5 +19,5 @@ public class Configuration {
 
     public init(baseURL: String) {
         self.baseURL = baseURL
-    }    
+    }
 }
