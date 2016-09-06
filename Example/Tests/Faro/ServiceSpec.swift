@@ -6,10 +6,10 @@ import Faro
 
 func checkToBeError(expectedError: Error?, service: Service, data: NSData? = nil, response: NSURLResponse? = nil, nsError: NSError? = nil) -> Bool {
 
-    var error : Error?
-    let result = { (result : Result <MockModel>) in
+    var error: Error?
+    let result = { (result: Result <MockModel>) in
         switch result {
-        case .Failure(let returnError) :
+        case .Failure(let returnError):
             error = returnError as? Error
         default:
             return
@@ -25,17 +25,17 @@ func checkToBeError(expectedError: Error?, service: Service, data: NSData? = nil
 class ServiceSpec: QuickSpec {
     override func spec() {
         describe("MockService") {
-            let expected = ["key" : "value"]
-            var service : Service!
+            let expected = ["key": "value"]
+            var service: Service!
 
             beforeEach {
                 service = MockService(mockJSON: expected)
             }
 
-            it("should return mockModel in sync"){
+            it("should return mockModel in sync") {
                 let order = Order(path: "mock")
                 var isInSync = false
-                service.serve(order, result: { (result : Result <MockModel>) in
+                service.serve(order) { (result: Result <MockModel>) in
                     isInSync = true
                     switch result {
                     case .JSON(json: let json):
@@ -43,7 +43,7 @@ class ServiceSpec: QuickSpec {
                     default:
                         XCTFail("You should succeed")
                     }
-                })
+                }
 
                 expect(isInSync).to(beTrue())
             }
@@ -54,7 +54,7 @@ class ServiceSpec: QuickSpec {
             }
 
             it("Fail for NSError") {
-                let expected =  NSError(domain: "tests", code: 101, userInfo: nil)
+                let expected = NSError(domain: "tests", code: 101, userInfo: nil)
                 expect(checkToBeError(Error.Error(expected), service: service, nsError: expected)).to(beTrue())
             }
 
@@ -73,14 +73,14 @@ class ServiceSpec: QuickSpec {
 
                 var failed = false
 
-                service.serve(order, result: { (result : Result <MockModel>) in
+                service.serve(order) { (result: Result <MockModel>) in
                     switch result {
-                    case .Failure :
+                    case .Failure:
                         failed = true
-                    default :
+                    default:
                         XCTFail("💣should fail")
                     }
-                })
+                }
 
                 expect(failed).toEventually(beTrue())
             }
@@ -92,19 +92,19 @@ class ServiceSpec: QuickSpec {
 
                 var receivedJSON = false
 
-                service.serve(order, result: { (result : Result <MockModel>) in
+                service.serve(order) { (result: Result <MockModel>) in
                     switch result {
-                    case .JSON(let json) :
+                    case .JSON(let json):
                         if let json = json as? [[String: AnyObject]] {
                             expect(json.count).to(equal(100))
                             receivedJSON = true
-                        }else {
+                        } else {
                             XCTFail("\(json) is wrong")
                         }
-                    default :
+                    default:
                         XCTFail("💣should return json")
                     }
-                })
+                }
 
                 expect(receivedJSON).toEventually(beTrue())
             }
