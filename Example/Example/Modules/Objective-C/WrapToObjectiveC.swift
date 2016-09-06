@@ -1,9 +1,10 @@
 import Foundation
 import Faro
 
-///This class is used to bridge to swift generic classes.
+/// This class is used to bridge to swift generic classes.
 class WrapToObjectiveC: NSObject {
 
-    func serve(success: (model: Model)->(), failure: ()->()) {
-    }
+  func serve(success: (model: Model) -> (), failure: () -> ()) {
+  }
+
 }

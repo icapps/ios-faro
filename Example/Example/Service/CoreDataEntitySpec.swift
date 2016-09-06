@@ -9,17 +9,19 @@ import Faro
 class CoreDataEntitySpec: QuickSpec {
 
 	static let context = StoreUnitTests().managedObjectContext
-	class Mock : MockCoreDataEntity {
-		class  override func managedObjectContext() -> NSManagedObjectContext? {
+	class Mock: MockCoreDataEntity {
+
+        class override func managedObjectContext() -> NSManagedObjectContext? {
 			return CoreDataEntitySpec.context
 		}
+
 	}
 
 	override func spec() {
 		describe("CoreDataEntity") {
 
 			let context  = CoreDataEntitySpec.context
-			beforeEach{
+			beforeEach {
 				context.reset()
 			}
 
@@ -29,7 +31,7 @@ class CoreDataEntitySpec: QuickSpec {
 			}
 
 			it("should fetch an existing object") {
-				let json = ["uniqueValue":"unique id", "username": "Fons"]
+				let json = ["uniqueValue": "unique id", "username": "Fons"]
 
 				let entity = try! CoreDataEntity(json: json, managedObjectContext: context)
 

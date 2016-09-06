@@ -2,11 +2,10 @@ import UIKit
 import Faro
 
 class SwiftViewController: UIViewController {
+  @IBOutlet var label: UILabel!
 
-    @IBOutlet var label: UILabel!
+  override func viewDidLoad() {
+    super.viewDidLoad()
+  }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
 }
-
