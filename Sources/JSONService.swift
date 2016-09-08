@@ -12,18 +12,10 @@ public class JSONService: Service {
         }
 
         let session = NSURLSession.sharedSession()
-        task = session.dataTaskWithRequest(request) { [weak self](data, response, error) in
-            convertAllThrowsToResult(result) {
-                if let data = try self?.checkStatusCodeAndData(data, urlResponse: response, error: error) {
-                    do {
-                        let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-                        result(.JSON(json))
-                    } catch {
-                        result(.Failure(Error.InvalidResponseData(data)))
-                    }
-                } else {
-                    result(.Failure(Error.General))
-                }
+
+        task = session.dataTaskWithRequest(request) { (data, response, error) in
+            checkStatusCodeAndData(data, urlResponse: response, error: error) { (dataResult: Result<M>) in
+                serializeJSONFromDataResult(dataResult, jsonResult: result)
             }
         }
 
