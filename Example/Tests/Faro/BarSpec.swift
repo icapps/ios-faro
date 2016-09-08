@@ -8,16 +8,16 @@ import Faro
 class BarSpec: QuickSpec {
     override func spec() {
         describe("Bar") {
-            context(".Model(model)") {
-                var bar: Bar!
-                var mockJSON: AnyObject!
+            var bar: Bar!
+            var mockJSON: AnyObject!
 
-                beforeEach({
-                    mockJSON = ["key": "value"]
-                    bar = Bar(service: MockService(mockJSON: mockJSON))
+            beforeEach({
+                mockJSON = ["key": "value"]
+                bar = Bar(service: MockService(mockJSON: mockJSON))
 
-                })
+            })
 
+            context(".GET single object") {
                 it("should have a configuration with the correct baseUrl") {
                     expect(bar.service.configuration.baseURL).to(equal("mockService"))
                 }
@@ -31,6 +31,25 @@ class BarSpec: QuickSpec {
                         switch result {
                         case .Model(model: let model):
                             expect(model.value).to(equal("value"))
+                        default:
+                            XCTFail("You should succeed")
+                        }
+                    }
+
+                    expect(isInSync).to(beTrue())
+                }
+            }
+
+            context(".GET array of objects") {
+                it("order requests array") {
+                    let order = Order(path: "unitTest")
+                    var isInSync = false
+
+                    bar.serve(order) { (result: Result <MockModel>) in
+                        isInSync = true
+                        switch result {
+                        case .ModelArray(let array):
+                            expect(array.count).to(equal(10))
                         default:
                             XCTFail("You should succeed")
                         }
