@@ -91,7 +91,7 @@
 		C03281441D76E9B40047825C /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281431D76E9B40047825C /* Configuration.swift */; };
 		C032814B1D76F9220047825C /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032814A1D76F9220047825C /* Service.swift */; };
 		C032814F1D76F9D70047825C /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032814E1D76F9D70047825C /* Order.swift */; };
-		C03281511D76FA230047825C /* ResultEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281501D76FA230047825C /* ResultEnum.swift */; };
+		C03281511D76FA230047825C /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281501D76FA230047825C /* Result.swift */; };
 		C032815B1D7725760047825C /* JSONService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815A1D7725760047825C /* JSONService.swift */; };
 		C032815D1D772C3A0047825C /* Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815C1D772C3A0047825C /* Mappable.swift */; };
 		C0761CC31D79CDD9008F1FEF /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0761CC21D79CDD9008F1FEF /* Error.swift */; };
@@ -260,7 +260,7 @@
 		C03281431D76E9B40047825C /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		C032814A1D76F9220047825C /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		C032814E1D76F9D70047825C /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
-		C03281501D76FA230047825C /* ResultEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultEnum.swift; sourceTree = "<group>"; };
+		C03281501D76FA230047825C /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		C032815A1D7725760047825C /* JSONService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONService.swift; sourceTree = "<group>"; };
 		C032815C1D772C3A0047825C /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
 		C0761CC21D79CDD9008F1FEF /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
@@ -369,7 +369,7 @@
 				C032814E1D76F9D70047825C /* Order.swift */,
 				C015C7DD1D816EE900E30408 /* EngagementRule.swift */,
 				C0761CC21D79CDD9008F1FEF /* Error.swift */,
-				C03281501D76FA230047825C /* ResultEnum.swift */,
+				C03281501D76FA230047825C /* Result.swift */,
 				C032814A1D76F9220047825C /* Service.swift */,
 				C032815A1D7725760047825C /* JSONService.swift */,
 				C032815C1D772C3A0047825C /* Mappable.swift */,
@@ -869,7 +869,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C032815D1D772C3A0047825C /* Mappable.swift in Sources */,
-				C03281511D76FA230047825C /* ResultEnum.swift in Sources */,
+				C03281511D76FA230047825C /* Result.swift in Sources */,
 				C015C7DE1D816EE900E30408 /* EngagementRule.swift in Sources */,
 				C03281441D76E9B40047825C /* Configuration.swift in Sources */,
 				C032815B1D7725760047825C /* JSONService.swift in Sources */,
