@@ -29,7 +29,7 @@ class OrderSpec: QuickSpec {
         }
 
         describe("Order Engagementrule") {
-            it("should have rule .None or All for a nodeKey") {
+            it("should have rule .None or .All for a nodeKey") {
                 let rules = [(nodeKey: "key 1", rule: EngagementRule.None), (nodeKey: "key 2", rule: EngagementRule.All)]
                 let order = Order(path: "", rulesOfEngagement: rules)
 
