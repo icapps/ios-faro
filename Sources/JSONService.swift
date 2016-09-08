@@ -12,7 +12,7 @@ public class JSONService: Service {
         }
 
         let session = NSURLSession.sharedSession()
-        task = session.dataTaskWithURL(request.URL!) { [weak self](data, response, error) in
+        task = session.dataTaskWithRequest(request) { [weak self](data, response, error) in
             convertAllThrowsToResult(result) {
                 if let data = try self?.checkStatusCodeAndData(data, urlResponse: response, error: error) {
                     do {
@@ -31,7 +31,7 @@ public class JSONService: Service {
             result(.Failure(Error.CreateDataTask))
             return
         }
-        
+
         task.resume()
     }
 
