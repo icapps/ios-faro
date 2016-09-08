@@ -93,7 +93,7 @@
 		C032814F1D76F9D70047825C /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032814E1D76F9D70047825C /* Order.swift */; };
 		C03281511D76FA230047825C /* ResultEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281501D76FA230047825C /* ResultEnum.swift */; };
 		C032815B1D7725760047825C /* JSONService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815A1D7725760047825C /* JSONService.swift */; };
-		C032815D1D772C3A0047825C /* Parseable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815C1D772C3A0047825C /* Parseable.swift */; };
+		C032815D1D772C3A0047825C /* Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815C1D772C3A0047825C /* Mappable.swift */; };
 		C0761CC31D79CDD9008F1FEF /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0761CC21D79CDD9008F1FEF /* Error.swift */; };
 		C755136BFCDFA000C44C8BBCA065E4BE /* HaveCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16BD573AFAA7965C23360DBCA4BB88E6 /* HaveCount.swift */; };
 		C80FF3813F014A8E43E2B4DB2FC29375 /* Callsite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8629AD3F9BCCC6E902F2F76E4164FDAC /* Callsite.swift */; };
@@ -262,7 +262,7 @@
 		C032814E1D76F9D70047825C /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		C03281501D76FA230047825C /* ResultEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultEnum.swift; sourceTree = "<group>"; };
 		C032815A1D7725760047825C /* JSONService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONService.swift; sourceTree = "<group>"; };
-		C032815C1D772C3A0047825C /* Parseable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parseable.swift; sourceTree = "<group>"; };
+		C032815C1D772C3A0047825C /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
 		C0761CC21D79CDD9008F1FEF /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		C878C32F9D24D1635771870A1731A21F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9A2B49200AC2BB9CDDAD982C13EF8B5 /* AsyncMatcherWrapper.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AsyncMatcherWrapper.swift; path = Sources/Nimble/Matchers/AsyncMatcherWrapper.swift; sourceTree = "<group>"; };
@@ -372,7 +372,7 @@
 				C03281501D76FA230047825C /* ResultEnum.swift */,
 				C032814A1D76F9220047825C /* Service.swift */,
 				C032815A1D7725760047825C /* JSONService.swift */,
-				C032815C1D772C3A0047825C /* Parseable.swift */,
+				C032815C1D772C3A0047825C /* Mappable.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -868,7 +868,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C032815D1D772C3A0047825C /* Parseable.swift in Sources */,
+				C032815D1D772C3A0047825C /* Mappable.swift in Sources */,
 				C03281511D76FA230047825C /* ResultEnum.swift in Sources */,
 				C015C7DE1D816EE900E30408 /* EngagementRule.swift in Sources */,
 				C03281441D76E9B40047825C /* Configuration.swift in Sources */,

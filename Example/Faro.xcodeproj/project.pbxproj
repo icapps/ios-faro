@@ -18,6 +18,7 @@
 		C012EA4D1CCA5E2700B298D7 /* GET_gameScoreArray.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */; };
 		C012EA501CCA8A5B00B298D7 /* GET_gameScoreArray_1275.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */; };
 		C015C7E31D817EC000E30408 /* BarSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015C7E11D817EB900E30408 /* BarSpec.swift */; };
+		C015C7E51D81801700E30408 /* ExampleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015C7E41D81801700E30408 /* ExampleBar.swift */; };
 		C03281421D76E6BE0047825C /* ConfigurationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281411D76E6BE0047825C /* ConfigurationSpec.swift */; };
 		C03281451D76EB590047825C /* SwiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* SwiftViewController.swift */; };
 		C03281461D76EBD00047825C /* WrapToObjectiveC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05296111CB6661E007E1111 /* WrapToObjectiveC.swift */; };
@@ -61,6 +62,7 @@
 		C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray.json; sourceTree = "<group>"; };
 		C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray_1275.json; sourceTree = "<group>"; };
 		C015C7E11D817EB900E30408 /* BarSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BarSpec.swift; path = Faro/BarSpec.swift; sourceTree = "<group>"; };
+		C015C7E41D81801700E30408 /* ExampleBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleBar.swift; sourceTree = "<group>"; };
 		C03281411D76E6BE0047825C /* ConfigurationSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfigurationSpec.swift; path = Faro/ConfigurationSpec.swift; sourceTree = "<group>"; };
 		C03281481D76F82F0047825C /* ServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServiceSpec.swift; path = Faro/ServiceSpec.swift; sourceTree = "<group>"; };
 		C032814C1D76F9750047825C /* OrderSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrderSpec.swift; path = Faro/OrderSpec.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				607FACD71AFB9204008FA782 /* SwiftViewController.swift */,
+				C015C7E41D81801700E30408 /* ExampleBar.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -488,6 +491,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C015C7E51D81801700E30408 /* ExampleBar.swift in Sources */,
 				C032815F1D77319B0047825C /* Model.swift in Sources */,
 				C03281451D76EB590047825C /* SwiftViewController.swift in Sources */,
 				C03281461D76EBD00047825C /* WrapToObjectiveC.swift in Sources */,
