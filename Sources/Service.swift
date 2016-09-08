@@ -1,5 +1,5 @@
 public class Service {
-    let configuration: Configuration
+    public let configuration: Configuration
 
     public init(configuration: Configuration) {
         self.configuration = configuration
