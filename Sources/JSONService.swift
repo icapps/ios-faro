@@ -4,8 +4,6 @@
 public class JSONService: Service {
     private var task: NSURLSessionDataTask?
 
-    /// Always results in .Success(["key" : "value"])
-    /// This will change to a real request in the future
     override public func serve<M: Mappable>(order: Order, result: (Result<M>) -> ()) {
 
         guard let request = order.objectRequestConfiguration(configuration) else {
@@ -14,7 +12,7 @@ public class JSONService: Service {
         }
 
         let session = NSURLSession.sharedSession()
-        session.dataTaskWithRequest(request) { [weak self](data, response, error) in
+        task = session.dataTaskWithURL(request.URL!) { [weak self](data, response, error) in
             convertAllThrowsToResult(result) {
                 if let data = try self?.checkStatusCodeAndData(data, urlResponse: response, error: error) {
                     do {
@@ -29,7 +27,12 @@ public class JSONService: Service {
             }
         }
 
-        task?.resume()
+        guard let task = task else {
+            result(.Failure(Error.CreateDataTask))
+            return
+        }
+        
+        task.resume()
     }
 
     public func cancel() {
