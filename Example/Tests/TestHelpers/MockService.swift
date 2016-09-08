@@ -5,7 +5,7 @@ class MockService: Service {
 
     init(mockJSON: AnyObject) {
         self.mockJSON = mockJSON
-        super.init(configuration: Configuration(baseURL: ""))
+        super.init(configuration: Configuration(baseURL: "mockService"))
     }
 
     override func serve<M: Mappable>(order: Order, result: (Result<M>) -> ()) {
