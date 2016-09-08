@@ -1,7 +1,7 @@
 import UIKit
 import Faro
 
-class Foo: Mappable {
+class Posts: Mappable {
 
     required init(json: AnyObject) {
 
@@ -15,17 +15,13 @@ class SwiftViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let configuration = Faro.Configuration(baseURL: "http://jsonplaceholder.typicode.com")
-        let service = JSONService(configuration: configuration)
+        let bar = ExampleBar()
         let order = Order(path: "posts")
 
-        service.serve(order) { (result: Result <Foo>) in
+        bar.serve(order) { (result: Result <Posts>) in
             switch result {
-            case .JSON(let json):
-                if let json = json as? [[String: AnyObject]] {
-                    print("🎉 received \(json)")
-                } else {
-                }
+            case .Model(let model):
+                print("🎉 \(model)")
             default:
                 print("💣 fail")
             }
