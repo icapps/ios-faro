@@ -6,17 +6,17 @@ public class JSONAdaptor: Adaptable {
 
     }
 
-    public func serialize<M: Mappable>(fromDataResult dataResult: Result<M>, jsonResult: (Result <M>) -> ()) {
+    public func serialize<M: Mappable>(fromDataResult dataResult: Result<M>, result: (Result <M>) -> ()) {
         switch dataResult {
         case .Data(let data):
             do {
                 let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-                jsonResult(.JSON(json))
+                result(.JSON(json))
             } catch {
-                jsonResult(.Failure(Error.Error(error)))
+                result(.Failure(Error.Error(error)))
             }
         default:
-            jsonResult(dataResult)
+            result(dataResult)
         }
     }
 

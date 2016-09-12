@@ -10,6 +10,7 @@ public class Service {
         self.configuration = configuration
     }
 
+    /// Performs a `Call` to get a result where the `case` returned depends on the adaptor you provide.
     public func perform<M: Mappable>(call: Call, result: (Result<M>) -> ()) {
 
         guard let request = call.request(withConfiguration: configuration) else {
@@ -19,7 +20,7 @@ public class Service {
 
         task = session.dataTaskWithRequest(request) { (data, response, error) in
             self.checkStatusCodeAndData(data, urlResponse: response, error: error) { (dataResult: Result<M>) in
-                self.configuration.adaptor.serialize(fromDataResult: dataResult, jsonResult: result)
+                self.configuration.adaptor.serialize(fromDataResult: dataResult, result: result)
             }
         }
 
