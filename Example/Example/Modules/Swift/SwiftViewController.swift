@@ -1,5 +1,6 @@
 import UIKit
 import Faro
+import Stella
 
 class Posts: Mappable {
 
@@ -16,14 +17,17 @@ class SwiftViewController: UIViewController {
         super.viewDidLoad()
 
         let bar = ExampleBar()
-        let order = Order(path: "posts")
+        let call = Call(path: "posts")
 
-        bar.serve(order) { (result: Result <Posts>) in
-            switch result {
-            case .Model(let model):
-                print("🎉 \(model)")
-            default:
-                print("💣 fail")
+        bar.perform(call) { (result: Result <Posts>) in
+            dispatch_on_main {
+                switch result {
+                case .Model(let model):
+                    self.label.text = "fetched posts"
+                    print("🎉 \(model)")
+                default:
+                    print("💣 fail")
+                }
             }
         }
     }

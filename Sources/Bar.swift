@@ -15,8 +15,8 @@ public class Bar {
     /// - parameter order : gives the details to find the entity on the server
     /// - parameter service : default = `JSONService` fires the `Order` to a server
     /// - parameter result : enum containing the requested entity of type `M` on succes or a failure.
-    public func serve <M: Mappable> (order: Order, result: (Result <M>) -> ()) {
-        service.serve(order) { (jsonResult: Result <M>) in
+    public func perform <M: Mappable> (order: Call, result: (Result <M>) -> ()) {
+        service.perform(order) { (jsonResult: Result <M>) in
             switch jsonResult {
             case .JSON(json: let json):
                 let model = M(json: json)

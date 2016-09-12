@@ -15,9 +15,9 @@ class ServiceSpec: QuickSpec {
             }
 
             it("should return mockModel in sync") {
-                let order = Order(path: "mock")
+                let call = Call(path: "mock")
                 var isInSync = false
-                service.serve(order) { (result: Result <MockModel>) in
+                service.perform(call) { (result: Result <MockModel>) in
                     isInSync = true
                     switch result {
                     case .JSON(json: let json):
@@ -32,7 +32,7 @@ class ServiceSpec: QuickSpec {
 
             it("InvalidAuthentication when statuscode 404") {
                 let response = NSHTTPURLResponse(URL: NSURL(), statusCode: 404, HTTPVersion: nil, headerFields: nil)
-                checkStatusCodeAndData(nil, urlResponse: response, error: nil) { (result: Result<MockModel>) in
+                service.checkStatusCodeAndData(nil, urlResponse: response, error: nil) { (result: Result<MockModel>) in
                     switch result {
                     case .Failure(let faroError) where faroError == Error.InvalidAuthentication:
                         break
@@ -44,7 +44,7 @@ class ServiceSpec: QuickSpec {
 
             it("Fail for NSError") {
                 let nsError = NSError(domain: "tests", code: 101, userInfo: nil)
-                checkStatusCodeAndData(nil, urlResponse: nil, error: nsError) { (result: Result<MockModel>) in
+                service.checkStatusCodeAndData(nil, urlResponse: nil, error: nsError) { (result: Result<MockModel>) in
                     switch result {
                     case .Failure(let faroError):
                         switch faroError {
@@ -62,33 +62,33 @@ class ServiceSpec: QuickSpec {
 
             context("no data from service") {
                 it("No fail for statuscode 200") {
-                    ExpectResponse.statusCode(200)
+                    ExpectResponse.statusCode(200, service: service)
                 }
 
                 it("No fail for statuscode 201") {
-                    ExpectResponse.statusCode(201)
+                    ExpectResponse.statusCode(201, service: service)
                 }
             }
 
             context("data from service") {
                 it("data returned for statuscode 200") {
-                    ExpectResponse.statusCode(200, data: "data".dataUsingEncoding(NSUTF8StringEncoding))
+                    ExpectResponse.statusCode(200, data: "data".dataUsingEncoding(NSUTF8StringEncoding), service: service)
                 }
 
                 it("data returned for statuscode 201") {
-                    ExpectResponse.statusCode(201, data: "data".dataUsingEncoding(NSUTF8StringEncoding))
+                    ExpectResponse.statusCode(201, data: "data".dataUsingEncoding(NSUTF8StringEncoding), service: service)
                 }
             }
 
-            describe("JSONService Asynchronous", {
+            describe("Service Asynchronous", {
                 it("should fail for a wierd url") {
                     let configuration = Faro.Configuration(baseURL: "wierd")
-                    let service = JSONService(configuration: configuration)
-                    let order = Order(path: "posts")
+                    let service = Service(configuration: configuration)
+                    let call = Call(path: "posts")
 
                     var failed = false
 
-                    service.serve(order) { (result: Result <MockModel>) in
+                    service.perform(call) { (result: Result <MockModel>) in
                         switch result {
                         case .Failure:
                             failed = true
@@ -102,12 +102,12 @@ class ServiceSpec: QuickSpec {
 
                 it("should return an empty model") {
                     let configuration = Faro.Configuration(baseURL: "http://jsonplaceholder.typicode.com")
-                    let service = JSONService(configuration: configuration)
-                    let order = Order(path: "posts")
+                    let service = Service(configuration: configuration)
+                    let call = Call(path: "posts")
 
                     var receivedJSON = false
 
-                    service.serve(order) { (result: Result <MockModel>) in
+                    service.perform(call) { (result: Result <MockModel>) in
                         switch result {
                         case .JSON(let json):
                             if let json = json as? [[String: AnyObject]] {
@@ -129,9 +129,9 @@ class ServiceSpec: QuickSpec {
 }
 
 class ExpectResponse {
-    static func statusCode(statusCode: Int, data: NSData? = nil) {
+    static func statusCode(statusCode: Int, data: NSData? = nil, service: Service) {
         let response = NSHTTPURLResponse(URL: NSURL(), statusCode: statusCode, HTTPVersion: nil, headerFields: nil)
-        checkStatusCodeAndData(data, urlResponse: response, error: nil) { (result: Result<MockModel>) in
+        service.checkStatusCodeAndData(data, urlResponse: response, error: nil) { (result: Result<MockModel>) in
             if let data = data {
                 switch result {
                 case .Data(_):

@@ -5,7 +5,7 @@ Faro
 For a quick start follow the instructions below. For more in depth information on why and how we build Faro, the [wiki](https://github.com/icapps/ios-faro/wiki) page.
 
 ## Concept
-We build a service request by using a `Bar` class as the point where you fire your `Order` and get a `Result`.
+We build a service request by using a `Bar` class as the point where you fire your `Call` and get a `Result`.
 
 ## Get Served
 

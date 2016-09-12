@@ -3,6 +3,7 @@ use_frameworks!
 
 target 'Faro_Example' do
   pod "Faro", :path => "../"
+  pod 'Stella'
 
   target 'Faro_Tests' do
     pod 'Quick',  '~> 0.9.3'

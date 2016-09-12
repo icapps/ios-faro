@@ -23,10 +23,10 @@ class BarSpec: QuickSpec {
                 }
 
                 it("should return in sync with the mock model") {
-                    let order = Order(path: "unitTest")
+                    let call = Call(path: "unitTest")
                     var isInSync = false
 
-                    bar.serve(order) { (result: Result <MockModel>) in
+                    bar.perform(call) { (result: Result <MockModel>) in
                         isInSync = true
                         switch result {
                         case .Model(model: let model):

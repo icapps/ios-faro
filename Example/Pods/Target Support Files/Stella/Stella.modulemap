@@ -1,0 +1,6 @@
+framework module Stella {
+  umbrella header "Stella-umbrella.h"
+
+  export *
+  module * { export * }
+}
