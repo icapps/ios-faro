@@ -10,13 +10,13 @@ public class Bar {
         self.service = service
     }
 
-    /// Receives JSON from the a `Service` and maps this to a `Result` of type `M` that is Mappable.
+    /// Receives expecte result  as defined by the `adaptor` from the a `Service` and maps this to a `Result` case `case Model(M)`
+    /// Default implementation expects `adaptor` to be     case JSON(AnyObject). If this needs to be different you need to override this method.
     /// Typ! You can subclass 'Bar' and add a default service
-    /// - parameter order : gives the details to find the entity on the server
-    /// - parameter service : default = `JSONService` fires the `Order` to a server
-    /// - parameter result : enum containing the requested entity of type `M` on succes or a failure.
-    public func perform <M: Mappable> (order: Call, result: (Result <M>) -> ()) {
-        service.perform(order) { (jsonResult: Result <M>) in
+    /// - parameter call : gives the details to find the entity on the server
+    /// - parameter result : `Result<M: Mappable>` closure should be called with `case Model(M)` other cases are a failure.
+    public func perform <M: Mappable> (call: Call, toModelResult result: (Result <M>) -> ()) {
+        service.perform(call) { (jsonResult: Result <M>) in
             switch jsonResult {
             case .JSON(json: let json):
                 let model = M(json: json)
