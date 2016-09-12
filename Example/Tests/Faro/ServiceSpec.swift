@@ -48,11 +48,12 @@ class ServiceSpec: QuickSpec {
                     switch result {
                     case .Failure(let faroError):
                         switch faroError {
-                        case .ErrorNS(_):
+                        case .ErrorNS(let nsError):
+                            expect(nsError!.code).to(equal(101))
                             break
                         default:
-                            XCTFail("Should have invalid authentication error")
-
+                            print("\(faroError)")
+                            XCTFail("Should have nserror")
                         }
                     default:
                         XCTFail("Should have invalid authentication error")
