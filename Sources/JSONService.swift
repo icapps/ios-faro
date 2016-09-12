@@ -4,39 +4,34 @@
 public class JSONService: Service {
     private var task: NSURLSessionDataTask?
 
-    /// Always results in .Success(["key" : "value"])
-    /// This will change to a real request in the future
     override public func serve<M: Mappable>(order: Order, result: (Result<M>) -> ()) {
-        guard let url = configuration.url else {
-            result(.Failure(Error.InvalidUrl(configuration.baseURL)))
+
+        guard let request = order.request(withConfiguration: configuration) else {
+            result(.Failure(Error.InvalidUrl("\(configuration.baseURL)/\(order.path)")))
             return
         }
 
-        let fullUrl = url.URLByAppendingPathComponent(order.path)
-        let mutableRequest = NSMutableURLRequest(URL: url, cachePolicy: .ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0)
-         mutableRequest.HTTPMethod = order.method.rawValue
-
         let session = NSURLSession.sharedSession()
-        task = session.dataTaskWithURL(fullUrl, completionHandler: { [weak self] (data, response, error) in
+        task = session.dataTaskWithRequest(request) { [weak self](data, response, error) in
             convertAllThrowsToResult(result) {
                 if let data = try self?.checkStatusCodeAndData(data, urlResponse: response, error: error) {
                     do {
                         let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
                         result(.JSON(json))
-                    }catch {
+                    } catch {
                         result(.Failure(Error.InvalidResponseData(data)))
                     }
-                }else {
+                } else {
                     result(.Failure(Error.General))
                 }
             }
-        })
+        }
 
-        task?.resume()
+        task!.resume()
     }
 
     public func cancel() {
         task?.cancel()
     }
-    
+
 }
