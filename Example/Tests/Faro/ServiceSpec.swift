@@ -15,9 +15,9 @@ class ServiceSpec: QuickSpec {
             }
 
             it("should return mockModel in sync") {
-                let order = Order(path: "mock")
+                let call = Call(path: "mock")
                 var isInSync = false
-                service.serve(order) { (result: Result <MockModel>) in
+                service.perform(call) { (result: Result <MockModel>) in
                     isInSync = true
                     switch result {
                     case .JSON(json: let json):
@@ -84,11 +84,11 @@ class ServiceSpec: QuickSpec {
                 it("should fail for a wierd url") {
                     let configuration = Faro.Configuration(baseURL: "wierd")
                     let service = Service(configuration: configuration)
-                    let order = Order(path: "posts")
+                    let call = Call(path: "posts")
 
                     var failed = false
 
-                    service.serve(order) { (result: Result <MockModel>) in
+                    service.perform(call) { (result: Result <MockModel>) in
                         switch result {
                         case .Failure:
                             failed = true
@@ -103,11 +103,11 @@ class ServiceSpec: QuickSpec {
                 it("should return an empty model") {
                     let configuration = Faro.Configuration(baseURL: "http://jsonplaceholder.typicode.com")
                     let service = Service(configuration: configuration)
-                    let order = Order(path: "posts")
+                    let call = Call(path: "posts")
 
                     var receivedJSON = false
 
-                    service.serve(order) { (result: Result <MockModel>) in
+                    service.perform(call) { (result: Result <MockModel>) in
                         switch result {
                         case .JSON(let json):
                             if let json = json as? [[String: AnyObject]] {

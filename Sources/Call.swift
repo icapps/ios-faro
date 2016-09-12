@@ -2,7 +2,7 @@ public enum Method: String {
     case GET, POST, PUT, DELETE, PATCH
 }
 
-public class Order {
+public class Call {
     public let path: String
     public let method: Method
 

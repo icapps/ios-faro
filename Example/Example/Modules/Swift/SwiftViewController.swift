@@ -17,9 +17,9 @@ class SwiftViewController: UIViewController {
         super.viewDidLoad()
 
         let bar = ExampleBar()
-        let order = Order(path: "posts")
+        let call = Call(path: "posts")
 
-        bar.serve(order) { (result: Result <Posts>) in
+        bar.perform(call) { (result: Result <Posts>) in
             dispatch_on_main {
                 switch result {
                 case .Model(let model):

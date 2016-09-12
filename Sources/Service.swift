@@ -10,10 +10,10 @@ public class Service {
         self.configuration = configuration
     }
 
-    public func serve<M: Mappable>(order: Order, result: (Result<M>) -> ()) {
+    public func perform<M: Mappable>(call: Call, result: (Result<M>) -> ()) {
 
-        guard let request = order.request(withConfiguration: configuration) else {
-            result(.Failure(Error.InvalidUrl("\(configuration.baseURL)/\(order.path)")))
+        guard let request = call.request(withConfiguration: configuration) else {
+            result(.Failure(Error.InvalidUrl("\(configuration.baseURL)/\(call.path)")))
             return
         }
 
