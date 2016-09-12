@@ -80,10 +80,10 @@ class ServiceSpec: QuickSpec {
                 }
             }
 
-            describe("JSONService Asynchronous", {
+            describe("Service Asynchronous", {
                 it("should fail for a wierd url") {
                     let configuration = Faro.Configuration(baseURL: "wierd")
-                    let service = JSONService(configuration: configuration)
+                    let service = Service(configuration: configuration)
                     let order = Order(path: "posts")
 
                     var failed = false
@@ -102,7 +102,7 @@ class ServiceSpec: QuickSpec {
 
                 it("should return an empty model") {
                     let configuration = Faro.Configuration(baseURL: "http://jsonplaceholder.typicode.com")
-                    let service = JSONService(configuration: configuration)
+                    let service = Service(configuration: configuration)
                     let order = Order(path: "posts")
 
                     var receivedJSON = false

@@ -1,15 +1,35 @@
+/// Default implementation of a service.
+/// Serves your `Order` to a server and parses the respons.
+/// Response is delivered to you as a `Result`. The result type depends on the adaptor you have set in the 'Configuration'.
 public class Service {
     public let configuration: Configuration
+    private var task: NSURLSessionDataTask?
+    public let session = NSURLSession.sharedSession()
 
     public init(configuration: Configuration) {
         self.configuration = configuration
     }
 
-    /// You should override this. Example use can be found in `JSONService`
-    public func serve<M: Mappable>(order: Order, result: (Result <M>) -> ()) {
-        result(.Failure(Error.ShouldOverride))
+    public func serve<M: Mappable>(order: Order, result: (Result<M>) -> ()) {
+
+        guard let request = order.request(withConfiguration: configuration) else {
+            result(.Failure(Error.InvalidUrl("\(configuration.baseURL)/\(order.path)")))
+            return
+        }
+
+        task = session.dataTaskWithRequest(request) { (data, response, error) in
+            self.checkStatusCodeAndData(data, urlResponse: response, error: error) { (dataResult: Result<M>) in
+                self.configuration.adaptor.serialize(fromDataResult: dataResult, jsonResult: result)
+            }
+        }
+
+        task!.resume()
     }
-    
+
+    public func cancel() {
+        task?.cancel()
+    }
+
     public func checkStatusCodeAndData<M: Mappable>(data: NSData?, urlResponse: NSURLResponse?, error: NSError?, result: (Result<M>) -> ()) {
         guard error == nil else {
             let returnError = Error.ErrorNS(error)
@@ -44,31 +64,9 @@ public class Service {
             result(.OK)
             return
         }
-        
+
         result(.Data(guardedData))
-        
+
         return
-    }
-    
-}
-
-/// Catches any throws and switches if to af failure after printing the error.
-public func printError(error: Error) {
-    switch error {
-    case Error.Error(let error):
-        print("💣 Error from service: \(error)")
-    case Error.ErrorNS(let nserror):
-        print("💣 Error from service: \(nserror)")
-    case Error.General:
-        print("💣 General service error")
-    case Error.InvalidResponseData(_):
-        print("🤔 Invalid response data")
-    case Error.InvalidAuthentication:
-        print("💣 Invalid authentication")
-    case Error.ShouldOverride:
-        print("💣 You should override this method")
-    default:
-        print("💣 failed with unknown error \(error)")
-
     }
 }

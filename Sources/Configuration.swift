@@ -13,14 +13,14 @@ public class Configuration {
     public let baseURL: String
 
     /// For now we only support JSON. Can be Changed in the future
-    public let adaptor: JSONAdaptor
+    public let adaptor: Adaptable
     public var url: NSURL? {
         get {
             return NSURL(string: baseURL)
         }
     }
 
-    public init(baseURL: String, adaptor: JSONAdaptor = JSONAdaptor()) {
+    public init(baseURL: String, adaptor: Adaptable = JSONAdaptor()) {
         self.baseURL = baseURL
         self.adaptor = adaptor
     }

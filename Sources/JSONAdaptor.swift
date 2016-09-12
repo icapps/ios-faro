@@ -1,12 +1,12 @@
 import Foundation
 
-public class JSONAdaptor {
+public class JSONAdaptor: Adaptable {
 
     public init() {
 
     }
 
-    public func serializeJSONFromDataResult<M: Mappable>(dataResult: Result<M>, jsonResult: (Result <M>) -> ()) {
+    public func serialize<M: Mappable>(fromDataResult dataResult: Result<M>, jsonResult: (Result <M>) -> ()) {
         switch dataResult {
         case .Data(let data):
             do {
