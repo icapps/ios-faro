@@ -17,12 +17,12 @@ class OrderSpec: QuickSpec {
             }
 
             it("should default to .GET") {
-                let request = order.objectRequestConfiguration(configuration)!
+                let request = order.request(withConfiguration: configuration)!
                 expect(request.HTTPMethod).to(equal("GET"))
             }
 
             it("should configuration should make up request") {
-                let request = order.objectRequestConfiguration(configuration)!
+                let request = order.request(withConfiguration: configuration)!
                 expect(request.URL!.absoluteString).to(equal("http://someURL/path"))
             }
 

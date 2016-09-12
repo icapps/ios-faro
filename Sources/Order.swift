@@ -16,7 +16,7 @@ public class Order {
         self.rulesOfEngagement = rulesOfEngagement
     }
 
-    public func objectRequestConfiguration(configuration: Configuration) -> NSURLRequest? {
+    public func request(withConfiguration configuration: Configuration) -> NSURLRequest? {
         let mutableRequest = NSMutableURLRequest(URL: NSURL(string: "\(configuration.baseURL)/\(path)")!, cachePolicy: .ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0)
         mutableRequest.HTTPMethod = method.rawValue
 
