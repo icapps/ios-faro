@@ -1,9 +1,9 @@
 import Faro
 
-class ExampleBar: Bar {
+class ExampleService: Service {
 
     init() {
-        super.init(service: Service(configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com")))
+        super.init(configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com"))
     }
 
     override func perform<M: Mappable>(call: Call, toModelResult result: (Result<M>) -> ()) {

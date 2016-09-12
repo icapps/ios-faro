@@ -6,7 +6,7 @@ import Faro
 
 class ServiceSpec: QuickSpec {
     override func spec() {
-        describe("MockService") {
+        describe("MockService result: case defined by configuration") {
             let expected = ["key": "value"]
             var service: Service!
 
@@ -17,7 +17,7 @@ class ServiceSpec: QuickSpec {
             it("should return mockModel in sync") {
                 let call = Call(path: "mock")
                 var isInSync = false
-                service.perform(call) { (result: Result <MockModel>) in
+                service.perform(call, result: { (result: Result<MockModel>) in
                     isInSync = true
                     switch result {
                     case .JSON(json: let json):
@@ -25,7 +25,7 @@ class ServiceSpec: QuickSpec {
                     default:
                         XCTFail("You should succeed")
                     }
-                }
+                })
 
                 expect(isInSync).to(beTrue())
             }
@@ -88,14 +88,14 @@ class ServiceSpec: QuickSpec {
 
                     var failed = false
 
-                    service.perform(call) { (result: Result <MockModel>) in
+                    service.perform(call, result: { (result: Result<MockModel>) in
                         switch result {
                         case .Failure:
                             failed = true
                         default:
                             XCTFail("💣should fail")
                         }
-                    }
+                    })
 
                     expect(failed).toEventually(beTrue())
                 }
@@ -107,7 +107,7 @@ class ServiceSpec: QuickSpec {
 
                     var receivedJSON = false
 
-                    service.perform(call) { (result: Result <MockModel>) in
+                    service.perform(call, result: { (result: Result<MockModel>) in
                         switch result {
                         case .JSON(let json):
                             if let json = json as? [[String: AnyObject]] {
@@ -119,11 +119,43 @@ class ServiceSpec: QuickSpec {
                         default:
                             XCTFail("💣should return json")
                         }
-                    }
+                    })
 
                     expect(receivedJSON).toEventually(beTrue())
                 }
             })
+
+            describe("MockService toModelResult: case .Model(model)") {
+                var service: Service!
+                var mockJSON: AnyObject!
+
+                beforeEach({
+                    mockJSON = ["key": "value"]
+                    service = MockService(mockJSON: mockJSON)
+
+                })
+
+                it("should have a configuration with the correct baseUrl") {
+                    expect(service.configuration.baseURL).to(equal("mockService"))
+                }
+
+                it("should return in sync with the mock model") {
+                    let call = Call(path: "unitTest")
+                    var isInSync = false
+
+                    service.perform(call, toModelResult: { (result: Result<MockModel>) in
+                        isInSync = true
+                        switch result {
+                        case .Model(model: let model):
+                            expect(model.value).to(equal("value"))
+                        default:
+                            XCTFail("You should succeed")
+                        }
+                    })
+
+                    expect(isInSync).to(beTrue())
+                }
+            }
         }
     }
 }
