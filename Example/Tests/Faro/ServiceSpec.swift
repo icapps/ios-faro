@@ -99,30 +99,6 @@ class ServiceSpec: QuickSpec {
 
                     expect(failed).toEventually(beTrue())
                 }
-
-                it("should return an empty model") {
-                    let configuration = Faro.Configuration(baseURL: "http://jsonplaceholder.typicode.com")
-                    let service = Service(configuration: configuration)
-                    let call = Call(path: "posts")
-
-                    var receivedJSON = false
-
-                    service.perform(call, result: { (result: Result<MockModel>) in
-                        switch result {
-                        case .JSON(let json):
-                            if let json = json as? [[String: AnyObject]] {
-                                expect(json.count).to(equal(100))
-                                receivedJSON = true
-                            } else {
-                                XCTFail("\(json) is wrong")
-                            }
-                        default:
-                            XCTFail("💣should return json")
-                        }
-                    })
-
-                    expect(receivedJSON).toEventually(beTrue())
-                }
             })
 
             describe("MockService toModelResult: case .Model(model)") {
@@ -143,7 +119,7 @@ class ServiceSpec: QuickSpec {
                     let call = Call(path: "unitTest")
                     var isInSync = false
 
-                    service.perform(call, toModelResult: { (result: Result<MockModel>) in
+                    service.perform(call) { (result: Result<MockModel>) in
                         isInSync = true
                         switch result {
                         case .Model(model: let model):
@@ -151,7 +127,7 @@ class ServiceSpec: QuickSpec {
                         default:
                             XCTFail("You should succeed")
                         }
-                    })
+                    }
 
                     expect(isInSync).to(beTrue())
                 }
