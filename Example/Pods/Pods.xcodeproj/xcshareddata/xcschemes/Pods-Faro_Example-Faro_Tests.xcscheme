@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "60E2400AF6E0FE105C77DADB81EA2803"
+               BlueprintIdentifier = "BCE17D51F12405441DA37B32B7A2EE6F"
                BuildableName = "Pods_Faro_Example_Faro_Tests.framework"
                BlueprintName = "Pods-Faro_Example-Faro_Tests"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "60E2400AF6E0FE105C77DADB81EA2803"
+            BlueprintIdentifier = "BCE17D51F12405441DA37B32B7A2EE6F"
             BuildableName = "Pods_Faro_Example_Faro_Tests.framework"
             BlueprintName = "Pods-Faro_Example-Faro_Tests"
             ReferencedContainer = "container:Pods.xcodeproj">
