@@ -27,19 +27,6 @@ class OrderSpec: QuickSpec {
             }
 
         }
-
-        describe("Order Engagementrule") {
-            it("should have rule .None or .All for a nodeKey") {
-                let rules = [(nodeKey: "key 1", rule: EngagementRule.None), (nodeKey: "key 2", rule: EngagementRule.All)]
-                let order = Order(path: "", rulesOfEngagement: rules)
-
-                let rule1 = order.engagementRuleForNodeKey("key 1")
-                let rule2 = order.engagementRuleForNodeKey("key 2")
-
-                expect(rule1 == .None).to(beTrue())
-                expect(rule2 == .All).to(beTrue())
-            }
-        }
     }
 
 }
