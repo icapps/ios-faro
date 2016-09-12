@@ -6,8 +6,8 @@ class ExampleService: Service {
         super.init(configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com"))
     }
 
-    override func perform<M: Mappable>(call: Call, toModelResult result: (Result<M>) -> ()) {
-        super.perform(call, toModelResult: result)
+    override func perform<M: Mappable>(call: Call, result: (Result<M>) -> ()) {
+        super.perform(call, result: result)
     }
 
 }

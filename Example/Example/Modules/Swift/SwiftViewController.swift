@@ -19,7 +19,7 @@ class SwiftViewController: UIViewController {
         let service = ExampleService()
         let call = Call(path: "posts")
 
-        service.perform(call, toModelResult: { (result: Result<Posts>) in
+        service.perform(call) { (result: Result<Posts>) in
             dispatch_on_main {
                 switch result {
                 case .Model(let model):
@@ -29,7 +29,7 @@ class SwiftViewController: UIViewController {
                     print("💣 fail")
                 }
             }
-        })
+        }
     }
 
 }

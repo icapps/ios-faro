@@ -10,12 +10,11 @@ We build a service request by using a `Bar` class as the point where you fire yo
 ## Perform a Call
 
 Take a look at the `ServiceSpec`, in short:
-*To get model object*
 ```swift
         let service = Service(configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com")
         let call = Call(path: "posts")
 
-        service.perform(call, toModelResult: { (result: Result<Posts>) in
+        service.perform(call) { (result: Result<Posts>) in
             dispatch_on_main {
                 switch result {
                 case .Model(let model):
@@ -25,19 +24,6 @@ Take a look at the `ServiceSpec`, in short:
                 }
             }
         })
-```
-*To get JSON*
-```Swift
-   let service = MockService(mockJSON: expected)
-   let call = Call(path: "mock")
-   service.perform(call, result: { (result: Result<MockModel>) in
-       switch result {
-       case .JSON(json: let json):
-           expect(json).to(beIdenticalTo(expected))
-       default:
-           XCTFail("You should succeed")
-       }
-   })
 ```
 
 ## Write unit tests
