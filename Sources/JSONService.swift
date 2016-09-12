@@ -3,6 +3,7 @@
 /// Response is delivered to you as a `JSONResult`.
 public class JSONService: Service {
     private var task: NSURLSessionDataTask?
+    public let session = NSURLSession.sharedSession()
 
     override public func serve<M: Mappable>(order: Order, result: (Result<M>) -> ()) {
 
@@ -11,11 +12,9 @@ public class JSONService: Service {
             return
         }
 
-        let session = NSURLSession.sharedSession()
-
-        task = session.dataTaskWithRequest(request) { (data, response, error) in
-            checkStatusCodeAndData(data, urlResponse: response, error: error) { (dataResult: Result<M>) in
-                serializeJSONFromDataResult(dataResult, jsonResult: result)
+        task = session.dataTaskWithRequest(request) {(data, response, error) in
+            self.checkStatusCodeAndData(data, urlResponse: response, error: error) { (dataResult: Result<M>) in
+                self.configuration.adaptor.serializeJSONFromDataResult(dataResult, jsonResult: result)
             }
         }
 

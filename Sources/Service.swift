@@ -9,61 +9,47 @@ public class Service {
     public func serve<M: Mappable>(order: Order, result: (Result <M>) -> ()) {
         result(.Failure(Error.ShouldOverride))
     }
-
-}
-
-public func checkStatusCodeAndData<M: Mappable>(data: NSData?, urlResponse: NSURLResponse?, error: NSError?, result: (Result<M>) -> ()) {
-    guard error == nil else {
-        let returnError = Error.ErrorNS(error)
-        printError(returnError)
-        result(.Failure(returnError))
-        return
-    }
-
-    guard let httpResponse = urlResponse as? NSHTTPURLResponse else {
-        let returnError = Error.General
-        printError(returnError)
-        result(.Failure(returnError))
-        return
-    }
-
-    let statusCode = httpResponse.statusCode
-    guard statusCode != 404 else {
-        let returnError = Error.InvalidAuthentication
-        printError(returnError)
-        result(.Failure(returnError))
-        return
-    }
-
-    guard 200...201 ~= statusCode else {
-        let returnError = Error.General
-        printError(returnError)
-        result(.Failure(returnError))
-        return
-    }
-
-    guard let guardedData = data else {
-        result(.OK)
-        return
-    }
-
-    result(.Data(guardedData))
-
-    return
-}
-
-public func serializeJSONFromDataResult<M: Mappable>(dataResult: Result<M>, jsonResult: (Result <M>) -> ()) {
-    switch dataResult {
-    case .Data(let data):
-        do {
-            let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-            jsonResult(.JSON(json))
-        } catch {
-            jsonResult(.Failure(Error.Error(error)))
+    
+    public func checkStatusCodeAndData<M: Mappable>(data: NSData?, urlResponse: NSURLResponse?, error: NSError?, result: (Result<M>) -> ()) {
+        guard error == nil else {
+            let returnError = Error.ErrorNS(error)
+            printError(returnError)
+            result(.Failure(returnError))
+            return
         }
-    default:
-        jsonResult(dataResult)
+
+        guard let httpResponse = urlResponse as? NSHTTPURLResponse else {
+            let returnError = Error.General
+            printError(returnError)
+            result(.Failure(returnError))
+            return
+        }
+
+        let statusCode = httpResponse.statusCode
+        guard statusCode != 404 else {
+            let returnError = Error.InvalidAuthentication
+            printError(returnError)
+            result(.Failure(returnError))
+            return
+        }
+
+        guard 200...201 ~= statusCode else {
+            let returnError = Error.General
+            printError(returnError)
+            result(.Failure(returnError))
+            return
+        }
+
+        guard let guardedData = data else {
+            result(.OK)
+            return
+        }
+        
+        result(.Data(guardedData))
+        
+        return
     }
+    
 }
 
 /// Catches any throws and switches if to af failure after printing the error.
