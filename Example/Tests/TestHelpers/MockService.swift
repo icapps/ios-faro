@@ -11,5 +11,4 @@ class MockService: Service {
     override func perform<M: Mappable>(_ call: Call, result: @escaping (Result<M>) -> ()) {
         result(.model(M(json: self.mockJSON)))
     }
-
 }
