@@ -31,7 +31,7 @@ CHECKOUT OPTIONS:
     :commit: 8f2bc636ecfa2cc20696f62548b38d4ab943e299
     :git: https://github.com/Quick/Quick.git
   Stella:
-    :commit: 4d113416767cc790cb75ef1fef173c735bcb1bac
+    :commit: 43630919bef2736377e5b8f1a12660330551f2fa
     :git: https://github.com/icapps/ios-stella.git
 
 SPEC CHECKSUMS:
