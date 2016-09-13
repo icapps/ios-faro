@@ -13,23 +13,7 @@ class ServiceSpec: QuickSpec {
             beforeEach {
                 service = MockService(mockJSON: expected)
             }
-
-            it("should return mockModel in sync") {
-                let call = Call(path: "mock")
-                var isInSync = false
-                service.perform(call, result: { (result: Result<MockModel>) in
-                    isInSync = true
-                    switch result {
-                    case .json(json: let json):
-                        expect(json).to(beIdenticalTo(expected))
-                    default:
-                        XCTFail("You should succeed")
-                    }
-                })
-
-                expect(isInSync).to(beTrue())
-            }
-
+            
             it("InvalidAuthentication when statuscode 404") {
                 let response =  HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: 404, httpVersion: nil, headerFields: nil)
                 service.checkStatusCodeAndData(nil, urlResponse: response, error: nil) { (result: Result<MockModel>) in
