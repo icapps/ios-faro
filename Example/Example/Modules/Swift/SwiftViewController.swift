@@ -23,10 +23,10 @@ class SwiftViewController: UIViewController {
             dispatch_on_main {
                 switch result {
                 case .Model(let model):
-                    self.label.text = "fetched posts"
-                    print("🎉 \(model)")
+                    self.label.text = "Performed call for posts"
+                    printBreadcrumb("\(model)")
                 default:
-                    print("💣 fail")
+                    printError("Could not perform call for posts")
                 }
             }
         }

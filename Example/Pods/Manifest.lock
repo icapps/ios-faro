@@ -1,5 +1,6 @@
 PODS:
-  - Faro (1.0.0)
+  - Faro (1.0.0):
+    - Stella
   - Nimble (4.1.0)
   - Quick (0.9.3)
   - Stella (0.4.1)
@@ -15,7 +16,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Faro: fed77bf5bee652603d4a9c9f956ccc79ad34c93c
+  Faro: b6d0737fc2291941c543d76292ad05b245b53b47
   Nimble: 97a0a4cae5124c117115634b2d055d8c97d0af19
   Quick: 13a2a2b19a5d8e3ed4fd0c36ee46597fd77ebf71
   Stella: d158572e518e4254ab00dba7e7786995b961a695
