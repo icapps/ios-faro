@@ -1,7 +1,8 @@
 import UIKit
 import Faro
+import Stella
 
-class Foo: Mappable {
+class Posts: Mappable {
 
     required init(json: AnyObject) {
 
@@ -15,19 +16,18 @@ class SwiftViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let configuration = Faro.Configuration(baseURL: "http://jsonplaceholder.typicode.com")
-        let service = JSONService(configuration: configuration)
-        let order = Order(path: "posts")
+        let service = ExampleService()
+        let call = Call(path: "posts")
 
-        service.serve(order) { (result: Result <Foo>) in
-            switch result {
-            case .JSON(let json):
-                if let json = json as? [[String: AnyObject]] {
-                    print("🎉 received \(json)")
-                } else {
+        service.perform(call) { (result: Result<Posts>) in
+            dispatch_on_main {
+                switch result {
+                case .Model(let model):
+                    self.label.text = "Performed call for posts"
+                    printBreadcrumb("\(model)")
+                default:
+                    printError("Could not perform call for posts")
                 }
-            default:
-                print("💣 fail")
             }
         }
     }

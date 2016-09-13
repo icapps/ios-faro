@@ -1,38 +1,86 @@
+/// Default implementation of a service.
+/// Serves your `Order` to a server and parses the respons.
+/// Response is delivered to you as a `Result`. The result type depends on the adaptor you have set in the 'Configuration'.
 public class Service {
-    let configuration: Configuration
+    public let configuration: Configuration
+    private var task: NSURLSessionDataTask?
+    public let session = NSURLSession.sharedSession()
 
     public init(configuration: Configuration) {
         self.configuration = configuration
     }
 
-    /// You should override this and could use it like in `JSONService`
-    public func serve<M: Mappable>(order: Order, result: (Result <M>) -> ()) {
-        result(.Failure(Error.ShouldOverride))
+    /// Receives expecte result  as defined by the `adaptor` from the a `Service` and maps this to a `Result` case `case Model(M)`
+    /// Default implementation expects `adaptor` to be     case JSON(AnyObject). If this needs to be different you need to override this method.
+    /// Typ! You can subclass 'Bar' and add a default service
+    /// - parameter call : gives the details to find the entity on the server
+    /// - parameter result : `Result<M: Mappable>` closure should be called with `case Model(M)` other cases are a failure.
+    public func perform<M: Mappable>(call: Call, result: (Result<M>) -> ()) {
+
+        guard let request = call.request(withConfiguration: configuration) else {
+            result(.Failure(Error.InvalidUrl("\(configuration.baseURL)/\(call.path)")))
+            return
+        }
+
+        task = session.dataTaskWithRequest(request) { (data, response, error) in
+            self.checkStatusCodeAndData(data, urlResponse: response, error: error) { (dataResult: Result<M>) in
+                self.configuration.adaptor.serialize(fromDataResult: dataResult) { (jsonResult: Result<M>) in
+                    switch jsonResult {
+                    case .JSON(json: let json):
+                        let model = M(json: json)
+                        result(.Model(model))
+                    default:
+                        result(.Failure(Error.General))
+                        print("💣 damn this should not happen")
+                    }
+                }
+            }
+        }
+
+        task!.resume()
     }
 
-    public func checkStatusCodeAndData(data: NSData?, urlResponse: NSURLResponse?, error: NSError?) throws -> NSData? {
+    public func cancel() {
+        task?.cancel()
+    }
+
+    public func checkStatusCodeAndData<M: Mappable>(data: NSData?, urlResponse: NSURLResponse?, error: NSError?, result: (Result<M>) -> ()) {
         guard error == nil else {
-            throw Error.Error(error)
+            let returnError = errorFromNSError(error!)
+            printError(returnError)
+            result(.Failure(returnError))
+            return
         }
 
         guard let httpResponse = urlResponse as? NSHTTPURLResponse else {
-            return data
+            let returnError = Error.General
+            printError(returnError)
+            result(.Failure(returnError))
+            return
         }
 
         let statusCode = httpResponse.statusCode
         guard statusCode != 404 else {
-            throw Error.InvalidAuthentication
+            let returnError = Error.InvalidAuthentication
+            printError(returnError)
+            result(.Failure(returnError))
+            return
         }
 
         guard 200...201 ~= statusCode else {
-            return data
+            let returnError = Error.General
+            printError(returnError)
+            result(.Failure(returnError))
+            return
         }
 
-        guard let guardData = data else {
-            return nil
+        guard let guardedData = data else {
+            result(.OK)
+            return
         }
-        return guardData
+
+        result(.Data(guardedData))
+
+        return
     }
-
 }
-

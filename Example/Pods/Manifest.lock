@@ -1,22 +1,26 @@
 PODS:
-  - Faro (0.7.1)
+  - Faro (1.0.0):
+    - Stella
   - Nimble (4.1.0)
   - Quick (0.9.3)
+  - Stella (0.4.1)
 
 DEPENDENCIES:
   - Faro (from `../`)
   - Nimble (~> 4.1.0)
   - Quick (~> 0.9.3)
+  - Stella
 
 EXTERNAL SOURCES:
   Faro:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Faro: f8026af2b521aa384c1e2c9beb99308729dddf69
+  Faro: b6d0737fc2291941c543d76292ad05b245b53b47
   Nimble: 97a0a4cae5124c117115634b2d055d8c97d0af19
   Quick: 13a2a2b19a5d8e3ed4fd0c36ee46597fd77ebf71
+  Stella: d158572e518e4254ab00dba7e7786995b961a695
 
-PODFILE CHECKSUM: 391494e6de2a9ffa3b544c6a3b4281e40534d124
+PODFILE CHECKSUM: c1d34d0ceb6ed9b8eb30068c73a67e6df5856318
 
 COCOAPODS: 1.0.1

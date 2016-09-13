@@ -14,7 +14,7 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1E322D031A49AC33F72AACFC8D2926C5"
+               BlueprintIdentifier = "568411AA617AF84C96EFFE659ABFEBBB"
                BuildableName = "Faro.framework"
                BlueprintName = "Faro"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
