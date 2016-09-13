@@ -13,10 +13,10 @@ class JSONAdaptorSpec: QuickSpec {
 
                 var receivedJSON = false
 
-                let dataResult: Result<MockModel> = Result.Data("{\"key\":100}".dataUsingEncoding(NSUTF8StringEncoding)!)
+                let dataResult: Result<MockModel> = Result.data("{\"key\":100}".data(using: String.Encoding.utf8)!)
                 adaptor.serialize(fromDataResult: dataResult, result: { (result: Result<MockModel>) in
                     switch result {
-                    case .JSON(let json):
+                    case .json(let json):
                         if let json = json as? [String: Int] {
                             expect(json["key"]).to(equal(100))
                             receivedJSON = true
