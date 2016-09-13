@@ -23,9 +23,6 @@ open class Service {
         }
 
         task = session.dataTask(with: request, completionHandler: { (data, response, error) in
-            print("\(data)")
-            self.checkStatusCodeAndData(data, urlResponse: response, error: error, result: result)
-            //TODO: make it work in swift 3.0
             self.checkStatusCodeAndData(data, urlResponse: response, error: error) { (dataResult: Result<M>) in
                 self.configuration.adaptor.serialize(fromDataResult: dataResult) { (jsonResult: Result<M>) in
                     switch jsonResult {
