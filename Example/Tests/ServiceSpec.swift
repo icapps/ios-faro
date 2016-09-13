@@ -20,8 +20,8 @@ class ServiceSpec: QuickSpec {
                 service.perform(call, result: { (result: Result<MockModel>) in
                     isInSync = true
                     switch result {
-                    case .JSON(json: let json):
-                        expect(json).to(beIdenticalTo(expected))
+                    case .Model(let model):
+                        expect(model.value).to(equal("value"))
                     default:
                         XCTFail("You should succeed")
                     }

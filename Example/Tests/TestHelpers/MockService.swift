@@ -9,7 +9,6 @@ class MockService: Service {
     }
 
     override func perform<M: Mappable>(call: Call, result: (Result<M>) -> ()) {
-        result(.JSON(mockJSON))
+        result(.Model(M(json: mockJSON)))
     }
-
 }
