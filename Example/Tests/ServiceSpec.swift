@@ -48,8 +48,8 @@ class ServiceSpec: QuickSpec {
                     switch result {
                     case .Failure(let faroError):
                         switch faroError {
-                        case .ErrorNS(let nsError):
-                            expect(nsError!.code).to(equal(101))
+                        case .Error(domain: _, code: let code, userInfo: _):
+                            expect(code).to(equal(101))
                             break
                         default:
                             print("\(faroError)")

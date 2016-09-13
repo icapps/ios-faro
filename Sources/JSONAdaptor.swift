@@ -13,7 +13,13 @@ public class JSONAdaptor: Adaptable {
                 let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
                 result(.JSON(json))
             } catch {
-                result(.Failure(Error.Error(error)))
+                guard let faroError = error as? Error else {
+                    print("💣 Unknown error \(error)")
+                    result(.Failure(Error.General))
+                    return
+                }
+
+                result(.Failure(faroError))
             }
         default:
             result(dataResult)

@@ -2,10 +2,13 @@ public enum Error: ErrorType, Equatable {
     case General
     case InvalidUrl(String)
     case InvalidResponseData(NSData?)
-    case ErrorNS(NSError?)
-    case Error(ErrorType)
     case InvalidAuthentication
     case ShouldOverride
+    case Error(domain: String, code: Int, userInfo: [NSObject: AnyObject])
+}
+
+public func errorFromNSError(nsError: NSError) -> Error {
+    return Error.Error(domain: nsError.domain, code: nsError.code, userInfo: nsError.userInfo)
 }
 
 public func == (lhs: Error, rhs: Error) -> Bool {
@@ -18,8 +21,6 @@ public func == (lhs: Error, rhs: Error) -> Bool {
         return url_lhs == url_rhs
     case (.Error(_), .Error(_)):
         return true
-    case (.ErrorNS(let error_lhs), .ErrorNS(let error_rhs)): // tailor:disable
-        return error_lhs?.code == error_rhs?.code
     case (.InvalidResponseData (_), .InvalidResponseData (_)):
         return true
     default:

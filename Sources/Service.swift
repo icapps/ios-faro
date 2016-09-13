@@ -46,7 +46,7 @@ public class Service {
 
     public func checkStatusCodeAndData<M: Mappable>(data: NSData?, urlResponse: NSURLResponse?, error: NSError?, result: (Result<M>) -> ()) {
         guard error == nil else {
-            let returnError = Error.ErrorNS(error)
+            let returnError = errorFromNSError(error!)
             printError(returnError)
             result(.Failure(returnError))
             return
