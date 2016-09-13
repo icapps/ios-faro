@@ -9,14 +9,14 @@
 import Foundation
 
 /// Use for different configurations for the specific environment you want to use for *Bar.*
-public class Configuration {
-    public let baseURL: String
+open class Configuration {
+    open let baseURL: String
 
     /// For now we only support JSON. Can be Changed in the future
-    public let adaptor: Adaptable
-    public var url: NSURL? {
+    open let adaptor: Adaptable
+    open var url: URL? {
         get {
-            return NSURL(string: baseURL)
+            return URL(string: baseURL)
         }
     }
 

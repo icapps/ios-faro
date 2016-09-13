@@ -13,28 +13,12 @@ class ServiceSpec: QuickSpec {
             beforeEach {
                 service = MockService(mockJSON: expected)
             }
-
-            it("should return mockModel in sync") {
-                let call = Call(path: "mock")
-                var isInSync = false
-                service.perform(call, result: { (result: Result<MockModel>) in
-                    isInSync = true
-                    switch result {
-                    case .Model(let model):
-                        expect(model.value).to(equal("value"))
-                    default:
-                        XCTFail("You should succeed")
-                    }
-                })
-
-                expect(isInSync).to(beTrue())
-            }
-
+            
             it("InvalidAuthentication when statuscode 404") {
-                let response = NSHTTPURLResponse(URL: NSURL(), statusCode: 404, HTTPVersion: nil, headerFields: nil)
+                let response =  HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: 404, httpVersion: nil, headerFields: nil)
                 service.checkStatusCodeAndData(nil, urlResponse: response, error: nil) { (result: Result<MockModel>) in
                     switch result {
-                    case .Failure(let faroError) where faroError == Error.InvalidAuthentication:
+                    case .failure(let faroError) where faroError == FaroError.invalidAuthentication:
                         break
                     default:
                         XCTFail("Should have invalid authentication error")
@@ -46,10 +30,9 @@ class ServiceSpec: QuickSpec {
                 let nsError = NSError(domain: "tests", code: 101, userInfo: nil)
                 service.checkStatusCodeAndData(nil, urlResponse: nil, error: nsError) { (result: Result<MockModel>) in
                     switch result {
-                    case .Failure(let faroError):
+                    case .failure(let faroError):
                         switch faroError {
-                        case .Error(domain: _, code: let code, userInfo: _):
-                            expect(code).to(equal(101))
+                        case .nonFaroError(_):
                             break
                         default:
                             print("\(faroError)")
@@ -73,11 +56,11 @@ class ServiceSpec: QuickSpec {
 
             context("data from service") {
                 it("data returned for statuscode 200") {
-                    ExpectResponse.statusCode(200, data: "data".dataUsingEncoding(NSUTF8StringEncoding), service: service)
+                    ExpectResponse.statusCode(200, data: "data".data(using: String.Encoding.utf8), service: service)
                 }
 
                 it("data returned for statuscode 201") {
-                    ExpectResponse.statusCode(201, data: "data".dataUsingEncoding(NSUTF8StringEncoding), service: service)
+                    ExpectResponse.statusCode(201, data: "data".data(using: String.Encoding.utf8), service: service)
                 }
             }
 
@@ -91,7 +74,7 @@ class ServiceSpec: QuickSpec {
 
                     service.perform(call, result: { (result: Result<MockModel>) in
                         switch result {
-                        case .Failure:
+                        case .failure:
                             failed = true
                         default:
                             XCTFail("💣should fail")
@@ -104,7 +87,7 @@ class ServiceSpec: QuickSpec {
 
             describe("MockService toModelResult: case .Model(model)") {
                 var service: Service!
-                var mockJSON: AnyObject!
+                var mockJSON: Any!
 
                 beforeEach({
                     mockJSON = ["key": "value"]
@@ -123,7 +106,7 @@ class ServiceSpec: QuickSpec {
                     service.perform(call) { (result: Result<MockModel>) in
                         isInSync = true
                         switch result {
-                        case .Model(model: let model):
+                        case .model(model: let model):
                             expect(model.value).to(equal("value"))
                         default:
                             XCTFail("You should succeed")
@@ -138,19 +121,19 @@ class ServiceSpec: QuickSpec {
 }
 
 class ExpectResponse {
-    static func statusCode(statusCode: Int, data: NSData? = nil, service: Service) {
-        let response = NSHTTPURLResponse(URL: NSURL(), statusCode: statusCode, HTTPVersion: nil, headerFields: nil)
+    static func statusCode(_ statusCode: Int, data: Data? = nil, service: Service) {
+        let response = HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: statusCode, httpVersion: nil, headerFields: nil)
         service.checkStatusCodeAndData(data, urlResponse: response, error: nil) { (result: Result<MockModel>) in
             if let data = data {
                 switch result {
-                case .Data(_):
+                case .data(_):
                     break
                 default:
                     XCTFail("Should not fail for statuscode: \(statusCode) data: \(data)")
                 }
             } else {
                 switch result {
-                case .OK:
+                case .ok:
                     break
                 default:
                     XCTFail("Should not fail for statuscode: \(statusCode) data: \(data)")

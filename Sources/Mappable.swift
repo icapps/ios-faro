@@ -1,3 +1,3 @@
 public protocol Mappable {
-    init(json: AnyObject)
+    init(json: Any)
 }
