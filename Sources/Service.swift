@@ -14,8 +14,8 @@ public class Service {
     /// Default implementation expects `adaptor` to be     case JSON(AnyObject). If this needs to be different you need to override this method.
     /// Typ! You can subclass 'Bar' and add a default service
     /// - parameter call : gives the details to find the entity on the server
-    /// - parameter result : `Result<M: Mappable>` closure should be called with `case Model(M)` other cases are a failure.
-    public func perform<M: Mappable>(call: Call, result: (Result<M>) -> ()) {
+    /// - parameter result : `Result<M: Parseable>` closure should be called with `case Model(M)` other cases are a failure.
+    public func perform<M: Parseable>(call: Call, result: (Result<M>) -> ()) {
 
         guard let request = call.request(withConfiguration: configuration) else {
             result(.Failure(Error.InvalidUrl("\(configuration.baseURL)/\(call.path)")))
@@ -44,7 +44,7 @@ public class Service {
         task?.cancel()
     }
 
-    public func checkStatusCodeAndData<M: Mappable>(data: NSData?, urlResponse: NSURLResponse?, error: NSError?, result: (Result<M>) -> ()) {
+    public func checkStatusCodeAndData<M: Parseable>(data: NSData?, urlResponse: NSURLResponse?, error: NSError?, result: (Result<M>) -> ()) {
         guard error == nil else {
             let returnError = errorFromNSError(error!)
             printError(returnError)

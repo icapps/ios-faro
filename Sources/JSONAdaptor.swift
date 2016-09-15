@@ -6,7 +6,7 @@ public class JSONAdaptor: Adaptable {
 
     }
 
-    public func serialize<M: Mappable>(fromDataResult dataResult: Result<M>, result: (Result <M>) -> ()) {
+    public func serialize<M: Parseable>(fromDataResult dataResult: Result<M>, result: (Result <M>) -> ()) {
         switch dataResult {
         case .Data(let data):
             do {
