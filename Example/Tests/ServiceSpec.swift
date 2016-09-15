@@ -16,31 +16,29 @@ class ServiceSpec: QuickSpec {
             
             it("InvalidAuthentication when statuscode 404") {
                 let response =  HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: 404, httpVersion: nil, headerFields: nil)
-                service.checkStatusCodeAndData(data: nil, urlResponse: response, error: nil) { (result: Result<MockModel>) in
-                    switch result {
-                    case .failure(let faroError) where faroError == FaroError.invalidAuthentication:
-                        break
-                    default:
-                        XCTFail("Should have invalid authentication error")
-                    }
+                let result = service.handle(data: nil, urlResponse: response, error: nil) as Result<MockModel>
+                switch result {
+                case .failure(let faroError) where faroError == FaroError.invalidAuthentication:
+                    break
+                default:
+                    XCTFail("Should have invalid authentication error")
                 }
             }
 
             it("Fail for NSError") {
                 let nsError = NSError(domain: "tests", code: 101, userInfo: nil)
-                service.checkStatusCodeAndData(data: nil, urlResponse: nil, error: nsError) { (result: Result<MockModel>) in
-                    switch result {
-                    case .failure(let faroError):
-                        switch faroError {
-                        case .nonFaroError(_):
-                            break
-                        default:
-                            print("\(faroError)")
-                            XCTFail("Should have nserror")
-                        }
+                let result = service.handle(data: nil, urlResponse: nil, error: nsError) as Result<MockModel>
+                switch result {
+                case .failure(let faroError):
+                    switch faroError {
+                    case .nonFaroError(_):
+                        break
                     default:
-                        XCTFail("Should have invalid authentication error")
+                        print("\(faroError)")
+                        XCTFail("Should have nserror")
                     }
+                default:
+                    XCTFail("Should have invalid authentication error")
                 }
             }
 
@@ -123,23 +121,21 @@ class ServiceSpec: QuickSpec {
 class ExpectResponse {
     static func statusCode(_ statusCode: Int, data: Data? = nil, service: Service) {
         let response = HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: statusCode, httpVersion: nil, headerFields: nil)
-        service.checkStatusCodeAndData(data: data, urlResponse: response, error: nil) { (result: Result<MockModel>) in
-            if let data = data {
-                switch result {
-                case .data(_):
-                    break
-                default:
-                    XCTFail("Should not fail for statuscode: \(statusCode) data: \(data)")
-                }
-            } else {
-                switch result {
-                case .ok:
-                    break
-                default:
-                    XCTFail("Should not fail for statuscode: \(statusCode) data: \(data)")
-                }
+        let result = service.handle(data: data, urlResponse: response, error: nil) as Result<MockModel>
+        if let data = data {
+            switch result {
+            case .data(_):
+                break
+            default:
+                XCTFail("Should not fail for statuscode: \(statusCode) data: \(data)")
             }
-
+        } else {
+            switch result {
+            case .ok:
+                break
+            default:
+                XCTFail("Should not fail for statuscode: \(statusCode) data: \(data)")
+            }
         }
     }
 }

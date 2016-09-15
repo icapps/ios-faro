@@ -23,16 +23,15 @@ open class Service {
         }
 
         task = session.dataTask(with: request, completionHandler: { (data, response, error) in
-            self.checkStatusCodeAndData(data: data, urlResponse: response, error: error) { (dataResult: Result<M>) in
-                self.configuration.adaptor.serialize(fromDataResult: dataResult) { (jsonResult: Result<M>) in
-                    switch jsonResult {
-                    case .json(json: let json):
-                        let model = M(from: json)
-                        result(.model(model))
-                    default:
-                        result(.failure(FaroError.general))
-                        print("💣 damn this should not happen")
-                    }
+            let dataResult = self.handle(data: data, urlResponse: response, error: error) as Result<M>
+            self.configuration.adaptor.serialize(fromDataResult: dataResult) { (jsonResult: Result<M>) in
+                switch jsonResult {
+                case .json(json: let json):
+                    let model = M(from: json)
+                    result(.model(model))
+                default:
+                    result(.failure(FaroError.general))
+                    print("💣 damn this should not happen")
                 }
             }
         })
@@ -45,43 +44,36 @@ open class Service {
         task?.cancel()
     }
 
-    open func checkStatusCodeAndData<M: Parseable>(data: Data?, urlResponse: URLResponse?, error: Error?, result: (Result<M>) -> ()) {
+    open func handle<M: Parseable>(data: Data?, urlResponse: URLResponse?, error: Error?) -> Result<M> {
         guard error == nil else {
             let returnError = FaroError.nonFaroError(error!)
             printError(returnError)
-            result(.failure(returnError))
-            return
+            return .failure(returnError)
         }
 
         guard let httpResponse = urlResponse as? HTTPURLResponse else {
             let returnError = FaroError.general
             printError(returnError)
-            result(.failure(returnError))
-            return
+            return .failure(returnError)
         }
 
         let statusCode = httpResponse.statusCode
         guard statusCode != 404 else {
             let returnError = FaroError.invalidAuthentication
             printError(returnError)
-            result(.failure(returnError))
-            return
+            return .failure(returnError)
         }
 
         guard 200...201 ~= statusCode else {
             let returnError = FaroError.general
             printError(returnError)
-            result(.failure(returnError))
-            return
+            return .failure(returnError)
         }
 
-        guard let guardedData = data else {
-            result(.ok)
-            return
+        if let data = data {
+            return .data(data)
+        } else {
+            return .ok
         }
-
-        result(.data(guardedData))
-
-        return
     }
 }
