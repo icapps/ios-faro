@@ -1,21 +1,21 @@
-public enum HttpMethod: String {
+public enum Method: String {
     case GET, POST, PUT, DELETE, PATCH
 }
 
-public class Call {
-    public let path: String
-    public let method: HttpMethod
+open class Call {
+    open let path: String
+    open let method: Method
 
-    public init(path: String, method: HttpMethod = .GET) {
+    public init(path: String, method: Method = .GET) {
         self.path = path
         self.method = method
     }
 
-    public func request(withConfiguration configuration: Configuration) -> NSURLRequest? {
-        let mutableRequest = NSMutableURLRequest(URL: NSURL(string: "\(configuration.baseURL)/\(path)")!, cachePolicy: .ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0)
-        mutableRequest.HTTPMethod = method.rawValue
+    open func request(withConfiguration configuration: Configuration) -> URLRequest? {
+        var request = URLRequest(url: URL(string: "\(configuration.baseURL)/\(path)")!, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0)
+        request.httpMethod = method.rawValue
 
-        return mutableRequest
+        return request
     }
 
 }

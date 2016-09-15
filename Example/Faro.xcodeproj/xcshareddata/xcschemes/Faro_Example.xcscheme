@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0730"
+   LastUpgradeVersion = "0800"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "568411AA617AF84C96EFFE659ABFEBBB"
+               BlueprintIdentifier = "A6C2D8A043120EA75848C1DD21E69A44"
                BuildableName = "Faro.framework"
                BlueprintName = "Faro"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">

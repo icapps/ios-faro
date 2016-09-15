@@ -13,9 +13,9 @@ class ErrorSpec: QuickSpec {
             context("NSError") {
                 it("should retrun Error for NSError") {
                     let nsError = NSError(domain: "MyDomain", code: 101, userInfo: ["info": "This is an nsError"])
-                    let error = errorFromNSError(nsError)
+                    let error = FaroError.nonFaroError(nsError)
 
-                    expect(error == Error.Error(domain: "MyDomain", code: 101, userInfo: ["info": "This is an nsError"])).to(beTrue())
+                    expect(error).toNot(beNil())
                 }
             }
         }

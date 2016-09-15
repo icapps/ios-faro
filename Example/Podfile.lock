@@ -1,26 +1,44 @@
 PODS:
-  - Faro (1.0.0):
-    - Stella
-  - Nimble (4.1.0)
+  - Faro (1.0.0)
+  - Nimble (5.0.0-alpha.30p1)
   - Quick (0.9.3)
   - Stella (0.4.1)
 
 DEPENDENCIES:
   - Faro (from `../`)
-  - Nimble (~> 4.1.0)
-  - Quick (~> 0.9.3)
-  - Stella
+  - Nimble (from `https://github.com/Quick/Nimble.git`)
+  - Quick (from `https://github.com/Quick/Quick.git`, branch `swift-3.0`)
+  - Stella (from `https://github.com/icapps/ios-stella.git`, branch `feature/swift3.0`)
 
 EXTERNAL SOURCES:
   Faro:
     :path: "../"
+  Nimble:
+    :git: https://github.com/Quick/Nimble.git
+  Quick:
+    :branch: swift-3.0
+    :git: https://github.com/Quick/Quick.git
+  Stella:
+    :branch: feature/swift3.0
+    :git: https://github.com/icapps/ios-stella.git
+
+CHECKOUT OPTIONS:
+  Nimble:
+    :commit: fcc28b23f57b30382e5f182c238674694d7174cb
+    :git: https://github.com/Quick/Nimble.git
+  Quick:
+    :commit: 8f2bc636ecfa2cc20696f62548b38d4ab943e299
+    :git: https://github.com/Quick/Quick.git
+  Stella:
+    :commit: 43630919bef2736377e5b8f1a12660330551f2fa
+    :git: https://github.com/icapps/ios-stella.git
 
 SPEC CHECKSUMS:
-  Faro: b6d0737fc2291941c543d76292ad05b245b53b47
-  Nimble: 97a0a4cae5124c117115634b2d055d8c97d0af19
-  Quick: 13a2a2b19a5d8e3ed4fd0c36ee46597fd77ebf71
+  Faro: fed77bf5bee652603d4a9c9f956ccc79ad34c93c
+  Nimble: c5b995b4cd57789ec44b0cfb79640fc00e61a8c7
+  Quick: 31fb576b6cbb6b028cc5e0016e4366accbb346f5
   Stella: d158572e518e4254ab00dba7e7786995b961a695
 
-PODFILE CHECKSUM: c1d34d0ceb6ed9b8eb30068c73a67e6df5856318
+PODFILE CHECKSUM: 5b7a296f9d058c86d785a001ad1c38cf4778fc8e
 
 COCOAPODS: 1.0.1

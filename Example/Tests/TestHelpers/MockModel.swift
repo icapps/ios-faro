@@ -1,14 +1,18 @@
 import Faro
 
-class MockModel: Mappable {
+class MockModel: Parseable {
     var value: String
-
-    required init(json: AnyObject) {
-        if let json = json as? [String: String] {
-            value = json["key"]!
-        }else {
-            value = ""
+    
+    required init?(from raw: Any) {
+        guard let json = raw as? [String: String] else {
+            return nil
         }
+        
+        value = json["key"]!
+    }
+    
+    var JSON: [String: Any]? {
+        return nil
     }
 
 }

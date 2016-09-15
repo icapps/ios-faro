@@ -1,14 +1,14 @@
 import Faro
 
 class MockService: Service {
-    let mockJSON: AnyObject
+    let mockJSON: Any
 
-    init(mockJSON: AnyObject) {
+    init(mockJSON: Any) {
         self.mockJSON = mockJSON
         super.init(configuration: Configuration(baseURL: "mockService"))
     }
 
-    override func perform<M: Mappable>(call: Call, result: (Result<M>) -> ()) {
-        result(.Model(M(json: mockJSON)))
+    override func perform<M: Parseable>(_ call: Call, result: @escaping (Result<M>) -> ()) {
+        result(.model(M(from: self.mockJSON)))
     }
 }
