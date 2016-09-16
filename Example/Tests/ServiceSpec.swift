@@ -13,7 +13,7 @@ class ServiceSpec: QuickSpec {
 
             context("array of objects response") {
                 beforeEach{
-                    mockJSON = [["uuid": "object 1"], ["uuid", "object 2"]]
+                    mockJSON = [["uuid": "object 1"], ["uuid": "object 2"]]
                     service = MockService(mockJSON: mockJSON)
                 }
 
