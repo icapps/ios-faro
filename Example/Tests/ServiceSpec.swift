@@ -37,7 +37,7 @@ class ServiceSpec: QuickSpec {
 
             context("single object response") {
                 beforeEach{
-                    mockJSON = ["key": "value"]
+                    mockJSON = ["uuid": "object id 1"]
                     service = MockService(mockJSON: mockJSON)
                 }
 
@@ -53,7 +53,7 @@ class ServiceSpec: QuickSpec {
                         isInSync = true
                         switch result {
                         case .model(model: let model):
-                            expect(model?.value).to(equal("value"))
+                            expect(model?.uuid).to(equal("object id 1"))
                         default:
                             XCTFail("You should succeed")
                         }
