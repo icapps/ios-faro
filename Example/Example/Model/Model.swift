@@ -4,14 +4,17 @@ import Faro
 
 /// Example model
 /// We inherit from NSObject to be useable in Objective-C
-class Model: NSObject, Mappable {
+class Model: NSObject, Parseable {
     var value: String
 
-    required init(json: AnyObject) {
-        if let json = json as? [String: String] {
-            value = json["key"]!
-        }else {
-            value = ""
+    required init?(from raw: Any) {
+        guard let json = raw as? [String: String] else {
+            return nil
         }
+        value = json["key"]!
+    }
+    
+    var JSON: [String: Any]? {
+        return nil
     }
 }

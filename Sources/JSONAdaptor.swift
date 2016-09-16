@@ -1,25 +1,25 @@
 import Foundation
 
-public class JSONAdaptor: Adaptable {
+open class JSONAdaptor: Adaptable {
 
     public init() {
 
     }
 
-    public func serialize<M: Mappable>(fromDataResult dataResult: Result<M>, result: (Result <M>) -> ()) {
+    open func serialize<M: Parseable>(fromDataResult dataResult: Result<M>, result: (Result <M>) -> ()) {
         switch dataResult {
-        case .Data(let data):
+        case .data(let data):
             do {
-                let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-                result(.JSON(json))
+                let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                result(.json(json))
             } catch {
-                guard let faroError = error as? Error else {
+                guard let faroError = error as? FaroError else {
                     print("💣 Unknown error \(error)")
-                    result(.Failure(Error.General))
+                    result(.failure(FaroError.general))
                     return
                 }
 
-                result(.Failure(faroError))
+                result(.failure(faroError))
             }
         default:
             result(dataResult)

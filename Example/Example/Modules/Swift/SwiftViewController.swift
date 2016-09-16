@@ -2,10 +2,14 @@ import UIKit
 import Faro
 import Stella
 
-class Posts: Mappable {
+class Posts: Parseable {
 
-    required init(json: AnyObject) {
-
+    required init?(from raw: Any) {
+        
+    }
+    
+    var JSON: [String: Any]? {
+        return nil
     }
 
 }
@@ -20,9 +24,9 @@ class SwiftViewController: UIViewController {
         let call = Call(path: "posts")
 
         service.perform(call) { (result: Result<Posts>) in
-            dispatch_on_main {
+            DispatchQueue.main.async {
                 switch result {
-                case .Model(let model):
+                case .model(let model):
                     self.label.text = "Performed call for posts"
                     printBreadcrumb("\(model)")
                 default:
