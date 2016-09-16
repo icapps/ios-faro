@@ -1,20 +1,18 @@
-/// Catches any throws and switches if to af failure after printing the error.
-public func printError(error: Error) {
-    switch error {
-    case Error.Error(let error):
-        print("💣 Error from service: \(error)")
-    case Error.ErrorNS(let nserror):
-        print("💣 Error from service: \(nserror)")
-    case Error.General:
-        print("💣 General service error")
-    case Error.InvalidResponseData(_):
-        print("🤔 Invalid response data")
-    case Error.InvalidAuthentication:
-        print("💣 Invalid authentication")
-    case Error.ShouldOverride:
-        print("💣 You should override this method")
-    default:
-        print("💣 failed with unknown error \(error)")
 
+/// Catches any throws and switches if to af failure after printing the error.
+public func printError(_ error: FaroError) {
+    switch error {
+    case .general:
+        print("💣 General service error")
+    case .invalidUrl(let url):
+        print("💣invalid url: \(url)")
+    case .invalidResponseData(_):
+        print("💣 Invalid response data")
+    case .invalidAuthentication:
+        print("💣 Invalid authentication")
+    case .shouldOverride:
+        print("💣 You should override this method")
+    case .nonFaroError(let nonFaroError):
+        print("💣 Error from service: \(nonFaroError)")
     }
 }

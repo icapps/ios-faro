@@ -23,4 +23,5 @@ __Faro__ is a service layer build in Swift by using generics.
   s.requires_arc = true
 
   s.source_files = 'Sources/**/*'
+
 end

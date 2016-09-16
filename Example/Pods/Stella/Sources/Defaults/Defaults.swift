@@ -6,8 +6,8 @@
 //
 //
 
-/// `Defaults` is a wrapper for the NSUserDefaults standard defaults instance.
-public let Defaults = NSUserDefaults.standardUserDefaults()
+/// `Defaults` is a wrapper for the UserDefaults standard defaults instance.
+public let Defaults = UserDefaults.standard
 
 /// `DefaultsKeys` is a wrapper we can extend to define all the different default keys available.
 ///
@@ -16,11 +16,11 @@ public let Defaults = NSUserDefaults.standardUserDefaults()
 ///     static let string = DefaultsKey<String?>("the string defaults key")
 /// }
 /// ```
-public class DefaultsKeys {}
+open class DefaultsKeys {}
 
 /// The `DefaulesKey` defines the key and the value type for a certain user default value.
-public class DefaultsKey<ValueType>: DefaultsKeys {
-    private let key: String
+open class DefaultsKey<ValueType>: DefaultsKeys {
+    fileprivate let key: String
     
     /// Initialize the key in your `DefaultsKeys` extension.
     ///
@@ -32,7 +32,7 @@ public class DefaultsKey<ValueType>: DefaultsKeys {
     }
 }
 
-public extension NSUserDefaults {
+public extension UserDefaults {
     
     /// Get the defaults String value for the given `DefaultsKey`. The preferred way to do this is to pass the static key variable defined in the `DefaultsKeys` extension.
     ///
@@ -41,10 +41,10 @@ public extension NSUserDefaults {
     /// ```
     public subscript(key: DefaultsKey<String?>) -> String? {
         get {
-            return stringForKey(key.key)
+            return string(forKey: key.key)
         }
         set {
-            setObject(newValue, forKey: key.key)
+            set(newValue, forKey: key.key)
         }
     }
     
@@ -55,13 +55,13 @@ public extension NSUserDefaults {
     /// ```
     public subscript(key: DefaultsKey<Int?>) -> Int? {
         get {
-            return integerForKey(key.key)
+            return integer(forKey: key.key)
         }
         set {
             if let newValue = newValue {
-                setInteger(newValue, forKey: key.key)
+                set(newValue, forKey: key.key)
             } else {
-                removeObjectForKey(key.key)
+                removeObject(forKey: key.key)
             }
         }
     }
@@ -73,13 +73,13 @@ public extension NSUserDefaults {
     /// ```
     public subscript(key: DefaultsKey<Float?>) -> Float? {
         get {
-            return floatForKey(key.key)
+            return float(forKey: key.key)
         }
         set {
             if let newValue = newValue {
-                setFloat(newValue, forKey: key.key)
+                set(newValue, forKey: key.key)
             } else {
-                removeObjectForKey(key.key)
+                removeObject(forKey: key.key)
             }
         }
     }
@@ -91,13 +91,13 @@ public extension NSUserDefaults {
     /// ```
     public subscript(key: DefaultsKey<Double?>) -> Double? {
         get {
-            return doubleForKey(key.key)
+            return double(forKey: key.key)
         }
         set {
             if let newValue = newValue {
-                setDouble(newValue, forKey: key.key)
+                set(newValue, forKey: key.key)
             } else {
-                removeObjectForKey(key.key)
+                removeObject(forKey: key.key)
             }
         }
     }
@@ -109,10 +109,10 @@ public extension NSUserDefaults {
     /// ```
     public subscript(key: DefaultsKey<Bool?>) -> Bool {
         get {
-            return boolForKey(key.key) ?? false
+            return bool(forKey: key.key) ?? false
         }
         set {
-            setBool(newValue, forKey: key.key)
+            set(newValue, forKey: key.key)
         }
     }
     
@@ -121,12 +121,12 @@ public extension NSUserDefaults {
     /// ```
     /// static let date = DefaultsKey<NSDate?>("the date defaults key")
     /// ```
-    public subscript(key: DefaultsKey<NSDate?>) -> NSDate? {
+    public subscript(key: DefaultsKey<Date?>) -> Date? {
         get {
-            return objectForKey(key.key) as? NSDate
+            return object(forKey: key.key) as? Date
         }
         set {
-            setObject(newValue, forKey: key.key)
+            set(newValue, forKey: key.key)
         }
     }
 }

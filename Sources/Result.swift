@@ -1,12 +1,12 @@
 /// `Result` is used to deliver results mapped in the `Bar`.
-public enum Result<M: Mappable> {
-    case Model(M)
+public enum Result<M: Parseable> {
+    case model(M?)
     case ModelArray([M])
     /// The server returned a valid JSON response.
-    case JSON(AnyObject)
-    case Data(NSData)
+    case json(Any)
+    case data(Foundation.Data)
     /// Server returned with statuscode 200...201 but no response data
-    case OK
-    case Failure(Error)
+    case ok
+    case failure(FaroError)
 }
 

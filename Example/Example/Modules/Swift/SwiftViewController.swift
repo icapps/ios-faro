@@ -2,10 +2,14 @@ import UIKit
 import Faro
 import Stella
 
-class Posts: Mappable {
+class Posts: Parseable {
 
-    required init(json: AnyObject) {
-
+    required init?(from raw: Any) {
+        
+    }
+    
+    var JSON: [String: Any]? {
+        return nil
     }
 
 }
@@ -16,17 +20,17 @@ class SwiftViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let bar = ExampleBar()
+        let service = ExampleService()
         let call = Call(path: "posts")
 
-        bar.perform(call) { (result: Result <Posts>) in
-            dispatch_on_main {
+        service.perform(call) { (result: Result<Posts>) in
+            DispatchQueue.main.async {
                 switch result {
-                case .Model(let model):
-                    self.label.text = "fetched posts"
-                    print("🎉 \(model)")
+                case .model(let model):
+                    self.label.text = "Performed call for posts"
+                    printBreadcrumb("\(model)")
                 default:
-                    print("💣 fail")
+                    printError("Could not perform call for posts")
                 }
             }
         }

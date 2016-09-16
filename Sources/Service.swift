@@ -1,72 +1,79 @@
 /// Default implementation of a service.
 /// Serves your `Order` to a server and parses the respons.
 /// Response is delivered to you as a `Result`. The result type depends on the adaptor you have set in the 'Configuration'.
-public class Service {
-    public let configuration: Configuration
-    private var task: NSURLSessionDataTask?
-    public let session = NSURLSession.sharedSession()
+open class Service {
+    open let configuration: Configuration
+    fileprivate var task: URLSessionDataTask?
+    open let session = URLSession.shared
 
     public init(configuration: Configuration) {
         self.configuration = configuration
     }
 
-    public func perform<M: Mappable>(call: Call, result: (Result<M>) -> ()) {
+    /// Receives expecte result  as defined by the `adaptor` from the a `Service` and maps this to a `Result` case `case Model(M)`
+    /// Default implementation expects `adaptor` to be     case JSON(AnyObject). If this needs to be different you need to override this method.
+    /// Typ! You can subclass 'Bar' and add a default service
+    /// - parameter call : gives the details to find the entity on the server
+    /// - parameter result : `Result<M: Parseable>` closure should be called with `case Model(M)` other cases are a failure.
+    open func perform<M: Parseable>(_ call: Call, result: @escaping (Result<M>) -> ()) {
 
         guard let request = call.request(withConfiguration: configuration) else {
-            result(.Failure(Error.InvalidUrl("\(configuration.baseURL)/\(call.path)")))
+            result(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")))
             return
         }
 
-        task = session.dataTaskWithRequest(request) { (data, response, error) in
-            self.checkStatusCodeAndData(data, urlResponse: response, error: error) { (dataResult: Result<M>) in
-                self.configuration.adaptor.serialize(fromDataResult: dataResult, jsonResult: result)
+        task = session.dataTask(with: request, completionHandler: { (data, response, error) in
+            let dataResult = self.handle(data: data, urlResponse: response, error: error) as Result<M>
+            self.configuration.adaptor.serialize(fromDataResult: dataResult) { (jsonResult: Result<M>) in
+                switch jsonResult {
+                case .json(json: let json):
+                    let model = M(from: json)
+                    result(.model(model))
+                default:
+                    result(.failure(FaroError.general))
+                    print("💣 damn this should not happen")
+                }
             }
-        }
+        })
+
 
         task!.resume()
     }
 
-    public func cancel() {
+    open func cancel() {
         task?.cancel()
     }
 
-    public func checkStatusCodeAndData<M: Mappable>(data: NSData?, urlResponse: NSURLResponse?, error: NSError?, result: (Result<M>) -> ()) {
+    open func handle<M: Parseable>(data: Data?, urlResponse: URLResponse?, error: Error?) -> Result<M> {
         guard error == nil else {
-            let returnError = Error.ErrorNS(error)
+            let returnError = FaroError.nonFaroError(error!)
             printError(returnError)
-            result(.Failure(returnError))
-            return
+            return .failure(returnError)
         }
 
-        guard let httpResponse = urlResponse as? NSHTTPURLResponse else {
-            let returnError = Error.General
+        guard let httpResponse = urlResponse as? HTTPURLResponse else {
+            let returnError = FaroError.general
             printError(returnError)
-            result(.Failure(returnError))
-            return
+            return .failure(returnError)
         }
 
         let statusCode = httpResponse.statusCode
         guard statusCode != 404 else {
-            let returnError = Error.InvalidAuthentication
+            let returnError = FaroError.invalidAuthentication
             printError(returnError)
-            result(.Failure(returnError))
-            return
+            return .failure(returnError)
         }
 
         guard 200...201 ~= statusCode else {
-            let returnError = Error.General
+            let returnError = FaroError.general
             printError(returnError)
-            result(.Failure(returnError))
-            return
+            return .failure(returnError)
         }
 
-        guard let guardedData = data else {
-            result(.OK)
-            return
+        if let data = data {
+            return .data(data)
+        } else {
+            return .ok
         }
-
-        result(.Data(guardedData))
-
-        return
     }
 }

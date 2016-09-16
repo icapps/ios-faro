@@ -7,16 +7,27 @@ For a quick start follow the instructions below. For more in depth information o
 ## Concept
 We build a service request by using a `Bar` class as the point where you fire your `Call` and get a `Result`.
 
-## Get Served
+## Perform a Call
 
-Take a look at the `BarSpec`, in short:
-
+Take a look at the `ServiceSpec`, in short:
 ```swift
+        let service = Service(configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com")
+        let call = Call(path: "posts")
 
+        service.perform(call) { (result: Result<Posts>) in
+            dispatch_on_main {
+                switch result {
+                case .Model(let model):
+                    print("🎉 \(model)")
+                default:
+                    print("💣 fail")
+                }
+            }
+        })
 ```
 
 ## Write unit tests
-In the example project you can find examples written with `Nimbel` for both CoreData and others.
+In the example project you can find examples written with `Nimble` for both CoreData and others.
 
 ## Requirements
 
