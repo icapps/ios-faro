@@ -14,5 +14,7 @@ public func printError(_ error: FaroError) {
         print("💣 You should override this method")
     case .nonFaroError(let nonFaroError):
         print("💣 Error from service: \(nonFaroError)")
+    case .networkError(let networkError):
+        print("💣 HTTP error: \(networkError)")
     }
 }

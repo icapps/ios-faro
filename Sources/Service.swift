@@ -64,8 +64,8 @@ open class Service {
         }
 
         let statusCode = httpResponse.statusCode
-        guard statusCode != 404 else {
-            let returnError = FaroError.invalidAuthentication
+        guard statusCode < 400 else {
+            let returnError = FaroError.networkError(statusCode)
             printError(returnError)
             return .failure(returnError)
         }
