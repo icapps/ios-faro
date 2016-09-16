@@ -99,7 +99,8 @@ extension Parseable {
     
 }
 
-infix operator << { associativity left }
+/// The opea
+infix operator <<: AssignmentPrecedence
 
 // MARK: Parse from model
 
