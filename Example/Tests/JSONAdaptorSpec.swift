@@ -8,7 +8,7 @@ class JSONAdaptorSpec: QuickSpec {
     override func spec() {
         describe("JSONAdaptor") {
 
-            it("should return an empty model") {
+            it("should return JSON") {
                 let adaptor = JSONAdaptor()
 
                 var receivedJSON = false
