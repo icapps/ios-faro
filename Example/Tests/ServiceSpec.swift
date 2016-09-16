@@ -73,11 +73,11 @@ class ServiceSpec: QuickSpec {
             }
 
             context("error cases") {
-                it("InvalidAuthentication when statuscode 404") {
+                it("HttpError when statuscode > 400") {
                     let response =  HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: 404, httpVersion: nil, headerFields: nil)
                     let result = service.handle(data: nil, urlResponse: response, error: nil) as Result<MockModel>
                     switch result {
-                    case .failure(let faroError) where faroError == FaroError.invalidAuthentication:
+                    case .failure(let faroError) where faroError == FaroError.networkError(404):
                         break
                     default:
                         XCTFail("Should have invalid authentication error")
