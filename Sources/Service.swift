@@ -24,16 +24,22 @@ open class Service {
 
         task = session.dataTask(with: request, completionHandler: { (data, response, error) in
             let dataResult = self.handle(data: data, urlResponse: response, error: error) as Result<M>
-            self.configuration.adaptor.serialize(fromDataResult: dataResult) { (jsonResult: Result<M>) in
-                switch jsonResult {
-                case .json(json: let json):
-                    let model = M(from: json)
-                    result(.model(model))
-                default:
-                    result(.failure(FaroError.general))
-                    print("💣 damn this should not happen")
+
+            switch dataResult {
+            case .data(let data):
+                self.configuration.adaptor.serialize(from: data) { (jsonResult: Result<M>) in
+                    switch jsonResult {
+                    case .json(json: let json):
+                        let model = M(from: json)
+                        result(.model(model))
+                    default:
+                        result(jsonResult)
+                    }
                 }
+            default:
+                result(dataResult)
             }
+
         })
 
 

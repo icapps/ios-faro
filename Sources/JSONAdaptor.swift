@@ -6,23 +6,18 @@ open class JSONAdaptor: Adaptable {
 
     }
 
-    open func serialize<M: Parseable>(fromDataResult dataResult: Result<M>, result: (Result <M>) -> ()) {
-        switch dataResult {
-        case .data(let data):
-            do {
-                let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                result(.json(json))
-            } catch {
-                guard let faroError = error as? FaroError else {
-                    print("💣 Unknown error \(error)")
-                    result(.failure(FaroError.general))
-                    return
-                }
-
-                result(.failure(faroError))
+    open func serialize<M: Parseable>(from data: Data, result: (Result <M>) -> ()) {
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+            result(.json(json))
+        } catch {
+            guard let faroError = error as? FaroError else {
+                print("💣 Unknown error \(error)")
+                result(.failure(FaroError.general))
+                return
             }
-        default:
-            result(dataResult)
+
+            result(.failure(faroError))
         }
     }
 
