@@ -2,7 +2,7 @@ import Foundation
 
 public protocol Parseable {
 
-    init?(from raw: [String: Any])
+    init?(from raw: Any)
 
     var JSON: [String: Any]? { get }
 }

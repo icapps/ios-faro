@@ -18,12 +18,12 @@ class CallSpec: QuickSpec {
 
             it("should default to .GET") {
                 let request = call.request(withConfiguration: configuration)!
-                expect(request.HTTPMethod).to(equal("GET"))
+                expect(request.httpMethod).to(equal("GET"))
             }
 
             it("should configuration should make up request") {
                 let request = call.request(withConfiguration: configuration)!
-                expect(request.URL!.absoluteString).to(equal("http://someURL/path"))
+                expect(request.url!.absoluteString).to(equal("http://someURL/path"))
             }
 
         }

@@ -20,10 +20,5 @@
     "watchos": "2.0"
   },
   "requires_arc": true,
-  "source_files": "Sources/**/*",
-  "dependencies": {
-    "Stella": [
-
-    ]
-  }
+  "source_files": "Sources/**/*"
 }
