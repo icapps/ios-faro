@@ -1,5 +1,5 @@
 import Foundation
 
 public protocol Adaptable: class {
-    func serialize<M: Parseable>(fromDataResult dataResult: Result<M>, result: (Result <M>) -> ())
+    func serialize<M: Parseable>(from data: Data, result: (Result <M>) -> ())
 }
