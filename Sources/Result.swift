@@ -10,3 +10,8 @@ public enum Result<M: Parseable> {
     case failure(FaroError)
 }
 
+public enum JsonNode {
+    case rootNode([String: Any])
+    case rootNodes([Any])
+    case rootNodeNotFound(json: Any)
+}
