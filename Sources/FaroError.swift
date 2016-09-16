@@ -5,6 +5,7 @@ public enum FaroError: Error, Equatable {
     case invalidAuthentication
     case shouldOverride
     case nonFaroError(Error)
+    case networkError(Int)
 }
 
 public func == (lhs: FaroError, rhs: FaroError) -> Bool {
