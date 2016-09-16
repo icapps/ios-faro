@@ -99,7 +99,7 @@ extension Parseable {
     
 }
 
-/// The opea
+/// The operator we define assings a value. Therefor its Precendencegroup is AssignmentPrecedence.
 infix operator <-: AssignmentPrecedence
 
 // MARK: Parse from model
