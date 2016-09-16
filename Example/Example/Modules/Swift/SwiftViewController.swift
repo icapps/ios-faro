@@ -36,9 +36,9 @@ class SwiftViewController: UIViewController {
         service.perform(call) { (result: Result<Post>) in
             DispatchQueue.main.async {
                 switch result {
-                case .model(let model):
+                case .models(let models):
                     self.label.text = "Performed call for posts"
-                    printBreadcrumb("\(model)")
+                    printBreadcrumb("\(models)")
                 default:
                     printError("Could not perform call for posts")
                 }
