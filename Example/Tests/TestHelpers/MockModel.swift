@@ -1,7 +1,7 @@
 import Faro
 
 class MockModel: Parseable {
-    var value: String
+    var uuid: String
 
     required init?(from raw: Any) {
         guard let json = raw as? [String: String] else {
@@ -9,7 +9,7 @@ class MockModel: Parseable {
         }
 
         do {
-            value = try parseString("key", from: json)
+            uuid = try parseString("uuid", from: json)
         } catch {
             return nil
         }

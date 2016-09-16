@@ -2,12 +2,13 @@ import Faro
 
 /// Example model
 class Model: Parseable {
+    var uuid: String
 
     required init?(from raw: Any) {
         guard let json = raw as? [String: String] else {
             return nil
         }
-        value = json["key"]!
+        uuid = json["uuid"]!
     }
     
     var JSON: [String: Any]? {
