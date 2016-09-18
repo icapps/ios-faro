@@ -17,23 +17,29 @@ class Foo {
 
     subscript(key: String) -> Any? {
         get {
-            return getMap()[key]
+            return json[key]
         } set {
-            if key == "uuid" {
-                uuid <- newValue
-            } else if key == "blue" {
-                blue <- newValue
+            if let mapper = mappers[key] {
+                mapper(newValue)
             }
         }
     }
 
-    func getMap() -> [String: Any?] {
+    /// Returns 
+    var json: [String : Any?] {
         var internalMap = [String: Any?]()
         let mirror = Mirror(reflecting: self)
         for child in mirror.children {
             internalMap[child.label!] = child.value
         }
         return internalMap
+    }
+
+    /// Each object should return a function that accepts `Any?`
+    /// and uses it to set it to the corresponding property
+    var mappers: [String : ((Any?)->())] {
+        return ["uuid" : {value in self.uuid <- value },
+                "blue" : {value in self.blue <- value }]
     }
 
 }
