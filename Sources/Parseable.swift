@@ -1,16 +1,54 @@
 import Foundation
 
-public protocol Parseable {
+public protocol Parseable: class {
 
     init?(from raw: Any)
 
-    var JSON: [String: Any]? { get }
-
+    /// TODO move to 'Call` class
     static func extractRootNode(from json: Any) -> JsonNode
+
+    /// Each object should return a function that accepts `Any?`.
+    /// Than function is used to set it to the corresponding property
+    var mappers: [String : ((Any?)->())] {get}
+
+}
+
+/// MARK: Automatic Parsing and mapping
+
+/// This maps `Any` type to the properties on anyone who is `Parseable`.
+public extension Parseable {
+    /// Uses `Mirror` to lookup a list of properties on your `Type`
+    public func map(from raw: Any)  {
+        let mirror = Mirror(reflecting: self)
+        for child in mirror.children {
+            self[child.label!] = json[child.label!]
+        }
+    }
+
+    /// Makes sure a `Parseable` kan be used as a supscript
+    public subscript(key: String) -> Any? {
+        get {
+            return json[key]
+        } set {
+            if let mapper = mappers[key] {
+                mapper(newValue)
+            }
+        }
+    }
+
+    /// Get a json Dictionary back
+    public var json: [String: Any?] {
+        var internalMap = [String: Any]()
+        let mirror = Mirror(reflecting: self)
+        for child in mirror.children {
+            internalMap[child.label!] = child.value
+        }
+        return internalMap
+    }
+    
 }
 
 // MARK: Parse from model
-
 
 public func parse(_ callback: (_ json: inout [String: Any]) -> ()) -> [String: Any] {
     var json = [String: Any]()
@@ -177,13 +215,13 @@ public func <- (lhs: inout Date?, rhs: (Any?, String)) {
 }
 
 public func <- <P>(lhs: inout Any?, rhs: P?) where P: Parseable {
-    lhs = rhs?.JSON
+    lhs = rhs?.json
 }
 
 public func <- <P>(lhs: inout Any?, rhs: [P]?) where P: Parseable {
     var array = [[String: Any]]()
     for parseable in rhs! {
-        array.append(parseable.JSON!)
+        array.append(parseable.json)
     }
     lhs = array
 }

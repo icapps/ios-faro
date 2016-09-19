@@ -3,13 +3,14 @@ import Faro
 import Stella
 
 class Post: Parseable {
+    var uuid: String?
 
     required init?(from raw: Any) {
         
     }
     
-    var JSON: [String: Any]? {
-        return nil
+    var json: [String: Any?] {
+        return ["uuid": self.uuid]
     }
 
     class func extractRootNode(from json: Any) -> JsonNode {
@@ -22,6 +23,10 @@ class Post: Parseable {
         }
     }
 
+    var mappers: [String: ((Any?) -> ())] {
+        return ["uuid": {value in self.uuid <- value }]
+    }
+
 }
 
 class SwiftViewController: UIViewController {
@@ -30,6 +35,7 @@ class SwiftViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        /*
         let service = ExampleService()
         let call = Call(path: "posts")
 
@@ -44,6 +50,7 @@ class SwiftViewController: UIViewController {
                 }
             }
         }
+ */
     }
 
 }

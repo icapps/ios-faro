@@ -4,6 +4,10 @@ import Faro
 class Model: Parseable {
     var uuid: String
 
+    var mappers: [String: ((Any?) -> ())] {
+        return ["uuid": {value in self.uuid <- value }]
+    }
+
     required init?(from raw: Any) {
         guard let json = raw as? [String: String] else {
             return nil
@@ -11,8 +15,8 @@ class Model: Parseable {
         uuid = json["uuid"]!
     }
     
-    var JSON: [String: Any]? {
-        return nil
+    var json: [String: Any?] {
+        return ["uuid": self.uuid]
     }
 
     class func extractRootNode(from json: Any) -> JsonNode {
@@ -24,5 +28,5 @@ class Model: Parseable {
             return .rootNodeNotFound(json: json)
         }
     }
-    
+
 }

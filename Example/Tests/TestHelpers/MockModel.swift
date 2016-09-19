@@ -15,7 +15,7 @@ class MockModel: Parseable {
         }
     }
     
-    var JSON: [String: Any]? {
+    var json: [String: Any]? {
         return nil
     }
 
@@ -27,6 +27,10 @@ class MockModel: Parseable {
         }else {
             return .rootNodeNotFound(json: json)
         }
+    }
+
+    var mappers: [String : ((Any?)->())] {
+        return ["uuid": {value in self.uuid <- value }]
     }
 
 }
