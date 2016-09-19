@@ -9,11 +9,15 @@ We build a service request by using a `Service` class as the point where you fir
 
 ### features
 
+*Service*
 * Service written to use Swift without Objective-C
 * Service cleanly incapsulates all the parameters to handle a netowerk request
 * Easily write a 'MockService' to load JSON from a local drive
+
+*Automagically Parse*
 * Automatic Serialization and Mapping thanks to the use off the Swift 'Mirror' class.
 * Uses Protocol extensions to minimize the work needed on your end 😎
+* Because we use Protocols you can use any type including CoreData `NSManagedObject` 💪🏼
 
 ## Perform a Call
 
