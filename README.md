@@ -15,9 +15,9 @@ Take a look at the `ServiceSpec`, in short:
         let call = Call(path: "posts")
 
         service.perform(call) { (result: Result<Posts>) in
-            dispatch_on_main {
+            DispatchQueue.main.async {
                 switch result {
-                case .Model(let model):
+                case .model(let model):
                     print("🎉 \(model)")
                 default:
                     print("💣 fail")

@@ -20,7 +20,7 @@
 		C015C7E51D81801700E30408 /* ExampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015C7E41D81801700E30408 /* ExampleService.swift */; };
 		C02ADF801D88243A00FA5B32 /* ConfigurationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */; };
 		C02ADF811D88243A00FA5B32 /* ErrorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */; };
-		C02ADF821D88243A00FA5B32 /* OrderSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF781D8823F800FA5B32 /* OrderSpec.swift */; };
+		C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF781D8823F800FA5B32 /* CallSpec.swift */; };
 		C02ADF831D88243A00FA5B32 /* ServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF771D8823F800FA5B32 /* ServiceSpec.swift */; };
 		C03281451D76EB590047825C /* SwiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* SwiftViewController.swift */; };
 		C03281591D7722F40047825C /* MockService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03281581D7722F40047825C /* MockService.swift */; };
@@ -62,7 +62,7 @@
 		C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray_1275.json; sourceTree = "<group>"; };
 		C015C7E41D81801700E30408 /* ExampleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleService.swift; sourceTree = "<group>"; };
 		C02ADF771D8823F800FA5B32 /* ServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceSpec.swift; sourceTree = "<group>"; };
-		C02ADF781D8823F800FA5B32 /* OrderSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderSpec.swift; sourceTree = "<group>"; };
+		C02ADF781D8823F800FA5B32 /* CallSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallSpec.swift; sourceTree = "<group>"; };
 		C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorSpec.swift; sourceTree = "<group>"; };
 		C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationSpec.swift; sourceTree = "<group>"; };
 		C03281581D7722F40047825C /* MockService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockService.swift; sourceTree = "<group>"; };
@@ -157,7 +157,7 @@
 				C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */,
 				C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */,
 				C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */,
-				C02ADF781D8823F800FA5B32 /* OrderSpec.swift */,
+				C02ADF781D8823F800FA5B32 /* CallSpec.swift */,
 				C02ADF771D8823F800FA5B32 /* ServiceSpec.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 				C03281571D7722F40047825C /* TestHelpers */,
@@ -487,7 +487,7 @@
 				C02ADF801D88243A00FA5B32 /* ConfigurationSpec.swift in Sources */,
 				C02ADF811D88243A00FA5B32 /* ErrorSpec.swift in Sources */,
 				C02ADF831D88243A00FA5B32 /* ServiceSpec.swift in Sources */,
-				C02ADF821D88243A00FA5B32 /* OrderSpec.swift in Sources */,
+				C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */,
 				C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */,
 				C03281591D7722F40047825C /* MockService.swift in Sources */,
 			);
