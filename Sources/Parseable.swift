@@ -8,6 +8,8 @@ public protocol Parseable: class {
     /// Than function is used to set it to the corresponding property
     var mappers: [String : ((Any?)->())] {get}
 
+    func map(from raw: Any)
+
 }
 
 // MARK: Parse from model
@@ -16,6 +18,10 @@ public protocol Parseable: class {
 public extension Parseable {
     /// Uses `Mirror` to lookup a list of properties on your `Type`
     public func map(from raw: Any)  {
+        guard let json = raw as? [String: Any] else {
+            return
+        }
+
         let mirror = Mirror(reflecting: self)
         for child in mirror.children {
             self[child.label!] = json[child.label!]

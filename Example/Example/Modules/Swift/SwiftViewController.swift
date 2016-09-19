@@ -6,11 +6,7 @@ class Post: Parseable {
     var uuid: String?
 
     required init?(from raw: Any) {
-        
-    }
-    
-    var json: [String: Any?] {
-        return ["uuid": self.uuid]
+        map(from: raw)
     }
 
     var mappers: [String: ((Any?) -> ())] {
@@ -25,7 +21,6 @@ class SwiftViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        /*
         let service = ExampleService()
         let call = Call(path: "posts")
 
@@ -34,13 +29,12 @@ class SwiftViewController: UIViewController {
                 switch result {
                 case .models(let models):
                     self.label.text = "Performed call for posts"
-                    printBreadcrumb("\(models)")
+                    printBreadcrumb("\(models!)")
                 default:
                     printError("Could not perform call for posts")
                 }
             }
         }
- */
     }
 
 }

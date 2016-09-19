@@ -27,7 +27,7 @@
 		C032815F1D77319B0047825C /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815E1D77319B0047825C /* Model.swift */; };
 		C066958C1D87002400BD3703 /* JSONAdaptorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */; };
 		C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ACDE631D79B65100064801 /* MockModel.swift */; };
-		C0C3D4DE1D8EA01F0011E972 /* AutoMapperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C3D4DD1D8EA01F0011E972 /* AutoMapperSpec.swift */; };
+		C0C3D4DE1D8EA01F0011E972 /* ParseableSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C3D4DD1D8EA01F0011E972 /* ParseableSpec.swift */; };
 		D377DE1E7E23BDD451F1AF77 /* Pods_Faro_Example_Faro_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E1A5D1778B1450F795E6D9 /* Pods_Faro_Example_Faro_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,7 +73,7 @@
 		C05EBF731D4B8E3000B950EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAdaptorSpec.swift; sourceTree = "<group>"; };
 		C0ACDE631D79B65100064801 /* MockModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockModel.swift; sourceTree = "<group>"; };
-		C0C3D4DD1D8EA01F0011E972 /* AutoMapperSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoMapperSpec.swift; sourceTree = "<group>"; };
+		C0C3D4DD1D8EA01F0011E972 /* ParseableSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseableSpec.swift; sourceTree = "<group>"; };
 		D39D515CDEB600C0DEBE26E0 /* Pods-Faro_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example/Pods-Faro_Example.release.xcconfig"; sourceTree = "<group>"; };
 		DBBD94A15C031D6EAFAF4B10 /* Pods-Faro_Example-Faro_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example-Faro_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		F28FE425E9CA20CB4C7DE52F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -158,7 +158,7 @@
 			children = (
 				C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */,
 				C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */,
-				C0C3D4DD1D8EA01F0011E972 /* AutoMapperSpec.swift */,
+				C0C3D4DD1D8EA01F0011E972 /* ParseableSpec.swift */,
 				C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */,
 				C02ADF781D8823F800FA5B32 /* CallSpec.swift */,
 				C02ADF771D8823F800FA5B32 /* ServiceSpec.swift */,
@@ -486,7 +486,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0C3D4DE1D8EA01F0011E972 /* AutoMapperSpec.swift in Sources */,
+				C0C3D4DE1D8EA01F0011E972 /* ParseableSpec.swift in Sources */,
 				C066958C1D87002400BD3703 /* JSONAdaptorSpec.swift in Sources */,
 				C02ADF801D88243A00FA5B32 /* ConfigurationSpec.swift in Sources */,
 				C02ADF811D88243A00FA5B32 /* ErrorSpec.swift in Sources */,

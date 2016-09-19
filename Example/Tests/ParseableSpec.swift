@@ -4,32 +4,12 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-class Foo {
+class Foo: Parseable {
     var uuid: String?
     var blue: String?
 
-    init(json: [String: Any]) {
-        map(from: json)
-    }
-
-    subscript(key: String) -> Any? {
-        get {
-            return json[key]
-        } set {
-            if let mapper = mappers[key] {
-                mapper(newValue)
-            }
-        }
-    }
-
-    /// Returns
-    var json: [String : Any?] {
-        var internalMap = [String: Any?]()
-        let mirror = Mirror(reflecting: self)
-        for child in mirror.children {
-            internalMap[child.label!] = child.value
-        }
-        return internalMap
+    required init?(from raw: Any) {
+        map(from: raw)
     }
 
     /// Each object should return a function that accepts `Any?`
@@ -39,19 +19,7 @@ class Foo {
                 "blue" : {value in self.blue <- value }]
     }
 
-    func map(from json: Any?) {
-        guard let json = json as? [String: Any?] else {
-            return
-        }
-
-        let mirror = Mirror(reflecting: self)
-        for child in mirror.children {
-            self[child.label!] = json[child.label!]
-        }
-    }
-
 }
-
 
 class AutoMapperSpec: QuickSpec {
 
@@ -61,8 +29,7 @@ class AutoMapperSpec: QuickSpec {
             context("Map JSON autoMagically") {
 
                 let json = ["uuid": "id 1", "blue": "something"]
-                let foo = Foo(json: json)
-                foo.map(from: json)
+                let foo = Foo(from: json)!
 
                 it("should fill all properties") {
                     expect(foo.uuid).to(equal("id 1"))
