@@ -37,9 +37,9 @@ class FooRelation: Parseable {
 class AutoMapperSpec: QuickSpec {
 
     override func spec() {
-        describe("AutoMapperSpec") {
+        describe("Map JSON autoMagically") {
 
-            context("Map JSON autoMagically") {
+            context("No relations") {
 
                 let json = ["uuid": "id 1", "blue": "something"]
                 let foo = Foo(from: json)!
@@ -55,6 +55,20 @@ class AutoMapperSpec: QuickSpec {
 
                     expect(uuid).to(equal("id 1"))
                     expect(blue).to(equal("something"))
+                }
+            }
+
+            context("One to one relation") {
+                let relationId = "relation"
+                let json = ["uuid": "id 1", "blue": "something", "fooRelation": ["uuid": relationId]] as [String : Any]
+                let foo = Foo(from: json)!
+
+                it("should fill relation") {
+                    expect(foo.fooRelation).toNot(beNil())
+                }
+
+                it("should fill properties on relation") {
+                    expect(foo.fooRelation?.uuid).to(equal(relationId))
                 }
             }
         }
