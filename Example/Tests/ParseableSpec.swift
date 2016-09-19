@@ -7,18 +7,31 @@ import Faro
 class Foo: Parseable {
     var uuid: String?
     var blue: String?
+    var fooRelation: FooRelation?
 
     required init?(from raw: Any) {
         map(from: raw)
     }
 
-    /// Each object should return a function that accepts `Any?`
-    /// and uses it to set it to the corresponding property
     var mappers: [String : ((Any?)->())] {
-        return ["uuid" : {value in self.uuid <- value },
-                "blue" : {value in self.blue <- value }]
+        return ["uuid" : {self.uuid <- $0 },
+                "blue" : {self.blue <- $0 },
+                "fooRelation": {self.fooRelation = FooRelation(from: $0)}
+                ]
     }
 
+}
+
+class FooRelation: Parseable {
+    var uuid: String?
+
+    required init?(from raw: Any) {
+        map(from: raw)
+    }
+
+    var mappers: [String : ((Any?)->())] {
+        return ["uuid" : {value in self.uuid <- value }]
+    }
 }
 
 class AutoMapperSpec: QuickSpec {
