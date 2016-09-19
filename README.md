@@ -5,7 +5,15 @@ Faro
 For a quick start follow the instructions below. For more in depth information on why and how we build Faro, the [wiki](https://github.com/icapps/ios-faro/wiki) page.
 
 ## Concept
-We build a service request by using a `Bar` class as the point where you fire your `Call` and get a `Result`.
+We build a service request by using a `Service` class as the point where you fire your `Call` and get a `Result`.
+
+### features
+
+* Service written to use Swift without Objective-C
+* Service cleanly incapsulates all the parameters to handle a netowerk request
+* Easily write a 'MockService' to load JSON from a local drive
+* Automatic Serialization and Mapping thanks to the use off the Swift 'Mirror' class.
+* Uses Protocol extensions to minimize the work needed on your end 😎
 
 ## Perform a Call
 
@@ -17,7 +25,7 @@ Take a look at the `ServiceSpec`, in short:
         service.perform(call) { (result: Result<Posts>) in
             DispatchQueue.main.async {
                 switch result {
-                case .model(let model):
+                case .models(let model):
                     print("🎉 \(model)")
                 default:
                     print("💣 fail")
@@ -25,9 +33,57 @@ Take a look at the `ServiceSpec`, in short:
             }
         })
 ```
+## Parsing results
 
-## Write unit tests
-In the example project you can find examples written with `Nimble` for both CoreData and others.
+Parsing and Serialization can happen automagically. Best is to take a look at `ParseableSpec`. A typical `Parseable` Type looks like:
+
+### Type without relations
+
+```swift
+class Foo: Parseable {
+  var uuid: String?
+  var blue: String?
+
+  required init?(from raw: Any) {
+      map(from: raw)
+  }
+
+  var mappers: [String : ((Any?)->())] {
+      return ["uuid" : {self.uuid <- $0 },
+              "blue" : {self.blue <- $0 }]
+  }
+
+}
+```
+
+### Type with relations
+```swift
+class Foo: Parseable {
+  var uuid: String?
+  var blue: String?
+  var fooRelation: FooRelation?
+  var relations: [FooRelation]?
+
+  required init?(from raw: Any) {
+      map(from: raw)
+  }
+
+  var mappers: [String : ((Any?)->())] {
+      return ["uuid" : {self.uuid <- $0 },
+              "blue" : {self.blue <- $0 },
+              "fooRelation": {self.fooRelation = FooRelation(from: $0)},
+              "relations": addRelations()
+              ]
+  }
+
+  private func addRelations() -> (Any?)->() {
+      return {[unowned self] in
+          self.relations = extractRelations(from: $0)
+      }
+  }
+
+}
+```
 
 ## Requirements
 
