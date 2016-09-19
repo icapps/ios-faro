@@ -1,12 +1,12 @@
-public enum Method: String {
+public enum HttpMethod: String {
     case GET, POST, PUT, DELETE, PATCH
 }
 
 open class Call {
     open let path: String
-    open let method: Method
+    open let method: HttpMethod
 
-    public init(path: String, method: Method = .GET) {
+    public init(path: String, method: HttpMethod = .GET) {
         self.path = path
         self.method = method
     }
