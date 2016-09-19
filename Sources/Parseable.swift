@@ -6,7 +6,6 @@ public protocol Parseable {
 
     var JSON: [String: Any]? { get }
 
-    static func extractRootNode(from json: Any) -> JsonNode
 }
 
 // MARK: Parse from model
