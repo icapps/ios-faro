@@ -3,13 +3,14 @@ import Faro
 import Stella
 
 class Post: Parseable {
+    var uuid: String?
 
     required init?(from raw: Any) {
-        
+        map(from: raw)
     }
-    
-    var JSON: [String: Any]? {
-        return nil
+
+    var mappers: [String: ((Any?) -> ())] {
+        return ["uuid": {self.uuid <- $0}]
     }
 
 }
@@ -28,7 +29,7 @@ class SwiftViewController: UIViewController {
                 switch result {
                 case .models(let models):
                     self.label.text = "Performed call for posts"
-                    printBreadcrumb("\(models)")
+                    printBreadcrumb("\(models!)")
                 default:
                     printError("Could not perform call for posts")
                 }
