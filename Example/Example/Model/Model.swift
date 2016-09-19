@@ -15,9 +15,7 @@ class Model: Parseable {
         uuid = json["uuid"]!
     }
     
-    var json: [String: Any?] {
-        return ["uuid": self.uuid]
-    }
+
 
     class func extractRootNode(from json: Any) -> JsonNode {
         if let jsonArray = json as? [[String: Any]] {

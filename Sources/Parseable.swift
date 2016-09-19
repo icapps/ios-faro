@@ -7,13 +7,9 @@ public protocol Parseable: class {
     /// TODO move to 'Call` class
     static func extractRootNode(from json: Any) -> JsonNode
 
-    /// Each object should return a function that accepts `Any?`.
-    /// Than function is used to set it to the corresponding property
-    var mappers: [String : ((Any?)->())] {get}
-
 }
 
-/// MARK: Automatic Parsing and mapping
+// MARK: Parse from model
 
 /// This maps `Any` type to the properties on anyone who is `Parseable`.
 public extension Parseable {

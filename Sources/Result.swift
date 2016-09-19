@@ -11,7 +11,7 @@ public enum Result<M: Parseable> {
 }
 
 public enum JsonNode {
-    case rootNode([String: Any])
-    case rootNodes([Any])
-    case rootNodeNotFound(json: Any)
+    case nodeObject([String: Any])
+    case nodeArray([Any])
+    case nodeNotFound(json: Any)
 }

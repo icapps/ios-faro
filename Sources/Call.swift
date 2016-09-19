@@ -18,4 +18,15 @@ open class Call {
         return request
     }
 
+    /// Use to begin paring at the correct Rootnode.
+    open func rootNode(from json: Any) -> JsonNode {
+        if let jsonArray = json as? [Any] {
+            return .nodeArray(jsonArray)
+        }else if let json = json as? [String: Any] {
+            return .nodeObject(json)
+        }else {
+            return .nodeNotFound(json: json)
+        }
+    }
+
 }
