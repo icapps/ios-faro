@@ -10,7 +10,7 @@ class Post: Parseable {
     }
 
     var mappers: [String: ((Any?) -> ())] {
-        return ["uuid": {value in self.uuid <- value }]
+        return ["uuid": {self.uuid <- $0}]
     }
 
 }
