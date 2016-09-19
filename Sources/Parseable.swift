@@ -51,6 +51,22 @@ public extension Parseable {
     
 }
 
+//MARK: Utility functions
+
+/// You can use this like in `ParseableSpec` in the example project.
+public func extractRelations<T: Parseable>(from: Any?) -> [T]? {
+    guard let json = from as? [[String: Any]] else {
+        return nil
+    }
+    var relations = [T]()
+    for dict in json {
+        if let foo = T(from: dict) {
+            relations.append(foo)
+        }
+    }
+    return relations
+}
+
 // MARK: Parse from model
 
 public func parse(_ callback: (_ json: inout [String: Any]) -> ()) -> [String: Any] {

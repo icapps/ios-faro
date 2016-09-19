@@ -8,6 +8,7 @@ class Foo: Parseable {
     var uuid: String?
     var blue: String?
     var fooRelation: FooRelation?
+    var relations: [FooRelation]?
 
     required init?(from raw: Any) {
         map(from: raw)
@@ -16,8 +17,15 @@ class Foo: Parseable {
     var mappers: [String : ((Any?)->())] {
         return ["uuid" : {self.uuid <- $0 },
                 "blue" : {self.blue <- $0 },
-                "fooRelation": {self.fooRelation = FooRelation(from: $0)}
+                "fooRelation": {self.fooRelation = FooRelation(from: $0)},
+                "relations": addRelations()
                 ]
+    }
+
+    private func addRelations() -> (Any?)->() {
+        return {[unowned self] in
+            self.relations = extractRelations(from: $0)
+        }
     }
 
 }
@@ -30,11 +38,13 @@ class FooRelation: Parseable {
     }
 
     var mappers: [String : ((Any?)->())] {
-        return ["uuid" : {value in self.uuid <- value }]
+        return ["uuid": {self.uuid <- $0}]
     }
+
+
 }
 
-class AutoMapperSpec: QuickSpec {
+class ParseableSpec: QuickSpec {
 
     override func spec() {
         describe("Map JSON autoMagically") {
@@ -60,16 +70,33 @@ class AutoMapperSpec: QuickSpec {
 
             context("One to one relation") {
                 let relationId = "relation"
-                let json = ["uuid": "id 1", "blue": "something", "fooRelation": ["uuid": relationId]] as [String : Any]
+                let json = ["fooRelation": ["uuid": relationId]] as [String : Any]
                 let foo = Foo(from: json)!
 
-                it("should fill relation") {
+                it("should add relation") {
                     expect(foo.fooRelation).toNot(beNil())
                 }
 
                 it("should fill properties on relation") {
                     expect(foo.fooRelation?.uuid).to(equal(relationId))
                 }
+            }
+
+            context("One to many relation") {
+                let relationId = ["relation 1", "relation 2"]
+                let relations =  [["uuid": relationId[0]], ["uuid": relationId[1]]]
+                let json = ["relations": relations] as [String: Any]
+                let foo = Foo(from: json)!
+
+                it("should add relation") {
+                    expect(foo.relations?.count).to(equal(2))
+                }
+
+                it("should fill properties on relation") {
+                    expect(foo.relations![0].uuid).to(equal(relationId[0]))
+                    expect(foo.relations![1].uuid).to(equal(relationId[1]))
+                }
+
             }
         }
     }
