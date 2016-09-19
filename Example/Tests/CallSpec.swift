@@ -40,6 +40,32 @@ class CallSpec: QuickSpec {
                     }
                 }
             }
+        }
+
+        describe("Call .Get with RootNode") {
+
+            let expected = "path"
+            let call = Call(path: expected, rootNode: "rootNode")
+
+            it("should extract single object from a rootNode") {
+                let node = call.rootNode(from: ["rootNode": ["key": "value"]])
+                switch node {
+                case .nodeObject(let node):
+                    expect(node["key"] as! String?).to(equal("value"))
+                default:
+                    XCTFail("should fetch node")
+                }
+            }
+
+            it("should extract Array of objects from a rootNode") {
+                let node = call.rootNode(from: ["rootNode": [["key": "value"]]])
+                switch node {
+                case .nodeArray(let nodes):
+                    expect(nodes.count).to(equal(1))
+                default:
+                    XCTFail("should fetch node")
+                }
+            }
 
         }
     }
