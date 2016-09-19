@@ -2,7 +2,7 @@ import UIKit
 import Faro
 import Stella
 
-class Posts: Parseable {
+class Post: Parseable {
 
     required init?(from raw: Any) {
         
@@ -23,12 +23,12 @@ class SwiftViewController: UIViewController {
         let service = ExampleService()
         let call = Call(path: "posts")
 
-        service.perform(call) { (result: Result<Posts>) in
+        service.perform(call) { (result: Result<Post>) in
             DispatchQueue.main.async {
                 switch result {
-                case .model(let model):
+                case .models(let models):
                     self.label.text = "Performed call for posts"
-                    printBreadcrumb("\(model)")
+                    printBreadcrumb("\(models)")
                 default:
                     printError("Could not perform call for posts")
                 }

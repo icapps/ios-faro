@@ -30,8 +30,7 @@ open class Service {
                 self.configuration.adaptor.serialize(from: data) { (jsonResult: Result<M>) in
                     switch jsonResult {
                     case .json(json: let json):
-                        let model = M(from: json)
-                        result(.model(model))
+                        result(self.handle(json: json, call: call))
                     default:
                         result(jsonResult)
                     }
@@ -80,6 +79,27 @@ open class Service {
             return .data(data)
         } else {
             return .ok
+        }
+    }
+
+    open func handle<M: Parseable>(json: Any, call: Call) -> Result<M> {
+
+        let rootNode = call.rootNode(from: json)
+        switch rootNode {
+        case .nodeObject(let node):
+            return Result.model(M(from: node))
+        case .nodeArray(let nodes):
+            var models = [M]()
+            for node in nodes {
+                if let model = M(from: node) {
+                    models.append(model)
+                } else {
+                    print("💣 could not parse \(node)")
+                }
+            }
+            return Result.models(models)
+        case .nodeNotFound(let json):
+            return Result.failure(.rootNodeNotFound(json: json))
         }
     }
 }
