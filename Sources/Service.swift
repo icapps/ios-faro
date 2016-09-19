@@ -93,7 +93,7 @@ open class Service {
             for node in nodes {
                 if let model = M(from: node) {
                     models.append(model)
-                }else {
+                } else {
                     print("💣 could not parse \(node)")
                 }
             }
