@@ -4,8 +4,9 @@ public protocol Parseable: class {
 
     init?(from raw: Any)
 
-    /// TODO move to 'Call` class
-    static func extractRootNode(from json: Any) -> JsonNode
+    /// Each object should return a function that accepts `Any?`.
+    /// Than function is used to set it to the corresponding property
+    var mappers: [String : ((Any?)->())] {get}
 
 }
 

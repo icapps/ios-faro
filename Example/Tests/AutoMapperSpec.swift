@@ -17,10 +17,6 @@ class Foo: Parseable {
                 "blue" : {value in self.blue <- value }]
     }
 
-    /// TODO move to 'Call` class
-    static func extractRootNode(from json: Any) -> JsonNode {
-        return .rootNode(json as! [String: Any])
-    }
 }
 
 
