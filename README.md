@@ -66,11 +66,11 @@ class Zoo: Deserializable {
         return ["uuid" : {self.uuid <- $0 },
                 "color" : {self.color <- $0 },
                 "animal": {self.animal = Animal(from: $0)},
-                "animalArray": animalArrayMapFunction()
+                "animalArray": mapAnimalArray()
                 ]
     }
 
-    private func animalArrayMapFunction() -> (Any?)->() {
+    private func mapAnimalArray() -> (Any?)->() {
         return {[unowned self] in
             self.animalArray = extractRelations(from: $0)
         }
@@ -107,7 +107,7 @@ extension Animal: Serializable {
 
 /// MARK: - CustomSerializalble
               "fooRelation": {self.fooRelation = FooRelation(from: $0)},
-              "relations": relationsMappingFunction()
+              "relations": mapRelations()
               ]
   }
 
