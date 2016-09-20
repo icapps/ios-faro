@@ -10,14 +10,14 @@ We build a service request by using a `Service` class as the point where you fir
 ### Features
 
 *Service*
-* Service written to use Swift without Objective-C
-* Service cleanly incapsulates all the parameters to handle a netowerk request
+* Service written to use Swift without using the Objective-C runtime
+* Service cleanly encapsulates all the parameters to handle a netowerk request in `Call`.
 * Easily write a 'MockService' to load JSON from a local drive
 
 *Automagically Parse*
 * Automatic Serialization and Mapping thanks to the use off the Swift 'Mirror' class.
-* Uses Protocol extensions to minimize the work needed on your end 😎
-* Because we use Protocols you can use any type including CoreData `NSManagedObject` 💪🏼
+* Uses Protocol extensions to minimize the work needed at your end 😎
+* Because we use Protocols you can use any type including CoreData's `NSManagedObject` 💪🏼
 
 ## Perform a Call
 
@@ -29,8 +29,8 @@ Take a look at the `ServiceSpec`, in short:
         service.perform(call) { (result: Result<Posts>) in
             DispatchQueue.main.async {
                 switch result {
-                case .models(let model):
-                    print("🎉 \(model)")
+                case .models(let models):
+                    print("🎉 \(models)")
                 default:
                     print("💣 fail")
                 }
@@ -39,7 +39,7 @@ Take a look at the `ServiceSpec`, in short:
 ```
 ## Parsing results
 
-Parsing is split into Serialization and Deserialization. Deserialization can happen automagically. Serialization can too if yout have no relations. With relations you can optionally implement `CustomSerializable`.
+Parsing and Serialization can happen automagically. For a more detailed example you can take a look at the ParseableSpec tests.
 Best is to take a look at `DeserilizableSpec` and `SerializableSpec`.
 
 ### DeSerializable
@@ -59,11 +59,11 @@ class Zoo: Deserializable {
         return ["uuid" : {self.uuid <- $0 },
                 "color" : {self.color <- $0 },
                 "animal": {self.animal = Animal(from: $0)},
-                "animalArray": addRelations()
+                "animalArray": animalArrayMapFunction()
                 ]
     }
 
-    private func addRelations() -> (Any?)->() {
+    private func animalArrayMapFunction() -> (Any?)->() {
         return {[unowned self] in
             self.animalArray = extractRelations(from: $0)
         }
@@ -99,6 +99,10 @@ extension Animal: Serializable {
 }
 
 /// MARK: - CustomSerializalble
+              "fooRelation": {self.fooRelation = FooRelation(from: $0)},
+              "relations": relationsMappingFunction()
+              ]
+  }
 
 /// You do not have to implement this. But if you want to serialize relations you have to.
 extension Zoo: CustomSerializable {

@@ -107,8 +107,8 @@ public extension Serializable {
 //MARK: - Utility functions
 
 /// You can use this like in `DeserializableSpec` in the example project.
-public func extractRelations<T: Deserializable>(from: Any?) -> [T]? {
-    guard let json = from as? [[String: Any]] else {
+public func extractRelations<T: Deserializable>(from json: Any?) -> [T]? {
+    guard let json = json as? [[String: Any]] else {
         return nil
     }
     var relations = [T]()
