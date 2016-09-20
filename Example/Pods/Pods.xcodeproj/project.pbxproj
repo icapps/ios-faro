@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		017A74FF1D913EF800826A86 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017A74FE1D913EF800826A86 /* Parameters.swift */; };
 		08B2D37A0C277635A439A5D4E3DC9150 /* Pods-Faro_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 33557C16AD696055CCC381748750EB8A /* Pods-Faro_Example-dummy.m */; };
 		099C64CF560DC424DB43BBBEC6370D8F /* ThrowError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7356BAF0B1DB7B39F441B3E70AF0E /* ThrowError.swift */; };
 		0A95C6AB602F6222953186716A0FCEA0 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA21A72AD9972A8422E06D8418A6FA55 /* Configuration.swift */; };
@@ -169,6 +170,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		017A74FE1D913EF800826A86 /* Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
 		02C30694776B8ECA3FAEFF016EAA8380 /* Pods-Faro_Example-Faro_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Faro_Example-Faro_Tests-dummy.m"; sourceTree = "<group>"; };
 		033FAA74345896BABFDFDABD8968C780 /* Example.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Example.swift; path = Sources/Quick/Example.swift; sourceTree = "<group>"; };
 		03FCB4E82D5836182B5556743099A498 /* Print.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Print.swift; path = Sources/Printing/Print.swift; sourceTree = "<group>"; };
@@ -501,6 +503,7 @@
 				E6B672388C63CD7F7560CE2CB8FFC0F5 /* Parseable.swift */,
 				F8B59A8D2AC8C53AECD275CCD66A37C0 /* Result.swift */,
 				F7B545544A9591631F9DE640A0B7EB0D /* Service.swift */,
+				017A74FE1D913EF800826A86 /* Parameters.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -1003,6 +1006,7 @@
 				D62A285CAAF0D150FA1B051253C5880C /* Parseable.swift in Sources */,
 				AD8E0DD21D2E0B821EDE444138054233 /* Result.swift in Sources */,
 				3F7C62DCF8BFF0A766E3A26D3843F03F /* Service.swift in Sources */,
+				017A74FF1D913EF800826A86 /* Parameters.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

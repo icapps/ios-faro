@@ -82,44 +82,44 @@ public func setDateFormat(_ format: String) {
 public func parseString(_ named: String!, from: [String: Any]) throws -> String! {
     if let named = named , !named.isEmpty {
         guard let value = from[named] as? String else {
-            throw ParseError.emptyValue(key: named)
+            throw FaroError.emptyValue(key: named)
         }
         return value
     } else {
-        throw ParseError.emptyKey
+        throw FaroError.emptyKey
     }
 }
 
 public func parseInt(_ named: String!, from: [String: Any]) throws -> Int! {
     if let named = named , !named.isEmpty {
         guard let value = from[named]! as? Int else {
-            throw ParseError.emptyValue(key: named)
+            throw FaroError.emptyValue(key: named)
         }
         return value
     } else {
-        throw ParseError.emptyKey
+        throw FaroError.emptyKey
     }
 }
 
 public func parseDouble(_ named: String!, from: [String: Any]) throws -> Double! {
     if let named = named , !named.isEmpty {
         guard let value = from[named] as? Double else {
-            throw ParseError.emptyValue(key: named)
+            throw FaroError.emptyValue(key: named)
         }
         return value
     } else {
-        throw ParseError.emptyKey
+        throw FaroError.emptyKey
     }
 }
 
 public func parseBool(_ named: String!, from: [String: Any]) throws -> Bool! {
     if let named = named , !named.isEmpty {
         guard let value = from[named] as? Bool else {
-            throw ParseError.emptyValue(key: named)
+            throw FaroError.emptyValue(key: named)
         }
         return value
     } else {
-        throw ParseError.emptyKey
+        throw FaroError.emptyKey
     }
 }
 
@@ -130,9 +130,9 @@ public func parseDate(_ named: String!, from: [String: Any]) throws -> Date! {
         } else if from[named] is String && DateParser.shared.dateFormat.characters.count > 0 {
             return DateParser.shared.dateFormatter.date(from: from[named] as! String)
         }
-        throw ParseError.emptyValue(key: named)
+        throw FaroError.emptyValue(key: named)
     } else {
-        throw ParseError.emptyKey
+        throw FaroError.emptyKey
     }
 }
 
@@ -147,7 +147,7 @@ public func parseObject<T>(from: Any, ofType: T.Type) throws -> Parseable? where
 public func parseObjects<T>(from: Any, ofType: T.Type) throws -> [Parseable]? where T: Parseable {
     if from is [[String: Any]] {
         guard let rawObjects = from as? [[String: Any]] else {
-            throw ParseError.emptyCollection
+            throw FaroError.emptyCollection
         }
         return rawObjects.flatMap { T(from: $0) }
     } else {
@@ -262,8 +262,3 @@ class DateParser: NSObject {
     }
 }
 
-enum ParseError: Error {
-    case emptyKey
-    case emptyValue(key: String)
-    case emptyCollection
-}

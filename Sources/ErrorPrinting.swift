@@ -1,7 +1,11 @@
 
 /// Catches any throws and switches if to af failure after printing the error.
-public func printError(_ error: FaroError) {
-    switch error {
+public func printError(_ error: Error) {
+    var faroError = error
+    if !(error is FaroError) {
+        faroError = FaroError.nonFaroError(error)
+    }
+    switch faroError as! FaroError {
     case .general:
         print("💣 General service error")
     case .invalidUrl(let url):
@@ -18,5 +22,14 @@ public func printError(_ error: FaroError) {
         print("💣 Could not find root node in json: \(json)")
     case .networkError(let networkError):
         print("💣 HTTP error: \(networkError)")
+    case .emptyCollection:
+        print("empty collection")
+    case .emptyKey:
+        print("missing key")
+    case .emptyValue(let key):
+        print("no value for key " + key)
+    case .malformed(let info):
+        print(info)
     }
+    
 }
