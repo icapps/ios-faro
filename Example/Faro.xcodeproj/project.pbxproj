@@ -27,6 +27,7 @@
 		C032815F1D77319B0047825C /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815E1D77319B0047825C /* Model.swift */; };
 		C066958C1D87002400BD3703 /* JSONAdaptorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */; };
 		C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ACDE631D79B65100064801 /* MockModel.swift */; };
+		C0BFD2C01D90E1D200FAB4E0 /* SerializableSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BFD2BE1D90E09900FAB4E0 /* SerializableSpec.swift */; };
 		C0C3D4DE1D8EA01F0011E972 /* DeSerializationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C3D4DD1D8EA01F0011E972 /* DeSerializationSpec.swift */; };
 		D377DE1E7E23BDD451F1AF77 /* Pods_Faro_Example_Faro_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E1A5D1778B1450F795E6D9 /* Pods_Faro_Example_Faro_Tests.framework */; };
 /* End PBXBuildFile section */
@@ -73,6 +74,7 @@
 		C05EBF731D4B8E3000B950EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAdaptorSpec.swift; sourceTree = "<group>"; };
 		C0ACDE631D79B65100064801 /* MockModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockModel.swift; sourceTree = "<group>"; };
+		C0BFD2BE1D90E09900FAB4E0 /* SerializableSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializableSpec.swift; sourceTree = "<group>"; };
 		C0C3D4DD1D8EA01F0011E972 /* DeSerializationSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeSerializationSpec.swift; sourceTree = "<group>"; };
 		D39D515CDEB600C0DEBE26E0 /* Pods-Faro_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example/Pods-Faro_Example.release.xcconfig"; sourceTree = "<group>"; };
 		DBBD94A15C031D6EAFAF4B10 /* Pods-Faro_Example-Faro_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example-Faro_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -156,11 +158,12 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */,
-				C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */,
-				C0C3D4DD1D8EA01F0011E972 /* DeSerializationSpec.swift */,
-				C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */,
 				C02ADF781D8823F800FA5B32 /* CallSpec.swift */,
+				C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */,
+				C0C3D4DD1D8EA01F0011E972 /* DeSerializationSpec.swift */,
+				C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */,
+				C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */,
+				C0BFD2BE1D90E09900FAB4E0 /* SerializableSpec.swift */,
 				C02ADF771D8823F800FA5B32 /* ServiceSpec.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 				C03281571D7722F40047825C /* TestHelpers */,
@@ -494,6 +497,7 @@
 				C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */,
 				C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */,
 				C03281591D7722F40047825C /* MockService.swift in Sources */,
+				C0BFD2C01D90E1D200FAB4E0 /* SerializableSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
