@@ -1,7 +1,7 @@
 import Faro
 
 /// Example model
-class Model: Parseable {
+class Model: Deserializable {
     var uuid: String?
 
     var mappers: [String: ((Any?) -> ())] {

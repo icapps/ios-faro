@@ -14,8 +14,8 @@ open class Service {
     /// Default implementation expects `adaptor` to be     case JSON(AnyObject). If this needs to be different you need to override this method.
     /// Typ! You can subclass 'Bar' and add a default service
     /// - parameter call : gives the details to find the entity on the server
-    /// - parameter result : `Result<M: Parseable>` closure should be called with `case Model(M)` other cases are a failure.
-    open func perform<M: Parseable>(_ call: Call, result: @escaping (Result<M>) -> ()) {
+    /// - parameter result : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
+    open func perform<M: Deserializable>(_ call: Call, result: @escaping (Result<M>) -> ()) {
 
         guard let request = call.request(withConfiguration: configuration) else {
             result(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")))
@@ -49,7 +49,7 @@ open class Service {
         task?.cancel()
     }
 
-    open func handle<M: Parseable>(data: Data?, urlResponse: URLResponse?, error: Error?) -> Result<M> {
+    open func handle<M: Deserializable>(data: Data?, urlResponse: URLResponse?, error: Error?) -> Result<M> {
         guard error == nil else {
             let returnError = FaroError.nonFaroError(error!)
             printError(returnError)
@@ -82,7 +82,7 @@ open class Service {
         }
     }
 
-    open func handle<M: Parseable>(json: Any, call: Call) -> Result<M> {
+    open func handle<M: Deserializable>(json: Any, call: Call) -> Result<M> {
 
         let rootNode = call.rootNode(from: json)
         switch rootNode {
@@ -100,6 +100,8 @@ open class Service {
             return Result.models(models)
         case .nodeNotFound(let json):
             return Result.failure(.rootNodeNotFound(json: json))
+        case .nodeNotSerialized:
+            return Result.failure(.serializationError)
         }
     }
 }

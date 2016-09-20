@@ -18,5 +18,7 @@ public func printError(_ error: FaroError) {
         print("💣 Could not find root node in json: \(json)")
     case .networkError(let networkError):
         print("💣 HTTP error: \(networkError)")
+    case .serializationError:
+        print("💣 serialization error")
     }
 }

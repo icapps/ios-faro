@@ -1,6 +1,8 @@
 import Foundation
 
-public protocol Parseable: class {
+/// Sets data on a class `Type`.
+/// Unfortunatally it has to be a class because functions are mutating.
+public protocol Deserializable: class {
 
     init?(from raw: Any)
 
@@ -8,14 +10,34 @@ public protocol Parseable: class {
     /// Than function is used to set it to the corresponding property
     var mappers: [String : ((Any?)->())] {get}
 
+    /// Below is optional because implemented in extension
+    /// You can override them to customise
     func map(from raw: Any)
+
+    subscript(key: String) -> Any? {get set}
 
 }
 
-// MARK: Parse from model
+/// Serializes any `Type` into json.
+public protocol Serializable {
+    /// Get a json Dictionary back one level deep. Meaning we do not Parse relations.
+    /// if you want your relations parsed implement `CustomSerializable`
+    var json: [String: Any?] {get}
 
-/// This maps `Any` type to the properties on anyone who is `Parseable`.
-public extension Parseable {
+}
+
+public protocol CustomSerializable: Serializable {
+    /// - returns: if a given `propertyName` is a Relation (`Type` or `[Type]`)
+    func isRelation(for propertyName: String) -> Bool
+    /// - returns: the serialized json of a relation. 
+    /// If single relation will be `[String: Any?]' else `[[String: Any?]]`
+    func jsonForRelation(with key: String) -> JsonNode
+}
+
+// MARK: Extension Deserialize from model
+
+/// This maps `Any` type to the properties on anyone who is `Deserializable`.
+public extension Deserializable {
     /// Uses `Mirror` to lookup a list of properties on your `Type`
     public func map(from raw: Any)  {
         guard let json = raw as? [String: Any] else {
@@ -28,33 +50,66 @@ public extension Parseable {
         }
     }
 
-    /// Makes sure a `Parseable` kan be used as a supscript
+    /// Makes sure a `Deserializable` kan be used as a supscript
     public subscript(key: String) -> Any? {
         get {
-            return json[key]
+            if let serializableSelf = self as? Serializable {
+                return serializableSelf.json[key]
+            } else {
+                return nil
+            }
         } set {
             if let mapper = mappers[key] {
                 mapper(newValue)
             }
         }
     }
-
-    /// Get a json Dictionary back
-    public var json: [String: Any?] {
-        var internalMap = [String: Any]()
-        let mirror = Mirror(reflecting: self)
-        for child in mirror.children {
-            internalMap[child.label!] = child.value
-        }
-        return internalMap
-    }
     
 }
 
-//MARK: Utility functions
+//MARK: - Extension Serialize from model
 
-/// You can use this like in `ParseableSpec` in the example project.
-public func serializeRelations<T: Parseable>(from json: Any?) -> [T]? {
+public extension Serializable {
+    /// Get a json Dictionary back one level deep. Meaning we do not Parse relations.
+    /// if you want your relations parsed implement `CustomSerializable`
+    public var json: [String: Any?] {
+        get {
+            if let customSelf = self as? CustomSerializable {
+                var internalMap = [String: Any]()
+                let mirror = Mirror(reflecting: self)
+                for child in mirror.children where customSelf.isRelation(for: child.label!) == false{
+                    internalMap[child.label!] = child.value
+                }
+
+                for child in mirror.children where customSelf.isRelation(for: child.label!) == true {
+                    let relation = customSelf.jsonForRelation(with: child.label!)
+                    switch relation {
+                    case .nodeArray(let array):
+                        internalMap[child.label!] = array
+                    case .nodeObject(let object):
+                        internalMap[child.label!] = object
+                    default:
+                        break
+                    }
+                }
+                return internalMap
+            } else {
+                var internalMap = [String: Any]()
+                let mirror = Mirror(reflecting: self)
+                for child in mirror.children {
+                    internalMap[child.label!] = child.value
+                }
+                return internalMap
+            }
+        }
+    }
+
+}
+
+//MARK: - Utility functions
+
+/// You can use this like in `DeserializableSpec` in the example project.
+public func extractRelations<T: Deserializable>(from json: Any?) -> [T]? {
     guard let json = json as? [[String: Any]] else {
         return nil
     }
@@ -67,7 +122,7 @@ public func serializeRelations<T: Parseable>(from json: Any?) -> [T]? {
     return relations
 }
 
-// MARK: Parse from model
+// MARK: - Parse from model
 
 public func parse(_ callback: (_ json: inout [String: Any]) -> ()) -> [String: Any] {
     var json = [String: Any]()
@@ -136,7 +191,7 @@ public func parseDate(_ named: String!, from: [String: Any]) throws -> Date! {
     }
 }
 
-public func parseObject<T>(from: Any, ofType: T.Type) throws -> Parseable? where T: Parseable {
+public func parseObject<T>(from: Any, ofType: T.Type) throws -> Deserializable? where T: Deserializable {
     if from is [String: Any] {
         return T(from: from as! [String: Any])!
     } else {
@@ -144,7 +199,7 @@ public func parseObject<T>(from: Any, ofType: T.Type) throws -> Parseable? where
     }
 }
 
-public func parseObjects<T>(from: Any, ofType: T.Type) throws -> [Parseable]? where T: Parseable {
+public func parseObjects<T>(from: Any, ofType: T.Type) throws -> [Deserializable]? where T: Deserializable {
     if from is [[String: Any]] {
         guard let rawObjects = from as? [[String: Any]] else {
             throw ParseError.emptyCollection
@@ -182,7 +237,7 @@ public func <- (lhs: inout Any?, rhs: Date?) {
     }
 }
 
-public func <- <P>(lhs: inout P?, rhs: Any?) where P: Parseable {
+public func <- <P>(lhs: inout P?, rhs: Any?) where P: Deserializable {
     guard let dict = rhs as? [String: Any] else {
         lhs = nil
         return
@@ -190,7 +245,7 @@ public func <- <P>(lhs: inout P?, rhs: Any?) where P: Parseable {
     lhs = P(from: dict)!
 }
 
-public func <- <P>(lhs: inout [P]?, rhs: Any?) where P: Parseable {
+public func <- <P>(lhs: inout [P]?, rhs: Any?) where P: Deserializable {
     guard let rawObjects = rhs as? [[String: Any]] else {
         lhs = nil
         return
@@ -233,14 +288,14 @@ public func <- (lhs: inout Date?, rhs: (Any?, String)) {
     lhs = DateParser.shared.dateFormatter.date(from: rhs.0 as! String)
 }
 
-public func <- <P>(lhs: inout Any?, rhs: P?) where P: Parseable {
+public func <- <P>(lhs: inout Any?, rhs: P?) where P: Serializable {
     lhs = rhs?.json
 }
 
-public func <- <P>(lhs: inout Any?, rhs: [P]?) where P: Parseable {
+public func <- <P>(lhs: inout Any?, rhs: [P]?) where P: Serializable {
     var array = [[String: Any]]()
-    for parseable in rhs! {
-        array.append(parseable.json)
+    for serializable in rhs! {
+        array.append(serializable.json)
     }
     lhs = array
 }
