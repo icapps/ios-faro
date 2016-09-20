@@ -18,11 +18,11 @@ class Zoo: Deserializable {
         return ["uuid" : {self.uuid <- $0 },
                 "color" : {self.color <- $0 },
                 "animal": {self.animal = Animal(from: $0)},
-                "animalArray": addRelations()
+                "animalArray": mapRelations()
                 ]
     }
 
-    private func addRelations() -> (Any?)->() {
+    private func mapRelations() -> (Any?)->() {
         return {[unowned self] in
             self.animalArray = extractRelations(from: $0)
         }
@@ -53,24 +53,8 @@ class DeserializableSpec: QuickSpec {
                 let zoo = Zoo(from: json)!
 
                 it("should fill all properties") {
-                    expect(zoo.uuid).to(equal("id 1"))
-                    expect(zoo.color).to(equal("something"))
-                }
-
-                context("serialize") {
-                    let serializedzoo = zoo.json
-
-                    it("should be subscriptable get") {
-                        let uuid = zoo[uuidKey] as! String?
-                        let blue = zoo["color"] as! String?
-
-                        expect(uuid).to(equal("id 1"))
-                        expect(blue).to(equal("something"))
-                    }
-                    it("should serilize") {
-                        expect(serializedzoo[uuidKey] as! String?).to(equal("id 1"))
-                        expect(serializedzoo["color"] as! String?).to(equal("something"))
-                    }
+                    expect(zoo.uuid) == "id 1"
+                    expect(zoo.color) == "something"
                 }
             }
 
