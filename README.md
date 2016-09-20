@@ -7,7 +7,7 @@ For a quick start follow the instructions below. For more in depth information o
 ## Concept
 We build a service request by using a `Service` class as the point where you fire your `Call` and get a `Result`.
 
-### features
+### Features
 
 *Service*
 * Service written to use Swift without Objective-C
@@ -39,52 +39,93 @@ Take a look at the `ServiceSpec`, in short:
 ```
 ## Parsing results
 
-Parsing and Serialization can happen automagically. Best is to take a look at `ParseableSpec`. A typical `Parseable` Type looks like:
+Parsing is split into Serialization and Deserialization. Deserialization can happen automagically. Serialization can too if yout have no relations. With relations you can optionally implement `CustomSerializable`.
+Best is to take a look at `DeserilizableSpec` and `SerializableSpec`.
 
-### Type without relations
+### DeSerializable
 
 ```swift
-class Foo: Parseable {
-  var uuid: String?
-  var blue: String?
+class Zoo: Deserializable {
+    var uuid: String?
+    var color: String?
+    var animal: Animal?
+    var animalArray: [Animal]?
 
-  required init?(from raw: Any) {
-      map(from: raw)
-  }
+    required init?(from raw: Any) {
+        map(from: raw)
+    }
 
-  var mappers: [String : ((Any?)->())] {
-      return ["uuid" : {self.uuid <- $0 },
-              "blue" : {self.blue <- $0 }]
-  }
+    var mappers: [String : ((Any?)->())] {
+        return ["uuid" : {self.uuid <- $0 },
+                "color" : {self.color <- $0 },
+                "animal": {self.animal = Animal(from: $0)},
+                "animalArray": addRelations()
+                ]
+    }
+
+    private func addRelations() -> (Any?)->() {
+        return {[unowned self] in
+            self.animalArray = extractRelations(from: $0)
+        }
+    }
+
+}
+
+class Animal: Deserializable {
+    var uuid: String?
+
+    required init?(from raw: Any) {
+        map(from: raw)
+    }
+
+    var mappers: [String : ((Any?)->())] {
+        return ["uuid": {self.uuid <- $0}]
+    }
 
 }
 ```
+### Serializable
+
+Without relations Serialization happens because of an extension on `Serializable`. Simply to `Type.json`.
 
 ### Type with relations
 ```swift
-class Foo: Parseable {
-  var uuid: String?
-  var blue: String?
-  var fooRelation: FooRelation?
-  var relations: [FooRelation]?
+extension Zoo: Serializable {
+    //implementation handled by extension in Faro. Override if needed.
+}
 
-  required init?(from raw: Any) {
-      map(from: raw)
-  }
+extension Animal: Serializable {
+    //implementation handled by extension in Faro. Override if needed.
+}
 
-  var mappers: [String : ((Any?)->())] {
-      return ["uuid" : {self.uuid <- $0 },
-              "blue" : {self.blue <- $0 },
-              "fooRelation": {self.fooRelation = FooRelation(from: $0)},
-              "relations": addRelations()
-              ]
-  }
+/// MARK: - CustomSerializalble
 
-  private func addRelations() -> (Any?)->() {
-      return {[unowned self] in
-          self.relations = extractRelations(from: $0)
-      }
-  }
+/// You do not have to implement this. But if you want to serialize relations you have to.
+extension Zoo: CustomSerializable {
+
+    func isRelation(for label: String) -> Bool {
+        let reations = ["animal": true, "animalArray": true]
+        let isRelation = reations[label]
+        return isRelation != nil ? isRelation! : false
+    }
+
+    func jsonForRelation(with key: String) -> JsonNode {
+        if key == "animal" {
+            guard let relation = animal?.json else {
+                return .nodeNotSerialized
+            }
+            return .nodeObject(relation)
+        } else if key == "animalArray" {
+            guard let relations = animalArray else {
+                return .nodeNotSerialized
+            }
+
+            let jsonRelation = relations.map{ $0.json }
+            return .nodeArray(jsonRelation)
+        }
+
+        return .nodeNotSerialized
+    }
 
 }
 ```
