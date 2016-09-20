@@ -10,6 +10,14 @@ public enum FaroError: Error, Equatable {
     case serializationError
 }
 
+public enum ParseError: Error {
+    case emptyKey
+    case emptyValue(key: String)
+    case emptyCollection
+}
+
+/// MARK: - Compare Errors
+
 public func == (lhs: FaroError, rhs: FaroError) -> Bool {
     switch (lhs, rhs) {
     case (.general, .general):
