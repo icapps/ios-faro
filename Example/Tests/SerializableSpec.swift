@@ -77,7 +77,29 @@ class SerializableSpec: QuickSpec {
 
                 let serializedAnimal = serializedZoo[animalKey] as! [String: Any]
 
-                expect(serializedAnimal[uuidKey] as! String?).to(equal(animalID))
+                it("should contain uuid of animal") {
+                    expect(serializedAnimal[uuidKey] as! String?).to(equal(animalID))
+                }
+            }
+
+            context("One to many relation - animal Array") {
+                let animalIDs = ["animal 1", "animal 2"]
+                let animalArray =  [[uuidKey: animalIDs[0]], [uuidKey: animalIDs[1]]]
+                let animalArrayKey = "animalArray"
+                let json = [animalArrayKey: animalArray] as [String: Any]
+                let zoo = Zoo(from: json)!
+
+                let serializedzoo = zoo.json
+                let serializedAnimalArray = serializedzoo["animalArray"] as! [[String: Any]]
+                let animal1 = serializedAnimalArray.first as! [String: Any?]
+                let animal2 = serializedAnimalArray.last as! [String: Any?]
+
+                it("should contain the animal ids in the array") {
+                    expect(serializedAnimalArray.count).to(equal(2))
+                    expect(animal1[uuidKey] as! String?).to(equal(animalIDs[0]))
+                    expect(animal2[uuidKey] as! String?).to(equal(animalIDs[1]))
+                }
+
             }
         }
     }

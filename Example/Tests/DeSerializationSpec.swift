@@ -104,13 +104,6 @@ class DeserializableSpec: QuickSpec {
                     expect(zoo.animalArray![0].uuid).to(equal(relationId[0]))
                     expect(zoo.animalArray![1].uuid).to(equal(relationId[1]))
                 }
-
-                context("serialize") {
-                    let serializedzoo = zoo.json
-                    let animalArray = serializedzoo["animalArray"] as! [[String: Any?]]
-
-                    expect(animalArray.count).to(equal(2))
-                }
             }
         }
     }
