@@ -25,7 +25,10 @@ public protocol Serializable {
 }
 
 public protocol CustomSerializable: Serializable {
-    func isRelation(for label: String) -> Bool
+    /// - returns: if a given `propertyName` is a Relation (`Type` or `[Type]`)
+    func isRelation(for propertyName: String) -> Bool
+    /// - returns: the serialized json of a relation. 
+    /// If single relation will be `[String: Any?]' else `[[String: Any?]]`
     func jsonForRelation(with key: String) -> JsonNode
 }
 
