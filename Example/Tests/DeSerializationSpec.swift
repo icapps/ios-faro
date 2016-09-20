@@ -4,7 +4,7 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-class Foo: Parseable {
+class Foo: Deserializable, Serializable {
     var uuid: String?
     var blue: String?
     var fooRelation: FooRelation?
@@ -61,7 +61,7 @@ extension Foo: CustomSerializable {
 
 }
 
-class FooRelation: Parseable {
+class FooRelation: Deserializable, Serializable {
     var uuid: String?
 
     required init?(from raw: Any) {
@@ -74,7 +74,7 @@ class FooRelation: Parseable {
 
 }
 
-class ParseableSpec: QuickSpec {
+class DeserializableSpec: QuickSpec {
 
     override func spec() {
         describe("Map JSON autoMagically") {
@@ -88,18 +88,22 @@ class ParseableSpec: QuickSpec {
                     expect(foo.blue).to(equal("something"))
                 }
 
-                it("should be subscriptable") {
-                    let uuid = foo[uuidKey] as! String?
-                    let blue = foo["blue"] as! String?
 
-                    expect(uuid).to(equal("id 1"))
-                    expect(blue).to(equal("something"))
-                }
 
                 context("serialize") {
                     let serializedFoo = foo.json
-                    expect(serializedFoo[uuidKey] as! String?).to(equal("id 1"))
-                    expect(serializedFoo["blue"] as! String?).to(equal("something"))
+
+                    it("should be subscriptable get") {
+                        let uuid = foo[uuidKey] as! String?
+                        let blue = foo["blue"] as! String?
+
+                        expect(uuid).to(equal("id 1"))
+                        expect(blue).to(equal("something"))
+                    }
+                    it("should serilize") {
+                        expect(serializedFoo[uuidKey] as! String?).to(equal("id 1"))
+                        expect(serializedFoo["blue"] as! String?).to(equal("something"))
+                    }
                 }
 
             }

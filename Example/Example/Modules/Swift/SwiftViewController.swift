@@ -2,7 +2,7 @@ import UIKit
 import Faro
 import Stella
 
-class Post: Parseable {
+class Post: Deserializable {
     var uuid: String?
 
     required init?(from raw: Any) {
