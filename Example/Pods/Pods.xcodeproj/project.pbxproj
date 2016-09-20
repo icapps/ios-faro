@@ -99,6 +99,11 @@
 		BBF88FA3F28C0906DBB78314A8E50A01 /* AssertionRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC74F00BDAB9577E35A1DB479721E5D /* AssertionRecorder.swift */; };
 		BD0445E39C97A49EAFD877DCA85EF8EA /* NMBExceptionCapture.h in Headers */ = {isa = PBXBuildFile; fileRef = B239BD0EDFFBF3506746000CE2236B66 /* NMBExceptionCapture.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BEA76FA499D5899BD98DBD891FF921D4 /* SatisfyAnyOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB185B51E4E6014622BA875A79076CE5 /* SatisfyAnyOf.swift */; };
+		C0B81C9F1D90D435002DBB8B /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B81C9E1D90D435002DBB8B /* Serializable.swift */; };
+		C0B81CA11D90D4F6002DBB8B /* DeserializeOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B81CA01D90D4F6002DBB8B /* DeserializeOperators.swift */; };
+		C0B81CA51D90D54C002DBB8B /* DateParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B81CA41D90D54C002DBB8B /* DateParser.swift */; };
+		C0B81CA71D90D965002DBB8B /* SerializeOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B81CA61D90D965002DBB8B /* SerializeOperators.swift */; };
+		C0B81CA91D90DA22002DBB8B /* SerializateFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B81CA81D90DA22002DBB8B /* SerializateFunctions.swift */; };
 		C10896B1EEB0291A92FBA848007CD7CF /* NMBExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A332583CD06DD91136F300A101E3C90 /* NMBExpectation.swift */; };
 		C755136BFCDFA000C44C8BBCA065E4BE /* HaveCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D87990EC1C6AE531DFF392AF1A67E0B /* HaveCount.swift */; };
 		C81BEDE79545C013BEBBA0363480FD47 /* DSL+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FE769DABBE399A970632B6E3A1C534 /* DSL+Wait.swift */; };
@@ -279,6 +284,11 @@
 		BC121FDE52F6EEF38C4E50D1F94A2E8D /* Stella-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Stella-dummy.m"; sourceTree = "<group>"; };
 		BDA6949621D82AE439F0D5A98B87C4E7 /* Quick-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Quick-dummy.m"; sourceTree = "<group>"; };
 		C06CC445CC22D167166EA2D8ABEE521A /* Faro.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Faro.xcconfig; sourceTree = "<group>"; };
+		C0B81C9E1D90D435002DBB8B /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
+		C0B81CA01D90D4F6002DBB8B /* DeserializeOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializeOperators.swift; sourceTree = "<group>"; };
+		C0B81CA41D90D54C002DBB8B /* DateParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateParser.swift; sourceTree = "<group>"; };
+		C0B81CA61D90D965002DBB8B /* SerializeOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializeOperators.swift; sourceTree = "<group>"; };
+		C0B81CA81D90DA22002DBB8B /* SerializateFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializateFunctions.swift; sourceTree = "<group>"; };
 		C936E873ABEE9CB399770661CE77C1A3 /* HooksPhase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HooksPhase.swift; path = Sources/Quick/Hooks/HooksPhase.swift; sourceTree = "<group>"; };
 		C96AF2F49618802326CD1F63E8E26D1F /* XCTestSuite+QuickTestSuiteBuilder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "XCTestSuite+QuickTestSuiteBuilder.m"; path = "Sources/QuickObjectiveC/XCTestSuite+QuickTestSuiteBuilder.m"; sourceTree = "<group>"; };
 		CB350420D20E1685338F4186113564D2 /* NMBStringify.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NMBStringify.h; path = Sources/NimbleObjectiveC/NMBStringify.h; sourceTree = "<group>"; };
@@ -495,11 +505,16 @@
 				3D713BB0FE498931F6EE219D0CD37426 /* Adaptable.swift */,
 				111CAA6389A02FEC5D87AF1FA307C1B9 /* Call.swift */,
 				F844AD5A3B13137A647B4CF24ADF298C /* Configuration.swift */,
+				C0B81CA41D90D54C002DBB8B /* DateParser.swift */,
+				E6B672388C63CD7F7560CE2CB8FFC0F5 /* Deserializable.swift */,
+				C0B81CA01D90D4F6002DBB8B /* DeserializeOperators.swift */,
 				9DE617467FB1372CB9EBB2D06D623A69 /* ErrorPrinting.swift */,
 				E76F578575A03FC3FF014022BA156470 /* FaroError.swift */,
 				B8B2BBBE30FD02420512FCBE18976768 /* JSONAdaptor.swift */,
-				E6B672388C63CD7F7560CE2CB8FFC0F5 /* Deserializable.swift */,
 				F8B59A8D2AC8C53AECD275CCD66A37C0 /* Result.swift */,
+				C0B81C9E1D90D435002DBB8B /* Serializable.swift */,
+				C0B81CA81D90DA22002DBB8B /* SerializateFunctions.swift */,
+				C0B81CA61D90D965002DBB8B /* SerializeOperators.swift */,
 				F7B545544A9591631F9DE640A0B7EB0D /* Service.swift */,
 			);
 			path = Sources;
@@ -995,11 +1010,16 @@
 			files = (
 				2A11E3CCE97F5C8A350DA4AA9F9800C4 /* Adaptable.swift in Sources */,
 				24AB32E61B985CFE5288E9746FA7030C /* Call.swift in Sources */,
+				C0B81CA91D90DA22002DBB8B /* SerializateFunctions.swift in Sources */,
+				C0B81CA51D90D54C002DBB8B /* DateParser.swift in Sources */,
 				DE80A25CB5E98DEA078715F2516CAD05 /* Configuration.swift in Sources */,
 				0D7E4D3E2B2ACCF34BF0DAD47B52E441 /* ErrorPrinting.swift in Sources */,
 				A3163427E94F6E2781CF4907D20EF4E4 /* Faro-dummy.m in Sources */,
 				3B37729652407D5B17F7A498132C15E4 /* FaroError.swift in Sources */,
+				C0B81CA11D90D4F6002DBB8B /* DeserializeOperators.swift in Sources */,
+				C0B81C9F1D90D435002DBB8B /* Serializable.swift in Sources */,
 				8F51C4760B1A8CA1D6A1F50E45D9772A /* JSONAdaptor.swift in Sources */,
+				C0B81CA71D90D965002DBB8B /* SerializeOperators.swift in Sources */,
 				D62A285CAAF0D150FA1B051253C5880C /* Deserializable.swift in Sources */,
 				AD8E0DD21D2E0B821EDE444138054233 /* Result.swift in Sources */,
 				3F7C62DCF8BFF0A766E3A26D3843F03F /* Service.swift in Sources */,
