@@ -54,8 +54,8 @@ public extension Parseable {
 //MARK: Utility functions
 
 /// You can use this like in `ParseableSpec` in the example project.
-public func extractRelations<T: Parseable>(from: Any?) -> [T]? {
-    guard let json = from as? [[String: Any]] else {
+public func serializeRelations<T: Parseable>(from json: Any?) -> [T]? {
+    guard let json = json as? [[String: Any]] else {
         return nil
     }
     var relations = [T]()
