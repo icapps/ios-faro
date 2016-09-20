@@ -19,6 +19,13 @@ We build a service request by using a `Service` class as the point where you fir
 * Uses Protocol extensions to minimize the work needed at your end 😎
 * Because we use Protocols you can use any type including CoreData's `NSManagedObject` 💪🏼
 
+## Define a Call
+
+You can make your example service and then a call becames a oneliner.
+```Swift
+let call = Call(path: "posts", method: HTTPMethod.GET, rootNode: "rootNode")
+// the rootNode is used to query the json in the response in `rootNode(from json:)`
+```
 ## Perform a Call
 
 Take a look at the `ServiceSpec`, in short:
