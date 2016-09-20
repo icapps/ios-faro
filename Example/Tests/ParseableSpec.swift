@@ -18,11 +18,11 @@ class Foo: Parseable {
         return ["uuid" : {self.uuid <- $0 },
                 "blue" : {self.blue <- $0 },
                 "fooRelation": {self.fooRelation = FooRelation(from: $0)},
-                "relations": relationsMappingFunction()
+                "relations": mapRelations()
                 ]
     }
 
-    private func relationsMappingFunction() -> (Any?)->() {
+    private func mapRelations() -> (Any?)->() {
         return {[unowned self] in
             self.relations = serializeRelations(from: $0)
         }
