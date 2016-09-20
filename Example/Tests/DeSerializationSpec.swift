@@ -46,7 +46,7 @@ class Animal: Deserializable {
 class DeserializableSpec: QuickSpec {
 
     override func spec() {
-        describe("Map JSON autoMagically") {
+        describe("Deserialize JSON autoMagically") {
             let uuidKey = "uuid"
             context("No animalArray") {
                 let json = [uuidKey: "id 1", "blue": "something"]
@@ -72,7 +72,6 @@ class DeserializableSpec: QuickSpec {
                         expect(serializedzoo["blue"] as! String?).to(equal("something"))
                     }
                 }
-
             }
 
             context("One to one relation") {
@@ -88,13 +87,6 @@ class DeserializableSpec: QuickSpec {
 
                 it("should fill properties on relation") {
                     expect(zoo.animal?.uuid).to(equal(relationId))
-                }
-
-                context("serialize") {
-                    let serializedzoo = zoo.json
-                    let animal = serializedzoo[relationKey] as! [String: Any?]
-
-                    expect(animal[uuidKey]).toNot(beNil())
                 }
             }
 
