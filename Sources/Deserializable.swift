@@ -10,6 +10,8 @@ public protocol Deserializable: class {
     /// Than function is used to set it to the corresponding property
     var mappers: [String : ((Any?)->())] {get}
 
+    /// Below is optional because implemented in extension
+    /// You can override them to customise
     func map(from raw: Any)
 
     subscript(key: String) -> Any? {get set}
