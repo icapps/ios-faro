@@ -6,7 +6,7 @@ import Faro
 
 class Zoo: Deserializable {
     var uuid: String?
-    var blue: String?
+    var color: String?
     var animal: Animal?
     var animalArray: [Animal]?
 
@@ -16,7 +16,7 @@ class Zoo: Deserializable {
 
     var mappers: [String : ((Any?)->())] {
         return ["uuid" : {self.uuid <- $0 },
-                "blue" : {self.blue <- $0 },
+                "color" : {self.color <- $0 },
                 "animal": {self.animal = Animal(from: $0)},
                 "animalArray": addRelations()
                 ]
@@ -49,12 +49,12 @@ class DeserializableSpec: QuickSpec {
         describe("Deserialize JSON autoMagically") {
             let uuidKey = "uuid"
             context("No animalArray") {
-                let json = [uuidKey: "id 1", "blue": "something"]
+                let json = [uuidKey: "id 1", "color": "something"]
                 let zoo = Zoo(from: json)!
 
                 it("should fill all properties") {
                     expect(zoo.uuid).to(equal("id 1"))
-                    expect(zoo.blue).to(equal("something"))
+                    expect(zoo.color).to(equal("something"))
                 }
 
                 context("serialize") {
@@ -62,14 +62,14 @@ class DeserializableSpec: QuickSpec {
 
                     it("should be subscriptable get") {
                         let uuid = zoo[uuidKey] as! String?
-                        let blue = zoo["blue"] as! String?
+                        let blue = zoo["color"] as! String?
 
                         expect(uuid).to(equal("id 1"))
                         expect(blue).to(equal("something"))
                     }
                     it("should serilize") {
                         expect(serializedzoo[uuidKey] as! String?).to(equal("id 1"))
-                        expect(serializedzoo["blue"] as! String?).to(equal("something"))
+                        expect(serializedzoo["color"] as! String?).to(equal("something"))
                     }
                 }
             }
