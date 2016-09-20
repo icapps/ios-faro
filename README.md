@@ -107,7 +107,7 @@ extension Animal: Serializable {
 
 /// MARK: - CustomSerializalble
               "fooRelation": {self.fooRelation = FooRelation(from: $0)},
-              "relations": relationsMappingFunction()
+              "relations": mapRelations()
               ]
   }
 
