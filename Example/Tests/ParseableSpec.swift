@@ -30,6 +30,37 @@ class Foo: Parseable {
 
 }
 
+/// MARK: - CustomSerializalble
+
+/// You do not have to implement this. But if you want to serialize relations you have to.
+extension Foo: CustomSerializable {
+
+    func isRelation(for label: String) -> Bool {
+        let reations = ["fooRelation": true, "relations": true]
+        let isRelation = reations[label]
+        return isRelation != nil ? isRelation! : false
+    }
+
+    func jsonForRelation(with key: String) -> JsonNode {
+        if key == "fooRelation" {
+            guard let relation = fooRelation?.json else {
+                return .nodeNotSerialized
+            }
+            return .nodeObject(relation)
+        } else if key == "relations" {
+            guard let relations = relations else {
+                return .nodeNotSerialized
+            }
+
+            let jsonRelation = relations.map{ $0.json }
+            return .nodeArray(jsonRelation)
+        }
+
+        return .nodeNotSerialized
+    }
+
+}
+
 class FooRelation: Parseable {
     var uuid: String?
 
@@ -41,17 +72,15 @@ class FooRelation: Parseable {
         return ["uuid": {self.uuid <- $0}]
     }
 
-
 }
 
 class ParseableSpec: QuickSpec {
 
     override func spec() {
         describe("Map JSON autoMagically") {
-
+            let uuidKey = "uuid"
             context("No relations") {
-
-                let json = ["uuid": "id 1", "blue": "something"]
+                let json = [uuidKey: "id 1", "blue": "something"]
                 let foo = Foo(from: json)!
 
                 it("should fill all properties") {
@@ -60,17 +89,26 @@ class ParseableSpec: QuickSpec {
                 }
 
                 it("should be subscriptable") {
-                    let uuid = foo["uuid"] as! String?
+                    let uuid = foo[uuidKey] as! String?
                     let blue = foo["blue"] as! String?
 
                     expect(uuid).to(equal("id 1"))
                     expect(blue).to(equal("something"))
                 }
+
+                context("serialize") {
+                    let serializedFoo = foo.json
+                    expect(serializedFoo[uuidKey] as! String?).to(equal("id 1"))
+                    expect(serializedFoo["blue"] as! String?).to(equal("something"))
+                }
+
             }
 
             context("One to one relation") {
                 let relationId = "relation"
-                let json = ["fooRelation": ["uuid": relationId]] as [String : Any]
+                let relationKey = "fooRelation"
+
+                let json = [relationKey: [uuidKey: relationId]] as [String : Any]
                 let foo = Foo(from: json)!
 
                 it("should add relation") {
@@ -79,6 +117,13 @@ class ParseableSpec: QuickSpec {
 
                 it("should fill properties on relation") {
                     expect(foo.fooRelation?.uuid).to(equal(relationId))
+                }
+
+                context("serialize") {
+                    let serializedFoo = foo.json
+                    let fooRelation = serializedFoo[relationKey] as! [String: Any?]
+
+                    expect(fooRelation[uuidKey]).toNot(beNil())
                 }
             }
 
@@ -97,6 +142,12 @@ class ParseableSpec: QuickSpec {
                     expect(foo.relations![1].uuid).to(equal(relationId[1]))
                 }
 
+                context("serialize") {
+                    let serializedFoo = foo.json
+                    let relations = serializedFoo["relations"] as! [[String: Any?]]
+
+                    expect(relations.count).to(equal(2))
+                }
             }
         }
     }

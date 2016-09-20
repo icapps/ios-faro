@@ -100,6 +100,8 @@ open class Service {
             return Result.models(models)
         case .nodeNotFound(let json):
             return Result.failure(.rootNodeNotFound(json: json))
+        case .nodeNotSerialized:
+            return Result.failure(.serializationError)
         }
     }
 }
