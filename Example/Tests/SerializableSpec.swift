@@ -49,20 +49,20 @@ class SerializableSpec: QuickSpec {
         describe("Serializable") {
             let uuidKey = "uuid"
             context("No animalArray") {
-                let json = [uuidKey: "id 1", "blue": "something"]
+                let json = [uuidKey: "id 1", "color": "something"]
                 let zoo = Zoo(from: json)!
                 let serializedZoo = zoo.json
 
                 it("should be subscriptable get") {
                     let uuid = zoo[uuidKey] as! String?
-                    let blue = zoo["blue"] as! String?
+                    let blue = zoo["color"] as! String?
 
                     expect(uuid).to(equal("id 1"))
                     expect(blue).to(equal("something"))
                 }
                 it("should serilize") {
                     expect(serializedZoo[uuidKey] as! String?).to(equal("id 1"))
-                    expect(serializedZoo["blue"] as! String?).to(equal("something"))
+                    expect(serializedZoo["color"] as! String?).to(equal("something"))
                 }
             }
 
