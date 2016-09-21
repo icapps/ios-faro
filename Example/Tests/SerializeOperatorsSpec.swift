@@ -86,6 +86,17 @@ class SerializeOpereratorsSpec: QuickSpec {
                 
                 expect(serializedDouble) == randomDouble
             }
+            
+            it("should serialize dates") {
+                var serializedType: Any?
+                let currentDate = Date()
+                
+                serializedType <-> currentDate
+                
+                let serializedDate = serializedType as! TimeInterval
+                
+                expect(serializedDate) == currentDate.timeIntervalSince1970
+            }
         }
     }
     
