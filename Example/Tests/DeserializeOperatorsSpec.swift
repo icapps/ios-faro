@@ -31,7 +31,7 @@ class DeserializeOperatorsSpec: QuickSpec {
                     
                     gail <-> json
                     
-                    expect(gail?.cellNumber) == "Hello"
+                    expect(gail?.cellNumber) == randomNumber
                     
                 }
 
