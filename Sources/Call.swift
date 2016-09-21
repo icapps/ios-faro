@@ -103,7 +103,6 @@ open class Call {
             if body == nil {
                 body = try JSONSerialization.data(withJSONObject: [String: Any](), options: .prettyPrinted)
             }
-            print(body?.description)
             var newJSON = [String: Any]()
             do {
                 newJSON = try JSONSerialization.jsonObject(with: body!, options: .allowFragments) as! [String: Any]
