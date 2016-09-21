@@ -30,6 +30,8 @@ public func printError(_ error: Error) {
         print("no value for key " + key)
     case .malformed(let info):
         print(info)
+    case .serializationError:
+        print("serialization error")
     }
     
 }

@@ -1,5 +1,5 @@
 /// `Result` is used to deliver results mapped in the `Bar`.
-public enum Result<M: Parseable> {
+public enum Result<M: Deserializable> {
     case model(M?)
     case models([M]?)
     /// The server returned a valid JSON response.
@@ -11,7 +11,8 @@ public enum Result<M: Parseable> {
 }
 
 public enum JsonNode {
-    case nodeObject([String: Any])
+    case nodeObject([String: Any?])
     case nodeArray([Any])
     case nodeNotFound(json: Any)
+    case nodeNotSerialized
 }

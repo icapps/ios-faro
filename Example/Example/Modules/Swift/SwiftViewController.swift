@@ -2,7 +2,7 @@ import UIKit
 import Faro
 import Stella
 
-class Post: Parseable {
+class Post: Deserializable {
     var uuid: String?
 
     required init?(from raw: Any) {
@@ -10,7 +10,7 @@ class Post: Parseable {
     }
 
     var mappers: [String: ((Any?) -> ())] {
-        return ["uuid": {self.uuid <- $0}]
+        return ["uuid": {self.uuid <-> $0}]
     }
 
 }

@@ -1,6 +1,6 @@
 import Faro
 
-class MockModel: Parseable {
+class MockModel: Deserializable {
     var uuid: String?
 
     required init?(from raw: Any) {
@@ -8,7 +8,7 @@ class MockModel: Parseable {
     }
     
     var mappers: [String : ((Any?)->())] {
-        return ["uuid": {self.uuid <- $0 }]
+        return ["uuid": {self.uuid <-> $0 }]
     }
 
 }
