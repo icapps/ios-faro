@@ -20,7 +20,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 
                     var zoo = Zoo(from: ["":""])
 
-                    zoo <- json
+                    zoo <-> json
 
                     expect(zoo?.animalArray?.count) == 2
                 }

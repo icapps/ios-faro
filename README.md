@@ -63,8 +63,8 @@ class Zoo: Deserializable {
     }
 
     var mappers: [String : ((Any?)->())] {
-        return ["uuid" : {self.uuid <- $0 },
-                "color" : {self.color <- $0 },
+        return ["uuid" : {self.uuid <-> $0 },
+                "color" : {self.color <-> $0 },
                 "animal": {self.animal = Animal(from: $0)},
                 "animalArray": mapAnimalArray()
                 ]
@@ -86,7 +86,7 @@ class Animal: Deserializable {
     }
 
     var mappers: [String : ((Any?)->())] {
-        return ["uuid": {self.uuid <- $0}]
+        return ["uuid": {self.uuid <-> $0}]
     }
 
 }

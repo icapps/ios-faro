@@ -10,7 +10,7 @@ class Post: Deserializable {
     }
 
     var mappers: [String: ((Any?) -> ())] {
-        return ["uuid": {self.uuid <- $0}]
+        return ["uuid": {self.uuid <-> $0}]
     }
 
 }

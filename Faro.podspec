@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.version          = '1.0.0'
   s.summary          = 'Faro defines the contract to fetch data from an asynchronous source that can be mapped any model object.'
 
-  s.description      = <<-DESC
+  s.description      = <<->DESC
 __Faro__ is a service layer build in Swift by using generics. 
                        DESC
  s.license          = 'MIT'

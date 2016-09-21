@@ -19,7 +19,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 let o1 = SerializableObject()
                 o1.uuid = "ID1"
 
-                serializedDictionary <- o1
+                serializedDictionary <-> o1
 
                 let dict = serializedDictionary as! [String: String]
 
@@ -33,7 +33,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 let o2 = SerializableObject()
                 o2.uuid = "ID2"
 
-                serializedDictionary <- [o1, o2]
+                serializedDictionary <-> [o1, o2]
 
                 let dictArray = serializedDictionary as! [[String: String]]
 
