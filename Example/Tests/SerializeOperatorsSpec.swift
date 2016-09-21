@@ -42,7 +42,17 @@ class SerializeOpereratorsSpec: QuickSpec {
                 expect(dictArray.last!["uuid"]) == o2.uuid
 
             }
-
+            
+            it("should serialize strings") {
+                var serializedType: Any?
+                let randomString = "random"
+                
+                serializedType <-> randomString
+                
+                let serializedString = serializedType as! String
+                
+                expect(serializedString) == "Hallo"
+            }
         }
     }
     
