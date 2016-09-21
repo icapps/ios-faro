@@ -17,17 +17,11 @@ class Zoo: Deserializable {
     var mappers: [String : ((Any?)->())] {
         return ["uuid" : {self.uuid <- $0 },
                 "color" : {self.color <- $0 },
-                "animal": {self.animal = Animal(from: $0)},
-                "animalArray": mapRelations()
+                "animal": {self.animal <- $0},
+                "animalArray": {self.animalArray <- $0}
                 ]
     }
-
-    private func mapRelations() -> (Any?)->() {
-        return {[unowned self] in
-            self.animalArray = extractRelations(from: $0)
-        }
-    }
-
+    
 }
 
 class Animal: Deserializable {
