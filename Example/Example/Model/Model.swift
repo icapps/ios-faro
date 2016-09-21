@@ -4,7 +4,7 @@ import Faro
 class Model: Deserializable {
     var uuid: String?
 
-    var mappers: [String: ((Any?) -> ())] {
+    var mappers: [String: ((Any?) -> ())]? {
         return ["uuid": {self.uuid <-> $0 }]
     }
 

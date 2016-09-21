@@ -4,8 +4,6 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-
-
 class DeserializeOperatorsSpec: QuickSpec {
 
     override func spec() {

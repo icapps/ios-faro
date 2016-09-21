@@ -7,7 +7,7 @@ class MockModel: Deserializable {
         map(from: raw)
     }
     
-    var mappers: [String : ((Any?)->())] {
+    var mappers: [String : ((Any?)->())]? {
         return ["uuid": {self.uuid <-> $0 }]
     }
 
