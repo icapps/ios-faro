@@ -15,7 +15,7 @@ class Gail: Deserializable {
         }
 
         do {
-            cellNumber = try parseString("cellNumber", from: json)
+            cellNumber = try parse("cellNumber", from: json)
         } catch {
             return nil
         }

@@ -27,10 +27,11 @@
 		C032815F1D77319B0047825C /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815E1D77319B0047825C /* Model.swift */; };
 		C03BEC7F1D9273CF00420048 /* SerializeOperatorsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03BEC7E1D9273CF00420048 /* SerializeOperatorsSpec.swift */; };
 		C03BEC811D9275E100420048 /* DeserializeOperatorsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03BEC801D9275E100420048 /* DeserializeOperatorsSpec.swift */; };
+		C03BEC851D9292B800420048 /* DeserializeFunctionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03BEC841D9292B800420048 /* DeserializeFunctionsSpec.swift */; };
 		C066958C1D87002400BD3703 /* JSONAdaptorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */; };
 		C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ACDE631D79B65100064801 /* MockModel.swift */; };
 		C0BFD2C01D90E1D200FAB4E0 /* SerializableSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BFD2BE1D90E09900FAB4E0 /* SerializableSpec.swift */; };
-		C0C3D4DE1D8EA01F0011E972 /* DeSerializationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C3D4DD1D8EA01F0011E972 /* DeSerializationSpec.swift */; };
+		C0C3D4DE1D8EA01F0011E972 /* DeserializationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C3D4DD1D8EA01F0011E972 /* DeserializationSpec.swift */; };
 		D377DE1E7E23BDD451F1AF77 /* Pods_Faro_Example_Faro_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E1A5D1778B1450F795E6D9 /* Pods_Faro_Example_Faro_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,13 +74,14 @@
 		C032815E1D77319B0047825C /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.swift; path = Model/Model.swift; sourceTree = "<group>"; };
 		C03BEC7E1D9273CF00420048 /* SerializeOperatorsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializeOperatorsSpec.swift; sourceTree = "<group>"; };
 		C03BEC801D9275E100420048 /* DeserializeOperatorsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializeOperatorsSpec.swift; sourceTree = "<group>"; };
+		C03BEC841D9292B800420048 /* DeserializeFunctionsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializeFunctionsSpec.swift; sourceTree = "<group>"; };
 		C052960A1CB6629E007E1111 /* Faro_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Faro_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		C05EBF6F1D4B8E3000B950EB /* Faro_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Faro_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05EBF731D4B8E3000B950EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAdaptorSpec.swift; sourceTree = "<group>"; };
 		C0ACDE631D79B65100064801 /* MockModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockModel.swift; sourceTree = "<group>"; };
 		C0BFD2BE1D90E09900FAB4E0 /* SerializableSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializableSpec.swift; sourceTree = "<group>"; };
-		C0C3D4DD1D8EA01F0011E972 /* DeSerializationSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeSerializationSpec.swift; sourceTree = "<group>"; };
+		C0C3D4DD1D8EA01F0011E972 /* DeserializationSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializationSpec.swift; sourceTree = "<group>"; };
 		D39D515CDEB600C0DEBE26E0 /* Pods-Faro_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example/Pods-Faro_Example.release.xcconfig"; sourceTree = "<group>"; };
 		DBBD94A15C031D6EAFAF4B10 /* Pods-Faro_Example-Faro_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example-Faro_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		F28FE425E9CA20CB4C7DE52F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -164,12 +166,13 @@
 			children = (
 				C02ADF781D8823F800FA5B32 /* CallSpec.swift */,
 				C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */,
-				C0C3D4DD1D8EA01F0011E972 /* DeSerializationSpec.swift */,
+				C0C3D4DD1D8EA01F0011E972 /* DeserializationSpec.swift */,
+				C03BEC841D9292B800420048 /* DeserializeFunctionsSpec.swift */,
+				C03BEC801D9275E100420048 /* DeserializeOperatorsSpec.swift */,
 				C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */,
 				C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */,
 				C0BFD2BE1D90E09900FAB4E0 /* SerializableSpec.swift */,
 				C03BEC7E1D9273CF00420048 /* SerializeOperatorsSpec.swift */,
-				C03BEC801D9275E100420048 /* DeserializeOperatorsSpec.swift */,
 				C02ADF771D8823F800FA5B32 /* ServiceSpec.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 				C03281571D7722F40047825C /* TestHelpers */,
@@ -495,8 +498,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0C3D4DE1D8EA01F0011E972 /* DeSerializationSpec.swift in Sources */,
+				C0C3D4DE1D8EA01F0011E972 /* DeserializationSpec.swift in Sources */,
 				C066958C1D87002400BD3703 /* JSONAdaptorSpec.swift in Sources */,
+				C03BEC851D9292B800420048 /* DeserializeFunctionsSpec.swift in Sources */,
 				C02ADF801D88243A00FA5B32 /* ConfigurationSpec.swift in Sources */,
 				C03BEC811D9275E100420048 /* DeserializeOperatorsSpec.swift in Sources */,
 				C02ADF811D88243A00FA5B32 /* ErrorSpec.swift in Sources */,
