@@ -10,12 +10,17 @@ class DeserializeOperatorsSpec: QuickSpec {
         describe("DeserializeOperatorsSpec") {
 
             context("should give value for") {
-                it("Int") {
-                    let expected = 100
+                it("should work for relations") {
+                    let relationId = ["relation 1", "relation 2"]
+                    let animalArray =  [["uuid": relationId[0]], ["uuid": relationId[1]]]
 
-                    
+                    let json = ["animalArray": animalArray] as Any?
 
+                    var zoo = Zoo(from: ["":""])
 
+                    zoo <- json
+
+                    expect(zoo?.animalArray?.count) == 2
                 }
             }
         }
