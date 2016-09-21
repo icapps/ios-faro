@@ -9,6 +9,7 @@ class DeserializableObject: Deserializable {
     var amount: Int?
     var price: Double?
     var tapped: Bool?
+    var date: Date?
     
     required init?(from raw: Any) {
         map(from: raw)
@@ -20,7 +21,8 @@ class DeserializableObject: Deserializable {
                 "uuid": {self.uuid <-> $0},
                 "amount": {self.amount <-> $0},
                 "price": {self.price <-> $0},
-                "tapped": {self.tapped <-> $0}
+                "tapped": {self.tapped <-> $0},
+                "date": {self.date <-> $0}
             ]
         }
     }
@@ -93,13 +95,23 @@ class DeserializeOperatorsSpec: QuickSpec {
                     expect(o1?.tapped) == anyBool as! Bool?
                 }
                 
-                it("should deserialize strings") {
+                it("should deserialize Strings") {
                     let o1 = DeserializableObject(from: ["":""])
                     let anyString = "randomID" as Any?
                     
                     o1?.uuid <-> anyString
                     
                     expect(o1?.uuid) == anyString as! String?
+                }
+                
+                it("should deserialize Date with TimeInterval") {
+                    let o1 = DeserializableObject(from: ["":""])
+                    let anyTimeInterval = 1234.0 as Any?
+                    
+                    o1?.date <-> anyTimeInterval
+                    
+                    let date = Date(timeIntervalSince1970: anyTimeInterval as! TimeInterval)
+                    expect(o1?.date) == date
                 }
             }
         }
