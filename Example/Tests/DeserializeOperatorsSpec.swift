@@ -93,6 +93,14 @@ class DeserializeOperatorsSpec: QuickSpec {
                     expect(o1?.tapped) == anyBool as! Bool?
                 }
                 
+                it("should deserialize strings") {
+                    let o1 = DeserializableObject(from: ["":""])
+                    let anyString = "randomID" as Any?
+                    
+                    o1?.uuid <-> anyString
+                    
+                    expect(o1?.uuid) == anyString as! String?
+                }
             }
         }
     }
