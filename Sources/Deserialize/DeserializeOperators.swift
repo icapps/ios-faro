@@ -3,6 +3,23 @@ import Foundation
 /// The operator we define assings a value. Therefore its Precendencegroup is AssignmentPrecedence.
 infix operator <-: AssignmentPrecedence
 
+
+public func <- <P>(lhs: inout P?, rhs: Any?) where P: Deserializable {
+    guard let dict = rhs as? [String: Any] else {
+        lhs = nil
+        return
+    }
+    lhs = P(from: dict)!
+}
+
+public func <- <P>(lhs: inout [P]?, rhs: Any?) where P: Deserializable {
+    guard let rawObjects = rhs as? [[String: Any]] else {
+        lhs = nil
+        return
+    }
+    lhs = rawObjects.flatMap { P(from: $0) }
+}
+
 /// MARK: Deserialize operators
 /// `Any?` is taken and set to the left hand side.
 
@@ -37,17 +54,5 @@ public func <- (lhs: inout Date?, rhs: Any?) {
 public func <- (lhs: inout Date?, rhs: (Any?, String)) {
     DateParser.shared.dateFormat = rhs.1
     lhs = DateParser.shared.dateFormatter.date(from: rhs.0 as! String)
-}
-
-public func <- <P>(lhs: inout Any?, rhs: P?) where P: Serializable {
-    lhs = rhs?.json
-}
-
-public func <- <P>(lhs: inout Any?, rhs: [P]?) where P: Serializable {
-    var array = [[String: Any]]()
-    for serializable in rhs! {
-        array.append(serializable.json)
-    }
-    lhs = array
 }
 

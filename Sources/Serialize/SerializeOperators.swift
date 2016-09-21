@@ -3,6 +3,20 @@ import Foundation
 /// MARK: - Serizalise operators
 /// Will put a 'Type' into 'Any?' Type that can receive it.
 
+public func <- <P>(lhs: inout Any?, rhs: [P]?) where P: Serializable {
+    var array = [[String: Any]]()
+    for serializable in rhs! {
+        array.append(serializable.json)
+    }
+    lhs = array
+}
+
+public func <- <P>(lhs: inout Any?, rhs: P?) where P: Serializable {
+    lhs = rhs?.json
+}
+
+/// Handy operators
+
 public func <- (lhs: inout Any?, rhs: String?) {
     lhs = rhs
 }
@@ -25,18 +39,4 @@ public func <- (lhs: inout Any?, rhs: Date?) {
     }
 }
 
-public func <- <P>(lhs: inout P?, rhs: Any?) where P: Deserializable {
-    guard let dict = rhs as? [String: Any] else {
-        lhs = nil
-        return
-    }
-    lhs = P(from: dict)!
-}
 
-public func <- <P>(lhs: inout [P]?, rhs: Any?) where P: Deserializable {
-    guard let rawObjects = rhs as? [[String: Any]] else {
-        lhs = nil
-        return
-    }
-    lhs = rawObjects.flatMap { P(from: $0) }
-}
