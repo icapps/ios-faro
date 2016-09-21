@@ -10,15 +10,12 @@ public protocol Deserializable: class {
     /// Than function is used to set it to the corresponding property
     var mappers: [String : ((Any?)->())] {get}
 
-    func map(from raw: Any)
-
-    subscript(key: String) -> Any? {get set}
-
 }
 
 // MARK: Extension Deserialize from model
 
 /// This maps `Any` type to the properties on anyone who is `Deserializable`.
+/// You can override these if needed
 public extension Deserializable {
     /// Uses `Mirror` to lookup a list of properties on your `Type`
     public func map(from raw: Any)  {
