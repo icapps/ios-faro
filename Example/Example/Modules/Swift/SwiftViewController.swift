@@ -1,67 +1,40 @@
 import UIKit
 import Faro
+import Stella
+
+class Post: Deserializable {
+    var uuid: String?
+
+    required init?(from raw: Any) {
+        map(from: raw)
+    }
+
+    var mappers: [String: ((Any?) -> ())]? {
+        return ["uuid": {self.uuid <-> $0}]
+    }
+
+}
 
 class SwiftViewController: UIViewController {
-
-	@IBOutlet var label: UILabel!
+    @IBOutlet var label: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-		doExample()
-		doCoreDataExample()
-		doStoreJSONExample()
+        let service = ExampleService()
+        let call = Call(path: "posts")
 
+        service.perform(call) { (result: Result<Post>) in
+            DispatchQueue.main.async {
+                switch result {
+                case .models(let models):
+                    self.label.text = "Performed call for posts"
+                    printBreadcrumb("\(models!)")
+                default:
+                    printError("Could not perform call for posts")
+                }
+            }
+        }
     }
 
-	func doExample() {
-		do {
-			try Air.fetch(succeed: { (response: [GameScore]) in
-				print("🎉 successfully fetched \(response.count) objects")
-				dispatch.async.main({
-					self.label.text = "Received \(response.count) objects"
-				})
-			})
-
-			try Air.fetchWithUniqueId("pyqCt2ZHWT", succeed: { (response: GameScore) in
-				print("🎉 successfully fetched one object \(response.uniqueValue)")
-			})
-		} catch {
-			print("💣 Error with request \(error)")
-		}
-	}
-
-	func doCoreDataExample()  {
-		do {
-			let coreDataEntity = try CoreDataEntity(json: ["uniqueValue": "something fun"])
-			coreDataEntity.username = "Fons"
-			print("🏪 Core data entity made successfully. \(coreDataEntity.username!)")
-			//Saving all the time is no fun. But it works:). Uncomment if you want to save
-
-			//			try Air.post(coreDataEntity,
-			//			             succeed: { (response) in
-			//					print("🎉 saved CoreDataEntity")
-			//				})
-			try Air.fetchCoreData(succeed: { (response: [CoreDataEntity]) in
-				print("🎉 fetched CoreDataEntities: \(response)")
-			})
-		}catch {
-			print("💣 \(error)")
-		}
-	}
-
-	func doStoreJSONExample (){
-		do {
-			try Air.fetch(succeed: { (response: [GameScoreStore]) in
-				print("🎉 fetched 'GameScoreStore' objects")
-				print("Go take a look at the JSON file")
-				print("1. Go to appliction bundle")
-				print("2. Go to documents folder")
-			})
-		}catch {
-			print("💣 [doStoreJSONExample] error: \(error)")
-		}
-	}
-	
 }
-
