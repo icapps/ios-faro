@@ -8,6 +8,7 @@ class DeserializableObject: Deserializable {
     var uuid: String?
     var amount: Int?
     var price: Double?
+    var tapped: Bool?
     
     required init?(from raw: Any) {
         map(from: raw)
@@ -18,7 +19,8 @@ class DeserializableObject: Deserializable {
             return [
                 "uuid": {self.uuid <-> $0},
                 "amount": {self.amount <-> $0},
-                "price": {self.price <-> $0}
+                "price": {self.price <-> $0},
+                "tapped": {self.tapped <-> $0}
             ]
         }
     }
@@ -65,7 +67,7 @@ class DeserializeOperatorsSpec: QuickSpec {
                 }
                 
                 it("should deserialize Integers") {
-                    let o1 = DeserializableObject(from: ["amount": 5])
+                    let o1 = DeserializableObject(from: ["": ""])
                     let anyInt = 10 as Any?
                     
                     o1?.amount <-> anyInt
@@ -74,13 +76,23 @@ class DeserializeOperatorsSpec: QuickSpec {
                 }
                 
                 it("should deserialize Doubles") {
-                    let o1 = DeserializableObject(from: ["price": 2.0])
+                    let o1 = DeserializableObject(from: ["":""])
                     let anyDouble = 5.0 as Any?
                     
                     o1?.price <-> anyDouble
                     
                     expect(o1?.price) == anyDouble as! Double?
                 }
+                
+                it("should deserialize Booleans") {
+                    let o1 = DeserializableObject(from: ["":""])
+                    let anyBool = true as Any?
+                    
+                    o1?.tapped <-> anyBool
+                    
+                    expect(o1?.tapped) == anyBool as! Bool?
+                }
+                
             }
         }
     }
