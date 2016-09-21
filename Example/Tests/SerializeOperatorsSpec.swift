@@ -42,6 +42,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 expect(dictArray.last!["uuid"]) == o2.uuid
 
             }
+
         }
     }
     

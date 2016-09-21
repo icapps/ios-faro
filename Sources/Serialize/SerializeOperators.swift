@@ -1,8 +1,8 @@
 import Foundation
 
 /// MARK: - Serizalise operators
-/// Will put a 'Type' into 'Any?' Type that can receive it.
 
+/// Will put a 'Type' into 'Any?' Type that can receive it.
 public func <- <P>(lhs: inout Any?, rhs: [P]?) where P: Serializable {
     var array = [[String: Any]]()
     for serializable in rhs! {

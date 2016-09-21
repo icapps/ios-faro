@@ -4,6 +4,31 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
+/// For testing with required variable
+class Gail: Deserializable {
+    var cellNumber: String
+    var foodTicket: String?
+
+    required init?(from raw: Any) {
+        guard let json = raw as? [String: String] else {
+            return nil
+        }
+
+        do {
+            cellNumber = try parseString("cellNumber", from: json)
+        } catch {
+            return nil
+        }
+        map(from: raw)
+    }
+
+    var mappers: [String : ((Any?) -> ())] {
+        get {
+            return ["foodTicket": {self.foodTicket <- $0}]
+        }
+    }
+}
+
 class Zoo: Deserializable {
     var uuid: String?
     var color: String?
@@ -83,6 +108,33 @@ class DeserializableSpec: QuickSpec {
                     expect(zoo.animalArray![1].uuid).to(equal(relationId[1]))
                 }
             }
+
+            context("required properties") {
+                it("should parse required UUID") {
+                    let gail = Gail(from: ["cellNumber": "007"])!
+
+                    expect(gail.cellNumber) == "007"
+                }
+
+                it("should fail when no uuid provided") {
+                    let gail = Gail(from: ["": ""])
+
+                    expect(gail).to(beNil())
+                }
+
+                it("should automatically map optional parameters") {
+                    let gail = Gail(from: ["cellNumber": "007", "foodTicket": "ticket"])!
+
+                    expect(gail.foodTicket) == "ticket"
+                }
+
+                it("should not parse when json has keys but no uuid") {
+                     let gail = Gail(from: ["foodTicket": "ticket"])
+
+                    expect(gail).to(beNil())
+                }
+            }
+
         }
     }
 

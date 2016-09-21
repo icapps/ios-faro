@@ -1,7 +1,12 @@
 import Foundation
 
 /// The operator we define assings a value. Therefore its Precendencegroup is AssignmentPrecedence.
+/// Used for optional properties
 infix operator <-: AssignmentPrecedence
+
+/// The operator we define assings a value. Therefore its Precendencegroup is AssignmentPrecedence.
+/// Used for required properties
+infix operator <!-: AssignmentPrecedence
 
 
 public func <- <P>(lhs: inout P?, rhs: Any?) where P: Deserializable {
@@ -20,9 +25,9 @@ public func <- <P>(lhs: inout [P]?, rhs: Any?) where P: Deserializable {
     lhs = rawObjects.flatMap { P(from: $0) }
 }
 
-/// MARK: Deserialize operators
-/// `Any?` is taken and set to the left hand side.
+/// MARK: - Deserialize operators
 
+/// `Any?` is taken and set to the left hand side.
 public func <- (lhs: inout Int?, rhs: Any?) {
     lhs = rhs as? Int
 }

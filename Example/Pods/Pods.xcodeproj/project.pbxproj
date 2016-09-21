@@ -94,7 +94,7 @@
 		BEA76FA499D5899BD98DBD891FF921D4 /* SatisfyAnyOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB185B51E4E6014622BA875A79076CE5 /* SatisfyAnyOf.swift */; };
 		C0B81CBC1D90DC63002DBB8B /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B81CAA1D90DC63002DBB8B /* Service.swift */; };
 		C0B81CBD1D90DC63002DBB8B /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B81CAC1D90DC63002DBB8B /* Serializable.swift */; };
-		C0B81CBE1D90DC63002DBB8B /* SerializateFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B81CAD1D90DC63002DBB8B /* SerializateFunctions.swift */; };
+		C0B81CBE1D90DC63002DBB8B /* SerializeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B81CAD1D90DC63002DBB8B /* SerializeFunctions.swift */; };
 		C0B81CBF1D90DC63002DBB8B /* SerializeOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B81CAE1D90DC63002DBB8B /* SerializeOperators.swift */; };
 		C0B81CC01D90DC63002DBB8B /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B81CAF1D90DC63002DBB8B /* Result.swift */; };
 		C0B81CC11D90DC63002DBB8B /* ErrorPrinting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B81CB11D90DC63002DBB8B /* ErrorPrinting.swift */; };
@@ -282,7 +282,7 @@
 		C06CC445CC22D167166EA2D8ABEE521A /* Faro.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Faro.xcconfig; sourceTree = "<group>"; };
 		C0B81CAA1D90DC63002DBB8B /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		C0B81CAC1D90DC63002DBB8B /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
-		C0B81CAD1D90DC63002DBB8B /* SerializateFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializateFunctions.swift; sourceTree = "<group>"; };
+		C0B81CAD1D90DC63002DBB8B /* SerializeFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializeFunctions.swift; sourceTree = "<group>"; };
 		C0B81CAE1D90DC63002DBB8B /* SerializeOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializeOperators.swift; sourceTree = "<group>"; };
 		C0B81CAF1D90DC63002DBB8B /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		C0B81CB11D90DC63002DBB8B /* ErrorPrinting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorPrinting.swift; sourceTree = "<group>"; };
@@ -567,7 +567,7 @@
 			isa = PBXGroup;
 			children = (
 				C0B81CAC1D90DC63002DBB8B /* Serializable.swift */,
-				C0B81CAD1D90DC63002DBB8B /* SerializateFunctions.swift */,
+				C0B81CAD1D90DC63002DBB8B /* SerializeFunctions.swift */,
 				C0B81CAE1D90DC63002DBB8B /* SerializeOperators.swift */,
 			);
 			path = Serialize;
@@ -1057,7 +1057,7 @@
 				C0B81CC61D90DC63002DBB8B /* Configuration.swift in Sources */,
 				A3163427E94F6E2781CF4907D20EF4E4 /* Faro-dummy.m in Sources */,
 				C0B81CBC1D90DC63002DBB8B /* Service.swift in Sources */,
-				C0B81CBE1D90DC63002DBB8B /* SerializateFunctions.swift in Sources */,
+				C0B81CBE1D90DC63002DBB8B /* SerializeFunctions.swift in Sources */,
 				C0B81CC51D90DC63002DBB8B /* DateParser.swift in Sources */,
 				C0B81CC41D90DC63002DBB8B /* DeserializeOperators.swift in Sources */,
 			);
