@@ -48,20 +48,3 @@ public extension Deserializable {
     }
     
 }
-
-
-//MARK: - Utility functions
-
-/// You can use this like in `DeserializableSpec` in the example project.
-public func extractRelations<T: Deserializable>(from json: Any?) -> [T]? {
-    guard let json = json as? [[String: Any]] else {
-        return nil
-    }
-    var relations = [T]()
-    for dict in json {
-        if let foo = T(from: dict) {
-            relations.append(foo)
-        }
-    }
-    return relations
-}
