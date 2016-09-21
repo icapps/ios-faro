@@ -15,8 +15,9 @@ We build a service request by using a `Service` class as the point where you fir
 * Easily write a 'MockService' to load JSON from a local drive
 
 *Automagically Parse*
-* Automatic Serialization and Mapping thanks to the use off the Swift 'Mirror' class.
-* Uses Protocol extensions to minimize the work needed at your end 😎
+* Use our Deserialization and Serialization operators to parse relations and properties
+
+*Protocols*
 * Because we use Protocols you can use any type including CoreData's `NSManagedObject` 💪🏼
 
 ## Define a Call
@@ -48,49 +49,46 @@ Take a look at the `ServiceSpec`, in short:
 
 Deserialization and Serialization can happen automagically. For a more detailed example you can take a look at the ParseableSpec tests.
 
-### Type without relations
+### Deserializable
 
-```swift
-class Zoo: Deserializable {
-    var uuid: String?
-    var color: String?
-
-    required init?(from raw: Any) {
-        map(from: raw)
-    }
-
-    pers: [String : ((Any?)->())] {
-        return ["uuid" : {self.uuid <-> $0 },
-                "color" : {self.color <-> $0 },
-                ]
-    }
-
-}
-
-```
-
-### Type with relations
 ```swift
 class Zoo: Deserializable {
     var uuid: String?
     var color: String?
     var animal: Animal?
+    var date: Date?
     var animalArray: [Animal]?
 
     required init?(from raw: Any) {
-        map(from: raw)
+        guard let json = raw as? [String: Any?] else {
+            return nil
+        }
+        self.uuid <-> json["uuid"]
+        self.color <-> json["color"]
+        self.animal <-> json["animal"]
+        self.animalArray <-> json["animalArray"]
+        self.date <-> (json["date"], "yyyy-MM-dd")
     }
-
-    pers: [String : ((Any?)->())] {
-        return ["uuid" : {self.uuid <-> $0 },
-                "color" : {self.color <-> $0 },
-                "animal": {self.animal <-> $0},
-                "animalArray": {self.animalArray <-> $0}
-                ]
-    }
-
 }
 
+```
+### Serializable
+
+```swift
+extension Zoo: Serializable {
+
+    var json: [String : Any?] {
+        get {
+            var json = [String: Any]()
+            json["uuid"] <-> self.uuid
+            json["color"] <-> self.color
+            json["animal"] <-> self.animal
+            json["animalArray"] <-> self.animalArray
+            json["date"] <-> self.date
+            return json
+        }
+    }
+}
 ```
 
 ### Type with required property
@@ -112,14 +110,9 @@ class Gail: Deserializable {
         } catch {
             return nil
         }
-        map(from: raw)
+        self.foodTicket <-> json["foodTicket"]
     }
 
-    pers: [String : ((Any?) -> ())] {
-        get {
-            return ["foodTicket": {self.foodTicket <-> $0}]
-        }
-    }
 }
 
 ```
