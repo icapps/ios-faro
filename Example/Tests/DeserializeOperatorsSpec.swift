@@ -15,7 +15,7 @@ class DeserializableObject: Deserializable {
         map(from: raw)
     }
     
-    var mappers: [String : ((Any?) -> ())] {
+    var mappers: [String : ((Any?) -> ())]? {
         get {
             return [
                 "uuid": {self.uuid <-> $0},
