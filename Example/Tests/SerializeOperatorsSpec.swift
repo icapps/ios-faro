@@ -51,7 +51,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 
                 let serializedString = serializedType as! String
                 
-                expect(serializedString) == "Hallo"
+                expect(serializedString) == randomString
             }
         }
     }
