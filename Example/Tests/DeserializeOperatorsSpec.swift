@@ -7,6 +7,8 @@ import Faro
 class DeserializableObject: Deserializable {
     var uuid: String?
     var amount: Int?
+    var price: Double?
+    
     required init?(from raw: Any) {
         map(from: raw)
     }
@@ -16,6 +18,7 @@ class DeserializableObject: Deserializable {
             return [
                 "uuid": {self.uuid <-> $0},
                 "amount": {self.amount <-> $0},
+                "price": {self.price <-> $0}
             ]
         }
     }
@@ -68,6 +71,15 @@ class DeserializeOperatorsSpec: QuickSpec {
                     o1?.amount <-> anyInt
                     
                     expect(o1?.amount) == anyInt as! Int?
+                }
+                
+                it("should deserialize Doubles") {
+                    let o1 = DeserializableObject(from: ["price": 2.0])
+                    let anyDouble = 5.0 as Any?
+                    
+                    o1?.price <-> anyDouble
+                    
+                    expect(o1?.price) == anyDouble as! Double?
                 }
             }
         }
