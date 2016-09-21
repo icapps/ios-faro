@@ -7,16 +7,12 @@ public enum FaroError: Error, Equatable {
     case nonFaroError(Error)
     case rootNodeNotFound(json: Any)
     case networkError(Int)
-    case serializationError
-}
-
-public enum ParseError: Error {
     case emptyKey
     case emptyValue(key: String)
     case emptyCollection
+    case malformed(info: String)
+    case serializationError
 }
-
-/// MARK: - Compare Errors
 
 public func == (lhs: FaroError, rhs: FaroError) -> Bool {
     switch (lhs, rhs) {
