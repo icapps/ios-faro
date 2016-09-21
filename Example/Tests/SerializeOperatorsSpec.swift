@@ -76,6 +76,16 @@ class SerializeOpereratorsSpec: QuickSpec {
                 expect(serializedBool) == randomBool
             }
             
+            it("should serialize doubles") {
+                var serializedType: Any?
+                let randomDouble = 2.0
+                
+                serializedType <-> randomDouble
+                
+                let serializedDouble = serializedType as! Double
+                
+                expect(serializedDouble) == randomDouble
+            }
         }
     }
     
