@@ -4,6 +4,23 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
+class DeserializableObject: Deserializable {
+    var uuid: String?
+    var amount: Int?
+    required init?(from raw: Any) {
+        map(from: raw)
+    }
+    
+    var mappers: [String : ((Any?) -> ())] {
+        get {
+            return [
+                "uuid": {self.uuid <-> $0},
+                "amount": {self.amount <-> $0},
+            ]
+        }
+    }
+
+}
 class DeserializeOperatorsSpec: QuickSpec {
 
     override func spec() {
@@ -42,6 +59,15 @@ class DeserializeOperatorsSpec: QuickSpec {
                     animalArray <-> json
                     
                     expect(animalArray?.count) == 2
+                }
+                
+                it("should deserialize Integers") {
+                    let o1 = DeserializableObject(from: ["amount": 5])
+                    let anyInt = 10 as Any?
+                    
+                    o1?.amount <-> anyInt
+                    
+                    expect(o1?.amount) == anyInt as! Int?
                 }
             }
         }
