@@ -4,8 +4,11 @@ import Foundation
 
 /// Will put a 'Type' into 'Any?' Type that can receive it.
 public func <-> <P>(lhs: inout Any?, rhs: [P]?) where P: Serializable {
+    guard let rhs = rhs else {
+        return
+    }
     var array = [[String: Any]]()
-    for serializable in rhs! {
+    for serializable in rhs {
         array.append(serializable.json)
     }
     lhs = array
