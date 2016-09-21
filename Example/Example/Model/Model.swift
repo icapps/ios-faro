@@ -4,12 +4,11 @@ import Faro
 class Model: Deserializable {
     var uuid: String?
 
-    var mappers: [String: ((Any?) -> ())]? {
-        return ["uuid": {self.uuid <-> $0 }]
-    }
-
     required init?(from raw: Any) {
-       map(from: raw)
+        guard  let json = raw as? [String: Any?] else {
+            return nil
+        }
+        self.uuid <-> json["uuid"]
     }
     
 }

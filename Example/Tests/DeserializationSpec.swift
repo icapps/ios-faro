@@ -19,14 +19,9 @@ class Gail: Deserializable {
         } catch {
             return nil
         }
-        map(from: raw)
+        self.foodTicket <-> json["foodTicket"]
     }
 
-    var mappers: [String : ((Any?) -> ())]? {
-        get {
-            return ["foodTicket": {self.foodTicket <-> $0}]
-        }
-    }
 }
 
 class Zoo: Deserializable {
@@ -37,29 +32,25 @@ class Zoo: Deserializable {
     var animalArray: [Animal]?
 
     required init?(from raw: Any) {
-        map(from: raw)
+        guard let json = raw as? [String: Any?] else {
+            return nil
+        }
+        self.uuid <-> json["uuid"]
+        self.color <-> json["color"]
+        self.animal <-> json["animal"]
+        self.animalArray <-> json["animalArray"]
+        self.date <-> (json["date"], "yyyy-MM-dd")
     }
-
-    var mappers: [String : ((Any?)->())]? {
-        return ["uuid" : {self.uuid <-> $0 },
-                "color" : {self.color <-> $0 },
-                "animal": {self.animal <-> $0},
-                "animalArray": {self.animalArray <-> $0},
-                "date": {self.date <-> ($0, "yyyy-MM-dd")}
-                ]
-    }
-    
 }
 
 class Animal: Deserializable {
     var uuid: String?
 
     required init?(from raw: Any) {
-        map(from: raw)
-    }
-
-    var mappers: [String : ((Any?)->())]? {
-        return ["uuid": {self.uuid <-> $0}]
+        guard  let json = raw as? [String: Any?] else {
+            return nil
+        }
+        self.uuid <-> json["uuid"]
     }
     
 }
