@@ -64,6 +64,18 @@ class SerializeOpereratorsSpec: QuickSpec {
                 
                 expect(serializedInt) == randomInt
             }
+            
+            it("should serialize booleans") {
+                var serializedType: Any?
+                let randomBool = true
+                
+                serializedType <-> randomBool
+                
+                let serializedBool = serializedType as! Bool
+                
+                expect(serializedBool) == randomBool
+            }
+            
         }
     }
     
