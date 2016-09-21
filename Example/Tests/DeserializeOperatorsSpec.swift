@@ -34,7 +34,15 @@ class DeserializeOperatorsSpec: QuickSpec {
                     expect(gail?.cellNumber) == randomNumber
                     
                 }
-
+                
+                it("should deserialize to object Array") {
+                    let json = [["uuid": "id1"],["uuid": "id2"]] as Any?
+                    var animalArray: [Animal]?
+                    
+                    animalArray <-> json
+                    
+                    expect(animalArray?.count) == 2
+                }
             }
         }
     }
