@@ -22,7 +22,7 @@ class Gail: Deserializable {
         map(from: raw)
     }
 
-    var mappers: [String : ((Any?) -> ())] {
+    var mappers: [String : ((Any?) -> ())]? {
         get {
             return ["foodTicket": {self.foodTicket <-> $0}]
         }
@@ -39,7 +39,7 @@ class Zoo: Deserializable {
         map(from: raw)
     }
 
-    var mappers: [String : ((Any?)->())] {
+    var mappers: [String : ((Any?)->())]? {
         return ["uuid" : {self.uuid <-> $0 },
                 "color" : {self.color <-> $0 },
                 "animal": {self.animal <-> $0},
@@ -56,7 +56,7 @@ class Animal: Deserializable {
         map(from: raw)
     }
 
-    var mappers: [String : ((Any?)->())] {
+    var mappers: [String : ((Any?)->())]? {
         return ["uuid": {self.uuid <-> $0}]
     }
     

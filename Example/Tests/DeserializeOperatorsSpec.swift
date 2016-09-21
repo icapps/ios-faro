@@ -28,6 +28,7 @@ class DeserializableObject: Deserializable {
     }
 
 }
+
 class DeserializeOperatorsSpec: QuickSpec {
 
     override func spec() {
