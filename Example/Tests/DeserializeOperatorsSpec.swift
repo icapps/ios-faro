@@ -113,6 +113,19 @@ class DeserializeOperatorsSpec: QuickSpec {
                     let date = Date(timeIntervalSince1970: anyTimeInterval as! TimeInterval)
                     expect(o1?.date) == date
                 }
+                
+                it("should deserialize Date with String") {
+                    let o1 = DeserializableObject(from: ["":""])
+                    let anyTimeString = "20-08-1994" as Any?
+                    
+                    o1?.date <-> anyTimeString
+                    
+                    let formatter = DateFormatter()
+                    let date = formatter.date(from: anyTimeString as! String)
+                    
+                    expect(o1?.date) == date
+                    
+                }
             }
         }
     }
