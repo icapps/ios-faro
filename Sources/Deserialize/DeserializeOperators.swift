@@ -10,7 +10,7 @@ public func <-> <P>(lhs: inout P?, rhs: Any?) where P: Deserializable {
         lhs = nil
         return
     }
-    lhs = P(from: dict)!
+    lhs = P(from: dict)
 }
 
 public func <-> <P>(lhs: inout [P]?, rhs: Any?) where P: Deserializable {
@@ -40,20 +40,28 @@ public func <-> (lhs: inout String?, rhs: Any?) {
     lhs = rhs as? String
 }
 
-public func <-> (lhs: inout String, rhs: Any?) {
-    lhs = rhs as! String
+public func <-> (lhs: inout Date?, rhs: String?) {
+    guard let date = rhs, DateParser.shared.dateFormat.characters.count > 0  else {
+        return
+    }
+
+    lhs = DateParser.shared.dateFormatter.date(from: date)
 }
 
-public func <-> (lhs: inout Date?, rhs: Any?) {
-    if let rhs = rhs as? TimeInterval {
-        lhs = Date(timeIntervalSince1970: rhs)
-    } else if rhs is String && DateParser.shared.dateFormat.characters.count > 0 {
-        lhs = DateParser.shared.dateFormatter.date(from: rhs as! String)
+public func <-> (lhs: inout Date?, rhs: TimeInterval?) {
+    guard let timeInterval = rhs else {
+        return
     }
+
+    lhs = Date(timeIntervalSince1970: timeInterval)
 }
 
 public func <-> (lhs: inout Date?, rhs: (Any?, String)) {
+    guard let date = rhs.0 as? String else {
+        return
+    }
+
     DateParser.shared.dateFormat = rhs.1
-    lhs = DateParser.shared.dateFormatter.date(from: rhs.0 as! String)
+    lhs = DateParser.shared.dateFormatter.date(from: date)
 }
 

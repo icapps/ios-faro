@@ -33,6 +33,7 @@ class Zoo: Deserializable {
     var uuid: String?
     var color: String?
     var animal: Animal?
+    var date: Date?
     var animalArray: [Animal]?
 
     required init?(from raw: Any) {
@@ -43,7 +44,8 @@ class Zoo: Deserializable {
         return ["uuid" : {self.uuid <-> $0 },
                 "color" : {self.color <-> $0 },
                 "animal": {self.animal <-> $0},
-                "animalArray": {self.animalArray <-> $0}
+                "animalArray": {self.animalArray <-> $0},
+                "date": {self.date <-> ($0, "yyyy-MM-dd")}
                 ]
     }
     
@@ -68,12 +70,13 @@ class DeserializableSpec: QuickSpec {
         describe("Deserialize JSON autoMagically") {
             let uuidKey = "uuid"
             context("No animalArray") {
-                let json = [uuidKey: "id 1", "color": "something"]
+                let json = [uuidKey: "id 1", "color": "something", "date": "2016-06-12"]
                 let zoo = Zoo(from: json)!
 
                 it("should fill all properties") {
                     expect(zoo.uuid) == "id 1"
                     expect(zoo.color) == "something"
+                    expect(zoo.date).toNot(beNil())
                 }
             }
 
@@ -91,6 +94,8 @@ class DeserializableSpec: QuickSpec {
                 it("should fill properties on relation") {
                     expect(zoo.animal?.uuid).to(equal(relationId))
                 }
+
+
             }
 
             context("One to many relation") {
