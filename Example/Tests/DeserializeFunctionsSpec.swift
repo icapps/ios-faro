@@ -9,6 +9,23 @@ class DeserializeFunctionSpec: QuickSpec {
     override func spec() {
         describe("DeserializeFunctionSpec") {
 
+            it("should parse JSON") {
+                let o1 = DeserializableObject(from: ["":""])
+                o1?.uuid = "id1"
+                o1?.amount = 20
+                
+                var parsedJson: [String: Any] {
+                    return parse({ (json) in
+                        json["id"] <-> o1?.uuid
+                        json["amount"] <-> o1?.amount
+                    })
+                }
+                
+                expect(parsedJson.count) == 2
+                expect(parsedJson["id"] as? String) == o1?.uuid
+                expect(parsedJson["amount"] as? Int) == o1?.amount
+            }
+            
             it("should parse generic value from JSON") {
                 let uuidKey = "uuid"
                 let json = [uuidKey:"some id"] as [String : Any]
