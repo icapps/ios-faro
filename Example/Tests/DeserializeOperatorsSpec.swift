@@ -125,11 +125,11 @@ class DeserializeOperatorsSpec: QuickSpec {
                 
                 it("should deserialize Date with TimeInterval") {
                     let o1 = DeserializableObject(from: ["":""])
-                    let anyTimeInterval = 1234.0 as Any?
+                    let anyTimeInterval = 1234.0 as TimeInterval?
                     
                     o1?.date <-> anyTimeInterval
                     
-                    let date = Date(timeIntervalSince1970: anyTimeInterval as! TimeInterval)
+                    let date = Date(timeIntervalSince1970: anyTimeInterval!)
                     expect(o1?.date) == date
                 }
                 
