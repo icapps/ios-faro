@@ -40,8 +40,8 @@ public func <-> (lhs: inout String?, rhs: Any?) {
     lhs = rhs as? String
 }
 
-public func <-> (lhs: inout Date?, rhs: String?) {
-    guard let date = rhs, DateParser.shared.dateFormat.characters.count > 0  else {
+public func <-> (lhs: inout Date?, rhs: Any?) {
+    guard let date = rhs as? String, DateParser.shared.dateFormat.characters.count > 0  else {
         return
     }
 

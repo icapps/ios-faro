@@ -7,10 +7,19 @@ import Faro
 
 class SerializableObject: Serializable {
     var uuid: String?
+
     var amount: Int?
     var price: Double?
     var tapped: Bool?
     var date: Date?
+    var json: [String : Any?] {
+        get {
+            var json = [String: String]()
+            json["uuid"] <-> self.uuid
+            return json
+        }
+    }
+
 }
 
 class SerializeOpereratorsSpec: QuickSpec {

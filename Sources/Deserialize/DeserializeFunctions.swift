@@ -1,11 +1,5 @@
 import Foundation
 
-public func parse(_ callback: (_ json: inout [String: Any]) -> ()) -> [String: Any] {
-    var json = [String: Any]()
-    callback(&json)
-    return json
-}
-
 public func parse <T>(_ named: String!, from: [String: Any]) throws -> T! {
     if let named = named , !named.isEmpty {
         guard let value = from[named] as? T else {
