@@ -54,6 +54,19 @@ class DeserializeFunctionSpec: QuickSpec {
                 
                 expect(o1?.date).toNot(beNil())
             }
+            
+            it("should parse generic model from JSON") {
+                let json = ["uuid":"some id"] as [String: Any]
+                var o1 = DeserializableObject(from: ["":""])
+                
+                do {
+                    o1 = try parse(from: json)
+                } catch {
+                    return
+                }
+                
+                expect(o1?.uuid) == json["uuid"] as! String?
+            }
         }
     }
     
