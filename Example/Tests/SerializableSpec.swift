@@ -5,42 +5,28 @@ import Faro
 @testable import Faro_Example
 
 extension Zoo: Serializable {
-    //implementation handled by extension in Faro. Override if needed.
+
+    var json: [String : Any?] {
+        get {
+            var json = [String: Any]()
+            json["uuid"] <-> self.uuid
+            json["color"] <-> self.color
+            json["animal"] <-> self.animal
+            json["animalArray"] <-> self.animalArray
+            json["date"] <-> self.date
+            return json
+        }
+    }
 }
 
 extension Animal: Serializable {
-    //implementation handled by extension in Faro. Override if needed.
-}
-
-/// MARK: - CustomSerializalble
-
-/// You do not have to implement this. But if you want to serialize relations you have to.
-extension Zoo: CustomSerializable {
-
-    func isRelation(for label: String) -> Bool {
-        let reations = ["animal": true, "animalArray": true]
-        let isRelation = reations[label]
-        return isRelation != nil ? isRelation! : false
-    }
-
-    func jsonForRelation(with key: String) -> JsonNode {
-        if key == "animal" {
-            guard let relation = animal?.json else {
-                return .nodeNotSerialized
-            }
-            return .nodeObject(relation)
-        } else if key == "animalArray" {
-            guard let relations = animalArray else {
-                return .nodeNotSerialized
-            }
-
-            let jsonRelation = relations.map{ $0.json }
-            return .nodeArray(jsonRelation)
+    var json: [String : Any?] {
+        get {
+            var json = [String: Any]()
+            json["uuid"] <-> self.uuid
+            return json
         }
-
-        return .nodeNotSerialized
     }
-    
 }
 
 class SerializableSpec: QuickSpec {
@@ -53,13 +39,6 @@ class SerializableSpec: QuickSpec {
                 let zoo = Zoo(from: json)!
                 let serializedZoo = zoo.json
 
-                it("should be subscriptable get") {
-                    let uuid = zoo[uuidKey] as! String?
-                    let blue = zoo["color"] as! String?
-
-                    expect(uuid).to(equal("id 1"))
-                    expect(blue).to(equal("something"))
-                }
                 it("should serilize") {
                     expect(serializedZoo[uuidKey] as! String?).to(equal("id 1"))
                     expect(serializedZoo["color"] as! String?).to(equal("something"))
@@ -67,18 +46,12 @@ class SerializableSpec: QuickSpec {
             }
 
             context("One to one relation - animal") {
-                let animalID = "animal 1"
-                let animalKey = "animal"
-
-                let json = [animalKey: [uuidKey: animalID]] as [String : Any]
-                let zoo = Zoo(from: json)!
-
-                let serializedZoo = zoo.json
-
-                let serializedAnimal = serializedZoo[animalKey] as! [String: Any]
+                let json = ["animal": ["uuid": "pet"]] as [String : Any?]
+                let animal = Zoo(from: json)!
+                let animalSerialized = animal.json["animal"] as! [String: Any]
 
                 it("should contain uuid of animal") {
-                    expect(serializedAnimal[uuidKey] as! String?).to(equal(animalID))
+                    expect(animalSerialized["uuid"] as! String?).to(equal("pet"))
                 }
             }
 
