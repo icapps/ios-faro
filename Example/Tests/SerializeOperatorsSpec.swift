@@ -14,11 +14,11 @@ class SerializableObject: Serializable {
     var json: [String : Any?] {
         get {
             var json = [String: Any]()
-            json["uuid"] <-> self.uuid
-            json["amount"] <-> self.amount
-            json["price"] <-> self.price
-            json["tapped"] <-> self.tapped
-            json["date"] <-> self.date
+            json["uuid"] <-> uuid
+            json["amount"] <-> amount
+            json["price"] <-> price
+            json["tapped"] <-> tapped
+            json["date"] <-> date
             return json
         }
     }
@@ -120,7 +120,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 
                 let serializedDate = serializedType as! TimeInterval
                 
-                expect(serializedDate) == o1.date?.timeIntervalSince1970
+                expect(serializedDate) == o1.date!.timeIntervalSince1970
             }
         }
     }
