@@ -30,7 +30,9 @@ class DeserializableObject: Deserializable {
 }
 
 class DeserializeOperatorsSpec: QuickSpec {
-
+    
+    let testJson = ["uuid": "some id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"] as Any?
+    
     override func spec() {
         describe("DeserializeOperatorsSpec") {
 
@@ -38,7 +40,6 @@ class DeserializeOperatorsSpec: QuickSpec {
                 it("should work for relations") {
                     let relationId = ["relation 1", "relation 2"]
                     let animalArray =  [["uuid": relationId[0]], ["uuid": relationId[1]]]
-
                     let json = ["animalArray": animalArray] as Any?
 
                     var zoo = Zoo(from: ["":""])
@@ -71,38 +72,46 @@ class DeserializeOperatorsSpec: QuickSpec {
                 
                 it("should deserialize Integers") {
                     let o1 = DeserializableObject(from: ["": ""])
-                    let anyInt = 10 as Any?
+                    guard let json = self.testJson as? [String: Any] else {
+                        return
+                    }
                     
-                    o1?.amount <-> anyInt
+                    o1?.amount <-> json["amount"]
                     
-                    expect(o1?.amount) == anyInt as! Int?
+                    expect(o1?.amount) == json["amount"] as! Int?
                 }
                 
                 it("should deserialize Doubles") {
                     let o1 = DeserializableObject(from: ["":""])
-                    let anyDouble = 5.0 as Any?
+                    guard let json = self.testJson as? [String: Any] else {
+                        return
+                    }
                     
-                    o1?.price <-> anyDouble
+                    o1?.price <-> json["price"]
                     
-                    expect(o1?.price) == anyDouble as! Double?
+                    expect(o1?.price) == json["price"] as! Double?
                 }
                 
                 it("should deserialize Booleans") {
                     let o1 = DeserializableObject(from: ["":""])
-                    let anyBool = true as Any?
+                    guard let json = self.testJson as? [String: Any] else {
+                        return
+                    }
                     
-                    o1?.tapped <-> anyBool
+                    o1?.tapped <-> json["tapped"]
                     
-                    expect(o1?.tapped) == anyBool as! Bool?
+                    expect(o1?.tapped) == json["tapped"] as! Bool?
                 }
                 
                 it("should deserialize Strings") {
                     let o1 = DeserializableObject(from: ["":""])
-                    let anyString = "randomID" as Any?
+                    guard let json = self.testJson as? [String: Any] else {
+                        return
+                    }
                     
-                    o1?.uuid <-> anyString
+                    o1?.uuid <-> json["uuid"]
                     
-                    expect(o1?.uuid) == anyString as! String?
+                    expect(o1?.uuid) == json["uuid"] as! String?
                 }
                 
                 it("should deserialize Date with String") {
@@ -133,16 +142,25 @@ class DeserializeOperatorsSpec: QuickSpec {
                     expect(o1?.date) == date
                 }
                 
-                it("should deserialize Date with String") {
+                it("should deserialize Date with json and String") {
                     let o1 = DeserializableObject(from: ["":""])
-                    let anyTimeString = "20-08-1994" as Any?
+                    let timeString = "yyyy-MM-dd"
                     
-                    o1?.date <-> anyTimeString
+                    let json1 = ["date": "1994-08-20"] as Any?
+                    guard let json = json1 as? [String: Any] else {
+                        return
+                    }
+                    
+                    let rhs = (json["date"], timeString)
+                    
+                    o1?.date <-> rhs
                     
                     let formatter = DateFormatter()
-                    let date = formatter.date(from: anyTimeString as! String)
+                    formatter.dateFormat = "yyyy-MM-dd"
+                    let currentDate = formatter.date(from: "1994-08-20")
                     
-                    expect(o1?.date) == date
+                    expect(o1?.date).toNot(beNil())
+                    expect(o1?.date) == currentDate
                     
                 }
             }
