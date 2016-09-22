@@ -22,7 +22,7 @@ class DeserializableObject: Deserializable {
                 "amount": {self.amount <-> $0},
                 "price": {self.price <-> $0},
                 "tapped": {self.tapped <-> $0},
-                "date": {self.date <-> $0}
+                "date": {self.date <-> ($0, "yyyy-MM-dd")}
             ]
         }
     }
@@ -103,6 +103,24 @@ class DeserializeOperatorsSpec: QuickSpec {
                     o1?.uuid <-> anyString
                     
                     expect(o1?.uuid) == anyString as! String?
+                }
+                
+                it("should deserialize Date with String") {
+                    let o1 = DeserializableObject(from: ["":""])
+                    let timeString = "1994-08-20" as String?
+                    
+                    /// Don't forget to set the date format by calling setDateFormat(_format: String)
+                    setDateFormat("yyyy-MM-dd")
+                    
+                    o1?.date <-> timeString
+                    
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd"
+                    let currentDate = formatter.date(from: timeString!)
+                    
+                    expect(o1?.date).toNot(beNil())
+                    expect(o1?.date) == currentDate
+                    
                 }
                 
                 it("should deserialize Date with TimeInterval") {
