@@ -55,7 +55,7 @@ class DeserializeFunctionSpec: QuickSpec {
                 expect(o1?.date).toNot(beNil())
             }
             
-            it("should parse generic model from JSON") {
+            it("should parse generic object from JSON") {
                 let json = ["uuid":"some id"] as [String: Any]
                 var o1 = DeserializableObject(from: ["":""])
                 
@@ -66,6 +66,23 @@ class DeserializeFunctionSpec: QuickSpec {
                 }
                 
                 expect(o1?.uuid) == json["uuid"] as! String?
+            }
+            
+            it("should parse generic object arrays from JSON") {
+                let json = [["uuid": "id1"],["uuid":"id2"]]
+                let o1 = DeserializableObject(from: ["":""])
+                let o2 = DeserializableObject(from: ["":""])
+                var objectArray = [o1!, o2!]
+                
+                do {
+                    objectArray = try parse(from: json)!
+                } catch {
+                    return
+                }
+            
+                expect(objectArray.count) == 2
+                expect(objectArray.first?.uuid) == json.first?["uuid"]
+                expect(objectArray.last?.uuid) == json.last?["uuid"]
             }
         }
     }
