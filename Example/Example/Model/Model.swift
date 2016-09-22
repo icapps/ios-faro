@@ -10,5 +10,5 @@ class Model: Deserializable {
         }
         self.uuid <-> json["uuid"]
     }
-    
+
 }
