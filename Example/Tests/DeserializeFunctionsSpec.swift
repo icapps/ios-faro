@@ -22,6 +22,22 @@ class DeserializeFunctionSpec: QuickSpec {
                 
                 expect(o1?.uuid) == json["uuid"] as? String
             }
+            
+            it("should parse Date from JSON with TimeInterval") {
+                let o1 = DeserializableObject(from: ["":""])
+                let dateKey = "date"
+                let dateTimeInterval: TimeInterval = 12345.0
+                let json = ["date": dateTimeInterval]
+                
+                do {
+                    setDateFormat("yyyy-MM-dd")
+                    o1?.date = try parse(dateKey, from: json)
+                } catch {
+                    return
+                }
+                
+                let date = Date(timeIntervalSince1970: json["date"]!)
+                expect(o1?.date) == date
             }
         }
     }
