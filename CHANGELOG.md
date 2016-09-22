@@ -7,8 +7,8 @@ Version 1.0.0 is not compatible with 0.7.2. All the functions, classes, protocol
 
 In the previous versions to fire a service request you used the `Air` class. Now you should use the `Service` class.
 
-* first test for the ```Service``` class
-* Deprecating all ```Air``` class functions
+* First implementation after major changes
+
 ---
 ## Version 0.7.3
 * fixed #42 to add FaroParent and FaroParentSwift to make setup possible via inheritance.
