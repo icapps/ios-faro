@@ -29,8 +29,9 @@ class DeserializeOperatorsSpec: QuickSpec {
 
     override func spec() {
         describe("DeserializeOperatorsSpec") {
-            let testJson = ["uuid": "some id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"] as Any?
-            
+            let testAny = ["uuid": "some id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"] as Any?
+            let json = testAny as! [String: Any]
+
             context("should give value for") {
                 it("should work for relations") {
                     let relationId = ["relation 1", "relation 2"]
@@ -67,10 +68,7 @@ class DeserializeOperatorsSpec: QuickSpec {
                 
                 it("should deserialize Integers") {
                     let o1 = DeserializableObject(from: ["": ""])
-                    guard let json = testJson as? [String: Any] else {
-                        return
-                    }
-                    
+
                     o1?.amount <-> json["amount"]
                     
                     expect(o1?.amount) == json["amount"] as! Int?
@@ -78,10 +76,7 @@ class DeserializeOperatorsSpec: QuickSpec {
                 
                 it("should deserialize Doubles") {
                     let o1 = DeserializableObject(from: ["":""])
-                    guard let json = testJson as? [String: Any] else {
-                        return
-                    }
-                    
+
                     o1?.price <-> json["price"]
                     
                     expect(o1?.price) == json["price"] as! Double?
@@ -89,9 +84,6 @@ class DeserializeOperatorsSpec: QuickSpec {
                 
                 it("should deserialize Booleans") {
                     let o1 = DeserializableObject(from: ["":""])
-                    guard let json = testJson as? [String: Any] else {
-                        return
-                    }
                     
                     o1?.tapped <-> json["tapped"]
                     
@@ -100,65 +92,45 @@ class DeserializeOperatorsSpec: QuickSpec {
                 
                 it("should deserialize Strings") {
                     let o1 = DeserializableObject(from: ["":""])
-                    guard let json = testJson as? [String: Any] else {
-                        return
-                    }
-                    
+
                     o1?.uuid <-> json["uuid"]
                     
                     expect(o1?.uuid) == json["uuid"] as! String?
                 }
                 
                 it("should deserialize Date") {
-                    let o1 = DeserializableObject(from: ["":""])
-                    guard let json = testJson as? [String: Any] else {
-                        return
-                    }
+                    let o1 = DeserializableObject(from: ["":""])!
                     
-                    /// Don't forget to set the date format by calling setDateFormat(_format: String)
-                    setDateFormat("yyyy-MM-dd")
-                    
-                    o1?.date <-> json["date"]
+                    o1.date <-> (json["date"], "yyyy-MM-dd")
                     
                     let formatter = DateFormatter()
                     formatter.dateFormat = "yyyy-MM-dd"
                     let currentDate = formatter.date(from: "1994-08-20")
                     
-                    expect(o1?.date).toNot(beNil())
-                    expect(o1?.date) == currentDate
+                    expect(o1.date) == currentDate
                     
                 }
                 
                 it("should deserialize Date with TimeInterval") {
-                    let o1 = DeserializableObject(from: ["":""])
-                    let anyTimeInterval = 1234.0 as TimeInterval?
+                    let o1 = DeserializableObject(from: ["":""])!
+                    let anyTimeInterval: TimeInterval = 1234.0
                     
-                    o1?.date <-> anyTimeInterval
+                    o1.date <-> anyTimeInterval
                     
-                    let date = Date(timeIntervalSince1970: anyTimeInterval!)
-                    expect(o1?.date) == date
+                    let date = Date(timeIntervalSince1970: anyTimeInterval)
+                    expect(o1.date) == date
                 }
                 
                 it("should deserialize Date with json and String") {
-                    let o1 = DeserializableObject(from: ["":""])
-                    let timeString = "yyyy-MM-dd"
-                    
-                    let json1 = ["date": "1994-08-20"] as Any?
-                    guard let json = json1 as? [String: Any] else {
-                        return
-                    }
-                    
-                    let rhs = (json["date"], timeString)
-                    
-                    o1?.date <-> rhs
+                    let o1 = DeserializableObject(from: ["":""])!
+
+                    o1.date <-> ("1994-08-20" as Any?, "yyyy-MM-dd")
                     
                     let formatter = DateFormatter()
                     formatter.dateFormat = "yyyy-MM-dd"
                     let currentDate = formatter.date(from: "1994-08-20")
                     
-                    expect(o1?.date).toNot(beNil())
-                    expect(o1?.date) == currentDate
-                    
+                    expect(o1.date) == currentDate
                 }
             }
         }
