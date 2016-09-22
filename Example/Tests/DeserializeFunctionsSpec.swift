@@ -24,10 +24,26 @@ class DeserializeFunctionSpec: QuickSpec {
             }
             
             it("should parse Date from JSON with TimeInterval") {
-                let o1 = DeserializableObject(from: ["":""])
                 let dateKey = "date"
                 let dateTimeInterval: TimeInterval = 12345.0
                 let json = ["date": dateTimeInterval]
+                let o1 = DeserializableObject(from: ["":""])
+                
+                do {
+                    o1?.date = try parse(dateKey, from: json)
+                } catch {
+                    return
+                }
+                
+                let date = Date(timeIntervalSince1970: json["date"]!)
+                expect(o1?.date) == date
+            }
+            
+            it("should parse Date from JSON with String") {
+                let dateKey = "date"
+                let dateString = "1994-08-20"
+                let json = ["date": dateString]
+                let o1 = DeserializableObject(from: ["":""])
                 
                 do {
                     setDateFormat("yyyy-MM-dd")
@@ -36,8 +52,7 @@ class DeserializeFunctionSpec: QuickSpec {
                     return
                 }
                 
-                let date = Date(timeIntervalSince1970: json["date"]!)
-                expect(o1?.date) == date
+                expect(o1?.date).toNot(beNil())
             }
         }
     }
