@@ -12,30 +12,25 @@ class DeserializableObject: Deserializable {
     var date: Date?
     
     required init?(from raw: Any) {
-        map(from: raw)
-    }
-    
-    var mappers: [String : ((Any?) -> ())]? {
-        get {
-            return [
-                "uuid": {self.uuid <-> $0},
-                "amount": {self.amount <-> $0},
-                "price": {self.price <-> $0},
-                "tapped": {self.tapped <-> $0},
-                "date": {self.date <-> ($0, "yyyy-MM-dd")}
-            ]
+        guard let json = raw as? [String: Any?] else {
+            return nil
         }
+        
+        self.uuid <-> json["uuid"]
+        self.amount <-> json["amount"]
+        self.price <-> json["price"]
+        self.tapped <-> json["tapped"]
+        self.date <-> json["date"]
     }
 
 }
 
 class DeserializeOperatorsSpec: QuickSpec {
-    
-    let testJson = ["uuid": "some id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"] as Any?
-    
+
     override func spec() {
         describe("DeserializeOperatorsSpec") {
-
+            let testJson = ["uuid": "some id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"] as Any?
+            
             context("should give value for") {
                 it("should work for relations") {
                     let relationId = ["relation 1", "relation 2"]
@@ -72,7 +67,7 @@ class DeserializeOperatorsSpec: QuickSpec {
                 
                 it("should deserialize Integers") {
                     let o1 = DeserializableObject(from: ["": ""])
-                    guard let json = self.testJson as? [String: Any] else {
+                    guard let json = testJson as? [String: Any] else {
                         return
                     }
                     
@@ -83,7 +78,7 @@ class DeserializeOperatorsSpec: QuickSpec {
                 
                 it("should deserialize Doubles") {
                     let o1 = DeserializableObject(from: ["":""])
-                    guard let json = self.testJson as? [String: Any] else {
+                    guard let json = testJson as? [String: Any] else {
                         return
                     }
                     
@@ -94,7 +89,7 @@ class DeserializeOperatorsSpec: QuickSpec {
                 
                 it("should deserialize Booleans") {
                     let o1 = DeserializableObject(from: ["":""])
-                    guard let json = self.testJson as? [String: Any] else {
+                    guard let json = testJson as? [String: Any] else {
                         return
                     }
                     
@@ -105,7 +100,7 @@ class DeserializeOperatorsSpec: QuickSpec {
                 
                 it("should deserialize Strings") {
                     let o1 = DeserializableObject(from: ["":""])
-                    guard let json = self.testJson as? [String: Any] else {
+                    guard let json = testJson as? [String: Any] else {
                         return
                     }
                     
@@ -114,18 +109,20 @@ class DeserializeOperatorsSpec: QuickSpec {
                     expect(o1?.uuid) == json["uuid"] as! String?
                 }
                 
-                it("should deserialize Date with String") {
+                it("should deserialize Date") {
                     let o1 = DeserializableObject(from: ["":""])
-                    let timeString = "1994-08-20" as String?
+                    guard let json = testJson as? [String: Any] else {
+                        return
+                    }
                     
                     /// Don't forget to set the date format by calling setDateFormat(_format: String)
                     setDateFormat("yyyy-MM-dd")
                     
-                    o1?.date <-> timeString
+                    o1?.date <-> json["date"]
                     
                     let formatter = DateFormatter()
                     formatter.dateFormat = "yyyy-MM-dd"
-                    let currentDate = formatter.date(from: timeString!)
+                    let currentDate = formatter.date(from: "1994-08-20")
                     
                     expect(o1?.date).toNot(beNil())
                     expect(o1?.date) == currentDate
