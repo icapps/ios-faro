@@ -15,6 +15,8 @@
 		A4D85BC91CC9106A0046AF29 /* exampleBaseModel.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */; };
 		A4D85BCB1CCA150F0046AF29 /* exampleBaseModelResultsArray.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */; };
 		A4D85BCD1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */; };
+		B599F53F1D9A9E4100C2BCD4 /* ApplicationKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B599F53E1D9A9E4100C2BCD4 /* ApplicationKeys.swift */; };
+		B599F5421D9A9EB400C2BCD4 /* FaroServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = B599F5401D9A9E8900C2BCD4 /* FaroServiceSpec.swift */; };
 		C012EA4D1CCA5E2700B298D7 /* GET_gameScoreArray.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */; };
 		C012EA501CCA8A5B00B298D7 /* GET_gameScoreArray_1275.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */; };
 		C015C7E51D81801700E30408 /* ExampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015C7E41D81801700E30408 /* ExampleService.swift */; };
@@ -63,6 +65,8 @@
 		A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArray.json; sourceTree = "<group>"; };
 		A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArrayCustomRootKey.json; sourceTree = "<group>"; };
 		A9820385A9A7E4CFDE5B9F68 /* Pods-Faro_Example-Faro_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example-Faro_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		B599F53E1D9A9E4100C2BCD4 /* ApplicationKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationKeys.swift; sourceTree = "<group>"; };
+		B599F5401D9A9E8900C2BCD4 /* FaroServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaroServiceSpec.swift; sourceTree = "<group>"; };
 		C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray.json; sourceTree = "<group>"; };
 		C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray_1275.json; sourceTree = "<group>"; };
 		C015C7E41D81801700E30408 /* ExampleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleService.swift; sourceTree = "<group>"; };
@@ -176,6 +180,7 @@
 				C02ADF771D8823F800FA5B32 /* ServiceSpec.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 				C03281571D7722F40047825C /* TestHelpers */,
+				B599F5401D9A9E8900C2BCD4 /* FaroServiceSpec.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -253,6 +258,7 @@
 			children = (
 				C0ACDE631D79B65100064801 /* MockModel.swift */,
 				C03281581D7722F40047825C /* MockService.swift */,
+				B599F53E1D9A9E4100C2BCD4 /* ApplicationKeys.swift */,
 			);
 			path = TestHelpers;
 			sourceTree = "<group>";
@@ -492,6 +498,7 @@
 				C015C7E51D81801700E30408 /* ExampleService.swift in Sources */,
 				C032815F1D77319B0047825C /* Model.swift in Sources */,
 				C03281451D76EB590047825C /* SwiftViewController.swift in Sources */,
+				B599F53F1D9A9E4100C2BCD4 /* ApplicationKeys.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -508,6 +515,7 @@
 				C02ADF811D88243A00FA5B32 /* ErrorSpec.swift in Sources */,
 				C02ADF831D88243A00FA5B32 /* ServiceSpec.swift in Sources */,
 				C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */,
+				B599F5421D9A9EB400C2BCD4 /* FaroServiceSpec.swift in Sources */,
 				C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */,
 				C03BEC7F1D9273CF00420048 /* SerializeOperatorsSpec.swift in Sources */,
 				C03281591D7722F40047825C /* MockService.swift in Sources */,
@@ -647,6 +655,7 @@
 				DEVELOPMENT_TEAM = FAJTRUZ6J9;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "Example/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULEMAP_FILE = Faro_Example;
 				MODULEMAP_PRIVATE_FILE = Faro_Example;
@@ -670,6 +679,7 @@
 				DEVELOPMENT_TEAM = FAJTRUZ6J9;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "Example/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULEMAP_FILE = Faro_Example;
 				MODULEMAP_PRIVATE_FILE = Faro_Example;
