@@ -5,7 +5,7 @@ import Faro
 @testable import Faro_Example
 
 /// For testing with required variable
-class Gail: Deserializable {
+class Jail: Deserializable {
     var cellNumber: String
     var foodTicket: String?
 
@@ -107,25 +107,25 @@ class DeserializableSpec: QuickSpec {
 
             context("required properties") {
                 it("should parse required UUID") {
-                    let gail = Gail(from: ["cellNumber": "007"])!
+                    let gail = Jail(from: ["cellNumber": "007"])!
 
                     expect(gail.cellNumber) == "007"
                 }
 
                 it("should fail when no uuid provided") {
-                    let gail = Gail(from: ["": ""])
+                    let gail = Jail(from: ["": ""])
 
                     expect(gail).to(beNil())
                 }
 
                 it("should automatically map optional parameters") {
-                    let gail = Gail(from: ["cellNumber": "007", "foodTicket": "ticket"])!
+                    let gail = Jail(from: ["cellNumber": "007", "foodTicket": "ticket"])!
 
                     expect(gail.foodTicket) == "ticket"
                 }
 
                 it("should not parse when json has keys but no uuid") {
-                     let gail = Gail(from: ["foodTicket": "ticket"])
+                     let gail = Jail(from: ["foodTicket": "ticket"])
 
                     expect(gail).to(beNil())
                 }
