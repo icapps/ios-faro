@@ -24,8 +24,8 @@ open class FaroService: Service {
         if let sharedService = FaroService.sharedService {
             return MockSwitch.shouldMock ? sharedMockService : sharedService
         } else {
-            print("❓ You should run FaroService.setup(with:) in the AppDelegate after startup to have a service pointing to a service.")
-            print("🍞 Fallin back on using the MockService.")
+            print("❓ You should run FaroService.setup(with:) in the AppDelegate after startup to have a service pointing to a server.")
+            print("🍞 Falling back on using the MockService.")
             return FaroService.sharedMockService
         }
     }
