@@ -1,9 +1,9 @@
 import UIKit
 
 class JSONReader: NSObject {
-    static func parseFile(named: String!) -> [String : Any]? {
+    static func parseFile(named: String!, for bundle: Bundle) -> [String : Any]? {
         do {
-            guard let data = NSDataAsset(name: named, bundle: Bundle.main)?.data else {
+            guard let data = NSDataAsset(name: named, bundle: bundle)?.data else {
                 return nil
             }
             
