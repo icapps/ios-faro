@@ -3,7 +3,7 @@ import UIKit
 class JSONReader: NSObject {
     static func parseFile(named: String!) -> [String : Any]? {
         do {
-            guard let data = NSDataAsset(name: named, bundle: Bundle.init(for: self))?.data else {
+            guard let data = NSDataAsset(name: named, bundle: Bundle.main)?.data else {
                 return nil
             }
             
