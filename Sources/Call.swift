@@ -67,7 +67,7 @@ open class Call {
                 return insert(json: (self.parameters?.parameters)!, request: request)
             }
         } catch {
-            printError(error)
+            PrintFaroError(error)
             return request
         }
     }
@@ -115,7 +115,7 @@ open class Call {
             newRequest?.httpBody = try JSONSerialization.data(withJSONObject: newJSON, options: .prettyPrinted)
             return newRequest!
         } catch {
-            printError(error)
+            PrintFaroError(error)
             return request
         }
     }
