@@ -4,6 +4,7 @@ open class MockService: Service {
     public var mockDictionary: Any?
     
     public init(mockDictionary: Any? = nil) {
+        self.mockDictionary = mockDictionary
         super.init(configuration: Configuration(baseURL: "mockService"))
     }
 
