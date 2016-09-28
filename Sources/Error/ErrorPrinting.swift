@@ -1,6 +1,6 @@
 
 /// Catches any throws and switches if to af failure after printing the error.
-public func printError(_ error: Error) {
+public func printFaroError(_ error: Error) {
     var faroError = error
     if !(error is FaroError) {
         faroError = FaroError.nonFaroError(error)

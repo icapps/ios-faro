@@ -9,7 +9,7 @@ class JSONReader: NSObject {
             
             return try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
         } catch {
-            printError(FaroError.nonFaroError(error))
+            PrintFaroError(FaroError.nonFaroError(error))
             return nil
         }
     }
