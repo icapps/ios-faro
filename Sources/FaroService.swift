@@ -1,18 +1,17 @@
 import UIKit
 
-/// Uses as a global to determine if `FaroService` should do reald data
+/// Uses as a global to determine if `FaroService` should do real data
 public struct MockSwitch {
     public static var shouldMock = false
 }
 
-/// You can use this as a singleton that switches betwee using real data or data from a file.
+/// You can use this as a singleton that switches between using real data or data from a file.
 /// To switch we use `MockSwitch`
 open class FaroService: Service {
     /// Sends its requests to the servers
     private static var sharedService: Service?
     /// Sends its requests to a file
     private static let sharedMockService = MockService()
-
 
     public static func setup(with baseURL: String) {
         FaroService.sharedService = Service(configuration: Configuration(baseURL: baseURL))

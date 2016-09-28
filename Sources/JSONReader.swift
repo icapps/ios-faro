@@ -1,11 +1,3 @@
-//
-//  JSONReader.swift
-//  Pods
-//
-//  Created by Ben Algoet on 27/09/16.
-//
-//
-
 import UIKit
 
 class JSONReader: NSObject {
