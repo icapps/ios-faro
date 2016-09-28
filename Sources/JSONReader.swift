@@ -17,7 +17,7 @@ class JSONReader: NSObject {
             
             return try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
         } catch {
-            print(error.localizedDescription)
+            print(FaroError.nonFaroError(error).localizedDescription)
             return nil
         }
     }
