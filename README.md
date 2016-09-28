@@ -20,6 +20,11 @@ We build a service request by using a `Service` class as the point where you fir
 *Protocols*
 * Because we use Protocols you can use any type including CoreData's `NSManagedObject` 💪🏼
 
+*Mocking*
+* Use `FaroService` singleton if you want to switch between data from the server or a file.
+* Handy for unit tests 💪🏼
+* Handy if API is not yet available 🤓
+
 ## Define a Call
 
 You can write your example service so that a call becomes a oneliner.
