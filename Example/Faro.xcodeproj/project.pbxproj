@@ -16,6 +16,7 @@
 		A4D85BCB1CCA150F0046AF29 /* exampleBaseModelResultsArray.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */; };
 		A4D85BCD1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */; };
 		B599F5421D9A9EB400C2BCD4 /* FaroServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = B599F5401D9A9E8900C2BCD4 /* FaroServiceSpec.swift */; };
+		C00C1D291D9D8D51002D43B7 /* MockServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00C1D281D9D8D51002D43B7 /* MockServiceSpec.swift */; };
 		C012EA4D1CCA5E2700B298D7 /* GET_gameScoreArray.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */; };
 		C012EA501CCA8A5B00B298D7 /* GET_gameScoreArray_1275.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */; };
 		C015C7E51D81801700E30408 /* ExampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015C7E41D81801700E30408 /* ExampleService.swift */; };
@@ -64,6 +65,7 @@
 		A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArrayCustomRootKey.json; sourceTree = "<group>"; };
 		A9820385A9A7E4CFDE5B9F68 /* Pods-Faro_Example-Faro_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example-Faro_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		B599F5401D9A9E8900C2BCD4 /* FaroServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaroServiceSpec.swift; sourceTree = "<group>"; };
+		C00C1D281D9D8D51002D43B7 /* MockServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockServiceSpec.swift; sourceTree = "<group>"; };
 		C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray.json; sourceTree = "<group>"; };
 		C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray_1275.json; sourceTree = "<group>"; };
 		C015C7E41D81801700E30408 /* ExampleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleService.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */,
 				B599F5401D9A9E8900C2BCD4 /* FaroServiceSpec.swift */,
 				C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */,
+				C00C1D281D9D8D51002D43B7 /* MockServiceSpec.swift */,
 				C0BFD2BE1D90E09900FAB4E0 /* SerializableSpec.swift */,
 				C03BEC7E1D9273CF00420048 /* SerializeOperatorsSpec.swift */,
 				C02ADF771D8823F800FA5B32 /* ServiceSpec.swift */,
@@ -507,6 +510,7 @@
 				C03BEC811D9275E100420048 /* DeserializeOperatorsSpec.swift in Sources */,
 				C02ADF811D88243A00FA5B32 /* ErrorSpec.swift in Sources */,
 				C02ADF831D88243A00FA5B32 /* ServiceSpec.swift in Sources */,
+				C00C1D291D9D8D51002D43B7 /* MockServiceSpec.swift in Sources */,
 				C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */,
 				B599F5421D9A9EB400C2BCD4 /* FaroServiceSpec.swift in Sources */,
 				C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */,

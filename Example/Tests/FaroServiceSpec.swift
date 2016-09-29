@@ -20,7 +20,7 @@ class FaroServiceSpec: QuickSpec {
         describe("FaroService mock switching") {
             context("should mock switch = true") {
                 beforeEach {
-                    MockSwitch.shouldMock = true
+                    FaroService.sharedService = MockService()
                 }
                 
                 it("Should use MockService") {
@@ -30,7 +30,7 @@ class FaroServiceSpec: QuickSpec {
 
             context("should mock switch = false") {
                 beforeEach {
-                    MockSwitch.shouldMock = false
+                    FaroService.sharedService = nil
                 }
 
                 it("default to mocking when setup(with:) not called") {
@@ -39,30 +39,6 @@ class FaroServiceSpec: QuickSpec {
             }
         }
 
-        describe("FaroServie mock data") {
-            context("dictionary set") {
-                var mockService: MockService!
-
-                beforeEach {
-                    MockSwitch.shouldMock = true
-                    mockService = FaroService.shared as! MockService
-                }
-
-                it("should return dictionary after perform") {
-                    let uuid = "dictionary for testing"
-                    mockService.mockDictionary = ["uuid": uuid]
-
-                    mockService.perform(Call(path: "unit tests")) { (result: Result<MockModel>) in
-                        switch result {
-                        case .model( let model):
-                            expect(model!.uuid) == uuid
-                        default:
-                            XCTFail("should provide a model")
-                        }
-                    }
-                }
-            }
-
-        }
+        
     }
 }
