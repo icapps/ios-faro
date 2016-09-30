@@ -1,4 +1,5 @@
-Faro
+![](./Images/FaroShield.jpg)
+
 [![CI Status](http://img.shields.io/travis/icapps/ios-faro.svg?style=flat)](https://travis-ci.org/icapps/ios-faro) [![Version](https://img.shields.io/cocoapods/v/Faro.svg?style=flat)](http://cocoapods.org/pods/Faro) [![License](https://img.shields.io/cocoapods/l/Faro.svg?style=flat)](http://cocoapods.org/pods/Faro) [![Platform](https://img.shields.io/cocoapods/p/Faro.svg?style=flat)](http://cocoapods.org/pods/Faro)
 ======
 
@@ -19,6 +20,11 @@ We build a service request by using a `Service` class as the point where you fir
 
 *Protocols*
 * Because we use Protocols you can use any type including CoreData's `NSManagedObject` 💪🏼
+
+*Mocking*
+* Use `FaroService` singleton if you want to switch between data from the server or a file.
+* Handy for unit tests 💪🏼
+* Handy if API is not yet available 🤓
 
 ## Define a Call
 

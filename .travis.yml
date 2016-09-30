@@ -3,8 +3,8 @@ osx_image: xcode8
 
 before_install:
     - gem install xcpretty -N --no-ri --no-rdoc
-    - brew update
     - brew install tailor
+    - sudo chmod -R go+r /Library/Ruby/Gems/2.0.0/gems/cocoapods-keys-1.7.0
 
 script:
     - set -o pipefail

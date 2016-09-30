@@ -7,7 +7,7 @@ Version 1.0.0 is not compatible with 0.7.2. All the functions, classes, protocol
 
 In the previous versions to fire a service request you used the `Air` class. Now you should use the `Service` class.
 
-* First implementation after major changes
+* First implementation after major changes (read more in the ReadMe)
 
 ---
 ## Version 0.7.3
