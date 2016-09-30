@@ -45,11 +45,11 @@ class DeserializeOperatorsSpec: QuickSpec {
                     expect(zoo?.animalArray?.count) == 2
                 }
                 
-                it("should deserialize to object") {
+                it("should deserialize from object") {
                     let randomNumber = "randomNumber"
                     let json = ["cellNumber": randomNumber, "foodTicket": "ticket"] as Any?
                     
-                    var gail = Gail(from: ["":""])
+                    var gail = Jail(from: ["":""])
                     
                     gail <-> json
                     
@@ -57,7 +57,7 @@ class DeserializeOperatorsSpec: QuickSpec {
                     
                 }
                 
-                it("should deserialize to object Array") {
+                it("should deserialize from object Array") {
                     let json = [["uuid": "id1"],["uuid": "id2"]] as Any?
                     var animalArray: [Animal]?
                     

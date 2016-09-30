@@ -52,26 +52,26 @@ open class Service {
     open func handle<M: Deserializable>(data: Data?, urlResponse: URLResponse?, error: Error?) -> Result<M> {
         guard error == nil else {
             let returnError = FaroError.nonFaroError(error!)
-            printError(returnError)
+            PrintFaroError(returnError)
             return .failure(returnError)
         }
 
         guard let httpResponse = urlResponse as? HTTPURLResponse else {
             let returnError = FaroError.general
-            printError(returnError)
+            PrintFaroError(returnError)
             return .failure(returnError)
         }
 
         let statusCode = httpResponse.statusCode
         guard statusCode < 400 else {
             let returnError = FaroError.networkError(statusCode)
-            printError(returnError)
+            PrintFaroError(returnError)
             return .failure(returnError)
         }
 
         guard 200...201 ~= statusCode else {
             let returnError = FaroError.general
-            printError(returnError)
+            PrintFaroError(returnError)
             return .failure(returnError)
         }
 
