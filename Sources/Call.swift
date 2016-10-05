@@ -61,14 +61,14 @@ open class Call {
                 guard let headers = parameters.parameters as? [String: String] else {
                     throw FaroError.malformed(info: "HTTP headers must be in a [String: String] format")
                 }
-                return insert(headers: headers, request: request)
+                return insertInBody(headers: headers, request: request)
             case .urlComponents:
-                guard let componentsDict = self.parameters?.parameters as? [String: String] else {
+                guard let componentsDict = parameters.parameters as? [String: String] else {
                     throw FaroError.malformed(info: "URL components must first be cast to strings")
                 }
-                return insert(componentsDict: componentsDict, request: request)
+                return insertInBody(componentsDict: componentsDict, request: request)
             case .jsonBody:
-                return insert(inBody: parameters.parameters, request: request)
+                return insertInBody(json: parameters.parameters, request: request)
             }
         } catch {
             PrintFaroError(error)
@@ -76,7 +76,7 @@ open class Call {
         }
     }
     
-    private func insert(headers: [String: String], request: URLRequest) -> URLRequest {
+    private func insertInBody(headers: [String: String], request: URLRequest) -> URLRequest {
         var newRequest = request
         for (key, value) in headers {
             newRequest.addValue(value, forHTTPHeaderField: key)
@@ -84,7 +84,7 @@ open class Call {
         return newRequest
     }
     
-    private func insert(componentsDict: [String: String], request: URLRequest) -> URLRequest {
+    private func insertInBody(componentsDict: [String: String], request: URLRequest) -> URLRequest {
         var newRequest: URLRequest! = request
         var components = URLComponents(url: newRequest.url!, resolvingAgainstBaseURL: false)
         if (components?.queryItems == nil) {
@@ -97,7 +97,7 @@ open class Call {
         return newRequest
     }
     
-    private func insert(inBody json: [String: Any], request: URLRequest) -> URLRequest {
+    private func insertInBody(json: [String: Any], request: URLRequest) -> URLRequest {
         do {
             if request.httpMethod == HTTPMethod.GET.rawValue || request.httpMethod == HTTPMethod.DELETE.rawValue {
                 throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
