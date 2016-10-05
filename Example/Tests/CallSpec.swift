@@ -6,12 +6,8 @@ import Faro
 
 class Car: Serializable {
     var uuid: String!
-    var json: [String : Any?] {
-        get {
-            var json = [String: Any]()
-            json["uuid"] <-> uuid
-            return json
-        }
+    var json: [String : Any] {
+        return ["uuid": uuid]
     }
     
 }
@@ -20,7 +16,38 @@ class Car: Serializable {
 class CallSpec: QuickSpec {
 
     override func spec() {
-        xdescribe("Call .GET") {
+        
+        describe("Call .POST with serialize") {
+            let expected = "path"
+            let o1 = Car()
+            o1.uuid = "123"
+            let call = Call(path: expected, method: .POST, serializableModel: o1)
+            let configuration = Faro.Configuration(baseURL: "http://someURL")
+            
+            it("should use POST method") {
+                let request = call.request(withConfiguration: configuration)
+                expect(request!.httpMethod).to(equal("POST"))
+            }
+            
+            it("should use Serialize object as parameter in call") {
+                let request = call.request(withConfiguration:configuration)
+                expect(request?.httpBody).toNot(beNil())
+            }
+        }
+        
+        describe("Call .POST with parameters") {
+            let expected = "path"
+            let parameters = Parameters(type: .jsonBody, parameters: ["id":"someId"])
+            let call = Call(path: expected, method: .POST, parameters: parameters)
+            let configuration = Faro.Configuration(baseURL: "http://someURL")
+            
+            it("should use POST method") {
+                let request = call.request(withConfiguration: configuration)
+                expect(request!.httpMethod).to(equal("POST"))
+            }
+        }
+        
+        describe("Call .GET") {
             let expected = "path"
             let call = Call(path: expected)
             let configuration = Faro.Configuration(baseURL: "http://someURL")
@@ -55,7 +82,7 @@ class CallSpec: QuickSpec {
             }
         }
 
-        xdescribe("Call .Get with RootNode") {
+        describe("Call .Get with RootNode") {
 
             let expected = "path"
             let call = Call(path: expected, rootNode: "rootNode")
@@ -82,7 +109,7 @@ class CallSpec: QuickSpec {
 
         }
         
-        xdescribe("Call with parameters") {
+        describe("Call with parameters") {
             let configuration = Faro.Configuration(baseURL: "http://someURL")
 
             func allHTTPHeaderFields(type: ParameterType, parameters: [String: Any]) -> [String: String] {
@@ -155,35 +182,6 @@ class CallSpec: QuickSpec {
             }
         }
         
-        xdescribe("Call .POST with serialize") {
-            let expected = "path"
-            let o1 = Car()
-            o1.uuid = "123"
-            let call = Call(path: expected, method: .POST, serializableObject: o1)
-            let configuration = Faro.Configuration(baseURL: "http://someURL")
-            
-            it("should use POST method") {
-                let request = call.request(withConfiguration: configuration)
-                expect(request!.httpMethod).to(equal("POST"))
-            }
-            
-            it("should use Serialize object as parameter in call") {
-                let request = call.request(withConfiguration:configuration)
-                expect(request?.httpBody).toNot(beNil())
-            }
-        }
-        
-        describe("Call .POST with parameters") {
-            let expected = "path"
-            let parameters = Parameters(type: .jsonBody, parameters: ["id":"someId"])
-            let call = Call(path: expected, method: .POST, parameters: parameters)
-            let configuration = Faro.Configuration(baseURL: "http://someURL")
-            
-            it("should use POST method") {
-                let request = call.request(withConfiguration: configuration)
-                expect(request!.httpMethod).to(equal("POST"))
-            }
-        }
     }
 
 }

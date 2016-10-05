@@ -4,6 +4,6 @@ import Foundation
 public protocol Serializable {
     /// Get a json Dictionary back one level deep. Meaning we do not Parse relations.
     /// if you want your relations parsed implement `CustomSerializable`
-    var json: [String: Any?] {get}
+    var json: [String: Any] {get}
 
 }

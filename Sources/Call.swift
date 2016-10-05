@@ -8,6 +8,9 @@ open class Call {
     open var rootNode: String?
     open var parameters: Parameters?
 
+    public convenience init<T: Serializable> (path: String, method: HTTPMethod = .POST, rootNode: String? = nil, serializableModel: T) {
+        self.init(path: path, method: method, rootNode: rootNode, parameters: Parameters(type: .jsonBody, parameters: serializableModel.json) )
+    }
     /// Initializes Call to retreive object(s) from the server.
     /// parameter rootNode: used to extract JSON in method `rootNode(from:)`.
     public init(path: String, method: HTTPMethod = .GET, rootNode: String? = nil, parameters: Parameters? = nil) {
@@ -48,13 +51,14 @@ open class Call {
     }
     
     private func insertParameters(request: URLRequest) -> URLRequest {
-        if (self.parameters == nil) {
+        guard let parameters = parameters else {
             return request
         }
+        
         do {
-            switch (self.parameters!.type!) {
+            switch parameters.type {
             case .httpHeader:
-                guard let headers = self.parameters?.parameters as? [String: String] else {
+                guard let headers = parameters.parameters as? [String: String] else {
                     throw FaroError.malformed(info: "HTTP headers must be in a [String: String] format")
                 }
                 return insert(headers: headers, request: request)
@@ -64,7 +68,7 @@ open class Call {
                 }
                 return insert(componentsDict: componentsDict, request: request)
             case .jsonBody:
-                return insert(json: (self.parameters?.parameters)!, request: request)
+                return insert(inBody: parameters.parameters, request: request)
             }
         } catch {
             PrintFaroError(error)
@@ -80,7 +84,7 @@ open class Call {
         return newRequest
     }
     
-    private func insert(componentsDict: [String: String], request: URLRequest!) -> URLRequest {
+    private func insert(componentsDict: [String: String], request: URLRequest) -> URLRequest {
         var newRequest: URLRequest! = request
         var components = URLComponents(url: newRequest.url!, resolvingAgainstBaseURL: false)
         if (components?.queryItems == nil) {
@@ -93,27 +97,15 @@ open class Call {
         return newRequest
     }
     
-    private func insert(json: [String: Any], request: URLRequest!) -> URLRequest {
+    private func insert(inBody json: [String: Any], request: URLRequest) -> URLRequest {
         do {
             if request.httpMethod == HTTPMethod.GET.rawValue || request.httpMethod == HTTPMethod.DELETE.rawValue {
                 throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
             }
             var newRequest = request
-            var body = newRequest?.httpBody
-            if body == nil {
-                body = try JSONSerialization.data(withJSONObject: [String: Any](), options: .prettyPrinted)
-            }
-            var newJSON = [String: Any]()
-            do {
-                newJSON = try JSONSerialization.jsonObject(with: body!, options: .allowFragments) as! [String: Any]
-            } catch {
-                newJSON = [String: Any]()
-            }
-            for (key, value) in json {
-                newJSON[key] = value
-            }
-            newRequest?.httpBody = try JSONSerialization.data(withJSONObject: newJSON, options: .prettyPrinted)
-            return newRequest!
+            newRequest.httpBody = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            
+            return newRequest
         } catch {
             PrintFaroError(error)
             return request
