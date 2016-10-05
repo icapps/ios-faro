@@ -21,25 +21,38 @@ public func <-> <P>(lhs: inout Any?, rhs: P?) where P: Serializable {
 /// Handy operators
 
 public func <-> (lhs: inout Any?, rhs: String?) {
+    guard let rhs = rhs else {
+        return
+    }
     lhs = rhs
 }
 
 public func <-> (lhs: inout Any?, rhs: Int?) {
+    guard let rhs = rhs else {
+        return
+    }
     lhs = rhs
 }
 
 public func <-> (lhs: inout Any?, rhs: Bool?) {
+    guard let rhs = rhs else {
+        return
+    }
     lhs = rhs
 }
 
 public func <-> (lhs: inout Any?, rhs: Double?) {
+    guard let rhs = rhs else {
+        return
+    }
     lhs = rhs
 }
 
 public func <-> (lhs: inout Any?, rhs: Date?) {
-    if let rhs = rhs {
-        lhs = rhs.timeIntervalSince1970
+    guard let rhs = rhs else {
+        return
     }
+    lhs = rhs.timeIntervalSince1970
 }
 
 

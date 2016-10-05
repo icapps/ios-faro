@@ -32,6 +32,16 @@ extension Animal: Serializable {
 class SerializableSpec: QuickSpec {
 
     override func spec() {
+        
+        describe("should return valid JSON") {
+            let zoo = Zoo(from: ["":""])!
+            let serializedZoo = zoo.json
+            zoo.uuid = "some id"
+            
+            it("should not throw when some of the json data is nil") {
+                expect {try JSONSerialization.data(withJSONObject: serializedZoo, options: .prettyPrinted)}.toNot(throwError())
+            }
+        }
         describe("Serializable") {
             let uuidKey = "uuid"
             context("No animalArray") {
