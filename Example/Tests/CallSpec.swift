@@ -12,7 +12,6 @@ class Car: Serializable {
     
 }
 
-
 class CallSpec: QuickSpec {
 
     override func spec() {
