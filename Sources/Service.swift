@@ -45,6 +45,40 @@ open class Service {
         task!.resume()
     }
 
+    //TODO: try to minimize duplicate code
+    //TODO: document
+    open func perform<M: Serializable>(with body: M, _ call: Call, result: @escaping (Result<M>) -> ()) {
+
+        guard var request = call.request(withConfiguration: configuration) else {
+            result(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")))
+            return
+        }
+
+        //TODO: move to call and add test to call spec
+        request.httpBody = try! JSONSerialization.data(withJSONObject: body.json, options: .prettyPrinted)
+        task = session.dataTask(with: request, completionHandler: { (data, response, error) in
+            let dataResult = self.handle(data: data, urlResponse: response, error: error) as Result<M>
+
+            switch dataResult {
+            case .data(let data):
+                self.configuration.adaptor.serialize(from: data) { (jsonResult: Result<M>) in
+                    switch jsonResult {
+                    case .json(json: let json):
+                        result(self.handle(json: json, call: call))
+                    default:
+                        result(jsonResult)
+                    }
+                }
+            default:
+                result(dataResult)
+            }
+
+        })
+        
+        
+        task!.resume()
+    }
+
     open func cancel() {
         task?.cancel()
     }
