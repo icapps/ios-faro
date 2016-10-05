@@ -41,48 +41,61 @@ open class Service {
 
         })
 
-
         task!.resume()
     }
-
-    //TODO: try to minimize duplicate code
-    //TODO: document
-    open func perform<M: Serializable>(with body: M, _ call: Call, result: @escaping (Result<M>) -> ()) {
-
-        guard var request = call.request(withConfiguration: configuration) else {
-            result(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")))
+    /// Use this to write to the server when you do not need a data result, just ok.
+    /// If you expect a data result use `perform(call:result:)`
+    /// - parameter call: should be of a type that does not expect data in the result.
+    /// - parameter result : `WriteResult` closure should be called with `.ok` other cases are a failure.
+    open func perform(_ writeCall: Call, result: @escaping (WriteResult) -> ()) {
+        
+        guard let request = writeCall.request(withConfiguration: configuration) else {
+            result(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(writeCall.path)")))
             return
         }
-
-        //TODO: move to call and add test to call spec
-        request.httpBody = try! JSONSerialization.data(withJSONObject: body.json, options: .prettyPrinted)
-        task = session.dataTask(with: request, completionHandler: { (data, response, error) in
-            let dataResult = self.handle(data: data, urlResponse: response, error: error) as Result<M>
-
-            switch dataResult {
-            case .data(let data):
-                self.configuration.adaptor.serialize(from: data) { (jsonResult: Result<M>) in
-                    switch jsonResult {
-                    case .json(json: let json):
-                        result(self.handle(json: json, call: call))
-                    default:
-                        result(jsonResult)
-                    }
-                }
-            default:
-                result(dataResult)
-            }
-
-        })
         
+        task = session.dataTask(with: request, completionHandler: { (data, response, error) in
+            result(self.handleWrite(data: data, urlResponse: response, error: error))
+        })
         
         task!.resume()
     }
 
+    
     open func cancel() {
         task?.cancel()
     }
 
+    open func handleWrite(data: Data?, urlResponse: URLResponse?, error: Error?) -> WriteResult {
+        guard error == nil else {
+            let returnError = FaroError.nonFaroError(error!)
+            PrintFaroError(returnError)
+            return .failure(returnError)
+        }
+        
+        guard let httpResponse = urlResponse as? HTTPURLResponse else {
+            let returnError = FaroError.general
+            PrintFaroError(returnError)
+            return .failure(returnError)
+        }
+        
+        let statusCode = httpResponse.statusCode
+        guard statusCode < 400 else {
+            let returnError = FaroError.networkError(statusCode)
+            PrintFaroError(returnError)
+            return .failure(returnError)
+        }
+        
+        guard 200...201 ~= statusCode else {
+            let returnError = FaroError.general
+            PrintFaroError(returnError)
+            return .failure(returnError)
+        }
+        
+        return .ok
+        
+    }
+    
     open func handle<M: Deserializable>(data: Data?, urlResponse: URLResponse?, error: Error?) -> Result<M> {
         guard error == nil else {
             let returnError = FaroError.nonFaroError(error!)

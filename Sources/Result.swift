@@ -10,6 +10,11 @@ public enum Result<M: Deserializable> {
     case failure(FaroError)
 }
 
+public enum WriteResult {
+    case ok
+    case failure(FaroError)
+}
+
 public enum JsonNode {
     case nodeObject([String: Any?])
     case nodeArray([Any])
