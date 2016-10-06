@@ -6,7 +6,7 @@ public enum FaroError: Error, Equatable {
     case shouldOverride
     case nonFaroError(Error)
     case rootNodeNotFound(json: Any)
-    case networkError(Int)
+    case networkError(Int, data: Data?)
     case emptyKey
     case emptyValue(key: String)
     case emptyCollection
@@ -24,7 +24,7 @@ public func == (lhs: FaroError, rhs: FaroError) -> Bool {
         return url_lhs == url_rhs
     case (.invalidResponseData (_), .invalidResponseData (_)):
         return true
-    case (.networkError(let lStatusCode), .networkError(let rStatusCode)):
+    case (.networkError(let lStatusCode, _ ), .networkError(let rStatusCode, _ )):
         return lStatusCode == rStatusCode
     default:
         return false

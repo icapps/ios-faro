@@ -48,78 +48,36 @@ open class Service {
     /// - parameter call: should be of a type that does not expect data in the result.
     /// - parameter result : `WriteResult` closure should be called with `.ok` other cases are a failure.
     open func perform(_ writeCall: Call, result: @escaping (WriteResult) -> ()) {
-        
+
         guard let request = writeCall.request(withConfiguration: configuration) else {
             result(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(writeCall.path)")))
             return
         }
-        
+
         task = session.dataTask(with: request, completionHandler: { (data, response, error) in
             result(self.handleWrite(data: data, urlResponse: response, error: error))
         })
-        
+
         task!.resume()
     }
 
-    
+
     open func cancel() {
         task?.cancel()
     }
 
     open func handleWrite(data: Data?, urlResponse: URLResponse?, error: Error?) -> WriteResult {
-        guard error == nil else {
-            let returnError = FaroError.nonFaroError(error!)
-            PrintFaroError(returnError)
-            return .failure(returnError)
+        if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error) {
+            return .failure(faroError)
         }
-        
-        guard let httpResponse = urlResponse as? HTTPURLResponse else {
-            let returnError = FaroError.general
-            PrintFaroError(returnError)
-            return .failure(returnError)
-        }
-        
-        let statusCode = httpResponse.statusCode
-        guard statusCode < 400 else {
-            let returnError = FaroError.networkError(statusCode)
-            PrintFaroError(returnError)
-            return .failure(returnError)
-        }
-        
-        guard 200...201 ~= statusCode else {
-            let returnError = FaroError.general
-            PrintFaroError(returnError)
-            return .failure(returnError)
-        }
-        
+
         return .ok
-        
     }
-    
+
     open func handle<M: Deserializable>(data: Data?, urlResponse: URLResponse?, error: Error?) -> Result<M> {
-        guard error == nil else {
-            let returnError = FaroError.nonFaroError(error!)
-            PrintFaroError(returnError)
-            return .failure(returnError)
-        }
 
-        guard let httpResponse = urlResponse as? HTTPURLResponse else {
-            let returnError = FaroError.general
-            PrintFaroError(returnError)
-            return .failure(returnError)
-        }
-
-        let statusCode = httpResponse.statusCode
-        guard statusCode < 400 else {
-            let returnError = FaroError.networkError(statusCode)
-            PrintFaroError(returnError)
-            return .failure(returnError)
-        }
-
-        guard 200...201 ~= statusCode else {
-            let returnError = FaroError.general
-            PrintFaroError(returnError)
-            return .failure(returnError)
+        if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error) {
+            return .failure(faroError)
         }
 
         if let data = data {
@@ -150,5 +108,34 @@ open class Service {
         case .nodeNotSerialized:
             return Result.failure(.serializationError)
         }
+    }
+
+    private func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?)-> FaroError? {
+        guard error == nil else {
+            let returnError = FaroError.nonFaroError(error!)
+            PrintFaroError(returnError)
+            return returnError
+        }
+
+        guard let httpResponse = urlResponse as? HTTPURLResponse else {
+            let returnError = FaroError.networkError(0, data: data)
+            PrintFaroError(returnError)
+            return returnError
+        }
+
+        let statusCode = httpResponse.statusCode
+        guard statusCode < 400 else {
+            let returnError = FaroError.networkError(statusCode, data: data)
+            PrintFaroError(returnError)
+            return returnError
+        }
+
+        guard 200...201 ~= statusCode else {
+            let returnError = FaroError.networkError(statusCode, data: data)
+            PrintFaroError(returnError)
+            return returnError
+        }
+        
+        return nil
     }
 }
