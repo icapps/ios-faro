@@ -24,15 +24,8 @@ public func PrintFaroError(_ error: Error) {
     case .networkError(let networkError, let data):
         if let data = data {
             //TODO: FARO-29 Print this from the content type returned.
-            do {
-                let json = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
-                print("💣 HTTP error: \(networkError) json message: \(json)")
-                break
-            } catch {
-                let string = String(data: data, encoding: .utf8)
-                print("💣 HTTP error: \(networkError) message: \(string)")
-                break
-            }
+            let string = String(data: data, encoding: .utf8)
+            print("💣 HTTP error: \(networkError) message: \(string)")
         } else {
             print("💣 HTTP error: \(networkError)")
         }
