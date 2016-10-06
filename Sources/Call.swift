@@ -103,7 +103,7 @@ open class Call {
                 throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
             }
             var newRequest = request
-            newRequest.httpBody = try JSONSerialization.data(withJSONObject: json, options: .init(rawValue: 0))
+            newRequest.httpBody = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
             
             return newRequest
         } catch {
