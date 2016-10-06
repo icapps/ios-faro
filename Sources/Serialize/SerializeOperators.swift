@@ -55,4 +55,13 @@ public func <-> (lhs: inout Any?, rhs: Date?) {
     lhs = rhs.timeIntervalSince1970
 }
 
+/// Serialize a date to the requested format as the string in the tupple
+public func <-> (lhs: inout Any?, rhs: (Date?, String)) {
+    guard let date = rhs.0 else {
+        return
+    }
+    DateParser.shared.dateFormat = rhs.1
+    lhs = DateParser.shared.dateFormatter.string(from: date)
+}
+
 

@@ -28,6 +28,33 @@ class SerializableObject: Serializable {
 class SerializeOpereratorsSpec: QuickSpec {
 
     override func spec() {
+        describe("Date serialization") {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+
+            it("to a timeinterval since 1970 by default") {
+                let date = formatter.date(from: "1994-08-20")!
+
+                var serializedDate: Any?
+                serializedDate <-> date
+
+                expect(serializedDate as? Double) == date.timeIntervalSince1970
+            }
+
+            it("should serialize to a requested format") {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd"
+                let date = formatter.date(from: "1994-08-20")
+
+                var serializedDate: Any?
+                serializedDate <-> (date, "yyyy-MM-dd")
+
+
+                expect(serializedDate as? String) == "1994-08-20"
+                
+            }
+        }
+        
         describe("SerializeOpereratorsSpec") {
 
             it("should serialize to JSON object") {
@@ -107,20 +134,6 @@ class SerializeOpereratorsSpec: QuickSpec {
                 let serializedDouble = serializedType as! Double
                 
                 expect(serializedDouble) == o1.price
-            }
-            
-            it("should serialize dates") {
-                var serializedType: Any?
-                let o1 = SerializableObject()
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd"
-                o1.date = formatter.date(from: "1994-08-20")
-                
-                serializedType <-> o1.date
-                
-                let serializedDate = serializedType as! TimeInterval
-                
-                expect(serializedDate) == o1.date!.timeIntervalSince1970
             }
         }
     }
