@@ -23,6 +23,7 @@ open class Call {
     open func request(withConfiguration configuration: Configuration) -> URLRequest? {
         var request = URLRequest(url: URL(string: "\(configuration.baseURL)/\(path)")!, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10.0)
         request.httpMethod = httpMethod.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request = insertParameters(request: request)
         return request
     }
