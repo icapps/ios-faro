@@ -4,9 +4,48 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
+class Car: Serializable {
+    var uuid: String!
+    var json: [String : Any] {
+        return ["uuid": uuid]
+    }
+    
+}
+
 class CallSpec: QuickSpec {
 
     override func spec() {
+        
+        describe("Call .POST with serialize") {
+            let expected = "path"
+            let o1 = Car()
+            o1.uuid = "123"
+            let call = Call(path: expected, method: .POST, serializableModel: o1)
+            let configuration = Faro.Configuration(baseURL: "http://someURL")
+            
+            it("should use POST method") {
+                let request = call.request(withConfiguration: configuration)
+                expect(request!.httpMethod).to(equal("POST"))
+            }
+            
+            it("should use Serialize object as parameter in call") {
+                let request = call.request(withConfiguration:configuration)
+                expect(request?.httpBody).toNot(beNil())
+            }
+        }
+        
+        describe("Call .POST with parameters") {
+            let expected = "path"
+            let parameters = Parameters(type: .jsonBody, parameters: ["id":"someId"])
+            let call = Call(path: expected, method: .POST, parameters: parameters)
+            let configuration = Faro.Configuration(baseURL: "http://someURL")
+            
+            it("should use POST method") {
+                let request = call.request(withConfiguration: configuration)
+                expect(request!.httpMethod).to(equal("POST"))
+            }
+        }
+        
         describe("Call .GET") {
             let expected = "path"
             let call = Call(path: expected)
@@ -119,11 +158,19 @@ class CallSpec: QuickSpec {
                 expect(string).toNot(contain("some%20dumb%20query%20item"))
             }
             
-            it("should add JSON into the request body into the request") {
+            it("should add JSON into PUT request body") {
                 let data = body(type: .jsonBody, method: .PUT, parameters: ["a string": "good day i am a string",
                                                                             "a number": 123])
                 let jsonDict = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: Any]
 
+                expect(jsonDict.keys.count).to(equal(2))
+            }
+            
+            it("should add JSON into POST request body") {
+                let data = body(type: .jsonBody, method: .POST, parameters: ["a string": "good day i am a string",
+                                                                             "a number": 123])
+                let jsonDict = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: Any]
+                
                 expect(jsonDict.keys.count).to(equal(2))
             }
             
@@ -133,6 +180,7 @@ class CallSpec: QuickSpec {
                 expect(data).to(beNil())
             }
         }
+        
     }
 
 }
