@@ -20,7 +20,9 @@ open class MockService: Service {
         }
 
         guard let mockJSON = JSONReader.parseFile(named: call.path, for: bundle!) else {
-            result(.failure(.malformed(info: "Could not find dummy file at \(call.path)")))
+            let faroError = FaroError.malformed(info: "Could not find dummy file at \(call.path)")
+            printFaroError(faroError)
+            result(.failure(faroError))
             return
         }
         

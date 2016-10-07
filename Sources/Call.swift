@@ -72,7 +72,7 @@ open class Call {
                 return insertInBody(with: parameters.parameters, request: request)
             }
         } catch {
-            PrintFaroError(error)
+            printFaroError(error)
             return request
         }
     }
@@ -108,7 +108,7 @@ open class Call {
             
             return newRequest
         } catch {
-            PrintFaroError(error)
+            printFaroError(error)
             return request
         }
     }
