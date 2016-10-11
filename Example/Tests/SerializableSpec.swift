@@ -6,7 +6,7 @@ import Faro
 
 extension Zoo: Serializable {
 
-    var json: [String : Any?] {
+    var json: [String : Any] {
         get {
             var json = [String: Any]()
             json["uuid"] <-> self.uuid
@@ -20,7 +20,7 @@ extension Zoo: Serializable {
 }
 
 extension Animal: Serializable {
-    var json: [String : Any?] {
+    var json: [String : Any] {
         get {
             var json = [String: Any]()
             json["uuid"] <-> self.uuid
@@ -32,6 +32,17 @@ extension Animal: Serializable {
 class SerializableSpec: QuickSpec {
 
     override func spec() {
+        
+        describe("should return valid JSON") {
+            let zoo = Zoo(from: ["":""])!
+            zoo.uuid = "some id"
+            let serializedZoo = zoo.json
+
+            
+            it("should not throw when some of the json data is nil") {
+                expect {try JSONSerialization.data(withJSONObject: serializedZoo, options: .prettyPrinted)}.toNot(throwError())
+            }
+        }
         describe("Serializable") {
             let uuidKey = "uuid"
             context("No animalArray") {
