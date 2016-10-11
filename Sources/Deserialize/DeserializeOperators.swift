@@ -40,14 +40,6 @@ public func <-> (lhs: inout String?, rhs: Any?) {
     lhs = rhs as? String
 }
 
-public func <-> (lhs: inout Date?, rhs: Any?) {
-    guard let date = rhs as? String, DateParser.shared.dateFormat.characters.count > 0  else {
-        return
-    }
-
-    lhs = DateParser.shared.dateFormatter.date(from: date)
-}
-
 public func <-> (lhs: inout Date?, rhs: TimeInterval?) {
     guard let timeInterval = rhs else {
         return

@@ -1,9 +1,9 @@
 import Foundation
 
 class DateParser {
-    static let shared = DateParser()
-    let dateFormatter = DateFormatter()
-    var dateFormat: String {
+    internal static let shared = DateParser()
+    internal let dateFormatter = DateFormatter()
+    internal var dateFormat: String {
         get {
             return dateFormatter.dateFormat
         } set {
@@ -12,8 +12,4 @@ class DateParser {
             }
         }
     }
-}
-
-public func setDateFormat(_ format: String) {
-    DateParser.shared.dateFormat = format
 }
