@@ -30,7 +30,7 @@ class SwiftViewController: UIViewController {
 //                    self.label.text = "Performed call for posts"
 //                    printBreadcrumb("\(models!)")
 //                default:
-//                    PrintFaroError("Could not perform call for posts")
+//                    printFaroError("Could not perform call for posts")
 //                }
 //            }
 //        }

@@ -113,26 +113,26 @@ open class Service {
     private func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?)-> FaroError? {
         guard error == nil else {
             let returnError = FaroError.nonFaroError(error!)
-            PrintFaroError(returnError)
+            printFaroError(returnError)
             return returnError
         }
 
         guard let httpResponse = urlResponse as? HTTPURLResponse else {
             let returnError = FaroError.networkError(0, data: data)
-            PrintFaroError(returnError)
+            printFaroError(returnError)
             return returnError
         }
 
         let statusCode = httpResponse.statusCode
         guard statusCode < 400 else {
             let returnError = FaroError.networkError(statusCode, data: data)
-            PrintFaroError(returnError)
+            printFaroError(returnError)
             return returnError
         }
 
         guard 200...201 ~= statusCode else {
             let returnError = FaroError.networkError(statusCode, data: data)
-            PrintFaroError(returnError)
+            printFaroError(returnError)
             return returnError
         }
         
