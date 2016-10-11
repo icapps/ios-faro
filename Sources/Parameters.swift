@@ -7,10 +7,10 @@
 //
 
 public struct Parameters {
-    public var type: ParameterType!
-    public var parameters: [String: Any]!
+    public let type: ParameterType
+    public let parameters: [String: Any]
     
-    public init(type: ParameterType!, parameters: [String: Any]!) {
+    public init(type: ParameterType, parameters: [String: Any]) {
         self.type = type
         self.parameters = parameters
     }

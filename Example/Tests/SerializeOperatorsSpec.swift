@@ -11,7 +11,7 @@ class SerializableObject: Serializable {
     var price: Double?
     var tapped: Bool?
     var date: Date?
-    var json: [String : Any?] {
+    var json: [String : Any] {
         get {
             var json = [String: Any]()
             json["uuid"] <-> uuid
