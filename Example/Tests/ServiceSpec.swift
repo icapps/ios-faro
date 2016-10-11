@@ -77,7 +77,15 @@ class ServiceSpec: QuickSpec {
                     let response =  HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: 404, httpVersion: nil, headerFields: nil)
                     let result = service.handle(data: nil, urlResponse: response, error: nil) as Result<MockModel>
                     switch result {
-                    case .failure(let faroError) where faroError == FaroError.networkError(404):
+                    case .failure(let faroError):
+                        switch faroError {
+                        case .networkError(let statuscode, data: _ ):
+                            expect(statuscode) == 404
+                            break
+                        default:
+                            XCTFail("wrong error")
+                        }
+
                         break
                     default:
                         XCTFail("Should have invalid authentication error")

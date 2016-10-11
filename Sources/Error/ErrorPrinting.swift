@@ -1,3 +1,4 @@
+import Foundation
 
 /// Catches any throws and switches if to af failure after printing the error.
 public func PrintFaroError(_ error: Error) {
@@ -20,8 +21,14 @@ public func PrintFaroError(_ error: Error) {
         print("💣 Error from service: \(nonFaroError)")
     case .rootNodeNotFound(json: let json):
         print("💣 Could not find root node in json: \(json)")
-    case .networkError(let networkError):
-        print("💣 HTTP error: \(networkError)")
+    case .networkError(let networkError, let data):
+        if let data = data {
+            //TODO: FARO-29 Print this from the content type returned.
+            let string = String(data: data, encoding: .utf8)
+            print("💣 HTTP error: \(networkError) message: \(string)")
+        } else {
+            print("💣 HTTP error: \(networkError)")
+        }
     case .emptyCollection:
         print("empty collection")
     case .emptyKey:
