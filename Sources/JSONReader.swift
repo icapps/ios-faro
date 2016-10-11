@@ -17,7 +17,7 @@ class JSONReader: NSObject {
             }
 
         } catch {
-                PrintFaroError(FaroError.nonFaroError(error))
+                printFaroError(FaroError.nonFaroError(error))
                 return nil
         }
     }
