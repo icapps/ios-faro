@@ -1,7 +1,7 @@
 import UIKit
 
 class JSONReader: NSObject {
-    static func parseFile(named: String!, for bundle: Bundle) -> [String : Any]? {
+    static func parseFile(named: String!, for bundle: Bundle) -> Any? {
         let named = named.replacingOccurrences(of: "/", with: "_")
 
         do {
@@ -9,7 +9,7 @@ class JSONReader: NSObject {
                 guard let data = NSDataAsset(name: named, bundle: bundle)?.data else {
                     return nil
                 }
-                return try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+                return try JSONSerialization.jsonObject(with: data, options: .allowFragments)
 
             } else {
                 print("🖕🏻 Faro json mocking only works on iOS 9")

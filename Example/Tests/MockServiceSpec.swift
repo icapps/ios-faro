@@ -49,6 +49,17 @@ class MockServiceSpec: QuickSpec {
                         }
                     }
                 }
+
+                it("ARRAY of JSON nodes") {
+                    mockService.perform(Call(path: "mockJsonArray")) { (result: Result<MockModel>) in
+                        switch result {
+                        case .models( let models):
+                            expect(models!.count) == 3
+                        default:
+                            XCTFail("should provide an array")
+                        }
+                    }
+                }
             }
         }
     }

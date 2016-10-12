@@ -36,7 +36,7 @@ public func printFaroError(_ error: Error) {
     case .emptyValue(let key):
         print("❓no value for key " + key)
     case .malformed(let info):
-        print(info)
+        print("💣 \(info)")
     case .serializationError:
         print("💣serialization error")
     }

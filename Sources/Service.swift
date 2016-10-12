@@ -99,7 +99,9 @@ open class Service {
                 if let model = M(from: node) {
                     models.append(model)
                 } else {
-                    print("💣 could not parse \(node)")
+                    let faroError = FaroError.malformed(info: "Coul not parse \(node) for type \(M.self)")
+                    printFaroError(faroError)
+                   return Result.failure(faroError)
                 }
             }
             return Result.models(models)
