@@ -23,16 +23,35 @@ class MockSession: FaroSession {
 
 }
 
+class PagingInformation: Deserializable {
+    var pages: Int
+    var currentPage: Int
+
+    required init?(from raw: Any) {
+        guard let json = raw as? [String: Any] else {
+            return nil
+        }
+
+        print("\(raw)")
+        pages = try! parse("pages", from: json)
+        currentPage = try! parse("currentPage", from: json)
+    }
+
+}
+
 class ServiceSpec: QuickSpec {
     override func spec() {
 
         describe("Mocked session") {
             var service: Service!
             let call = Call(path: "mock")
+            var mockSession: MockSession!
 
             beforeEach {
                 service = Service(configuration: Configuration(baseURL: "mockService"))
-                service.session = MockSession()
+                mockSession = MockSession()
+                service.session = mockSession
+                mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)
             }
 
             it("should return in sync") {
@@ -43,6 +62,19 @@ class ServiceSpec: QuickSpec {
                 })
 
                 expect(sync) == true
+            }
+
+            it("should return paging information") {
+                var pagesInformation: PagingInformation!
+
+                mockSession.data = "{\"pages\":10, \"currentPage\":25}".data(using: .utf8)
+
+                service.perform(call, pagingInformation: { (pageInfo) in
+                    pagesInformation = pageInfo
+                    }, modelResult: { (result: Result<MockModel>) in
+                })
+
+                expect(pagesInformation.pages) == 10
             }
             
         }
