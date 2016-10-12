@@ -4,8 +4,48 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
+class MockSession: FaroSession {
+
+    var data: Data?
+    var urlResponse: URLResponse?
+    var error: Error?
+
+    private var completionHandler: ((Data?, URLResponse?, Error?) -> ())?
+
+    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask {
+        self.completionHandler = completionHandler
+        return URLSessionDataTask() // just to me able to mock
+    }
+
+    func resume() {
+        completionHandler?(data, urlResponse, error)
+    }
+
+}
+
 class ServiceSpec: QuickSpec {
     override func spec() {
+
+        describe("Mocked session") {
+            var service: Service!
+            let call = Call(path: "mock")
+
+            beforeEach {
+                service = Service(configuration: Configuration(baseURL: "mockService"))
+                service.session = MockSession()
+            }
+
+            it("should return in sync") {
+                var sync = false
+
+                service.perform(call, result: { (result) in
+                    sync = true
+                })
+
+                expect(sync) == true
+            }
+            
+        }
         describe("Parsing to model") {
             var service: Service!
             var mockJSON: Any!
@@ -147,7 +187,7 @@ class ServiceSpec: QuickSpec {
 
                 var failed = false
 
-                service.perform(call, result: { (result: Result<MockModel>) in
+                service.perform(call, modelResult: { (result: Result<MockModel>) in
                     switch result {
                     case .failure:
                         failed = true

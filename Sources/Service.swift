@@ -4,7 +4,7 @@
 open class Service {
     open let configuration: Configuration
     fileprivate var task: URLSessionDataTask?
-    open let session = URLSession.shared
+    open var session: FaroSession = FaroURLSession()
 
     public init(configuration: Configuration) {
         self.configuration = configuration
@@ -15,10 +15,38 @@ open class Service {
     /// Typ! You can subclass 'Bar' and add a default service
     /// - parameter call : gives the details to find the entity on the server
     /// - parameter result : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
-    open func perform<M: Deserializable>(_ call: Call, result: @escaping (Result<M>) -> ()) {
+    open func perform<M: Deserializable>(_ call: Call, modelResult: @escaping (Result<M>) -> ()) {
+
+        performJsonResult(call) { (jsonResult: Result<M>) in
+            switch jsonResult {
+            case .json(let json):
+                modelResult(self.handle(json: json, call: call))
+            default:
+                modelResult(jsonResult)
+                break
+            }
+        }
+    }
+
+    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, pagingInformation: @escaping(P?)->(), modelResult: @escaping (Result<M>) -> ()) {
+
+        performJsonResult(call) { (jsonResult: Result<M>) in
+            switch jsonResult {
+            case .json(let json):
+                modelResult(self.handle(json: json, call: call))
+                pagingInformation(P(from: json))
+            default:
+                modelResult(jsonResult)
+                break
+            }
+        }
+    }
+
+
+    open func performJsonResult<M: Deserializable>(_ call: Call, jsonResult: @escaping (Result<M>) -> ()) {
 
         guard let request = call.request(withConfiguration: configuration) else {
-            result(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")))
+            jsonResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")))
             return
         }
 
@@ -27,21 +55,21 @@ open class Service {
 
             switch dataResult {
             case .data(let data):
-                self.configuration.adaptor.serialize(from: data) { (jsonResult: Result<M>) in
-                    switch jsonResult {
+                self.configuration.adaptor.serialize(from: data) { (serializedResult: Result<M>) in
+                    switch serializedResult {
                     case .json(json: let json):
-                        result(self.handle(json: json, call: call))
+                        jsonResult(.json(json))
                     default:
-                        result(jsonResult)
+                        jsonResult(serializedResult)
                     }
                 }
             default:
-                result(dataResult)
+                jsonResult(dataResult)
             }
 
         })
-
-        task!.resume()
+        
+        session.resume()
     }
     /// Use this to write to the server when you do not need a data result, just ok.
     /// If you expect a data result use `perform(call:result:)`
@@ -58,7 +86,7 @@ open class Service {
             result(self.handleWrite(data: data, urlResponse: response, error: error))
         })
 
-        task!.resume()
+        session.resume()
     }
 
 

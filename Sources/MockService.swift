@@ -13,20 +13,20 @@ open class MockService: Service {
     /// Uses the `path` in the `Call` object to fetch data from a file located in an asset in the application bundle
     /// If you use this in unit tests include the files in the test target.
     /// If you provide a `mockDictionary` we will use this instead of the file content.
-    override open func perform<M: Deserializable>(_ call: Call, result: @escaping (Result<M>) -> ()) {
+    override open func perform<M: Deserializable>(_ call: Call, modelResult: @escaping (Result<M>) -> ()) {
         if let mockDictionary = mockDictionary {
-            result(handle(json: mockDictionary, call: call))
+            modelResult(handle(json: mockDictionary, call: call))
             return
         }
 
         guard let mockJSON = JSONReader.parseFile(named: call.path, for: bundle!) else {
             let faroError = FaroError.malformed(info: "Could not find dummy file at \(call.path)")
             printFaroError(faroError)
-            result(.failure(faroError))
+            modelResult(.failure(faroError))
             return
         }
         
-        result(handle(json: mockJSON, call: call))
+        modelResult(handle(json: mockJSON, call: call))
     }
     
 }
