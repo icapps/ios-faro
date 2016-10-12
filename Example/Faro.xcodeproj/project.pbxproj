@@ -33,6 +33,7 @@
 		C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ACDE631D79B65100064801 /* MockModel.swift */; };
 		C0BFD2C01D90E1D200FAB4E0 /* SerializableSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BFD2BE1D90E09900FAB4E0 /* SerializableSpec.swift */; };
 		C0C3D4DE1D8EA01F0011E972 /* DeserializationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C3D4DD1D8EA01F0011E972 /* DeserializationSpec.swift */; };
+		C0ECD8AF1DAE2ADF00ECC8E8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		D377DE1E7E23BDD451F1AF77 /* Pods_Faro_Example_Faro_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E1A5D1778B1450F795E6D9 /* Pods_Faro_Example_Faro_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -375,6 +376,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0ECD8AF1DAE2ADF00ECC8E8 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
