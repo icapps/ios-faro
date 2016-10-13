@@ -114,7 +114,7 @@ class ServiceSpec: QuickSpec {
                 }
 
                 it("should have a configuration with the correct baseUrl") {
-                    expect(service.configuration.baseURL).to(equal("mockService"))
+                    expect(service.configuration.baseURL).to(equal(""))
                 }
 
                 it("should return in sync with the mock model") {

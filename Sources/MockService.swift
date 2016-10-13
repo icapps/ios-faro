@@ -3,11 +3,11 @@ open class MockService: Service {
     /// If you provide this variable before calling `perform` we will use this instead of the file content.
     public var mockDictionary: Any?
     internal var bundle: Bundle!
-    
+
     public init(mockDictionary: Any? = nil, for bundle: Bundle = Bundle.main) {
         self.mockDictionary = mockDictionary
         self.bundle = bundle
-        super.init(configuration: Configuration(baseURL: "mockService"))
+        super.init(configuration: Configuration(baseURL: ""))
     }
 
     /// This method is overridden to return json or errors like as if we would do a network call.
@@ -17,7 +17,9 @@ open class MockService: Service {
             return
         }
 
-        guard let mockJSON = JSONReader.parseFile(named: call.path, for: bundle!) else {
+        let request = call.request(withConfiguration: configuration)
+        let url = request?.url?.absoluteString
+        guard let mockJSON = JSONReader.parseFile(named: url, for: bundle!) else {
             let faroError = FaroError.malformed(info: "Could not find dummy file at \(call.path)")
             printFaroError(faroError)
             jsonResult(.failure(faroError))
@@ -26,10 +28,5 @@ open class MockService: Service {
 
         jsonResult(.json(mockJSON))
     }
-
-    /// Always returns ok we cannot do anything else.
-    open override func perform(_ writeCall: Call, result: @escaping (WriteResult) -> ()) {
-        result(.ok)
-    }
-
+    
 }
