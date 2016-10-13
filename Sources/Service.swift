@@ -43,8 +43,8 @@ extension Service {
         }
     }
 
-    open func performSingle<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, pagingInformation: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
-        perform(call, pagingInformation: pagingInformation) { (result: Result<ModelType>) in
+    open func performSingle<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, page: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
+        perform(call, page: page) { (result: Result<ModelType>) in
             switch result {
             case .model(let model):
                 guard let model = model else {
@@ -58,8 +58,8 @@ extension Service {
         }
     }
 
-    open func performCollection<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, pagingInformation: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping ([ModelType])->()) {
-        perform(call, pagingInformation: pagingInformation) { (result: Result<ModelType>) in
+    open func performCollection<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, page: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping ([ModelType])->()) {
+        perform(call, page: page) { (result: Result<ModelType>) in
             switch result {
             case .models(let models):
                 guard let models = models else {
@@ -107,13 +107,13 @@ open class Service {
         }
     }
 
-    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, pagingInformation: @escaping(P?)->(), modelResult: @escaping (Result<M>) -> ()) {
+    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, page: @escaping(P?)->(), modelResult: @escaping (Result<M>) -> ()) {
 
         performJsonResult(call) { (jsonResult: Result<M>) in
             switch jsonResult {
             case .json(let json):
                 modelResult(self.handle(json: json, call: call))
-                pagingInformation(P(from: json))
+                page(P(from: json))
             default:
                 modelResult(jsonResult)
                 break
@@ -147,22 +147,22 @@ open class Service {
             }
 
         })
-        
+
         session.resume()
     }
     /// Use this to write to the server when you do not need a data result, just ok.
     /// If you expect a data result use `perform(call:result:)`
     /// - parameter call: should be of a type that does not expect data in the result.
     /// - parameter result : `WriteResult` closure should be called with `.ok` other cases are a failure.
-    open func perform(_ writeCall: Call, result: @escaping (WriteResult) -> ()) {
+    open func performWrite(_ writeCall: Call, modelResult: @escaping (WriteResult) -> ()) {
 
         guard let request = writeCall.request(withConfiguration: configuration) else {
-            result(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(writeCall.path)")))
+            modelResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(writeCall.path)")))
             return
         }
 
         task = session.dataTask(with: request, completionHandler: { (data, response, error) in
-            result(self.handleWrite(data: data, urlResponse: response, error: error))
+            modelResult(self.handleWrite(data: data, urlResponse: response, error: error))
         })
 
         session.resume()
@@ -208,7 +208,7 @@ open class Service {
                 } else {
                     let faroError = FaroError.malformed(info: "Coul not parse \(node) for type \(M.self)")
                     printFaroError(faroError)
-                   return Result.failure(faroError)
+                    return Result.failure(faroError)
                 }
             }
             return Result.models(models)
@@ -265,5 +265,3 @@ extension Service {
         }
     }
 }
-
-

@@ -57,7 +57,7 @@ class ServiceSpec: QuickSpec {
             it("should return in sync") {
                 var sync = false
 
-                service.perform(call, result: { (result) in
+                service.performWrite(call, modelResult: { (result) in
                     sync = true
                 })
 
@@ -69,7 +69,7 @@ class ServiceSpec: QuickSpec {
 
                 mockSession.data = "{\"pages\":10, \"currentPage\":25}".data(using: .utf8)
 
-                service.perform(call, pagingInformation: { (pageInfo) in
+                service.perform(call, page: { (pageInfo) in
                     pagesInformation = pageInfo
                     }, modelResult: { (result: Result<MockModel>) in
                 })
