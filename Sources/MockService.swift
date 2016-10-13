@@ -27,4 +27,9 @@ open class MockService: Service {
         jsonResult(.json(mockJSON))
     }
 
+    /// Always returns ok we cannot do anything else.
+    open override func perform(_ writeCall: Call, result: @escaping (WriteResult) -> ()) {
+        result(.ok)
+    }
+
 }
