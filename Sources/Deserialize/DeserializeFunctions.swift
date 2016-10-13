@@ -13,7 +13,7 @@ public func parse <T>(_ named: String!, from: [String: Any]) throws -> T! {
 
 public func parse(_ named: String!, from: [String: Any], format: String? = nil) throws -> Date! {
     if let format = format {
-        setDateFormat(format)
+        DateParser.shared.dateFormat = format
     }
     if let named = named , !named.isEmpty {
         if let value = from[named] as? TimeInterval {

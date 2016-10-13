@@ -4,8 +4,80 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
+class MockSession: FaroSession {
+
+    var data: Data?
+    var urlResponse: URLResponse?
+    var error: Error?
+
+    private var completionHandler: ((Data?, URLResponse?, Error?) -> ())?
+
+    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask {
+        self.completionHandler = completionHandler
+        return URLSessionDataTask() // just to me able to mock
+    }
+
+    func resume() {
+        completionHandler?(data, urlResponse, error)
+    }
+
+}
+
+class PagingInformation: Deserializable {
+    var pages: Int
+    var currentPage: Int
+
+    required init?(from raw: Any) {
+        guard let json = raw as? [String: Any] else {
+            return nil
+        }
+
+        print("\(raw)")
+        pages = try! parse("pages", from: json)
+        currentPage = try! parse("currentPage", from: json)
+    }
+
+}
+
 class ServiceSpec: QuickSpec {
     override func spec() {
+
+        describe("Mocked session") {
+            var service: Service!
+            let call = Call(path: "mock")
+            var mockSession: MockSession!
+
+            beforeEach {
+                service = Service(configuration: Configuration(baseURL: "mockService"))
+                mockSession = MockSession()
+                service.session = mockSession
+                mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)
+            }
+
+            it("should return in sync") {
+                var sync = false
+
+                service.performWrite(call, modelResult: { (result) in
+                    sync = true
+                })
+
+                expect(sync) == true
+            }
+
+            it("should return paging information") {
+                var pagesInformation: PagingInformation!
+
+                mockSession.data = "{\"pages\":10, \"currentPage\":25}".data(using: .utf8)
+
+                service.perform(call, page: { (pageInfo) in
+                    pagesInformation = pageInfo
+                    }, modelResult: { (result: Result<MockModel>) in
+                })
+
+                expect(pagesInformation.pages) == 10
+            }
+            
+        }
         describe("Parsing to model") {
             var service: Service!
             var mockJSON: Any!
@@ -42,7 +114,7 @@ class ServiceSpec: QuickSpec {
                 }
 
                 it("should have a configuration with the correct baseUrl") {
-                    expect(service.configuration.baseURL).to(equal("mockService"))
+                    expect(service.configuration.baseURL).to(equal(""))
                 }
 
                 it("should return in sync with the mock model") {
@@ -147,7 +219,7 @@ class ServiceSpec: QuickSpec {
 
                 var failed = false
 
-                service.perform(call, result: { (result: Result<MockModel>) in
+                service.perform(call, modelResult: { (result: Result<MockModel>) in
                     switch result {
                     case .failure:
                         failed = true

@@ -20,7 +20,7 @@ class DeserializableObject: Deserializable {
         self.amount <-> json["amount"]
         self.price <-> json["price"]
         self.tapped <-> json["tapped"]
-        self.date <-> json["date"]
+        self.date <-> (json["date"], "yyyyMMdd")
     }
 
 }

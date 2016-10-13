@@ -29,6 +29,38 @@ class MockServiceSpec: QuickSpec {
                     }
                 }
             }
+
+            context("JSON file in asset catalog") {
+                var mockService: MockService!
+
+                beforeEach {
+                    mockService = MockService()
+                }
+
+                it("JSON node") {
+                    let uuid = "some id"
+
+                    mockService.perform(Call(path: "mockJsonNode")) { (result: Result<MockModel>) in
+                        switch result {
+                        case .model( let model):
+                            expect(model!.uuid) == uuid
+                        default:
+                            XCTFail("should provide a model")
+                        }
+                    }
+                }
+
+                it("ARRAY of JSON nodes") {
+                    mockService.perform(Call(path: "mockJsonArray")) { (result: Result<MockModel>) in
+                        switch result {
+                        case .models( let models):
+                            expect(models!.count) == 3
+                        default:
+                            XCTFail("should provide an array")
+                        }
+                    }
+                }
+            }
         }
     }
     

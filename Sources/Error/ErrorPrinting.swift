@@ -30,15 +30,15 @@ public func printFaroError(_ error: Error) {
             print("💣 HTTP error: \(networkError)")
         }
     case .emptyCollection:
-        print("empty collection")
+        print("💣 empty collection")
     case .emptyKey:
-        print("missing key")
+        print("💣 missing key")
     case .emptyValue(let key):
-        print("no value for key " + key)
+        print("❓no value for key " + key)
     case .malformed(let info):
-        print(info)
+        print("💣 \(info)")
     case .serializationError:
-        print("serialization error")
+        print("💣serialization error")
     }
     
 }
