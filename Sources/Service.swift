@@ -9,7 +9,7 @@ extension Service {
     /// - parameter call: where can the server be found?
     /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
     /// - parameter ok: returns initialized model
-    func performSingle<ModelType: Deserializable>(_ call: Call, fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
+    open func performSingle<ModelType: Deserializable>(_ call: Call, fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
         perform(call) { (result: Result<ModelType>) in
             switch result {
             case .model(let model):
@@ -28,7 +28,7 @@ extension Service {
     /// - parameter call: where can the server be found?
     /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
     /// - parameter ok: returns initialized array of models
-    func performCollection<ModelType: Deserializable>(_ call: Call, fail: @escaping (FaroError)->(), ok:@escaping ([ModelType])->()) {
+    open func performCollection<ModelType: Deserializable>(_ call: Call, fail: @escaping (FaroError)->(), ok:@escaping ([ModelType])->()) {
         perform(call) { (result: Result<ModelType>) in
             switch result {
             case .models(let models):
@@ -43,7 +43,7 @@ extension Service {
         }
     }
 
-    func performSingle<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, pagingInformation: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
+    open func performSingle<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, pagingInformation: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
         perform(call, pagingInformation: pagingInformation) { (result: Result<ModelType>) in
             switch result {
             case .model(let model):
@@ -58,7 +58,7 @@ extension Service {
         }
     }
 
-    func performCollection<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, pagingInformation: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping ([ModelType])->()) {
+    open func performCollection<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, pagingInformation: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping ([ModelType])->()) {
         perform(call, pagingInformation: pagingInformation) { (result: Result<ModelType>) in
             switch result {
             case .models(let models):
