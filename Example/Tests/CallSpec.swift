@@ -179,8 +179,13 @@ class CallSpec: QuickSpec {
                                                               "a number": 123])
                 expect(data).to(beNil())
             }
+            
+            it("should not produce invalid URL's when given malformed parameters") {
+                let parameters = [String: String]()
+                let callString: String = componentString(type: .urlComponents, parameters: parameters)
+                expect(callString.characters.last) != "?"
+            }
         }
-        
     }
 
 }
