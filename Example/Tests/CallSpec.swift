@@ -179,8 +179,25 @@ class CallSpec: QuickSpec {
                                                               "a number": 123])
                 expect(data).to(beNil())
             }
+            
+            it("should not produce invalid URL's when given empty parameters") {
+                let parameters = [String: String]()
+                let callString: String = componentString(type: .urlComponents, parameters: parameters)
+                expect(callString.characters.last) != "?"
+            }
+            
+            it("should not produce invalid URL's when given parameters with missing keys") {
+                let parameters = ["" : "aValue"]
+                let callString: String = componentString(type: .urlComponents, parameters: parameters)
+                expect(callString.characters.last) != "?"
+            }
+            
+            it("should not produce invalid URL's when given parameters with missing values") {
+                let parameters = ["aKey" : ""]
+                let callString: String = componentString(type: .urlComponents, parameters: parameters)
+                expect(callString.characters.last) != "?"
+            }
         }
-        
     }
 
 }
