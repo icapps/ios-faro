@@ -157,26 +157,37 @@ class CallSpec: QuickSpec {
                 let string = componentString(type: .urlComponents, parameters:  ["some dumb query item": Data(base64Encoded: "el wrongo")])
                 expect(string).toNot(contain("some%20dumb%20query%20item"))
             }
-            
-            it("should add JSON into PUT request body") {
-                let data = body(type: .jsonBody, method: .PUT, parameters: ["a string": "good day i am a string",
-                                                                            "a number": 123])
-                let jsonDict = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: Any]
+            let bodyJson = ["a string": "good day i am a string",
+                            "a number": 123] as [String : Any]
 
-                expect(jsonDict.keys.count).to(equal(2))
+            context("should add JSON into httpBody for") {
+
+                it("PUT") {
+                    let data = body(type: .jsonBody, method: .PUT, parameters: bodyJson)
+                    let jsonDict = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: Any]
+
+                    expect(jsonDict.keys.count).to(equal(2))
+                }
+
+                it("POST") {
+                    let data = body(type: .jsonBody, method: .POST, parameters: bodyJson)
+                    let jsonDict = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: Any]
+
+                    expect(jsonDict.keys.count).to(equal(2))
+                }
+
+                it("DELETE") {
+                    let data = body(type: .jsonBody, method: .DELETE, parameters: bodyJson)
+                    let jsonDict = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: Any]
+
+                    expect(jsonDict.keys.count).to(equal(2))
+                }
+
             }
+
             
-            it("should add JSON into POST request body") {
-                let data = body(type: .jsonBody, method: .POST, parameters: ["a string": "good day i am a string",
-                                                                             "a number": 123])
-                let jsonDict = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: Any]
-                
-                expect(jsonDict.keys.count).to(equal(2))
-            }
-            
-            it("should fail to add JSON into a GET or DELETE request") {
-                let data = body(type: .jsonBody, method: .GET, parameters: ["a string": "good day i am a string",
-                                                              "a number": 123])
+            it("should fail to add JSON into a GET") {
+                let data = body(type: .jsonBody, method: .GET, parameters: bodyJson)
                 expect(data).to(beNil())
             }
             

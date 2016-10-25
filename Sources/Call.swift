@@ -100,7 +100,7 @@ open class Call {
     
     private func insertInBody(with json: [String: Any], request: URLRequest) -> URLRequest {
         do {
-            if request.httpMethod == HTTPMethod.GET.rawValue || request.httpMethod == HTTPMethod.DELETE.rawValue {
+            if request.httpMethod == HTTPMethod.GET.rawValue {
                 throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
             }
             var newRequest = request
