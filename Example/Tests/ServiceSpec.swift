@@ -194,6 +194,10 @@ class ServiceSpec: QuickSpec {
                     it("data returned for statuscode 201") {
                         ExpectResponse.statusCode(201, data: "data".data(using: String.Encoding.utf8), service: service)
                     }
+
+                    it("data returned for statuscode 204") {
+                        ExpectResponse.statusCode(204, data: "data".data(using: String.Encoding.utf8), service: service)
+                    }
                 }
 
                 context("no data in response") {

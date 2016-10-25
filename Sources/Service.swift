@@ -244,7 +244,7 @@ extension Service {
             return returnError
         }
 
-        guard 200...201 ~= statusCode else {
+        guard 200...204 ~= statusCode else {
             let returnError = FaroError.networkError(statusCode, data: data)
             printFaroError(returnError)
             return returnError
