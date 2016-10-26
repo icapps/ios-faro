@@ -9,17 +9,39 @@ extension Service {
     /// - parameter call: where can the server be found?
     /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
     /// - parameter ok: returns initialized model
+    open func performUpdate<ModelType: Deserializable & Updatable>(_ call: Call, on updateModel: ModelType, fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
+
+        perform(call, on: updateModel) { (result) in
+            switch result {
+            case .model(let model):
+                guard let model = model else {
+                    let faroError = FaroError.malformed(info: "UpdateModel \(updateModel) could not be updated. Maybe you did not implement update correctly failed?")
+                    self.print(faroError, and: fail)
+                    return
+                }
+                ok(model)
+            default:
+                self.handle(result, and: fail)
+            }
+        }
+    
+    }
+    /// Performs the call to the server. Provide a model
+    /// - parameter call: where can the server be found?
+    /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
+    /// - parameter ok: returns initialized model
     open func performSingle<ModelType: Deserializable>(_ call: Call, fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
         perform(call) { (result: Result<ModelType>) in
             switch result {
             case .model(let model):
                 guard let model = model else {
-                    fail(.malformed(info: "Model could not be initialized. Maybe your init(from raw:) failed?"))
+                    let faroError = FaroError.malformed(info: "Model could not be initialized. Maybe your init(from raw:) failed?")
+                    self.print(faroError, and: fail)
                     return
                 }
                 ok(model)
             default:
-                self.handleFailure(failedResult: result, fail: fail)
+                self.handle(result, and: fail)
             }
         }
     }
@@ -33,12 +55,13 @@ extension Service {
             switch result {
             case .models(let models):
                 guard let models = models else {
-                    fail(.malformed(info: "Model could not be initialized. Maybe your init(from raw:) failed?"))
+                    let faroError = FaroError.malformed(info: "Model could not be initialized. Maybe your init(from raw:) failed?")
+                    self.print(faroError, and: fail)
                     return
                 }
                 ok(models)
             default:
-                self.handleFailure(failedResult: result, fail: fail)
+                self.handle(result, and: fail)
             }
         }
     }
@@ -48,12 +71,13 @@ extension Service {
             switch result {
             case .model(let model):
                 guard let model = model else {
-                    fail(.malformed(info: "Model could not be initialized. Maybe your init(from raw:) failed?"))
+                    let faroError = FaroError.malformed(info: "Model could not be initialized. Maybe your init(from raw:) failed?")
+                    self.print(faroError, and: fail)
                     return
                 }
                 ok(model)
             default:
-                self.handleFailure(failedResult: result, fail: fail)
+                self.handle(result, and: fail)
             }
         }
     }
@@ -63,14 +87,20 @@ extension Service {
             switch result {
             case .models(let models):
                 guard let models = models else {
-                    fail(.malformed(info: "Models could not be initialized. Maybe your init(from raw:) failed?"))
+                    let faroError = FaroError.malformed(info: "Models could not be initialized. Maybe your init(from raw:) failed?")
+                    self.print(faroError, and: fail)
                     return
                 }
                 ok(models)
             default:
-                self.handleFailure(failedResult: result, fail: fail)
+                self.handle(result, and: fail)
             }
         }
+    }
+
+    fileprivate func print(_ error: FaroError, and fail: (FaroError)->()) {
+        printFaroError(error)
+        fail(error)
     }
 
 }
@@ -78,8 +108,9 @@ extension Service {
 // MARK: Class implementation
 
 /// Default implementation of a service.
-/// Serves your `Order` to a server and parses the respons.
-/// Response is delivered to you as a `Result`. The result type depends on the adaptor you have set in the 'Configuration'.
+/// Serves your `Call` to a server and parses the respons.
+/// Response is delivered to you as a `Result` that you can use in a switch. You get the most detailed results with the functions below.
+/// If you want you can use the convinience func in the extension. They call these functions but avoid the switch at the end.
 open class Service {
     open let configuration: Configuration
     fileprivate var task: URLSessionDataTask?
@@ -89,11 +120,24 @@ open class Service {
         self.configuration = configuration
     }
 
-    /// Receives expected result  as defined by the `adaptor` from the a `Service` and maps this to a `Result` case `case Model(M)`
-    /// Default implementation expects `adaptor` to be     case JSON(AnyObject). If this needs to be different you need to override this method.
-    /// Typ! You can subclass 'Bar' and add a default service
+    /// - parameter call: gives the details to find the entity on the server
+    /// - parameter updateModel: JSON will be given to this model to update
+    /// - parameter modelResult: `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
+    open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, modelResult: @escaping (Result<M>) -> ()) {
+
+        performJsonResult(call) { (jsonResult: Result<M>) in
+            switch jsonResult {
+            case .json(let json):
+                modelResult(self.handle(json: json, on: updateModel, call: call))
+            default:
+                modelResult(jsonResult)
+                break
+            }
+        }
+    }
+
     /// - parameter call : gives the details to find the entity on the server
-    /// - parameter result : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
+    /// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
     open func perform<M: Deserializable>(_ call: Call, modelResult: @escaping (Result<M>) -> ()) {
 
         performJsonResult(call) { (jsonResult: Result<M>) in
@@ -194,28 +238,54 @@ open class Service {
         }
     }
 
-    open func handle<M: Deserializable>(json: Any, call: Call) -> Result<M> {
+    open func handle<M: Deserializable>(json: Any, on updateModel: M? = nil, call: Call) -> Result<M> {
 
         let rootNode = call.rootNode(from: json)
         switch rootNode {
         case .nodeObject(let node):
-            return Result.model(M(from: node))
+            return handleNode(node, on: updateModel, call: call)
         case .nodeArray(let nodes):
-            var models = [M]()
-            for node in nodes {
-                if let model = M(from: node) {
-                    models.append(model)
-                } else {
-                    let faroError = FaroError.malformed(info: "Coul not parse \(node) for type \(M.self)")
-                    printFaroError(faroError)
-                    return Result.failure(faroError)
-                }
-            }
-            return Result.models(models)
+            return handleNodeArray(nodes, on: updateModel, call: call)
         case .nodeNotFound(let json):
             return Result.failure(.rootNodeNotFound(json: json))
         case .nodeNotSerialized:
             return Result.failure(.serializationError)
+        }
+    }
+
+    private func handleNodeArray<M: Deserializable>(_ nodes: [Any], on updateModel: M? = nil, call: Call) -> Result<M> {
+        if let _ = updateModel {
+            let faroError = FaroError.malformed(info: "Could not parse \(nodes) for type \(M.self) into updateModel \(updateModel). We currently only support updating of single objects. An arry of objects was returned")
+            printFaroError(faroError)
+            return Result.failure(faroError)
+        }
+        var models = [M]()
+        for node in nodes {
+            if let model = M(from: node) {
+                models.append(model)
+            } else {
+                let faroError = FaroError.malformed(info: "Could not parse \(nodes) for type \(M.self)")
+                printFaroError(faroError)
+                return Result.failure(faroError)
+            }
+        }
+        return Result.models(models)
+    }
+
+    private func handleNode<M: Deserializable>(_ node: [String: Any], on updateModel: M? = nil, call: Call) -> Result<M> {
+        if let updateModel = updateModel as? Updatable {
+            do {
+                try             updateModel.update(from: node)
+            }catch {
+                return Result.failure(.nonFaroError(error))
+            }
+            return Result.model(updateModel as? M)
+        } else {
+            if let _ = updateModel {
+                let faroError = FaroError.malformed(info: "An updateModel \(updateModel) was provided. But does not conform to protocol \(Updatable.self)")
+                printFaroError(faroError)
+            }
+            return Result.model(M(from: node))
         }
     }
 
@@ -253,11 +323,10 @@ extension Service {
         return nil
     }
 
-    fileprivate func handleFailure<ModelType: Deserializable>(failedResult: Result<ModelType>, fail: (FaroError)->()) {
-        switch failedResult {
+    fileprivate func handle<ModelType: Deserializable>(_ result: Result<ModelType>, and fail: (FaroError)->()) {
+        switch result {
         case .failure(let faroError):
-            printFaroError(faroError)
-            fail(faroError)
+            print(faroError, and: fail)
         default:
             let faroError = FaroError.general
             printFaroError(faroError)

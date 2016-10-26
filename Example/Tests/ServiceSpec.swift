@@ -76,6 +76,23 @@ class ServiceSpec: QuickSpec {
 
                 expect(pagesInformation.pages) == 10
             }
+
+            context ("update an existing model") {
+
+                it("when respons contains data") {
+                    let jsonDict = ["uuid": "mockUUID"]
+                    let mockModel = MockModel(from: jsonDict)!
+                    let data = try! JSONSerialization.data(withJSONObject: jsonDict,
+                                                           options: .prettyPrinted)
+                    mockSession.data = data
+
+                    service.performUpdate(call, on: mockModel, fail: { _ in XCTFail()}) { (modelResult: MockModel) in
+                            let identical = (modelResult === mockModel)
+                            expect(identical).to(beTrue())
+                    }
+
+                }
+            }
             
         }
         describe("Parsing to model") {

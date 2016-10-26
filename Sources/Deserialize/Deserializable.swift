@@ -4,5 +4,11 @@ import Foundation
 public protocol Deserializable {
 
     init?(from raw: Any)
-    
+
+}
+
+public protocol Updatable {
+
+    func update(from raw: Any) throws
+
 }
