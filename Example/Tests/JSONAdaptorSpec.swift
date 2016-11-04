@@ -28,7 +28,7 @@ class JSONAdaptorSpec: QuickSpec {
                             XCTFail("💣should return json")
                         }
                     })
-                    
+
                     expect(receivedJSON).toEventually(beTrue())
                 }
             }

@@ -93,7 +93,7 @@ class ServiceSpec: QuickSpec {
 
                 }
             }
-            
+
         }
         describe("Parsing to model") {
             var service: Service!
@@ -101,7 +101,7 @@ class ServiceSpec: QuickSpec {
 
 
             context("array of objects response") {
-                beforeEach{
+                beforeEach {
                     mockJSON = [["uuid": "object 1"], ["uuid": "object 2"]]
                     service = MockService(mockDictionary: mockJSON)
                 }
@@ -125,7 +125,7 @@ class ServiceSpec: QuickSpec {
             }
 
             context("single object response") {
-                beforeEach{
+                beforeEach {
                     mockJSON = ["uuid": "object id 1"]
                     service = MockService(mockDictionary: mockJSON)
                 }

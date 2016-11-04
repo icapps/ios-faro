@@ -11,5 +11,5 @@ class MockService: Service {
     override func perform<M: Deserializable>(_ call: Call, result: @escaping (Result<M>) -> ()) {
         result(handle(json: self.mockJSON, call: call))
     }
-    
+
 }
