@@ -43,26 +43,27 @@ class DeserializeFunctionSpec: QuickSpec {
             }
             
             it("should parse generic object from JSON") {
-                let json = ["uuid":"some id" as Any]
-                var o1 = DeserializableObject(from: ["":""])!
+                let dict: [String: Any] = ["uuid":"some id"]
+                let json: [String: Any] = ["node": dict]
                 
-                o1 = try! parse(from: json)!
+                let o1: DeserializableObject = try! parse("node", from: json)
 
-                expect(o1.uuid) == json["uuid"] as! String?
+                expect(o1.uuid) == "some id"
             }
             
             it("should parse generic object arrays from JSON") {
-                let json = [["uuid": "id1"],["uuid":"id2"]]
-                let o1 = DeserializableObject(from: ["":""])!
-                let o2 = DeserializableObject(from: ["":""])!
-                var objectArray = [o1, o2]
-                
-                objectArray = try! parse(from: json)!
+                let dict1 = ["uuid": "id1"]
+                let dict2 = ["uuid":"id2"]
+                let json: [String: Any] = ["node": [dict1, dict2]]
+
+
+                let objectArray: [DeserializableObject] = try! parse("node", from: json)
 
                 expect(objectArray.count) == 2
-                expect(objectArray.first?.uuid) == json.first?["uuid"]
-                expect(objectArray.last?.uuid) == json.last?["uuid"]
+                expect(objectArray.first?.uuid) == "id1"
+                expect(objectArray.last?.uuid) == "id2"
             }
+
         }
     }
     
