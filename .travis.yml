@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode8
+osx_image: xcode8.1
 
 before_install:
     - gem install xcpretty -N --no-ri --no-rdoc
@@ -8,7 +8,7 @@ before_install:
 
 script:
     - set -o pipefail
-    - xcodebuild clean test -workspace Example/Faro.xcworkspace -scheme Faro_Example -destination "platform=iOS Simulator,name=iname:iPhone 6" -enableCodeCoverage YES | xcpretty
+    - xcodebuild clean test -workspace Example/Faro.xcworkspace -scheme Faro_Example -destination "platform=iOS Simulator,name=iPhone 6" -enableCodeCoverage YES | xcpretty
 
 deploy:
   skip_cleanup: true
