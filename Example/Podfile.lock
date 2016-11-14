@@ -34,11 +34,11 @@ CHECKOUT OPTIONS:
     :git: https://github.com/icapps/ios-stella.git
 
 SPEC CHECKSUMS:
-  Faro: 410118d2d6b5492e674569f11d70442cde2b0a43
+  Faro: e1e426077ded99b2aa2e25c4f67d6276f5b89bc0
   Nimble: c5b995b4cd57789ec44b0cfb79640fc00e61a8c7
   Quick: 31fb576b6cbb6b028cc5e0016e4366accbb346f5
   Stella: d158572e518e4254ab00dba7e7786995b961a695
 
 PODFILE CHECKSUM: df3ade8a743e04d6fd68665bbb7ad3a338386e9d
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1
