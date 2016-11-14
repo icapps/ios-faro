@@ -106,6 +106,7 @@
 		BBF88FA3F28C0906DBB78314A8E50A01 /* AssertionRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC74F00BDAB9577E35A1DB479721E5D /* AssertionRecorder.swift */; };
 		BD0445E39C97A49EAFD877DCA85EF8EA /* NMBExceptionCapture.h in Headers */ = {isa = PBXBuildFile; fileRef = B239BD0EDFFBF3506746000CE2236B66 /* NMBExceptionCapture.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BEA76FA499D5899BD98DBD891FF921D4 /* SatisfyAnyOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB185B51E4E6014622BA875A79076CE5 /* SatisfyAnyOf.swift */; };
+		C0EEB7561DDA0B7C009A1CB3 /* MockSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EEB7551DDA0B7C009A1CB3 /* MockSession.swift */; };
 		C10896B1EEB0291A92FBA848007CD7CF /* NMBExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A332583CD06DD91136F300A101E3C90 /* NMBExpectation.swift */; };
 		C684F50BFA1C035C4B4853E67B0E4C6B /* FaroService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1711D1F4FFA4774E0D7BDA8087D1B678 /* FaroService.swift */; };
 		C755136BFCDFA000C44C8BBCA065E4BE /* HaveCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D87990EC1C6AE531DFF392AF1A67E0B /* HaveCount.swift */; };
@@ -295,6 +296,7 @@
 		BB7FF7298FEF14A300F048B50CECC77B /* MockService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockService.swift; sourceTree = "<group>"; };
 		BC121FDE52F6EEF38C4E50D1F94A2E8D /* Stella-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Stella-dummy.m"; sourceTree = "<group>"; };
 		BDA6949621D82AE439F0D5A98B87C4E7 /* Quick-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Quick-dummy.m"; sourceTree = "<group>"; };
+		C0EEB7551DDA0B7C009A1CB3 /* MockSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockSession.swift; sourceTree = "<group>"; };
 		C936E873ABEE9CB399770661CE77C1A3 /* HooksPhase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HooksPhase.swift; path = Sources/Quick/Hooks/HooksPhase.swift; sourceTree = "<group>"; };
 		C96AF2F49618802326CD1F63E8E26D1F /* XCTestSuite+QuickTestSuiteBuilder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "XCTestSuite+QuickTestSuiteBuilder.m"; path = "Sources/QuickObjectiveC/XCTestSuite+QuickTestSuiteBuilder.m"; sourceTree = "<group>"; };
 		C9B813202C6E5080E38F8C753F878197 /* Parameters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 				47EC62EEF7BA2B5C01E28C84D6CAA065 /* FaroURLSession.swift */,
 				67157B58E9A5AAA50CCEFC41B0A43A61 /* JSONReader.swift */,
 				BB7FF7298FEF14A300F048B50CECC77B /* MockService.swift */,
+				C0EEB7551DDA0B7C009A1CB3 /* MockSession.swift */,
 				C9B813202C6E5080E38F8C753F878197 /* Parameters.swift */,
 				2FFB484F350CD305BE76881CE18EAB85 /* Result.swift */,
 				71C51E7B3C6C58E3B2ED8AF12F081820 /* Service.swift */,
@@ -1067,6 +1070,7 @@
 				0E354F7A8E70DD82DC2068ABAEE27D6D /* FaroError.swift in Sources */,
 				C684F50BFA1C035C4B4853E67B0E4C6B /* FaroService.swift in Sources */,
 				3173DF24D8C04E8CEE03CF745E769269 /* FaroURLSession.swift in Sources */,
+				C0EEB7561DDA0B7C009A1CB3 /* MockSession.swift in Sources */,
 				DF06C00AF277A8D4541CAF5309188DAB /* JSONAdaptor.swift in Sources */,
 				823F3EAAE20B621E96BEA5125A9351EA /* JSONReader.swift in Sources */,
 				15AD06AF75E70D6011E3B337704E9DA0 /* MockService.swift in Sources */,

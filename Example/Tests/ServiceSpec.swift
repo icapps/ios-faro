@@ -4,25 +4,6 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-class MockSession: FaroSession {
-
-    var data: Data?
-    var urlResponse: URLResponse?
-    var error: Error?
-
-    private var completionHandler: ((Data?, URLResponse?, Error?) -> ())?
-
-    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask {
-        self.completionHandler = completionHandler
-        return URLSessionDataTask() // just to me able to mock
-    }
-
-    func resume() {
-        completionHandler?(data, urlResponse, error)
-    }
-
-}
-
 class PagingInformation: Deserializable {
     var pages: Int
     var currentPage: Int
