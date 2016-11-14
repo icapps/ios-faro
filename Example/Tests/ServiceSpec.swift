@@ -95,6 +95,7 @@ class ServiceSpec: QuickSpec {
             }
 
         }
+
         describe("Parsing to model") {
             var service: Service!
             var mockJSON: Any!
