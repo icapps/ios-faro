@@ -39,7 +39,7 @@ open class Call {
         }else if let json = json as? [String: Any] {
             return .nodeObject(json)
         }else {
-            return .nodeNotFound(json: json)
+            return .nodeNotFound(json: json ?? "")
         }
     }
 

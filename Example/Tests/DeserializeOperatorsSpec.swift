@@ -12,7 +12,7 @@ class DeserializableObject: Deserializable {
     var date: Date?
     
     required init?(from raw: Any) {
-        guard let json = raw as? [String: Any?] else {
+        guard let json = raw as? [String: Any] else {
             return nil
         }
         
