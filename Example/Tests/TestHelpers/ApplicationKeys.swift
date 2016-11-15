@@ -10,9 +10,9 @@ import Foundation
 import Stella
 
 struct ApplicationKeys {
-    
+
     static let sharedInstance = ApplicationKeys()
-    
+
     var shouldMockServices: Bool {
         printBreadcrumb("Mocking all services")
         return true

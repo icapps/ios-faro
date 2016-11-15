@@ -51,10 +51,10 @@ class SerializeOpereratorsSpec: QuickSpec {
 
 
                 expect(serializedDate as? String) == "1994-08-20"
-                
+
             }
         }
-        
+
         describe("SerializeOpereratorsSpec") {
 
             it("should serialize to JSON object") {
@@ -87,56 +87,55 @@ class SerializeOpereratorsSpec: QuickSpec {
                 expect(dictArray.last!["uuid"] as? String) == o2.uuid
 
             }
-            
+
             it("should serialize strings") {
                 var serializedType: Any?
                 let o1 = SerializableObject()
                 o1.uuid = "id1"
-        
+
                 serializedType <-> o1.uuid
-                
+
                 let serializedString = serializedType as! String
-                
+
                 expect(serializedString) == o1.uuid
             }
-            
+
             it("should serialize integers") {
                 var serializedType: Any?
                 let o1 = SerializableObject()
                 o1.amount = 20
-                
+
                 serializedType <-> o1.amount
-                
+
                 let serializedInt = serializedType as! Int
-                
+
                 expect(serializedInt) == o1.amount
             }
-            
+
             it("should serialize booleans") {
                 var serializedType: Any?
                 let o1 = SerializableObject()
                 o1.tapped = true
-                
+
                 serializedType <-> o1.tapped
-                
+
                 let serializedBool = serializedType as! Bool
-                
+
                 expect(serializedBool) == o1.tapped
             }
-            
+
             it("should serialize doubles") {
                 var serializedType: Any?
                 let o1 = SerializableObject()
                 o1.price = 5.0
-                
+
                 serializedType <-> o1.price
-                
+
                 let serializedDouble = serializedType as! Double
-                
+
                 expect(serializedDouble) == o1.price
             }
         }
     }
-    
-}
 
+}
