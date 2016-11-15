@@ -42,7 +42,7 @@ class CallSpec: QuickSpec {
 
             it("should use POST method") {
                 let request = call.request(withConfiguration: configuration)
-                expect(request!.httpMethod).to(equal("POST"))
+                expect(request!.httpMethod) == "POST"
             }
         }
 
