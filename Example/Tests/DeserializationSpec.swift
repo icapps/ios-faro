@@ -50,7 +50,7 @@ class Animal: Deserializable {
         guard  let json = raw as? [String: Any] else {
             return nil
         }
-        self.uuid <-> json["uuid"]
+        self.uuid <-> json["uuid"] as Any
     }
 
 }
