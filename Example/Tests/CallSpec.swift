@@ -143,7 +143,7 @@ class CallSpec: QuickSpec {
             it("should fail to insert http headers that arent strings into the request") {
 
                 let headers = allHTTPHeaderFields(type: .httpHeader, parameters:  ["Accept-Language" : 12345,
-                                                                                   "Accept-Charset" : Data(base64Encoded: "el wrongo")])
+                                                                                   "Accept-Charset" :  "el wrongo".data(using: .utf8)!])
                 expect(headers.keys).toNot(contain("Accept-Language"))
                 expect(headers.keys).toNot(contain("Accept-Charset"))
             }
@@ -154,7 +154,7 @@ class CallSpec: QuickSpec {
             }
             
             it("should fail to insert URL components that arent strings into the request") {
-                let string = componentString(type: .urlComponents, parameters:  ["some dumb query item": Data(base64Encoded: "el wrongo")])
+                let string = componentString(type: .urlComponents, parameters:  ["some dumb query item": "el wrongo".data(using: .utf8)!])
                 expect(string).toNot(contain("some%20dumb%20query%20item"))
             }
             let bodyJson = ["a string": "good day i am a string",
