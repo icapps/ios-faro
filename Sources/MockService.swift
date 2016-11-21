@@ -18,9 +18,16 @@ open class MockService: Service {
         }
 
         let request = call.request(withConfiguration: configuration)
-        let url = request?.url?.absoluteString
+
+        guard let url = request?.url?.absoluteString else {
+            let faroError = FaroError.malformed(info: "No valid url")
+            printFaroError(faroError)
+            jsonResult(.failure(faroError))
+            return
+        }
+
         guard let mockJSON = JSONReader.parseFile(named: url, for: bundle!) else {
-            let faroError = FaroError.malformed(info: "Could not find dummy file at \(call.path)")
+            let faroError = FaroError.malformed(info: "Could not find dummy file at \(url)")
             printFaroError(faroError)
             jsonResult(.failure(faroError))
             return
