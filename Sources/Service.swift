@@ -1,6 +1,3 @@
-
-// MARK: - Convenience methods
-
 // MARK: Class implementation
 
 /// Default implementation of a service.
