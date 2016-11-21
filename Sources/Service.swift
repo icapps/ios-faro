@@ -1,110 +1,6 @@
 
 // MARK: - Convenience methods
 
-/// The perform methods are preferred but these methods are for convienience.
-/// They do some default error handling.
-extension Service {
-
-    /// Performs the call to the server. Provide a model
-    /// - parameter call: where can the server be found?
-    /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
-    /// - parameter ok: returns initialized model
-    open func performUpdate<ModelType: Deserializable & Updatable>(_ call: Call, on updateModel: ModelType, fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
-
-        perform(call, on: updateModel) { (result) in
-            switch result {
-            case .model(let model):
-                guard let model = model else {
-                    let faroError = FaroError.malformed(info: "UpdateModel \(updateModel) could not be updated. Maybe you did not implement update correctly failed?")
-                    self.print(faroError, and: fail)
-                    return
-                }
-                ok(model)
-            default:
-                self.handle(result, and: fail)
-            }
-        }
-    
-    }
-    /// Performs the call to the server. Provide a model
-    /// - parameter call: where can the server be found?
-    /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
-    /// - parameter ok: returns initialized model
-    open func performSingle<ModelType: Deserializable>(_ call: Call, fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
-        perform(call) { (result: Result<ModelType>) in
-            switch result {
-            case .model(let model):
-                guard let model = model else {
-                    let faroError = FaroError.malformed(info: "Model could not be initialized. Maybe your init(from raw:) failed?")
-                    self.print(faroError, and: fail)
-                    return
-                }
-                ok(model)
-            default:
-                self.handle(result, and: fail)
-            }
-        }
-    }
-
-    /// Performs the call to the server. Provide a model
-    /// - parameter call: where can the server be found?
-    /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
-    /// - parameter ok: returns initialized array of models
-    open func performCollection<ModelType: Deserializable>(_ call: Call, fail: @escaping (FaroError)->(), ok:@escaping ([ModelType])->()) {
-        perform(call) { (result: Result<ModelType>) in
-            switch result {
-            case .models(let models):
-                guard let models = models else {
-                    let faroError = FaroError.malformed(info: "Model could not be initialized. Maybe your init(from raw:) failed?")
-                    self.print(faroError, and: fail)
-                    return
-                }
-                ok(models)
-            default:
-                self.handle(result, and: fail)
-            }
-        }
-    }
-
-    open func performSingle<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, page: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
-        perform(call, page: page) { (result: Result<ModelType>) in
-            switch result {
-            case .model(let model):
-                guard let model = model else {
-                    let faroError = FaroError.malformed(info: "Model could not be initialized. Maybe your init(from raw:) failed?")
-                    self.print(faroError, and: fail)
-                    return
-                }
-                ok(model)
-            default:
-                self.handle(result, and: fail)
-            }
-        }
-    }
-
-    open func performCollection<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, page: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping ([ModelType])->()) {
-        perform(call, page: page) { (result: Result<ModelType>) in
-            switch result {
-            case .models(let models):
-                guard let models = models else {
-                    let faroError = FaroError.malformed(info: "Models could not be initialized. Maybe your init(from raw:) failed?")
-                    self.print(faroError, and: fail)
-                    return
-                }
-                ok(models)
-            default:
-                self.handle(result, and: fail)
-            }
-        }
-    }
-
-    fileprivate func print(_ error: FaroError, and fail: (FaroError)->()) {
-        printFaroError(error)
-        fail(error)
-    }
-
-}
-
 // MARK: Class implementation
 
 /// Default implementation of a service.
@@ -114,10 +10,11 @@ extension Service {
 open class Service {
     open let configuration: Configuration
     fileprivate var task: URLSessionDataTask?
-    open var session: FaroSession = FaroURLSession()
+    open var session: FaroSession
 
-    public init(configuration: Configuration) {
+    public init(configuration: Configuration, session: FaroSession = FaroURLSession()) {
         self.configuration = configuration
+        self.session = session
     }
 
     /// - parameter call: gives the details to find the entity on the server
@@ -192,7 +89,7 @@ open class Service {
 
         })
 
-        session.resume()
+        session.resume(task!)
     }
     /// Use this to write to the server when you do not need a data result, just ok.
     /// If you expect a data result use `perform(call:result:)`
@@ -209,7 +106,7 @@ open class Service {
             modelResult(self.handleWrite(data: data, urlResponse: response, error: error))
         })
 
-        session.resume()
+        session.resume(task!)
     }
 
 
@@ -253,39 +150,21 @@ open class Service {
         }
     }
 
-    private func handleNodeArray<M: Deserializable>(_ nodes: [Any], on updateModel: M? = nil, call: Call) -> Result<M> {
-        if let _ = updateModel {
-            let faroError = FaroError.malformed(info: "Could not parse \(nodes) for type \(M.self) into updateModel \(updateModel). We currently only support updating of single objects. An arry of objects was returned")
-            printFaroError(faroError)
-            return Result.failure(faroError)
-        }
-        var models = [M]()
-        for node in nodes {
-            if let model = M(from: node) {
-                models.append(model)
-            } else {
-                let faroError = FaroError.malformed(info: "Could not parse \(nodes) for type \(M.self)")
-                printFaroError(faroError)
-                return Result.failure(faroError)
-            }
-        }
-        return Result.models(models)
+    // MARK: - Internal
+
+    func print(_ error: FaroError, and fail: (FaroError)->()) {
+        printFaroError(error)
+        fail(error)
     }
 
-    private func handleNode<M: Deserializable>(_ node: [String: Any], on updateModel: M? = nil, call: Call) -> Result<M> {
-        if let updateModel = updateModel as? Updatable {
-            do {
-                try             updateModel.update(from: node)
-            }catch {
-                return Result.failure(.nonFaroError(error))
-            }
-            return Result.model(updateModel as? M)
-        } else {
-            if let _ = updateModel {
-                let faroError = FaroError.malformed(info: "An updateModel \(updateModel) was provided. But does not conform to protocol \(Updatable.self)")
-                printFaroError(faroError)
-            }
-            return Result.model(M(from: node))
+    func handle<ModelType: Deserializable>(_ result: Result<ModelType>, and fail: (FaroError)->()) {
+        switch result {
+        case .failure(let faroError):
+            print(faroError, and: fail)
+        default:
+            let faroError = FaroError.general
+            printFaroError(faroError)
+            fail(faroError)
         }
     }
 
@@ -294,6 +173,7 @@ open class Service {
 // MARK: - Privates
 
 extension Service {
+
     fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?)-> FaroError? {
         guard error == nil else {
             let returnError = FaroError.nonFaroError(error!)
@@ -323,14 +203,41 @@ extension Service {
         return nil
     }
 
-    fileprivate func handle<ModelType: Deserializable>(_ result: Result<ModelType>, and fail: (FaroError)->()) {
-        switch result {
-        case .failure(let faroError):
-            print(faroError, and: fail)
-        default:
-            let faroError = FaroError.general
+    fileprivate func handleNodeArray<M: Deserializable>(_ nodes: [Any], on updateModel: M? = nil, call: Call) -> Result<M> {
+        if let _ = updateModel {
+            let faroError = FaroError.malformed(info: "Could not parse \(nodes) for type \(M.self) into updateModel \(updateModel). We currently only support updating of single objects. An arry of objects was returned")
             printFaroError(faroError)
-            fail(faroError)
+            return Result.failure(faroError)
+        }
+        var models = [M]()
+        for node in nodes {
+            if let model = M(from: node) {
+                models.append(model)
+            } else {
+                let faroError = FaroError.malformed(info: "Could not parse \(nodes) for type \(M.self)")
+                printFaroError(faroError)
+                return Result.failure(faroError)
+            }
+        }
+        return Result.models(models)
+    }
+
+    fileprivate func handleNode<M: Deserializable>(_ node: [String: Any], on updateModel: M? = nil, call: Call) -> Result<M> {
+        if let updateModel = updateModel as? Updatable {
+            do {
+                try             updateModel.update(from: node)
+            }catch {
+                return Result.failure(.nonFaroError(error))
+            }
+            return Result.model(updateModel as? M)
+        } else {
+            if let _ = updateModel {
+                let faroError = FaroError.malformed(info: "An updateModel \(updateModel) was provided. But does not conform to protocol \(Updatable.self)")
+                printFaroError(faroError)
+            }
+            return Result.model(M(from: node))
         }
     }
+
+
 }
