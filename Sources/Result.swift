@@ -16,7 +16,7 @@ public enum WriteResult {
 }
 
 public enum JsonNode {
-    case nodeObject([String: Any?])
+    case nodeObject([String: Any])
     case nodeArray([Any])
     case nodeNotFound(json: Any)
     case nodeNotSerialized

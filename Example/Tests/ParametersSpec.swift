@@ -10,7 +10,7 @@ class ParametersSped: QuickSpec {
         describe("Parameters") {
 
             context("fail for specific types") {
-                it("not accept non string url components"){
+                it("not accept non string url components") {
                     let parameters = Parameters(type: .urlComponents, parameters: ["int": 0])
 
                     expect(parameters).to(beNil())
@@ -18,5 +18,5 @@ class ParametersSped: QuickSpec {
             }
         }
     }
-    
+
 }
