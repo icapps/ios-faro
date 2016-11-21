@@ -27,7 +27,7 @@ open class MockSession: FaroSession {
         return URLSessionDataTask() // just to me able to mock
     }
 
-    open func resume() {
+    open func resume(_ task: URLSessionDataTask) {
         completionHandler?(data, urlResponse, error)
     }
     

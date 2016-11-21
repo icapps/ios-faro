@@ -1,20 +1,22 @@
 public protocol FaroSession {
     func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTask
 
-    func resume()
+    func resume(_ task: URLSessionDataTask)
 }
 
 open class FaroURLSession: FaroSession {
-    var task: URLSessionDataTask?
-    let session = URLSession.shared
+    let session: URLSession
 
-    open func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTask {
-        task = session.dataTask(with: request, completionHandler: completionHandler)
-        return task!
+    public init(_ session : URLSession = URLSession.shared) {
+        self.session = session
     }
 
-    open func resume() {
-        task?.resume()
+    open func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTask {
+        return session.dataTask(with: request, completionHandler: completionHandler)
+    }
+
+    open func resume(_ task: URLSessionDataTask) {
+        task.resume()
     }
     
 }
