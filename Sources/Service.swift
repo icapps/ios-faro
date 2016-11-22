@@ -16,12 +16,16 @@ open class Service {
         self.faroSession = faroSession
     }
 
+    /// The other `perform` methods create the model. This function updates the model.
     /// - parameter call: gives the details to find the entity on the server
+    /// - parameter autostart: by default this is true. This means that `resume()` is called immeditatly on the `URLSessionDataTask` created by this function.
     /// - parameter updateModel: JSON will be given to this model to update
     /// - parameter modelResult: `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
-    open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) {
+    /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
+    @discardableResult
+    open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
 
-        performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
+        return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
             switch jsonResult {
             case .json(let json):
                 modelResult(self.handle(json: json, on: updateModel, call: call))
@@ -32,11 +36,15 @@ open class Service {
         }
     }
 
-    /// - parameter call : gives the details to find the entity on the server
+    /// On success create a model and updates it with the received JSON data.
+    /// - parameter call: gives the details to find the entity on the server
+    /// - parameter autostart: by default this is true. This means that `resume()` is called immeditatly on the `URLSessionDataTask` created by this function.
     /// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
-    open func perform<M: Deserializable>(_ call: Call, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) {
+    /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
+    @discardableResult
+    open func perform<M: Deserializable>(_ call: Call, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
 
-        performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
+        return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
             switch jsonResult {
             case .json(let json):
                 modelResult(self.handle(json: json, call: call))
@@ -47,9 +55,15 @@ open class Service {
         }
     }
 
-    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, autoStart: Bool = true, page: @escaping(P?)->(), modelResult: @escaping (Result<M>) -> ()) {
+    /// On success create a model and updates it with the received JSON data. The JSON is also passed to `page` closure and can be inspected for paging information.
+    /// - parameter call: gives the details to find the entity on the server
+    /// - parameter autostart: by default this is true. This means that `resume()` is called immeditatly on the `URLSessionDataTask` created by this function.
+    /// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
+    /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
+    @discardableResult
+    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, autoStart: Bool = true, page: @escaping(P?)->(), modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
 
-        performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
+        return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
             switch jsonResult {
             case .json(let json):
                 modelResult(self.handle(json: json, call: call))
@@ -61,17 +75,21 @@ open class Service {
         }
     }
 
-
-    open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool, jsonResult: @escaping (Result<M>) -> ()) {
+    /// Handles incomming data and tries to parse the data as JSON.
+    /// - parameter call: gives the details to find the entity on the server
+    /// - parameter autostart: by default this is true. This means that `resume()` is called immeditatly on the `URLSessionDataTask` created by this function.
+    /// - parameter jsonResult: closure is called when valid or invalid json data is received.
+    /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
+    @discardableResult
+    open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
 
         guard let request = call.request(withConfiguration: configuration) else {
             jsonResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")))
-            return
+            return nil
         }
 
-        task = session.dataTask(with: request, completionHandler: { (data, response, error) in
+        let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
             let dataResult = self.handle(data: data, urlResponse: response, error: error) as Result<M>
-
             switch dataResult {
             case .data(let data):
                 self.configuration.adaptor.serialize(from: data) { (serializedResult: Result<M>) in
@@ -89,10 +107,11 @@ open class Service {
         })
 
         guard autoStart else {
-            return
+            return task
         }
 
-        session.resume(task!)
+        faroSession.resume(task)
+        return task
     }
 
     /// Use this to write to the server when you do not need a data result, just ok.
@@ -106,7 +125,7 @@ open class Service {
             return
         }
 
-        task = session.dataTask(with: request, completionHandler: { (data, response, error) in
+        let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
             modelResult(self.handleWrite(data: data, urlResponse: response, error: error))
         })
 
@@ -114,12 +133,7 @@ open class Service {
             return
         }
 
-        session.resume(task!)
-    }
-
-
-    open func cancel() {
-        task?.cancel()
+        faroSession.resume(task)
     }
 
     open func handleWrite(data: Data?, urlResponse: URLResponse?, error: Error?) -> WriteResult {
