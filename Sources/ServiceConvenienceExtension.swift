@@ -4,6 +4,10 @@ import Foundation
 /// They do some default error handling.
 extension Service {
 
+    // MARK: - Results transformed to Model(s)
+
+    // MARK: - Update
+
     /// Performs the call to the server. Provide a model
     /// - parameter call: where can the server be found?
     /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
@@ -25,6 +29,11 @@ extension Service {
         }
 
     }
+
+    // MARK: - Create
+
+    // MARK: - Single model response
+
     /// Performs the call to the server. Provide a model
     /// - parameter call: where can the server be found?
     /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
@@ -45,6 +54,8 @@ extension Service {
         }
     }
 
+    // MARK: - Collection model response
+
     /// Performs the call to the server. Provide a model
     /// - parameter call: where can the server be found?
     /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
@@ -64,6 +75,8 @@ extension Service {
             }
         }
     }
+
+    // MARK: - With Paging information
 
     open func performSingle<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, page: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
         perform(call, page: page) { (result: Result<ModelType>) in

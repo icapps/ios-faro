@@ -17,6 +17,10 @@ open class Service {
         self.faroSession = faroSession
     }
 
+    // MARK: - Results transformed to Model(s)
+
+    // MARK: - Update
+
     /// The other `perform` methods create the model. This function updates the model.
     /// - parameter call: gives the details to find the entity on the server
     /// - parameter autostart: by default this is true. This means that `resume()` is called immeditatly on the `URLSessionDataTask` created by this function.
@@ -37,6 +41,8 @@ open class Service {
         }
     }
 
+    // MARK: - Create
+
     /// On success create a model and updates it with the received JSON data.
     /// - parameter call: gives the details to find the entity on the server
     /// - parameter autostart: by default this is true. This means that `resume()` is called immeditatly on the `URLSessionDataTask` created by this function.
@@ -55,6 +61,8 @@ open class Service {
             }
         }
     }
+
+    // MARK: - With Paging information
 
     /// On success create a model and updates it with the received JSON data. The JSON is also passed to `page` closure and can be inspected for paging information.
     /// - parameter call: gives the details to find the entity on the server
@@ -75,6 +83,8 @@ open class Service {
             }
         }
     }
+
+    // MARK: - JSON results
 
     /// Handles incomming data and tries to parse the data as JSON.
     /// - parameter call: gives the details to find the entity on the server
@@ -115,6 +125,8 @@ open class Service {
         return task
     }
 
+    // MARK: - No ressponse data
+
     /// Use this to write to the server when you do not need a data result, just ok.
     /// If you expect a data result use `perform(call:result:)`
     /// - parameter call: should be of a type that does not expect data in the result.
@@ -136,6 +148,8 @@ open class Service {
 
         faroSession.resume(task)
     }
+
+    // MARK: - Handles
 
     open func handleWrite(data: Data?, urlResponse: URLResponse?, error: Error?) -> WriteResult {
         if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error) {
