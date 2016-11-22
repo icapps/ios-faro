@@ -6,6 +6,7 @@
 /// If you want you can use the convenience functions in the extension. They call these functions and print the errors by default. 
 /// If you need more control over the errors you can use these functions directly.
 /// _Remark_: If you need to cancel, know when everything is done, service request to continue in the background use `ServiceQueue`.
+/// _Warning_: The session holds a strong reference to it's delegates. You should invalidate or we do in at `deinit`
 open class Service {
     open let configuration: Configuration
 
@@ -190,8 +191,40 @@ open class Service {
         }
     }
 
+    // MARK: - Invalidate session
+
+    deinit {
+        faroSession.finishTasksAndInvalidate()
+    }
+
 }
 
+// MARK: - Invalidate session
+
+/// All functions are forwarded to `FaroSession`
+public extension Service {
+
+    public func finishTasksAndInvalidate() {
+        faroSession.finishTasksAndInvalidate()
+    }
+
+    public func flush(completionHandler: @escaping () -> Void) {
+        faroSession.flush(completionHandler: completionHandler)
+    }
+
+    public func getTasksWithCompletionHandler(_ completionHandler: @escaping ([URLSessionDataTask], [URLSessionUploadTask], [URLSessionDownloadTask]) -> Void) {
+        faroSession.getTasksWithCompletionHandler(completionHandler)
+    }
+
+    public func invalidateAndCancel() {
+        faroSession.invalidateAndCancel()
+    }
+
+    public func reset(completionHandler: @escaping () -> Void) {
+        faroSession.reset(completionHandler: completionHandler)
+    }
+    
+}
 // MARK: - Privates
 
 extension Service {

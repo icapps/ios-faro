@@ -59,4 +59,10 @@ open class ServiceQueue: Service {
             faroSession.resume(task)
         }
     }
+
+    // MARK: - Invalidate session
+
+    deinit {
+        faroSession.finishTasksAndInvalidate()
+    }
 }
