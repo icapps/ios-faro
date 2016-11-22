@@ -6,8 +6,8 @@ open class FaroService: Service {
     /// Set this to a service. You can chose the `MockService` if the server is not yet available
     public static var sharedService: Service?
 
-    public static func setup(with baseURL: String , session: FaroURLSession = FaroURLSession()) {
-        FaroService.sharedService = Service(configuration: Configuration(baseURL: baseURL), session: session)
+    public static func setup(with baseURL: String , session: FaroSessionable = FaroSession()) {
+        FaroService.sharedService = Service(configuration: Configuration(baseURL: baseURL), faroSession: session)
     }
     
     /// Returns real or mocked service. Run `setup(with:session:)` before calling this function.
