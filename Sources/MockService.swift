@@ -4,10 +4,12 @@ open class MockService: Service {
     public var mockDictionary: Any?
     internal var bundle: Bundle!
 
-    public init(mockDictionary: Any? = nil, for bundle: Bundle = Bundle.main) {
+    public init(mockDictionary: Any? = nil,
+                for bundle: Bundle = Bundle.main,
+                faroSession: FaroSessionable = MockSession()) {
         self.mockDictionary = mockDictionary
         self.bundle = bundle
-        super.init(configuration: Configuration(baseURL: ""))
+        super.init(configuration: Configuration(baseURL: ""), faroSession: faroSession)
     }
 
     /// This method is overridden to return json or errors like as if we would do a network call.
