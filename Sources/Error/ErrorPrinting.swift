@@ -40,6 +40,9 @@ public func printFaroError(_ error: Error) {
         print("💣serialization error")
     case .updateNotPossible(json: let json, model: let model):
         print("❓ update not possilbe with \(json) on model \(model)")
+    case .invalidSession(message: let message):
+        print("💀 you tried to perform a request on a session that is invalid")
+        print("💀 message: \(message)")
     }
     
 }
