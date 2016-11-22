@@ -16,47 +16,51 @@ class ServiceQueueSpec: QuickSpec {
                 var service: ServiceQueue!
                 let call = Call(path: "mock")
                 let config = Configuration(baseURL: "mockService")
+                var isFinalCalled = false
 
                 beforeEach {
+                    isFinalCalled = false
                     mockSession = MockAsyncSession()
                     mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)
                 }
 
                 context("not started") {
 
-                    var succeeded = false
-
+                    var taskSucceed = false
                     beforeEach {
-                        succeeded = false
+                        isFinalCalled = false
+                        taskSucceed = false
                         service = ServiceQueue(configuration: config, faroSession: mockSession) {
-                            succeeded = true
+                            isFinalCalled = true
+                            taskSucceed = true
                         }
 
                     }
 
                     it("add one") {
                         service.perform(call, autoStart: false) { (result: Result<MockModel>) in
-                            succeeded = true
+                            taskSucceed = true
                         }
                         expect(service.hasOustandingTasks) == true
-                        expect(succeeded).toNotEventually(beTrue())
+                        expect(taskSucceed).toNotEventually(beTrue())
                     }
 
                     it("add multiple") {
                         let task1 = service.perform(call, autoStart: false) { (result: Result<MockModel>) in
-                            succeeded = true
+                            taskSucceed = true
                         }!
                         let task2 = service.perform(call, autoStart: false) { (result: Result<MockModel>) in
-                            succeeded = true
+                            taskSucceed = true
                         }!
 
                         let task3 = service.perform(call, autoStart: false) { (result: Result<MockModel>) in
-                            succeeded = true
+                            taskSucceed = true
                         }!
 
                         expect(service.hasOustandingTasks) == true
-                        expect(succeeded).toNotEventually(beTrue())
+                        expect(taskSucceed).toNotEventually(beTrue())
                         expect(service.taskQueue).to(contain([task1, task2, task3]))
+                        expect(isFinalCalled).toNotEventually(beTrue())
                     }
 
                 }
@@ -79,10 +83,10 @@ class ServiceQueueSpec: QuickSpec {
                         var task1: URLSessionDataTask!
                         var task2: URLSessionDataTask!
                         var task3: URLSessionDataTask!
-
                         beforeEach {
+                            isFinalCalled = false
                             service = ServiceQueue(configuration: config, faroSession: mockSession) {
-                                print("final")
+                                isFinalCalled = true
                             }
                             task1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in }!
                             task2 = service.perform(call, autoStart: true) { (_: Result<MockModel>) in }!
@@ -114,6 +118,22 @@ class ServiceQueueSpec: QuickSpec {
                                 expect(service.hasOustandingTasks) == true
                                 service.invalidateAndCancel()
                                 expect(service.hasOustandingTasks) == false
+                            }
+
+                        }
+
+                        context("final") {
+
+                            it("all completed") {
+                                service.resumeAll()
+                                expect(isFinalCalled) == false
+                                expect(isFinalCalled).toEventually(beTrue())
+                            }
+
+                            it("some completed") {
+                                service.resume(task3)
+                                expect(isFinalCalled) == false
+                                expect(isFinalCalled).toNotEventually(beTrue())
                             }
 
                         }
