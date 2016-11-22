@@ -8,6 +8,12 @@
 
 import Foundation
 
+open class MockURLSession: URLSession {
+
+    open override func invalidateAndCancel() {
+
+    }
+}
 open class MockSession: FaroQueueSessionable {
 
     public let session: URLSession
@@ -21,7 +27,7 @@ open class MockSession: FaroQueueSessionable {
         self.data = data
         self.urlResponse = urlResponse
         self.error = error
-        self.session = URLSession()
+        self.session = MockURLSession()
     }
 
     open func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask {
@@ -34,7 +40,7 @@ open class MockSession: FaroQueueSessionable {
         let completionHandler = completionHandlers[task.taskIdentifier]
         completionHandler?(data, urlResponse, error)
     }
-    
+
 }
 
 open class MockAsyncSession: MockSession {
