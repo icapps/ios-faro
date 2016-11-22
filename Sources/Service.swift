@@ -192,6 +192,27 @@ open class Service {
     }
 
     // MARK: - Invalidate session
+    /// All functions are forwarded to `FaroSession`
+
+    open func finishTasksAndInvalidate() {
+        faroSession.finishTasksAndInvalidate()
+    }
+
+    open func flush(completionHandler: @escaping () -> Void) {
+        faroSession.flush(completionHandler: completionHandler)
+    }
+
+    open func getTasksWithCompletionHandler(_ completionHandler: @escaping ([URLSessionDataTask], [URLSessionUploadTask], [URLSessionDownloadTask]) -> Void) {
+        faroSession.getTasksWithCompletionHandler(completionHandler)
+    }
+
+    open func invalidateAndCancel() {
+        faroSession.invalidateAndCancel()
+    }
+
+    open func reset(completionHandler: @escaping () -> Void) {
+        faroSession.reset(completionHandler: completionHandler)
+    }
 
     deinit {
         faroSession.finishTasksAndInvalidate()
@@ -199,32 +220,6 @@ open class Service {
 
 }
 
-// MARK: - Invalidate session
-
-/// All functions are forwarded to `FaroSession`
-public extension Service {
-
-    public func finishTasksAndInvalidate() {
-        faroSession.finishTasksAndInvalidate()
-    }
-
-    public func flush(completionHandler: @escaping () -> Void) {
-        faroSession.flush(completionHandler: completionHandler)
-    }
-
-    public func getTasksWithCompletionHandler(_ completionHandler: @escaping ([URLSessionDataTask], [URLSessionUploadTask], [URLSessionDownloadTask]) -> Void) {
-        faroSession.getTasksWithCompletionHandler(completionHandler)
-    }
-
-    public func invalidateAndCancel() {
-        faroSession.invalidateAndCancel()
-    }
-
-    public func reset(completionHandler: @escaping () -> Void) {
-        faroSession.reset(completionHandler: completionHandler)
-    }
-    
-}
 // MARK: - Privates
 
 extension Service {
