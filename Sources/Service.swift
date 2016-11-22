@@ -3,15 +3,17 @@
 /// Default implementation of a service.
 /// Serves your `Call` to a server and parses the respons.
 /// Response is delivered to you as a `Result` that you can use in a switch. You get the most detailed results with the functions below.
-/// If you want you can use the convinience func in the extension. They call these functions but avoid the switch at the end.
+/// If you want you can use the convenience functions in the extension. They call these functions and print the errors by default. 
+/// If you need more control over the errors you can use these functions directly.
+/// _Remark_: If you need to cancel, know when everything is done, service request to continue in the background use `ServiceQueue`.
 open class Service {
     open let configuration: Configuration
-    fileprivate var task: URLSessionDataTask?
-    open var session: FaroSession
 
-    public init(configuration: Configuration, session: FaroSession = FaroURLSession()) {
+    private let faroSession: FaroSessionable
+
+    public init(configuration: Configuration, faroSession: FaroSessionable = FaroSession()) {
         self.configuration = configuration
-        self.session = session
+        self.faroSession = faroSession
     }
 
     /// - parameter call: gives the details to find the entity on the server
