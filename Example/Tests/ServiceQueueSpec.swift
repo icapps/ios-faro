@@ -31,6 +31,7 @@ class ServiceQueueSpec: QuickSpec {
                         service = ServiceQueue(configuration: config, faroSession: mockSession) {
                             succeeded = true
                         }
+
                     }
 
                     it("add one") {
@@ -105,6 +106,16 @@ class ServiceQueueSpec: QuickSpec {
                             service.resumeAll()
                             expect(service.taskQueue).to(contain([task1, task2, task3]))
                             expect(service.taskQueue).toNotEventually(contain([task1, task3]))
+                        }
+
+                        context("invalidate") {
+
+                            it("removeAll") {
+                                expect(service.hasOustandingTasks) == true
+                                service.invalidateAndCancel()
+                                expect(service.hasOustandingTasks) == false
+                            }
+
                         }
                     }
 

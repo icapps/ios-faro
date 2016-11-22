@@ -60,7 +60,12 @@ open class ServiceQueue: Service {
         }
     }
 
-    // MARK: - Invalidate session
+    // MARK: - Invalidate session overrides
+
+    override open func invalidateAndCancel() {
+        taskQueue.removeAll()
+        faroSession.invalidateAndCancel()
+    }
 
     deinit {
         faroSession.finishTasksAndInvalidate()
