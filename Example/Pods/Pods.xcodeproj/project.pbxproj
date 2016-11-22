@@ -108,7 +108,7 @@
 		C03FB14E1DE363D700B14A15 /* ServiceQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03FB14D1DE363D700B14A15 /* ServiceQueue.swift */; };
 		C10896B1EEB0291A92FBA848007CD7CF /* NMBExpectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E479F224CAE2E2C1D483202AA66E694D /* NMBExpectation.swift */; };
 		C755136BFCDFA000C44C8BBCA065E4BE /* HaveCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8600EE3B5FFC5D95917CCBC950DBE6 /* HaveCount.swift */; };
-		C76CB91C4EA097A57B42A87B86E93B98 /* FaroURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8CB47EDBEE0A09282F1D8A3E76CE88 /* FaroURLSession.swift */; };
+		C76CB91C4EA097A57B42A87B86E93B98 /* FaroSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8CB47EDBEE0A09282F1D8A3E76CE88 /* FaroSession.swift */; };
 		C77AE378A09FC86589998343629140DF /* ErrorPrinting.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE9FB30DF63CD81DDD5AA6ED8F5176E /* ErrorPrinting.swift */; };
 		C81BEDE79545C013BEBBA0363480FD47 /* DSL+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968BAF1AFE3EB5ACF19C8F5E049183C5 /* DSL+Wait.swift */; };
 		C99A15A61485EC904D9AE9ECC6ABC353 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DF21EF8268E32D359CD23F2CF3EFE3 /* Foundation.framework */; };
@@ -270,7 +270,7 @@
 		8868851AFBC32289FB90E5789A5C3CE9 /* XCTestSuite+QuickTestSuiteBuilder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "XCTestSuite+QuickTestSuiteBuilder.m"; path = "Sources/QuickObjectiveC/XCTestSuite+QuickTestSuiteBuilder.m"; sourceTree = "<group>"; };
 		88759D7726B7E44D6BC9AF8CDABBA8CF /* Quick.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Quick.modulemap; sourceTree = "<group>"; };
 		89ACA94687016D8275639F3947F0F535 /* Functional.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Functional.swift; path = Sources/Nimble/Utils/Functional.swift; sourceTree = "<group>"; };
-		8B8CB47EDBEE0A09282F1D8A3E76CE88 /* FaroURLSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FaroURLSession.swift; sourceTree = "<group>"; };
+		8B8CB47EDBEE0A09282F1D8A3E76CE88 /* FaroSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FaroSession.swift; sourceTree = "<group>"; };
 		9089A821B8C40E7029C7B6A09229E15F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		913BD918E1AD0FA0F010BA11F54A113F /* Parameters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
 		91962170D1DCBB474895AD56B45066A8 /* World+DSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "World+DSL.swift"; path = "Sources/Quick/DSL/World+DSL.swift"; sourceTree = "<group>"; };
@@ -640,7 +640,7 @@
 				F364D9A58E5B70B883648ED1B9DF2486 /* Configuration.swift */,
 				43EE90789E450AC6E3D0125D472C1AE4 /* DateParser.swift */,
 				E6AD7CAC064A08D3051F28049D044509 /* FaroService.swift */,
-				8B8CB47EDBEE0A09282F1D8A3E76CE88 /* FaroURLSession.swift */,
+				8B8CB47EDBEE0A09282F1D8A3E76CE88 /* FaroSession.swift */,
 				DF4B63CEAE0715E08881914D6116AB5E /* JSONReader.swift */,
 				D07F1FC0686FEB04BAD8DF68A7BB4C29 /* MockService.swift */,
 				F1A2C440EFC86A3226601E40B361F9C6 /* MockSession.swift */,
@@ -1095,7 +1095,7 @@
 				80646AED077DAFA51BE3C14650CD1C64 /* Faro-dummy.m in Sources */,
 				00E77F0245DC4FB30634F1008BE9C7E7 /* FaroError.swift in Sources */,
 				F6D3FC783AD62ABA6097BE03C946C94D /* FaroService.swift in Sources */,
-				C76CB91C4EA097A57B42A87B86E93B98 /* FaroURLSession.swift in Sources */,
+				C76CB91C4EA097A57B42A87B86E93B98 /* FaroSession.swift in Sources */,
 				E3DFDC743F8E5A3AF66F326EB32A8A67 /* JSONAdaptor.swift in Sources */,
 				B1303F8E69EC829A93A5359494F70E1D /* JSONReader.swift in Sources */,
 				FA992B2A23C98E9EF68000555E6B2AD7 /* MockService.swift in Sources */,
