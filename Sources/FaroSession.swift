@@ -63,8 +63,7 @@ public extension FaroSessionable {
 /// any following task will fail.
 open class FaroQueueSession: FaroQueueSessionable {
     public let session: URLSession
-
-    /// Instantiates with a default `URLSessionConfiguration` that runs in the background. 
+    /// Instantiates with a default `URLSessionConfiguration` that runs in the background.
     /// # Warning
     /// > You can cancell this request but then the session will become invalid
     /// > If you provide the `URLSession.shared` singleton cancel will not work!
