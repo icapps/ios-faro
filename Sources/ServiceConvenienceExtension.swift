@@ -12,9 +12,8 @@ extension Service {
     /// - parameter call: where can the server be found?
     /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
     /// - parameter ok: returns initialized model
-    open func performUpdate<ModelType: Deserializable & Updatable>(_ call: Call, on updateModel: ModelType, fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
-
-        perform(call, on: updateModel) { (result) in
+    open func performUpdate<ModelType: Deserializable & Updatable>(_ call: Call, on updateModel: ModelType, autoStart: Bool = true, fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
+        perform(call, on: updateModel, autoStart: autoStart) { (result) in
             switch result {
             case .model(let model):
                 guard let model = model else {
@@ -23,11 +22,13 @@ extension Service {
                     return
                 }
                 ok(model)
+            case .models( _ ):
+                let faroError = FaroError.malformed(info: "Requested a single response be received a collection.")
+                self.print(faroError, and: fail)
             default:
                 self.handle(result, and: fail)
             }
         }
-
     }
 
     // MARK: - Create
@@ -38,8 +39,8 @@ extension Service {
     /// - parameter call: where can the server be found?
     /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
     /// - parameter ok: returns initialized model
-    open func performSingle<ModelType: Deserializable>(_ call: Call, fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
-        perform(call) { (result: Result<ModelType>) in
+    open func performSingle<ModelType: Deserializable>(_ call: Call, autoStart: Bool = true, fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
+        perform(call, autoStart: autoStart) { (result: Result<ModelType>) in
             switch result {
             case .model(let model):
                 guard let model = model else {
@@ -48,6 +49,9 @@ extension Service {
                     return
                 }
                 ok(model)
+            case .models( _ ):
+                let faroError = FaroError.malformed(info: "Requested a single response be received a collection.")
+                self.print(faroError, and: fail)
             default:
                 self.handle(result, and: fail)
             }
@@ -60,8 +64,8 @@ extension Service {
     /// - parameter call: where can the server be found?
     /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
     /// - parameter ok: returns initialized array of models
-    open func performCollection<ModelType: Deserializable>(_ call: Call, fail: @escaping (FaroError)->(), ok:@escaping ([ModelType])->()) {
-        perform(call) { (result: Result<ModelType>) in
+    open func performCollection<ModelType: Deserializable>(_ call: Call, autoStart: Bool = true, fail: @escaping (FaroError)->(), ok:@escaping ([ModelType])->()) {
+        perform(call, autoStart: autoStart) { (result: Result<ModelType>) in
             switch result {
             case .models(let models):
                 guard let models = models else {
@@ -78,8 +82,8 @@ extension Service {
 
     // MARK: - With Paging information
 
-    open func performSingle<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, page: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
-        perform(call, page: page) { (result: Result<ModelType>) in
+    open func performSingle<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, autoStart: Bool = true, page: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
+        perform(call, page: page, autoStart: autoStart) { (result: Result<ModelType>) in
             switch result {
             case .model(let model):
                 guard let model = model else {
