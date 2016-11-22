@@ -11,8 +11,13 @@ import Foundation
 open class MockURLSession: URLSession {
 
     open override func invalidateAndCancel() {
-
+        // Do nothing
     }
+
+    open override func finishTasksAndInvalidate() {
+        // Do nothing
+    }
+
 }
 open class MockSession: FaroQueueSessionable {
 

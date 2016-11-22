@@ -17,13 +17,18 @@ open class ServiceQueue: Service {
     var taskQueue: Set<URLSessionDataTask>
     private let final: ()->()
 
+    /// Creates a queue that lasts until final is called. When all request in the queue are finished the session becomes invalid.
+    /// For future queued request you have to create a new ServiceQueue instance.
+    /// - parameter configuration: Faro service configuration
+    /// - parameter faroSession: You can provide a custom `URLSession` via `FaroQueueSession`.
+    /// - parameter final: closure is callen when all requests are performed.
     public init(configuration: Configuration, faroSession: FaroQueueSessionable = FaroQueueSession(), final: @escaping()->()) {
         self.final = final
         taskQueue = Set<URLSessionDataTask>()
         super.init(configuration: configuration, faroSession: faroSession)
     }
 
-    open override func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open override func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = false, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
         var task: URLSessionDataTask?
         task = super.performJsonResult(call, autoStart: autoStart) { [weak self] (stage1JsonResult: Result<M>) in
             guard let strongSelf = self else {
@@ -36,6 +41,7 @@ open class ServiceQueue: Service {
             jsonResult(stage1JsonResult)
             if !strongSelf.hasOustandingTasks {
                 strongSelf.final()
+                strongSelf.finishTasksAndInvalidate()
             }
         }
 
