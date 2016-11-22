@@ -2,7 +2,7 @@
 import Quick
 import Nimble
 
-import Faro
+@testable import Faro
 @testable import Faro_Example
 
 class ServiceQueueSpec: QuickSpec {
@@ -24,18 +24,40 @@ class ServiceQueueSpec: QuickSpec {
 
                 context("not started") {
 
-                    it("add taks to queue") {
-                        var succeeded = false
+                    var succeeded = false
+
+                    beforeEach {
+                        succeeded = false
                         service = ServiceQueue(configuration: config, faroSession: mockSession) {
                             succeeded = true
                         }
+                    }
 
+                    it("add one") {
                         service.perform(call, autoStart: false) { (result: Result<MockModel>) in
                             succeeded = true
                         }
                         expect(service.hasOustandingTasks) == true
                         expect(succeeded).toNotEventually(beTrue())
                     }
+
+                    it("add multiple") {
+                        let task1 = service.perform(call, autoStart: false) { (result: Result<MockModel>) in
+                            succeeded = true
+                        }!
+                        let task2 = service.perform(call, autoStart: false) { (result: Result<MockModel>) in
+                            succeeded = true
+                        }!
+
+                        let task3 = service.perform(call, autoStart: false) { (result: Result<MockModel>) in
+                            succeeded = true
+                        }!
+
+                        expect(service.hasOustandingTasks) == true
+                        expect(succeeded).toNotEventually(beTrue())
+                        expect(service.taskQueue).to(contain([task1, task2, task3]))
+                    }
+
                 }
 
                 context("started") {
@@ -51,6 +73,41 @@ class ServiceQueueSpec: QuickSpec {
                             }
                         }
                     }
+
+                    context("multiple") {
+                        var task1: URLSessionDataTask!
+                        var task2: URLSessionDataTask!
+                        var task3: URLSessionDataTask!
+
+                        beforeEach {
+                            service = ServiceQueue(configuration: config, faroSession: mockSession) {
+                                print("final")
+                            }
+                            task1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in }!
+                            task2 = service.perform(call, autoStart: true) { (_: Result<MockModel>) in }!
+                            task3 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in }!
+                        }
+
+                        it("autoStart one") {
+                            expect(service.taskQueue).to(contain([task1, task2, task3]))
+                            expect(service.taskQueue).toNotEventually(contain([task2]))
+                            expect(service.taskQueue).toEventually(contain([task1, task3]))
+                        }
+
+                        it("one extra") {
+                            service.resume(task3)
+                            expect(service.taskQueue).to(contain([task1, task2, task3]))
+                            expect(service.taskQueue).toNotEventually(contain([task2, task3]))
+                            expect(service.taskQueue).toEventually(contain([task1]))
+                        }
+
+                        it("all") {
+                            service.resumeAll()
+                            expect(service.taskQueue).to(contain([task1, task2, task3]))
+                            expect(service.taskQueue).toNotEventually(contain([task1, task3]))
+                        }
+                    }
+
                 }
             }
         }

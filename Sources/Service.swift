@@ -9,7 +9,7 @@
 open class Service {
     open let configuration: Configuration
 
-    private let faroSession: FaroSessionable
+    let faroSession: FaroSessionable
 
     public init(configuration: Configuration, faroSession: FaroSessionable = FaroSession()) {
         self.configuration = configuration

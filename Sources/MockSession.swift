@@ -15,7 +15,7 @@ open class MockSession: FaroQueueSessionable {
     public var urlResponse: URLResponse?
     public var error: Error?
 
-    var completionHandler: ((Data?, URLResponse?, Error?) -> ())?
+    var completionHandlers = [Int : ((Data?, URLResponse?, Error?) -> ())]()
 
     public init(data: Data? = nil, urlResponse: URLResponse? = nil, error: Error? = nil) {
         self.data = data
@@ -25,11 +25,13 @@ open class MockSession: FaroQueueSessionable {
     }
 
     open func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask {
-        self.completionHandler = completionHandler
-        return MockURLSessionTask()
+        let task = MockURLSessionTask()
+        completionHandlers[task.taskIdentifier] = completionHandler
+        return task
     }
 
     open func resume(_ task: URLSessionDataTask) {
+        let completionHandler = completionHandlers[task.taskIdentifier]
         completionHandler?(data, urlResponse, error)
     }
     
@@ -43,17 +45,13 @@ open class MockAsyncSession: MockSession {
         self.delay = delay
         super.init(data: data, urlResponse: urlResponse, error: error)
     }
-    open override func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask {
-        self.completionHandler = completionHandler
-
-        return MockURLSessionTask()
-    }
 
     open override func resume(_ task: URLSessionDataTask) {
         let delayTime = DispatchTime.now() + delay
+        let completionHandler = completionHandlers[task.taskIdentifier]
         DispatchQueue.main.asyncAfter(deadline: delayTime) {
-            print("Called completion \(delayTime)")
-            self.completionHandler?(self.data, self.urlResponse, self.error)
+            (task as! MockURLSessionTask).mockedState = .completed
+            completionHandler?(self.data, self.urlResponse, self.error)
         }
     }
     
@@ -73,17 +71,25 @@ open class MockURLSessionTask : URLSessionDataTask{
         }
     }
 
-    override open func cancel() {
+    var mockedState: URLSessionTask.State = .suspended
 
+    override open var state: URLSessionTask.State {
+        get {
+            return mockedState
+        }
+    }
+
+    override open func cancel() {
+        mockedState = .canceling
     }
 
 
     override open func suspend() {
-
+        mockedState = .suspended
     }
 
     override open func resume() {
-        
+        mockedState = .running
     }
     
 }

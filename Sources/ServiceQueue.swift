@@ -14,8 +14,8 @@ import Foundation
 /// perform new request after you fired the first queue.
 open class ServiceQueue: Service {
 
+    var taskQueue: Set<URLSessionDataTask>
     private let final: ()->()
-    private var taskQueue: Set<URLSessionDataTask>
 
     public init(configuration: Configuration, faroSession: FaroQueueSessionable = FaroQueueSession(), final: @escaping()->()) {
         self.final = final
@@ -46,6 +46,17 @@ open class ServiceQueue: Service {
     open var hasOustandingTasks: Bool {
         get {
             return taskQueue.count > 0
+        }
+    }
+
+    open func resume(_ task: URLSessionDataTask) {
+        faroSession.resume(task)
+    }
+
+    open func resumeAll() {
+        let notStartedTasks = taskQueue.filter { $0.state != .running || $0.state != .completed}
+        notStartedTasks.forEach { (task) in
+            faroSession.resume(task)
         }
     }
 }
