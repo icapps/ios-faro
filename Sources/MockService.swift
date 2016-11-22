@@ -11,7 +11,7 @@ open class MockService: Service {
     }
 
     /// This method is overridden to return json or errors like as if we would do a network call.
-    override open func performJsonResult<M : Deserializable>(_ call: Call, jsonResult: @escaping (Result<M>) -> ()) {
+    override open func performJsonResult<M : Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) -> ()) {
         if let mockDictionary = mockDictionary {
             jsonResult(.json(mockDictionary))
             return

@@ -4,6 +4,7 @@ public protocol FaroSession {
     func resume(_ task: URLSessionDataTask)
 }
 
+/// We wrap `URLSession` in this class to control datatasks. For now only fot testing but can be usefull in the future too.
 open class FaroURLSession: FaroSession {
     let session: URLSession
 

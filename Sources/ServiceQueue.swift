@@ -9,7 +9,7 @@
 import Foundation
 
 /// Makes it possible to queue requests
-class ServiceQueue: Service {
+public class ServiceQueue: Service {
 
     
 }

@@ -17,9 +17,9 @@ open class Service {
     /// - parameter call: gives the details to find the entity on the server
     /// - parameter updateModel: JSON will be given to this model to update
     /// - parameter modelResult: `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
-    open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, modelResult: @escaping (Result<M>) -> ()) {
+    open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) {
 
-        performJsonResult(call) { (jsonResult: Result<M>) in
+        performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
             switch jsonResult {
             case .json(let json):
                 modelResult(self.handle(json: json, on: updateModel, call: call))
@@ -32,9 +32,9 @@ open class Service {
 
     /// - parameter call : gives the details to find the entity on the server
     /// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
-    open func perform<M: Deserializable>(_ call: Call, modelResult: @escaping (Result<M>) -> ()) {
+    open func perform<M: Deserializable>(_ call: Call, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) {
 
-        performJsonResult(call) { (jsonResult: Result<M>) in
+        performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
             switch jsonResult {
             case .json(let json):
                 modelResult(self.handle(json: json, call: call))
@@ -45,9 +45,9 @@ open class Service {
         }
     }
 
-    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, page: @escaping(P?)->(), modelResult: @escaping (Result<M>) -> ()) {
+    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, autoStart: Bool = true, page: @escaping(P?)->(), modelResult: @escaping (Result<M>) -> ()) {
 
-        performJsonResult(call) { (jsonResult: Result<M>) in
+        performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
             switch jsonResult {
             case .json(let json):
                 modelResult(self.handle(json: json, call: call))
@@ -60,7 +60,7 @@ open class Service {
     }
 
 
-    open func performJsonResult<M: Deserializable>(_ call: Call, jsonResult: @escaping (Result<M>) -> ()) {
+    open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool, jsonResult: @escaping (Result<M>) -> ()) {
 
         guard let request = call.request(withConfiguration: configuration) else {
             jsonResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")))
@@ -86,13 +86,18 @@ open class Service {
 
         })
 
+        guard autoStart else {
+            return
+        }
+
         session.resume(task!)
     }
+
     /// Use this to write to the server when you do not need a data result, just ok.
     /// If you expect a data result use `perform(call:result:)`
     /// - parameter call: should be of a type that does not expect data in the result.
     /// - parameter result : `WriteResult` closure should be called with `.ok` other cases are a failure.
-    open func performWrite(_ writeCall: Call, modelResult: @escaping (WriteResult) -> ()) {
+    open func performWrite(_ writeCall: Call, autoStart: Bool = true, modelResult: @escaping (WriteResult) -> ()) {
 
         guard let request = writeCall.request(withConfiguration: configuration) else {
             modelResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(writeCall.path)")))
@@ -102,6 +107,10 @@ open class Service {
         task = session.dataTask(with: request, completionHandler: { (data, response, error) in
             modelResult(self.handleWrite(data: data, urlResponse: response, error: error))
         })
+
+        guard autoStart else {
+            return
+        }
 
         session.resume(task!)
     }
