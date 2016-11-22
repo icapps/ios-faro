@@ -24,12 +24,14 @@
 		C02ADF811D88243A00FA5B32 /* ErrorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */; };
 		C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF781D8823F800FA5B32 /* CallSpec.swift */; };
 		C02ADF831D88243A00FA5B32 /* ServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF771D8823F800FA5B32 /* ServiceSpec.swift */; };
-		C03281451D76EB590047825C /* SwiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* SwiftViewController.swift */; };
+		C03281451D76EB590047825C /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* PostViewController.swift */; };
 		C032815F1D77319B0047825C /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815E1D77319B0047825C /* Model.swift */; };
 		C03BEC7F1D9273CF00420048 /* SerializeOperatorsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03BEC7E1D9273CF00420048 /* SerializeOperatorsSpec.swift */; };
 		C03BEC811D9275E100420048 /* DeserializeOperatorsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03BEC801D9275E100420048 /* DeserializeOperatorsSpec.swift */; };
 		C03BEC851D9292B800420048 /* DeserializeFunctionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03BEC841D9292B800420048 /* DeserializeFunctionsSpec.swift */; };
 		C03FB1501DE365D900B14A15 /* ServiceQueueSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03FB14F1DE365D900B14A15 /* ServiceQueueSpec.swift */; };
+		C04CFABD1DE48486001C05CF /* PostDeserializalbeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04CFABC1DE48486001C05CF /* PostDeserializalbeModel.swift */; };
+		C04CFABF1DE4850C001C05CF /* PostDeserializalbeModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04CFABE1DE4850C001C05CF /* PostDeserializalbeModelSpec.swift */; };
 		C066958C1D87002400BD3703 /* JSONAdaptorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */; };
 		C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ACDE631D79B65100064801 /* MockModel.swift */; };
 		C0BFD2C01D90E1D200FAB4E0 /* SerializableSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BFD2BE1D90E09900FAB4E0 /* SerializableSpec.swift */; };
@@ -55,7 +57,7 @@
 		607FACD01AFB9204008FA782 /* Faro_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Faro_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		607FACD71AFB9204008FA782 /* SwiftViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftViewController.swift; sourceTree = "<group>"; };
+		607FACD71AFB9204008FA782 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -81,6 +83,8 @@
 		C03BEC801D9275E100420048 /* DeserializeOperatorsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializeOperatorsSpec.swift; sourceTree = "<group>"; };
 		C03BEC841D9292B800420048 /* DeserializeFunctionsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializeFunctionsSpec.swift; sourceTree = "<group>"; };
 		C03FB14F1DE365D900B14A15 /* ServiceQueueSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceQueueSpec.swift; sourceTree = "<group>"; };
+		C04CFABC1DE48486001C05CF /* PostDeserializalbeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDeserializalbeModel.swift; sourceTree = "<group>"; };
+		C04CFABE1DE4850C001C05CF /* PostDeserializalbeModelSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDeserializalbeModelSpec.swift; sourceTree = "<group>"; };
 		C052960A1CB6629E007E1111 /* Faro_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Faro_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		C05EBF6F1D4B8E3000B950EB /* Faro_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Faro_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05EBF731D4B8E3000B950EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -181,6 +185,7 @@
 				C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */,
 				C00C1D281D9D8D51002D43B7 /* MockServiceSpec.swift */,
 				C0D657F01DB16EF50002B7CA /* ParametersSpec.swift */,
+				C04CFABE1DE4850C001C05CF /* PostDeserializalbeModelSpec.swift */,
 				C0BFD2BE1D90E09900FAB4E0 /* SerializableSpec.swift */,
 				C03BEC7E1D9273CF00420048 /* SerializeOperatorsSpec.swift */,
 				C03FB14F1DE365D900B14A15 /* ServiceQueueSpec.swift */,
@@ -223,8 +228,9 @@
 		62AF6B0D1CE47E3800339275 /* Swift */ = {
 			isa = PBXGroup;
 			children = (
-				607FACD71AFB9204008FA782 /* SwiftViewController.swift */,
+				607FACD71AFB9204008FA782 /* PostViewController.swift */,
 				C015C7E41D81801700E30408 /* ExampleService.swift */,
+				C04CFABC1DE48486001C05CF /* PostDeserializalbeModel.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -500,7 +506,8 @@
 			files = (
 				C015C7E51D81801700E30408 /* ExampleService.swift in Sources */,
 				C032815F1D77319B0047825C /* Model.swift in Sources */,
-				C03281451D76EB590047825C /* SwiftViewController.swift in Sources */,
+				C03281451D76EB590047825C /* PostViewController.swift in Sources */,
+				C04CFABD1DE48486001C05CF /* PostDeserializalbeModel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -514,6 +521,7 @@
 				C03BEC851D9292B800420048 /* DeserializeFunctionsSpec.swift in Sources */,
 				C02ADF801D88243A00FA5B32 /* ConfigurationSpec.swift in Sources */,
 				C03BEC811D9275E100420048 /* DeserializeOperatorsSpec.swift in Sources */,
+				C04CFABF1DE4850C001C05CF /* PostDeserializalbeModelSpec.swift in Sources */,
 				C02ADF811D88243A00FA5B32 /* ErrorSpec.swift in Sources */,
 				C02ADF831D88243A00FA5B32 /* ServiceSpec.swift in Sources */,
 				C00C1D291D9D8D51002D43B7 /* MockServiceSpec.swift in Sources */,
