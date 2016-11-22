@@ -30,7 +30,7 @@ class ServiceSpec: QuickSpec {
 
             beforeEach {
                 mockSession = MockSession()
-                service = Service(configuration: Configuration(baseURL: "mockService"), session: mockSession)
+                service = Service(configuration: Configuration(baseURL: "mockService"), faroSession: mockSession)
                 mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)
             }
 
