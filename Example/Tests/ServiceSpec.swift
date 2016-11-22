@@ -37,9 +37,9 @@ class ServiceSpec: QuickSpec {
             it("should return in sync") {
                 var sync = false
 
-                service.performWrite(call, modelResult: { (result) in
+                service.performWrite(call) { _ in
                     sync = true
-                })
+                }
 
                 expect(sync) == true
             }

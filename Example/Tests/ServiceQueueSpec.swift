@@ -63,6 +63,14 @@ class ServiceQueueSpec: QuickSpec {
                         expect(isFinalCalled).toNotEventually(beTrue())
                     }
 
+                    context("performWrite") {
+
+                        it("should not be done without start") {
+                            let _ = service.performWrite(call, autoStart: false) { _ in }
+                            expect(service.hasOustandingTasks) == true
+                        }
+                    }
+
                 }
 
                 context("started") {
@@ -135,8 +143,8 @@ class ServiceQueueSpec: QuickSpec {
                                 expect(isFinalCalled) == false
                                 expect(isFinalCalled).toNotEventually(beTrue())
                             }
-
                         }
+
                     }
 
                 }

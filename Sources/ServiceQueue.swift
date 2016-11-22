@@ -35,23 +35,49 @@ open class ServiceQueue: Service {
                 jsonResult(stage1JsonResult)
                 return
             }
-            if let createdTask = task {
-                let _ = self?.taskQueue.remove(createdTask)
-           }
+            strongSelf.cleanupQueue(for: task)
             jsonResult(stage1JsonResult)
-            if !strongSelf.hasOustandingTasks {
-                strongSelf.final()
-                strongSelf.finishTasksAndInvalidate()
-            }
+            strongSelf.shouldCallFinal()
         }
 
+        add(task)
+        return task
+    }
+
+    open override func performWrite(_ writeCall: Call, autoStart: Bool, writeResult: @escaping (WriteResult) -> ()) -> URLSessionDataTask? {
+        var task: URLSessionDataTask?
+        task = super.performWrite(writeCall, autoStart: autoStart) { [weak self] (result) in
+            guard let strongSelf = self else {
+                writeResult(result)
+                return
+            }
+            strongSelf.cleanupQueue(for: task)
+            writeResult(result)
+            strongSelf.shouldCallFinal()
+        }
+        add(task)
+        return task
+    }
+
+    private func add(_ task: URLSessionDataTask?) {
         guard let createdTask = task else {
             printFaroError(FaroError.invalidSession(message: "\(self) tried to "))
-            return nil
+            return
         }
         taskQueue.insert(createdTask)
+    }
 
-        return createdTask
+    private func cleanupQueue(for task: URLSessionDataTask?) {
+        if let createdTask = task {
+            let _ = taskQueue.remove(createdTask)
+        }
+    }
+
+    private func shouldCallFinal() {
+        if !hasOustandingTasks {
+            final()
+            finishTasksAndInvalidate()
+        }
     }
 
     // MARK: - Interact with tasks

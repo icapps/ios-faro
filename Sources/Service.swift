@@ -130,23 +130,26 @@ open class Service {
     /// Use this to write to the server when you do not need a data result, just ok.
     /// If you expect a data result use `perform(call:result:)`
     /// - parameter call: should be of a type that does not expect data in the result.
-    /// - parameter result : `WriteResult` closure should be called with `.ok` other cases are a failure.
-    open func performWrite(_ writeCall: Call, autoStart: Bool = true, modelResult: @escaping (WriteResult) -> ()) {
+    /// - parameter writeResult: `WriteResult` closure should be called with `.ok` other cases are a failure.
+    /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
+    @discardableResult
+    open func performWrite(_ writeCall: Call, autoStart: Bool = true, writeResult: @escaping (WriteResult) -> ()) -> URLSessionDataTask? {
 
         guard let request = writeCall.request(withConfiguration: configuration) else {
-            modelResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(writeCall.path)")))
-            return
+            writeResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(writeCall.path)")))
+            return nil
         }
 
         let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
-            modelResult(self.handleWrite(data: data, urlResponse: response, error: error))
+            writeResult(self.handleWrite(data: data, urlResponse: response, error: error))
         })
 
         guard autoStart else {
-            return
+            return task
         }
 
         faroSession.resume(task)
+        return task
     }
 
     // MARK: - Handles
