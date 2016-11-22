@@ -26,10 +26,17 @@ open class ServiceQueue: Service {
     open override func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
         var task: URLSessionDataTask?
         task = super.performJsonResult(call, autoStart: autoStart) { [weak self] (stage1JsonResult: Result<M>) in
+            guard let strongSelf = self else {
+                jsonResult(stage1JsonResult)
+                return
+            }
             if let createdTask = task {
                 let _ = self?.taskQueue.remove(createdTask)
            }
             jsonResult(stage1JsonResult)
+            if !strongSelf.hasOustandingTasks {
+                strongSelf.final()
+            }
         }
 
         guard let createdTask = task else {
