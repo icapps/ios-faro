@@ -15,10 +15,10 @@ class ServiceQueueSpec: QuickSpec {
                 var mockSession: MockSession!
                 var service: ServiceQueue!
                 let call = Call(path: "mock")
+                let config = Configuration(baseURL: "mockService")
 
                 beforeEach {
-                    mockSession = MockSession()
-                    service = ServiceQueue(configuration: Configuration(baseURL: "mockService"), session: mockSession)
+                    mockSession = MockAsyncSession()
                     mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)
                 }
 
@@ -26,16 +26,31 @@ class ServiceQueueSpec: QuickSpec {
 
                     it("add taks to queue") {
                         var succeeded = false
-                        service.perform(call, autoStart: false) { (result: Result<MockModel>) in
+                        service = ServiceQueue(configuration: config, faroSession: mockSession) {
                             succeeded = true
                         }
 
-                        expect(succeeded) == false
+                        service.perform(call, autoStart: false) { (result: Result<MockModel>) in
+                            succeeded = true
+                        }
+                        expect(service.hasOustandingTasks) == true
+                        expect(succeeded).toNotEventually(beTrue())
                     }
                 }
 
                 context("started") {
 
+                    it("still start on autostart") {
+                        service = ServiceQueue(configuration: config, faroSession: mockSession) {
+                            print("final")
+                        }
+                        waitUntil { done in
+                            service.perform(call, autoStart: true) { (result: Result<MockModel>) in
+                                expect(service.hasOustandingTasks) == false
+                                done()
+                            }
+                        }
+                    }
                 }
             }
         }
