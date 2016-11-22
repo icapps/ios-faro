@@ -52,7 +52,7 @@ class Animal: Deserializable {
         }
         self.uuid <-> json["uuid"] as Any
     }
-    
+
 }
 
 class DeserializableSpec: QuickSpec {

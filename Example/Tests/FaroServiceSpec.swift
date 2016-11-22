@@ -14,15 +14,15 @@ import Faro
 @testable import Faro_Example
 
 class FaroServiceSpec: QuickSpec {
-    
+
     override func spec() {
-        
+
         describe("FaroService mock switching") {
             context("should mock switch = true") {
                 beforeEach {
                     FaroService.sharedService = MockService()
                 }
-                
+
                 it("Should use MockService") {
                     expect(FaroService.shared is Faro.MockService) == true
                 }
@@ -39,6 +39,6 @@ class FaroServiceSpec: QuickSpec {
             }
         }
 
-        
+
     }
 }

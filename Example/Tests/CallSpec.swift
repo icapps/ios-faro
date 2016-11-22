@@ -9,43 +9,43 @@ class Car: Serializable {
     var json: [String : Any] {
         return ["uuid": uuid]
     }
-    
+
 }
 
 class CallSpec: QuickSpec {
 
     override func spec() {
-        
+
         describe("Call .POST with serialize") {
             let expected = "path"
             let o1 = Car()
             o1.uuid = "123"
             let call = Call(path: expected, method: .POST, serializableModel: o1)
             let configuration = Faro.Configuration(baseURL: "http://someURL")
-            
+
             it("should use POST method") {
                 let request = call.request(withConfiguration: configuration)
                 expect(request!.httpMethod).to(equal("POST"))
             }
-            
+
             it("should use Serialize object as parameter in call") {
                 let request = call.request(withConfiguration:configuration)
                 expect(request?.httpBody).toNot(beNil())
             }
         }
-        
+
         describe("Call .POST with parameters") {
             let expected = "path"
             let parameters = Parameters(type: .jsonBody, parameters: ["id":"someId"])
             let call = Call(path: expected, method: .POST, parameters: parameters)
             let configuration = Faro.Configuration(baseURL: "http://someURL")
-            
+
             it("should use POST method") {
                 let request = call.request(withConfiguration: configuration)
-                expect(request!.httpMethod).to(equal("POST"))
+                expect(request!.httpMethod) == "POST"
             }
         }
-        
+
         describe("Call .GET") {
             let expected = "path"
             let call = Call(path: expected)
@@ -107,7 +107,7 @@ class CallSpec: QuickSpec {
             }
 
         }
-        
+
         describe("Call with parameters") {
             let configuration = Faro.Configuration(baseURL: "http://someURL")
 
@@ -139,20 +139,20 @@ class CallSpec: QuickSpec {
                 expect(headers.keys).to(contain("Accept-Language"))
                 expect(headers.values).to(contain("utf-8"))
             }
-            
+
             it("should fail to insert http headers that arent strings into the request") {
 
                 let headers = allHTTPHeaderFields(type: .httpHeader, parameters:  ["Accept-Language" : 12345,
-                                                                                   "Accept-Charset" :  "el wrongo".data(using: .utf8)!])
+                                                                                   "Accept-Charset" : "el wrongo".data(using: .utf8)!])
                 expect(headers.keys).toNot(contain("Accept-Language"))
                 expect(headers.keys).toNot(contain("Accept-Charset"))
             }
-            
+
             it("should insert URL components into the request") {
                 let string = componentString(type: .urlComponents, parameters: ["some query item": "aa🗿🤔aej"])
                 expect(string).to(contain("some%20query%20item=aa%F0%9F%97%BF%F0%9F%A4%94aej"))
             }
-            
+
             it("should fail to insert URL components that arent strings into the request") {
                 let string = componentString(type: .urlComponents, parameters:  ["some dumb query item": "el wrongo".data(using: .utf8)!])
                 expect(string).toNot(contain("some%20dumb%20query%20item"))
@@ -185,24 +185,24 @@ class CallSpec: QuickSpec {
 
             }
 
-            
+
             it("should fail to add JSON into a GET") {
                 let data = body(type: .jsonBody, method: .GET, parameters: bodyJson)
                 expect(data).to(beNil())
             }
-            
+
             it("should not produce invalid URL's when given empty parameters") {
                 let parameters = [String: String]()
                 let callString: String = componentString(type: .urlComponents, parameters: parameters)
                 expect(callString.characters.last) != "?"
             }
-            
+
             it("should not produce invalid URL's when given parameters with missing keys") {
                 let parameters = ["" : "aValue"]
                 let callString: String = componentString(type: .urlComponents, parameters: parameters)
                 expect(callString.characters.last) != "?"
             }
-            
+
             it("should not produce invalid URL's when given parameters with missing values") {
                 let parameters = ["aKey" : ""]
                 let callString: String = componentString(type: .urlComponents, parameters: parameters)
