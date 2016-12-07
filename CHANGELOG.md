@@ -1,7 +1,15 @@
 # Faro
 
-## Version 1.0.0
+## Version 1.0.1
+* Added a queue for basic queuing. You get to fire request and get a done when everything is done.
+* Added example on how to use enums for parsing JSON
+* Moving to buddybuild
+* ... Feel free to comment or ad.
 
+
+## Version 1.0.0
+* Convenience methods that do not use a switch as a result
+* Support for mocking a service request or an whole session
 ### **WARNING**
 Version 1.0.0 is not compatible with 0.7.2. All the functions, classes, protocols, ... that we no longer support have been marked with a ```@available(*, deprecated=1.0.0, message="use the Bar class")``` attribute.
 

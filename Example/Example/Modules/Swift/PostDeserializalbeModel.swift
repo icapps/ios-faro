@@ -5,7 +5,7 @@ import Stella
 class Post: Deserializable {
     let uuid: Int
     var title: String?
-    
+
     required init?(from raw: Any) {
         guard let json = raw as? [String: Any] else {
             return nil
@@ -28,7 +28,7 @@ class Post: Deserializable {
 
 }
 
-func transform(_ map:[Post.ServiceMap: Any]) -> [String: Any] {
+func transform(_ map: [Post.ServiceMap: Any]) -> [String: Any] {
     var result = [String: Any]()
     map.forEach { (dict:(key: Post.ServiceMap, value: Any)) in
         result[dict.key.rawValue] = dict.value
@@ -51,10 +51,9 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
             guard let newValue = newValue, let key = map.rawValue as? Key  else {
                 return
             }
-            
+
             self[key] = newValue
         }
     }
 
-    
 }
