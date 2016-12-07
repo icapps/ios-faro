@@ -1,11 +1,3 @@
-//
-//  ServiceQueExtension.swift
-//  Pods
-//
-//  Created by Stijn Willems on 21/11/2016.
-//
-//
-
 import Foundation
 
 /// Tasks can be autostarted or started manualy. The taks are still handled bij an URLSession like in `Service`, but

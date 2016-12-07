@@ -1,11 +1,3 @@
-//
-//  MockSession.swift
-//  Pods
-//
-//  Created by Stijn Willems on 14/11/2016.
-//
-//
-
 import Foundation
 
 open class MockURLSession: URLSession {

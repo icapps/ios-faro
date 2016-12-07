@@ -1,5 +1,3 @@
-import UIKit
-
 /// You can use this as a singleton that switches between using real data or data from a file.
 /// To switch we use `MockSwitch`
 open class FaroService: Service {

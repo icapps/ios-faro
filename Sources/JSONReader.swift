@@ -1,5 +1,3 @@
-import UIKit
-
 class JSONReader: NSObject {
     static func parseFile(named: String!, for bundle: Bundle) -> Any? {
         var named = named.replacingOccurrences(of: "/", with: "_")
@@ -12,7 +10,8 @@ class JSONReader: NSObject {
         print("🍞 fetching file named: \(named)")
 
         do {
-            if #available(iOS 9.0, *) {
+            #if os(iOS)
+            if #available(iOS 9.0, OSX 10.11, tvOS 9.0, *) {
                 guard let data = NSDataAsset(name: named, bundle: bundle)?.data else {
                     return nil
                 }
@@ -22,6 +21,38 @@ class JSONReader: NSObject {
                 print("🖕🏻 Faro json mocking only works on iOS 9")
                 return nil
             }
+            #endif
+
+            #if os(OSX)
+                if #available(OSX 10.11, tvOS 9.0, *) {
+                    guard let data = NSDataAsset(name: named, bundle: bundle)?.data else {
+                        return nil
+                    }
+                    return try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+
+                } else {
+                    print("🖕🏻 Faro json mocking only works on iOS 9")
+                    return nil
+                }
+            #endif
+
+            #if os(tvOS)
+                if #available(tvOS 9.0, *) {
+                    guard let data = NSDataAsset(name: named, bundle: bundle)?.data else {
+                        return nil
+                    }
+                    return try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+
+                } else {
+                    print("🖕🏻 Faro json mocking only works on iOS 9")
+                    return nil
+                }
+            #endif
+
+            #if os(watchOS)
+                print("🖕🏻 Faro json mocking does not work on watchOS")
+                return nil
+            #endif
 
         } catch {
             printFaroError(FaroError.nonFaroError(error))

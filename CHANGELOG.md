@@ -1,5 +1,8 @@
 # Faro
 
+## Version 1.0.3
+* Disabled JSON mock data reading for watchOS
+
 ## Version 1.0.1
 * Added a queue for basic queuing. You get to fire request and get a done when everything is done.
 * Added example on how to use enums for parsing JSON
