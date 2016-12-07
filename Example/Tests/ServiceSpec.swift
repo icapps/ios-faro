@@ -29,18 +29,17 @@ class ServiceSpec: QuickSpec {
             var mockSession: MockSession!
 
             beforeEach {
-                service = Service(configuration: Configuration(baseURL: "mockService"))
                 mockSession = MockSession()
-                service.session = mockSession
+                service = Service(configuration: Configuration(baseURL: "mockService"), faroSession: mockSession)
                 mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)
             }
 
             it("should return in sync") {
                 var sync = false
 
-                service.performWrite(call, modelResult: { (result) in
+                service.performWrite(call) { _ in
                     sync = true
-                })
+                }
 
                 expect(sync) == true
             }
