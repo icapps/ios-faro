@@ -6,6 +6,10 @@ class Post: Deserializable {
     let uuid: Int
     var title: String?
 
+    enum ServiceMap: String {
+        case id, title
+    }
+
     required init?(from raw: Any) {
         guard let json = raw as? [String: Any] else {
             return nil
@@ -22,18 +26,6 @@ class Post: Deserializable {
         title <-> json[.title]
     }
 
-    enum ServiceMap: String {
-        case id, title
-    }
-
-}
-
-func transform(_ map: [Post.ServiceMap: Any]) -> [String: Any] {
-    var result = [String: Any]()
-    map.forEach { (dict:(key: Post.ServiceMap, value: Any)) in
-        result[dict.key.rawValue] = dict.value
-    }
-    return result
 }
 
 extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
@@ -56,4 +48,12 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
         }
     }
 
+}
+
+func transform(_ map: [Post.ServiceMap: Any]) -> [String: Any] {
+    var result = [String: Any]()
+    map.forEach { (dict:(key: Post.ServiceMap, value: Any)) in
+        result[dict.key.rawValue] = dict.value
+    }
+    return result
 }

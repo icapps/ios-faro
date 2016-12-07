@@ -393,3 +393,101 @@ ___
 ---
 # Edge cases
 ### They are _a pain_ to write, let allone __Test__
+
+> How does Faro help?
+
+---
+# Error printing and throwing
+
+```swift
+printFaroError(_ error: Error) {
+    var faroError = error
+    if !(error is FaroError) {
+        faroError = FaroError.nonFaroError(error)
+    }
+    switch faroError as! FaroError {
+    case .general:
+        print("💣 General service error")
+...
+
+```
+> Print functions implemented, but needs impovement
+
+---
+
+# Cancel and Queue
+## Use `ServiceQueue`
+
+> Why don't you try it...
+
+---
+1. Centralize knowledge about the requests 👌
+  * `Call` & `Configuration` & `FaroSessionable`
+2. Handle __edge cases__, we tend to forget...
+  * `printFaroError` & `ServiceQueue`
+3. Make it testable.
+  * `MockSession` & `MockService`
+
+---
+# Q?
+---
+# Syntax _sugar_
+
+---
+
+```swift
+class Post: Deserializable {
+    let uuid: Int
+    var title: String?
+
+    enum ServiceMap: String {
+        case id, title
+    }
+
+    required init?(from raw: Any) {
+        guard let json = raw as? [String: Any] else {
+            return nil
+        }
+        do {
+            self.uuid = try parse(Post.ServiceMap.id.rawValue, from: json)
+        } catch {
+            printError("Error parsing Post with \(error).")
+            return nil
+        }
+
+        // Not required variables
+
+        title <-> json[.title]
+    }
+
+}
+
+```
+
+---
+
+```swift
+extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
+
+    subscript (map: Post.ServiceMap) -> Value? {
+        get {
+            guard let key = map.rawValue as? Key else {
+                return nil
+            }
+
+            let dict = self[key] as Value?
+            return dict
+
+        } set (newValue) {
+            guard let newValue = newValue, let key = map.rawValue as? Key  else {
+                return
+            }
+
+            self[key] = newValue
+        }
+    }
+
+}
+```
+
+> Use it at your own _Risk_ ...
