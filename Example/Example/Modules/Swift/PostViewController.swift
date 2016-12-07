@@ -2,7 +2,6 @@ import UIKit
 import Faro
 import Stella
 
-
 class PostViewController: UIViewController {
     @IBOutlet var label: UILabel!
 
@@ -17,14 +16,14 @@ class PostViewController: UIViewController {
                 switch result {
                 case .models(let models):
                     self.label.text = "Performed call for posts"
-                    printBreadcrumb("\(models!.map{"\($0.uuid): \($0.title!)"})")
+                    printBreadcrumb("\(models!.map {"\($0.uuid): \($0.title!)"})")
                 default:
                     printError("Could not perform call for posts")
                 }
             }
         }
 
-        let serviceQueue = ExampleServiceQueue() {
+        let serviceQueue = ExampleServiceQueue {
             printBreadcrumb("🎉 queued call finished")
         }
 
