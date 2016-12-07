@@ -4,6 +4,7 @@ use_frameworks!
 target 'Faro_Example' do
   pod "Faro", path: "../"
   pod 'Stella', git: 'https://github.com/icapps/ios-stella.git', branch: 'feature/swift3.0'
+  pod 'BuddyBuildSDK'
 
   target 'Faro_Tests' do
       # The test frameworks

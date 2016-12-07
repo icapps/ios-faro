@@ -1,6 +1,5 @@
 import Foundation
 
-/// Catches any throws and switches if to af failure after printing the error.
 public func printFaroError(_ error: Error) {
     var faroError = error
     if !(error is FaroError) {
@@ -39,6 +38,11 @@ public func printFaroError(_ error: Error) {
         print("💣 \(info)")
     case .serializationError:
         print("💣serialization error")
+    case .updateNotPossible(json: let json, model: let model):
+        print("❓ update not possilbe with \(json) on model \(model)")
+    case .invalidSession(message: let message):
+        print("💀 you tried to perform a request on a session that is invalid")
+        print("💀 message: \(message)")
     }
     
 }

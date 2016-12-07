@@ -4,25 +4,6 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-class MockSession: FaroSession {
-
-    var data: Data?
-    var urlResponse: URLResponse?
-    var error: Error?
-
-    private var completionHandler: ((Data?, URLResponse?, Error?) -> ())?
-
-    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask {
-        self.completionHandler = completionHandler
-        return URLSessionDataTask() // just to me able to mock
-    }
-
-    func resume() {
-        completionHandler?(data, urlResponse, error)
-    }
-
-}
-
 class PagingInformation: Deserializable {
     var pages: Int
     var currentPage: Int
@@ -48,18 +29,17 @@ class ServiceSpec: QuickSpec {
             var mockSession: MockSession!
 
             beforeEach {
-                service = Service(configuration: Configuration(baseURL: "mockService"))
                 mockSession = MockSession()
-                service.session = mockSession
+                service = Service(configuration: Configuration(baseURL: "mockService"), faroSession: mockSession)
                 mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)
             }
 
             it("should return in sync") {
                 var sync = false
 
-                service.performWrite(call, modelResult: { (result) in
+                service.performWrite(call) { _ in
                     sync = true
-                })
+                }
 
                 expect(sync) == true
             }
@@ -76,15 +56,33 @@ class ServiceSpec: QuickSpec {
 
                 expect(pagesInformation.pages) == 10
             }
-            
+
+            context ("update an existing model") {
+
+                it("when respons contains data") {
+                    let jsonDict = ["uuid": "mockUUID"]
+                    let mockModel = MockModel(from: jsonDict)!
+                    let data = try! JSONSerialization.data(withJSONObject: jsonDict,
+                                                           options: .prettyPrinted)
+                    mockSession.data = data
+
+                    service.performUpdate(call, on: mockModel, fail: { _ in XCTFail()}) { (modelResult: MockModel) in
+                            let identical = (modelResult === mockModel)
+                            expect(identical).to(beTrue())
+                    }
+
+                }
+            }
+
         }
+
         describe("Parsing to model") {
             var service: Service!
             var mockJSON: Any!
 
 
             context("array of objects response") {
-                beforeEach{
+                beforeEach {
                     mockJSON = [["uuid": "object 1"], ["uuid": "object 2"]]
                     service = MockService(mockDictionary: mockJSON)
                 }
@@ -108,7 +106,7 @@ class ServiceSpec: QuickSpec {
             }
 
             context("single object response") {
-                beforeEach{
+                beforeEach {
                     mockJSON = ["uuid": "object id 1"]
                     service = MockService(mockDictionary: mockJSON)
                 }
@@ -193,6 +191,10 @@ class ServiceSpec: QuickSpec {
 
                     it("data returned for statuscode 201") {
                         ExpectResponse.statusCode(201, data: "data".data(using: String.Encoding.utf8), service: service)
+                    }
+
+                    it("data returned for statuscode 204") {
+                        ExpectResponse.statusCode(204, data: "data".data(using: String.Encoding.utf8), service: service)
                     }
                 }
 

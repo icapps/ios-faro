@@ -1,4 +1,4 @@
-import Faro
+ import Faro
 
 class ExampleService: Service {
 
@@ -6,4 +6,12 @@ class ExampleService: Service {
         super.init(configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com"))
     }
 
+}
+
+class ExampleServiceQueue: ServiceQueue {
+
+    init(final: @escaping () -> ()) {
+        super.init(configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com"), final: final)
+    }
+    
 }

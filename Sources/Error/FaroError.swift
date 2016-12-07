@@ -12,6 +12,8 @@ public enum FaroError: Error, Equatable {
     case emptyCollection
     case malformed(info: String)
     case serializationError
+    case updateNotPossible(json: Any, model: Any)
+    case invalidSession(message: String)
 }
 
 public func == (lhs: FaroError, rhs: FaroError) -> Bool {
