@@ -2,29 +2,8 @@ import UIKit
 import Faro
 import Stella
 
-class Post: Deserializable {
-    let uuid: Int
-    var title: String?
 
-    required init?(from raw: Any) {
-        guard let json = raw as? [String: Any] else {
-            return nil
-        }
-        do {
-            self.uuid = try parse("id", from: json)
-        } catch {
-            printError("Error parsing Post with \(error).")
-            return nil
-        }
-
-        // Not required variables
-
-        title <-> json["title"]
-    }
-
-}
-
-class SwiftViewController: UIViewController {
+class PostViewController: UIViewController {
     @IBOutlet var label: UILabel!
 
     override func viewDidLoad() {
