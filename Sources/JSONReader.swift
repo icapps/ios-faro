@@ -11,27 +11,27 @@ class JSONReader: NSObject {
 
         do {
             #if os(iOS)
-            if #available(iOS 9.0, OSX 10.11, tvOS 9.0, *) {
-                guard let data = NSDataAsset(name: named, bundle: bundle)?.data else {
-                    return nil
-                }
-                return try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-
-            } else {
-                print("🖕🏻 Faro json mocking only works on iOS 9")
-                return nil
-            }
-            #endif
-
-            #if os(OSX)
-                if #available(OSX 10.11, tvOS 9.0, *) {
+                if #available(iOS 9.0, *) {
                     guard let data = NSDataAsset(name: named, bundle: bundle)?.data else {
                         return nil
                     }
                     return try JSONSerialization.jsonObject(with: data, options: .allowFragments)
 
                 } else {
-                    print("🖕🏻 Faro json mocking only works on iOS 9")
+                    print("🖕🏻 Faro json mocking only works on iOS 9 or greater")
+                    return nil
+                }
+            #endif
+
+            #if os(OSX)
+                if #available(OSX 10.11, *) {
+                    guard let data = NSDataAsset(name: named, bundle: bundle)?.data else {
+                        return nil
+                    }
+                    return try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+
+                } else {
+                    print("🖕🏻 Faro json mocking only works on macOS 10.11 or greater")
                     return nil
                 }
             #endif
@@ -44,13 +44,13 @@ class JSONReader: NSObject {
                     return try JSONSerialization.jsonObject(with: data, options: .allowFragments)
 
                 } else {
-                    print("🖕🏻 Faro json mocking only works on iOS 9")
+                    print("🖕🏻 Faro json mocking only works on tvoOS 9 or greater")
                     return nil
                 }
             #endif
 
             #if os(watchOS)
-                print("🖕🏻 Faro json mocking does not work on watchOS")
+                print("🖕🏻 Faro json mocking only works on iOS, tvOS and macOS")
                 return nil
             #endif
 
