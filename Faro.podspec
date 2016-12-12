@@ -1,4 +1,4 @@
-openPod::Spec.new do |s|
+Pod::Spec.new do |s|
   s.name             = 'Faro'
   s.version          = '1.0.3'
   s.summary          = 'Faro defines the contract to fetch data from an asynchronous source that can be mapped to any model object.'
@@ -14,11 +14,11 @@ __Faro__ is a service layer built in Swift by using generics. We focussed on:
 * Use our Deserialization and Serialization operators to parse relations and properties
 
 *Protocols*
-* Because we use Protocols you can use any type including CoreData's `NSManagedObject` 💪🏼
+* Because we use Protocols you can use any type including CoreData's `NSManagedObject` 💪
 
 *Mocking*
 * Use `FaroService` singleton if you want to switch between data from the server or a file.
-* Handy for unit tests 💪🏼
+* Handy for unit tests 💪
 * Handy if API is not yet available 🤓
 
                        DESC
