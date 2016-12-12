@@ -44,6 +44,9 @@ open class MockAsyncSession: MockSession {
 
     private let delay: DispatchTimeInterval
 
+    var tasksToFail: Set<MockURLSessionTask>?
+    var mockFailedResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 401, httpVersion:nil, headerFields: nil)
+
     public init(data: Data? = nil, urlResponse: URLResponse? = nil, error: Error? = nil, delay: DispatchTimeInterval = .nanoseconds(1)) {
         self.delay = delay
         super.init(data: data, urlResponse: urlResponse, error: error)
@@ -54,7 +57,16 @@ open class MockAsyncSession: MockSession {
         let completionHandler = completionHandlers[task.taskIdentifier]
         DispatchQueue.main.asyncAfter(deadline: delayTime) {
             (task as! MockURLSessionTask).mockedState = .completed
-            completionHandler?(self.data, self.urlResponse, self.error)
+
+            if let tasksToFail = self.tasksToFail {
+                if tasksToFail.contains(task as! MockURLSessionTask) {
+                    completionHandler?(self.data, self.mockFailedResponse, self.error)
+                } else {
+                    completionHandler?(self.data, self.urlResponse, self.error)
+                }
+            } else {
+                completionHandler?(self.data, self.urlResponse, self.error)
+            }
         }
     }
     

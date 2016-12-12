@@ -23,7 +23,7 @@ class PostViewController: UIViewController {
             }
         }
 
-        let serviceQueue = ExampleServiceQueue {
+        let serviceQueue = ExampleServiceQueue { _ in
             printBreadcrumb("🎉 queued call finished")
         }
 
