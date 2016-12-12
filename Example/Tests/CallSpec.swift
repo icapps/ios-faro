@@ -148,15 +148,23 @@ class CallSpec: QuickSpec {
                 expect(headers.keys).toNot(contain("Accept-Charset"))
             }
 
-            it("should insert URL components into the request") {
-                let string = componentString(type: .urlComponents, parameters: ["some query item": "aa🗿🤔aej"])
-                expect(string).to(contain("some%20query%20item=aa%F0%9F%97%BF%F0%9F%A4%94aej"))
+            context("\(ParameterType.urlComponents)") {
+                it("insert") {
+                    let string = componentString(type: .urlComponents, parameters: ["some query item": "aa🗿🤔aej"])
+                    expect(string).to(contain("some%20query%20item=aa%F0%9F%97%BF%F0%9F%A4%94aej"))
+                }
+
+                it("fail for non string types") {
+                    let string = componentString(type: .urlComponents, parameters:  ["some dumb query item": "el wrongo".data(using: .utf8)!])
+                    expect(string).toNot(contain("some%20dumb%20query%20item"))
+                }
+
+                it("insert sorted") {
+                    let string = componentString(type: .urlComponents, parameters:  ["X": "X", "B": "B", "A":"A"])
+                    expect(string).to(contain("?A=A&B=B&X=X"))
+                }
             }
 
-            it("should fail to insert URL components that arent strings into the request") {
-                let string = componentString(type: .urlComponents, parameters:  ["some dumb query item": "el wrongo".data(using: .utf8)!])
-                expect(string).toNot(contain("some%20dumb%20query%20item"))
-            }
             let bodyJson = ["a string": "good day i am a string",
                             "a number": 123] as [String : Any]
 

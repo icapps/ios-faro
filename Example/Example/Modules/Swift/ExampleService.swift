@@ -1,4 +1,5 @@
 import Faro
+import Foundation
 
 class ExampleService: Service {
 
@@ -10,7 +11,7 @@ class ExampleService: Service {
 
 class ExampleServiceQueue: ServiceQueue {
 
-    init(final: @escaping () -> ()) {
+    init(final: @escaping (_ failedTasks: Set<URLSessionTask>?) -> ()) {
         super.init(configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com"), final: final)
     }
 

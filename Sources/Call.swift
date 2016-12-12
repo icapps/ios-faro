@@ -91,7 +91,8 @@ open class Call {
         if (components?.queryItems == nil) {
             components?.queryItems = [URLQueryItem]()
         }
-        for (key, value) in componentsDict {
+        let sortedComponents = componentsDict.sorted(by: { $0.0 < $1.0 })
+        for (key, value) in sortedComponents {
             components?.queryItems?.append(URLQueryItem(name: key, value: value))
         }
         newRequest.url = components?.url

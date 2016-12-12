@@ -7,14 +7,16 @@ import Foundation
 open class ServiceQueue: Service {
 
     var taskQueue: Set<URLSessionDataTask>
-    private let final: ()->()
+    var failedTasks: Set<URLSessionTask>?
+
+    private let final: (_ failedTasks: Set<URLSessionTask>?)->()
 
     /// Creates a queue that lasts until final is called. When all request in the queue are finished the session becomes invalid.
     /// For future queued request you have to create a new ServiceQueue instance.
     /// - parameter configuration: Faro service configuration
     /// - parameter faroSession: You can provide a custom `URLSession` via `FaroQueueSession`.
     /// - parameter final: closure is callen when all requests are performed.
-    public init(configuration: Configuration, faroSession: FaroQueueSessionable = FaroQueueSession(), final: @escaping()->()) {
+    public init(configuration: Configuration, faroSession: FaroQueueSessionable = FaroQueueSession(), final: @escaping(_ failedTasks: Set<URLSessionTask>?)->()) {
         self.final = final
         taskQueue = Set<URLSessionDataTask>()
         super.init(configuration: configuration, faroSession: faroSession)
@@ -27,7 +29,17 @@ open class ServiceQueue: Service {
                 jsonResult(stage1JsonResult)
                 return
             }
-            strongSelf.cleanupQueue(for: task)
+            /// Store ID of failed tasks to report
+            switch stage1JsonResult {
+            case .json(_), .ok:
+                strongSelf.cleanupQueue(for: task)
+            case .failure(_):
+                strongSelf.cleanupQueue(for: task, didFail: true)
+            default:
+                strongSelf.cleanupQueue(for: task)
+            }
+
+
             jsonResult(stage1JsonResult)
             strongSelf.shouldCallFinal()
         }
@@ -59,15 +71,21 @@ open class ServiceQueue: Service {
         taskQueue.insert(createdTask)
     }
 
-    private func cleanupQueue(for task: URLSessionDataTask?) {
-        if let createdTask = task {
-            let _ = taskQueue.remove(createdTask)
+    private func cleanupQueue(for task: URLSessionDataTask?, didFail: Bool = false) {
+        if let task = task {
+            let _ = taskQueue.remove(task)
+            if(didFail) {
+                if failedTasks == nil {
+                    failedTasks = Set<URLSessionTask>()
+                }
+                failedTasks?.insert(task)
+            }
         }
     }
 
     private func shouldCallFinal() {
         if !hasOustandingTasks {
-            final()
+            final(failedTasks)
             finishTasksAndInvalidate()
         }
     }
@@ -95,6 +113,7 @@ open class ServiceQueue: Service {
 
     override open func invalidateAndCancel() {
         taskQueue.removeAll()
+        failedTasks?.removeAll()
         faroSession.invalidateAndCancel()
     }
 
