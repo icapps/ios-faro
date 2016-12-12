@@ -233,7 +233,7 @@ The configuration can be changed to handle different kinds of serial data.
 
 ---
 
-> Should we change _operation code_ for _testability_?
+> Should we change _production code_ for _testability_?
 
 ---
 ## More __Down__
@@ -345,7 +345,8 @@ ___
 ## Typical faro service request __SPEC__
 ### TOP __Down__
 
-> You might want wo work __Down__ up, but we deal with that later... 🐊
+> You might want to work __Down__ up,
+### see you later ... 🐊
 
 ---
 
