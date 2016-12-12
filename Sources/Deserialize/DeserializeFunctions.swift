@@ -29,10 +29,10 @@ public func parse(_ named: String, from: [String: Any], format: String? = nil) t
 
 public func parse<T: Deserializable>(_ named: String, from: [String: Any]) throws -> T {
     guard let json = from[named] as? [String: Any] else {
-        throw FaroError.emptyCollection
+        throw FaroError.emptyCollection(key: named, json: from)
     }
     guard let model = T(from: json) else {
-        throw FaroError.emptyCollection
+        throw FaroError.emptyCollection(key: named, json: from)
     }
     return model
 }
@@ -41,6 +41,7 @@ public func parse<T: Deserializable>(_ named: String, from: [String: Any]) throw
     if let json = from[named]  as? [[String: Any]] {
         return json.flatMap { T(from: $0) }
     } else {
-        throw FaroError.emptyCollection
+        throw FaroError.emptyCollection(key: named, json: from)
     }
 }
+

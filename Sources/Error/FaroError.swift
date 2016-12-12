@@ -9,7 +9,7 @@ public enum FaroError: Error, Equatable {
     case networkError(Int, data: Data?)
     case emptyKey
     case emptyValue(key: String)
-    case emptyCollection
+    case emptyCollection(key: String, json: [String: Any])
     case malformed(info: String)
     case serializationError
     case updateNotPossible(json: Any, model: Any)
