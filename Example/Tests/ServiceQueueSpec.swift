@@ -10,7 +10,7 @@ class ServiceQueueSpec: QuickSpec {
     override func spec() {
         describe("ServiceQueue") {
 
-            var mockSession: MockSession!
+            var mockSession: MockAsyncSession!
             var service: ServiceQueue!
             let call = Call(path: "mock")
             let config = Configuration(baseURL: "mockService")
@@ -90,14 +90,22 @@ class ServiceQueueSpec: QuickSpec {
                     var task2: URLSessionDataTask!
                     var task3: URLSessionDataTask!
 
+                    var failedTasks: Set<URLSessionTask>?
+
                     beforeEach {
                         isFinalCalled = false
-                        service = ServiceQueue(configuration: config, faroSession: mockSession) { failedTasks in
+                        service = ServiceQueue(configuration: config, faroSession: mockSession) { failures in
                             isFinalCalled = true
+                            failedTasks = failures
                         }
+
                         task1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in }!
                         task2 = service.perform(call, autoStart: true) { (_: Result<MockModel>) in }!
                         task3 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in }!
+                    }
+
+                    it("not have failedTasks") {
+                        expect(failedTasks).to(beNil())
                     }
 
                     it("autoStart one") {
@@ -146,16 +154,26 @@ class ServiceQueueSpec: QuickSpec {
 
                     context("some fail") {
 
-                        beforeEach {
+                        var fail1: MockURLSessionTask!
 
+                        beforeEach {
+                            fail1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in } as! MockURLSessionTask
+                            mockSession.tasksToFail = [fail1]
+                        }
+
+                        it("should queue the failed task") {
+                            expect(service.taskQueue).to(contain(fail1))
+                            expect(mockSession.tasksToFail).to(contain(fail1))
+                        }
+
+                        it("should report failure in final") {
+                            service.resumeAll()
+                            expect(failedTasks?.first).toEventually(equal(fail1))
                         }
                         
                     }
 
                 }
-
-
-                
             }
 
         }
