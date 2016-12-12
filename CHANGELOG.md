@@ -1,5 +1,9 @@
 # Faro
 
+## Version 1.0.4
+* `ServiceQueue` reports failures
+* `Parameters` inserts `.urlComponents` sorted
+
 ## Version 1.0.3
 * Disabled JSON mock data reading for watchOS
 
