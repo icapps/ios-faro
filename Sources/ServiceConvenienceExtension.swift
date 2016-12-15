@@ -2,6 +2,7 @@ import Foundation
 
 /// The perform methods are preferred but these methods are for convenience.
 /// They do some default error handling.
+/// These functions are deprecated!!!
 extension Service {
 
     // MARK: - Results transformed to Model(s)
@@ -12,6 +13,7 @@ extension Service {
     /// - parameter call: where can the server be found?
     /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
     /// - parameter ok: returns initialized model
+    @available(*, deprecated: 1.1, obsoleted: 2.0, message: "You should use the `perform` functions in `Service` with result enum.")
     open func performUpdate<ModelType: Deserializable & Updatable>(_ call: Call, on updateModel: ModelType, autoStart: Bool = true, fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
         perform(call, on: updateModel, autoStart: autoStart) { (result) in
             switch result {
@@ -39,6 +41,7 @@ extension Service {
     /// - parameter call: where can the server be found?
     /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
     /// - parameter ok: returns initialized model
+    @available(*, deprecated: 1.1, obsoleted: 2.0, message: "You should use the `perform` functions in `Service` with result enum.")
     open func performSingle<ModelType: Deserializable>(_ call: Call, autoStart: Bool = true, fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
         perform(call, autoStart: autoStart) { (result: Result<ModelType>) in
             switch result {
@@ -64,6 +67,7 @@ extension Service {
     /// - parameter call: where can the server be found?
     /// - parameter fail: if we cannot initialize the model this call will fail and print the failure.
     /// - parameter ok: returns initialized array of models
+    @available(*, deprecated: 1.1, obsoleted: 2.0, message: "You should use the `perform` functions in `Service` with result enum.")
     open func performCollection<ModelType: Deserializable>(_ call: Call, autoStart: Bool = true, fail: @escaping (FaroError)->(), ok:@escaping ([ModelType])->()) {
         perform(call, autoStart: autoStart) { (result: Result<ModelType>) in
             switch result {
@@ -82,6 +86,7 @@ extension Service {
 
     // MARK: - With Paging information
 
+    @available(*, deprecated: 1.1, obsoleted: 2.0, message: "You should use the `perform` functions in `Service` with result enum.")
     open func performSingle<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, autoStart: Bool = true, page: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping (ModelType)->()) {
         perform(call, page: page, autoStart: autoStart) { (result: Result<ModelType>) in
             switch result {
@@ -98,6 +103,7 @@ extension Service {
         }
     }
 
+    @available(*, deprecated: 1.1, obsoleted: 2.0, message: "You should use the `perform` functions in `Service` with result enum.")
     open func performCollection<ModelType: Deserializable, PagingType: Deserializable>(_ call: Call, page: @escaping(PagingType?)->(), fail: @escaping (FaroError)->(), ok:@escaping ([ModelType])->()) {
         perform(call, page: page) { (result: Result<ModelType>) in
             switch result {
