@@ -55,6 +55,15 @@ public func <-> (lhs: inout Any?, rhs: Date?) {
     lhs = rhs.timeIntervalSince1970
 }
 
+/// Arrays
+
+public func <-> (lhs: inout Any?, rhs: [String]?) {
+    guard let rhs = rhs else {
+        return
+    }
+    lhs = rhs
+}
+
 /// Serialize a date to the requested format as the string in the tupple
 public func <-> (lhs: inout Any?, rhs: (Date?, String)) {
     guard let date = rhs.0 else {
