@@ -20,9 +20,7 @@ open class MockService: Service {
             return MockURLSessionTask()
         }
 
-        let request = call.request(withConfiguration: configuration)
-
-        guard let url = request?.url?.absoluteString else {
+        guard let url = url(from: call) else {
             let faroError = FaroError.malformed(info: "No valid url")
             printFaroError(faroError)
             jsonResult(.failure(faroError))
@@ -39,6 +37,13 @@ open class MockService: Service {
         jsonResult(.json(mockJSON))
         return MockURLSessionTask()
     }
-    
+
+    /// You can override this for custom behaviour
+    /// by default returns the url from the call
+    open func url(from call: Call) -> String? {
+        let request = call.request(withConfiguration: configuration)
+        return request?.url?.absoluteString
+    }
+
 }
 

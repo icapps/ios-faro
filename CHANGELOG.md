@@ -1,5 +1,10 @@
 # Faro
 
+## Version 1.0.5
+Minor changes.
+* Open up mockservice url
+* better error logs
+
 ## Version 1.0.4
 * `ServiceQueue` reports failures
 * `Parameters` inserts `.urlComponents` sorted
