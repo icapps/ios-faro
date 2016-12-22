@@ -11,6 +11,7 @@ class SerializableObject: Serializable {
     var price: Double?
     var tapped: Bool?
     var date: Date?
+    var cities: [String]?
     var json: [String : Any] {
         get {
             var json = [String: Any]()
@@ -98,6 +99,17 @@ class SerializeOpereratorsSpec: QuickSpec {
                 let serializedString = serializedType as! String
 
                 expect(serializedString) == o1.uuid
+            }
+            
+            it("should serialize an array of string") {
+                var serializedType: Any?
+                let o1 = SerializableObject()
+                o1.cities = ["Antwerpen", "Brussel", "Halle", "Gent"]
+                
+                serializedType <-> o1.cities
+                let serializedArray = serializedType as! [String]
+                
+                expect(serializedArray) == o1.cities
             }
 
             it("should serialize integers") {
