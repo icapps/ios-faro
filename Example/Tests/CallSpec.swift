@@ -36,8 +36,8 @@ class CallSpec: QuickSpec {
 
         describe("Call .POST with parameters") {
             let expected = "path"
-            let parameters = Parameters(type: .jsonBody, parameters: ["id":"someId"])
-            let call = Call(path: expected, method: .POST, parameters: parameters)
+            let parameters: Parameter = .jsonNode(["id":"someId"])
+            let call = Call(path: expected, method: .POST, parameter: parameters)
             let configuration = Faro.Configuration(baseURL: "http://someURL")
 
             it("should use POST method") {
@@ -111,56 +111,40 @@ class CallSpec: QuickSpec {
         describe("Call with parameters") {
             let configuration = Faro.Configuration(baseURL: "http://someURL")
 
-            func allHTTPHeaderFields(type: ParameterType, parameters: [String: Any]) -> [String: String] {
-                let params = Parameters(type: type, parameters: parameters )
-                let call = Call(path: "path", parameters: params)
+            func allHTTPHeaderFields(_ parameter: Parameter) -> [String: String] {
+                let call = Call(path: "path", parameter: parameter)
                 let request = call.request(withConfiguration: configuration)
                 return request!.allHTTPHeaderFields!
             }
 
-            func componentString(type: ParameterType, parameters: [String: Any]) -> String {
-                let params = Parameters(type: type, parameters: parameters )
-                let call = Call(path: "path", parameters: params)
+            func componentString(_ parameter: Parameter) -> String {
+                let call = Call(path: "path", parameter: parameter)
                 let request = call.request(withConfiguration: configuration)
                 return request!.url!.absoluteString
             }
 
-            func body(type: ParameterType, method: HTTPMethod, parameters: [String: Any]) -> Data? {
-                let params = Parameters(type: type, parameters: parameters )
-                let call = Call(path: "path", method: method, parameters: params)
+            func body(_ parameter: Parameter, method: HTTPMethod) -> Data? {
+                let call = Call(path: "path", method: method, parameter: parameter)
                 let request = call.request(withConfiguration: configuration)
                 return request!.httpBody
             }
 
             it("should insert http headers into the request") {
 
-                let headers = allHTTPHeaderFields(type: .httpHeader, parameters: ["Accept-Language" : "en-US",
-                                                                                  "Accept-Charset" : "utf-8"])
+                let headers = allHTTPHeaderFields(.httpHeader(["Accept-Language" : "en-US",
+                                                                                  "Accept-Charset" : "utf-8"]))
                 expect(headers.keys).to(contain("Accept-Language"))
                 expect(headers.values).to(contain("utf-8"))
             }
 
-            it("should fail to insert http headers that arent strings into the request") {
-
-                let headers = allHTTPHeaderFields(type: .httpHeader, parameters:  ["Accept-Language" : 12345,
-                                                                                   "Accept-Charset" : "el wrongo".data(using: .utf8)!])
-                expect(headers.keys).toNot(contain("Accept-Language"))
-                expect(headers.keys).toNot(contain("Accept-Charset"))
-            }
-
-            context("\(ParameterType.urlComponents)") {
+            context("\(Parameter.urlComponents(["":""]))") {
                 it("insert") {
-                    let string = componentString(type: .urlComponents, parameters: ["some query item": "aa🗿🤔aej"])
+                    let string = componentString(.urlComponents(["some query item": "aa🗿🤔aej"]))
                     expect(string).to(contain("some%20query%20item=aa%F0%9F%97%BF%F0%9F%A4%94aej"))
                 }
 
-                it("fail for non string types") {
-                    let string = componentString(type: .urlComponents, parameters:  ["some dumb query item": "el wrongo".data(using: .utf8)!])
-                    expect(string).toNot(contain("some%20dumb%20query%20item"))
-                }
-
                 it("insert sorted") {
-                    let string = componentString(type: .urlComponents, parameters:  ["X": "X", "B": "B", "A":"A"])
+                    let string = componentString(.urlComponents(["X": "X", "B": "B", "A":"A"]))
                     expect(string).to(contain("?A=A&B=B&X=X"))
                 }
             }
@@ -171,21 +155,21 @@ class CallSpec: QuickSpec {
             context("should add JSON into httpBody for") {
 
                 it("PUT") {
-                    let data = body(type: .jsonBody, method: .PUT, parameters: bodyJson)
+                    let data = body(.jsonNode(bodyJson), method: .PUT)
                     let jsonDict = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: Any]
 
                     expect(jsonDict.keys.count).to(equal(2))
                 }
 
                 it("POST") {
-                    let data = body(type: .jsonBody, method: .POST, parameters: bodyJson)
+                    let data = body(.jsonNode(bodyJson), method: .POST)
                     let jsonDict = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: Any]
 
                     expect(jsonDict.keys.count).to(equal(2))
                 }
 
                 it("DELETE") {
-                    let data = body(type: .jsonBody, method: .DELETE, parameters: bodyJson)
+                    let data = body(.jsonNode(bodyJson), method: .DELETE)
                     let jsonDict = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: Any]
 
                     expect(jsonDict.keys.count).to(equal(2))
@@ -195,25 +179,25 @@ class CallSpec: QuickSpec {
 
 
             it("should fail to add JSON into a GET") {
-                let data = body(type: .jsonBody, method: .GET, parameters: bodyJson)
+                let data = body(.jsonNode(bodyJson), method: .GET)
                 expect(data).to(beNil())
             }
 
             it("should not produce invalid URL's when given empty parameters") {
                 let parameters = [String: String]()
-                let callString: String = componentString(type: .urlComponents, parameters: parameters)
+                let callString: String = componentString(.urlComponents(parameters))
                 expect(callString.characters.last) != "?"
             }
 
             it("should not produce invalid URL's when given parameters with missing keys") {
                 let parameters = ["" : "aValue"]
-                let callString: String = componentString(type: .urlComponents, parameters: parameters)
+                let callString: String = componentString(.urlComponents(parameters))
                 expect(callString.characters.last) != "?"
             }
 
             it("should not produce invalid URL's when given parameters with missing values") {
                 let parameters = ["aKey" : ""]
-                let callString: String = componentString(type: .urlComponents, parameters: parameters)
+                let callString: String = componentString(.urlComponents(parameters))
                 expect(callString.characters.last) != "?"
             }
         }
