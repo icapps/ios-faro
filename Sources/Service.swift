@@ -125,8 +125,7 @@ open class Service {
         return task
     }
 
-    // MARK: - No ressponse data
-
+    // MARK: - WRITE calls (like .POST, .PUT, ...)
     /// Use this to write to the server when you do not need a data result, just ok.
     /// If you expect a data result use `perform(call:result:)`
     /// - parameter call: should be of a type that does not expect data in the result.
