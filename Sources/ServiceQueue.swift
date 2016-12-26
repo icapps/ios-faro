@@ -55,7 +55,14 @@ open class ServiceQueue: Service {
                 writeResult(result)
                 return
             }
-            strongSelf.cleanupQueue(for: task)
+
+            switch result {
+            case .ok:
+                strongSelf.cleanupQueue(for: task)
+            default:
+                strongSelf.cleanupQueue(for: task, didFail: true)
+            }
+
             writeResult(result)
             strongSelf.shouldCallFinal()
         }
