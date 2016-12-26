@@ -16,7 +16,7 @@ class PostViewController: UIViewController {
                 switch result {
                 case .models(let models):
                     self.label.text = "Performed call for posts"
-                    printBreadcrumb("\(models!.map {"\($0.uuid): \($0.title!)"})")
+                    printBreadcrumb("\(models!.map {"\($0.uuid): \($0.title)"})")
                 default:
                     printError("Could not perform call for posts")
                 }

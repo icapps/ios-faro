@@ -1,4 +1,8 @@
 public enum FaroError: Error, Equatable {
+    public init(_ error: FaroError) {
+        self = error
+    }
+
     case general
     case invalidUrl(String)
     case invalidResponseData(Data?)
