@@ -27,20 +27,16 @@ class PostViewController: UIViewController {
             printBreadcrumb("🎉 queued call finished")
         }
 
-        let fail: (FaroError) -> () = { error in
-            printError("An error happed: \(error)")
+        serviceQueue.perform(call, autoStart: false) { (result: Result<Post>) in
+            printBreadcrumb("Task 1 finished  \(result)")
         }
 
-        serviceQueue.performCollection(call, autoStart: false, fail: fail) { (model: [Post]) in
-            printBreadcrumb("Task 1 finished")
+        serviceQueue.perform(call, autoStart: false) { (result: Result<Post>) in
+            printBreadcrumb("Task 2 finished  \(result)")
         }
 
-        serviceQueue.performCollection(call, autoStart: false, fail: fail) { (model: [Post]) in
-            printBreadcrumb("Task 2 finished")
-        }
-
-        serviceQueue.performCollection(call, autoStart: false, fail: fail) { (model: [Post]) in
-            printBreadcrumb("Task 3 finished")
+        serviceQueue.perform(call, autoStart: false) { (result: Result<Post>) in
+            printBreadcrumb("Task 3 finished \(result)")
         }
 
         serviceQueue.resumeAll()

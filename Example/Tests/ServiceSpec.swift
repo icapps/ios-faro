@@ -66,9 +66,14 @@ class ServiceSpec: QuickSpec {
                                                            options: .prettyPrinted)
                     mockSession.data = data
 
-                    service.performUpdate(call, on: mockModel, fail: { _ in XCTFail()}) { (modelResult: MockModel) in
-                            let identical = (modelResult === mockModel)
+                    service.perform(call, on: mockModel) { (result: Result<MockModel>) in
+                        switch result {
+                        case .model(let model):
+                            let identical = (model === mockModel)
                             expect(identical).to(beTrue())
+                        default:
+                            XCTFail("\(result)")
+                        }
                     }
 
                 }
