@@ -1,5 +1,8 @@
 # Faro
 
+## Version 1.0.6
+* deprecating convinience functions on `Service`
+
 ## Version 1.0.5
 Minor changes.
 * Open up mockservice url
