@@ -73,7 +73,7 @@ class CallSpec: QuickSpec {
                     let node = call.rootNode(from: ["key": "value"])
                     switch node {
                     case .nodeObject(let node):
-                        expect(node["key"] as! String?).to(equal("value"))
+                        expect(node["key"] as? String).to(equal("value"))
                     default:
                         XCTFail("should fetch node")
                     }
@@ -90,7 +90,7 @@ class CallSpec: QuickSpec {
                 let node = call.rootNode(from: ["rootNode": ["key": "value"]])
                 switch node {
                 case .nodeObject(let node):
-                    expect(node["key"] as! String?).to(equal("value"))
+                    expect(node["key"] as? String).to(equal("value"))
                 default:
                     XCTFail("should fetch node")
                 }
