@@ -12,15 +12,13 @@ class SerializableObject: Serializable {
     var date: Date?
     var cities: [String]?
     var json: [String : Any] {
-        get {
-            var json = [String: Any]()
-            json["uuid"] <-> uuid
-            json["amount"] <-> amount
-            json["price"] <-> price
-            json["tapped"] <-> tapped
-            json["date"] <-> date
-            return json
-        }
+		var json = [String: Any]()
+		json["uuid"] <-> uuid
+		json["amount"] <-> amount
+		json["price"] <-> price
+		json["tapped"] <-> tapped
+		json["date"] <-> date
+		return json
     }
 
 }

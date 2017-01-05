@@ -24,6 +24,7 @@ class PagingInformation: Deserializable {
 
 class ServiceSpec: QuickSpec {
 
+	//swiftlint:disable cyclomatic_complexity
 	override func spec() {
 
         describe("Mocked session") {
