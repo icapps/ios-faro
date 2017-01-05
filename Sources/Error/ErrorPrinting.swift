@@ -43,6 +43,8 @@ public func printFaroError(_ error: Error) {
     case .invalidSession(message: let message):
         print("💀 you tried to perform a request on a session that is invalid")
         print("💀 message: \(message)")
+	case .couldNotCreateTask:
+		print("💀 a valid urlSessionTask could not be created")
     }
     
 }

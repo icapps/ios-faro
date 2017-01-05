@@ -38,6 +38,17 @@ open class MockService: Service {
         return MockURLSessionTask()
     }
 
+	open override func performJsonResult<M : Deserializable>(_ call: Call, autoStart: Bool, jsonResult: @escaping (Result<M>) throws -> (), throwHandler: @escaping (() throws -> ()) -> ()) throws -> URLSessionDataTask {
+		guard let task = (performJsonResult(call, autoStart: autoStart) { (result: Result<M>) in
+			throwHandler {
+				try jsonResult(result)
+			}
+		}) else  {
+			throw FaroError.couldNotCreateTask
+		}
+		return task
+	}
+
     /// You can override this for custom behaviour
     /// by default returns the url from the call
     open func url(from call: Call) -> String? {
