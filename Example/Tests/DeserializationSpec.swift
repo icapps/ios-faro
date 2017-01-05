@@ -86,7 +86,6 @@ class DeserializableSpec: QuickSpec {
                     expect(zoo.animal?.uuid).to(equal(relationId))
                 }
 
-
             }
 
             context("One to many relation") {

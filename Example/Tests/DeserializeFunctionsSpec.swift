@@ -11,8 +11,8 @@ class DeserializeFunctionSpec: QuickSpec {
 
             it("should parse generic value from JSON") {
                 let uuidKey = "uuid"
-                let json = [uuidKey:"some id" as Any]
-                let o1 = DeserializableObject(from: ["":""])!
+                let json = [uuidKey: "some id" as Any]
+                let o1 = DeserializableObject(from: ["": ""])!
 
 				expect {
 					o1.uuid = try parse(uuidKey, from: json)
@@ -41,7 +41,7 @@ class DeserializeFunctionSpec: QuickSpec {
                 let dateString = "1994-08-20"
                 let json = [dateKey: dateString as Any]
 				expect {
-					let o1 = DeserializableObject(from: ["":""])!
+					let o1 = DeserializableObject(from: ["": ""])!
 
 					o1.date = try parse(dateKey, from: json, format: "yyyy-MM-dd")
 
@@ -51,7 +51,7 @@ class DeserializeFunctionSpec: QuickSpec {
             }
 
             it("should parse generic object from JSON") {
-                let dict: [String: Any] = ["uuid":"some id"]
+                let dict: [String: Any] = ["uuid": "some id"]
                 let json: [String: Any] = ["node": dict]
 
 				expect {
@@ -64,9 +64,8 @@ class DeserializeFunctionSpec: QuickSpec {
 
             it("should parse generic object arrays from JSON") {
                 let dict1 = ["uuid": "id1"]
-                let dict2 = ["uuid":"id2"]
+                let dict2 = ["uuid": "id2"]
                 let json: [String: Any] = ["node": [dict1, dict2]]
-
 
 				expect {
 					let objectArray: [DeserializableObject] = try parse("node", from: json)

@@ -1,4 +1,3 @@
-
 import Quick
 import Nimble
 
@@ -50,7 +49,6 @@ class SerializeOpereratorsSpec: QuickSpec {
                 var serializedDate: Any?
                 serializedDate <-> (date, "yyyy-MM-dd")
 
-
                 expect(serializedDate as? String) == "1994-08-20"
 
             }
@@ -100,15 +98,15 @@ class SerializeOpereratorsSpec: QuickSpec {
 
                 expect(serializedString) == o1.uuid
             }
-            
+
             it("should serialize an array of string") {
                 var serializedType: Any?
                 let o1 = SerializableObject()
                 o1.cities = ["Antwerpen", "Brussel", "Halle", "Gent"]
-                
+
                 serializedType <-> o1.cities
                 let serializedArray = serializedType as? [String]
-                
+
                 expect(serializedArray) == o1.cities
             }
 

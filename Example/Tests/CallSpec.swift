@@ -36,7 +36,7 @@ class CallSpec: QuickSpec {
 
         describe("Call .POST with parameters") {
             let expected = "path"
-            let parameters: Parameter = .jsonNode(["id":"someId"])
+            let parameters: Parameter = .jsonNode(["id": "someId"])
             let call = Call(path: expected, method: .POST, parameter: parameters)
             let configuration = Faro.Configuration(baseURL: "http://someURL")
 

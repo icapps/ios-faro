@@ -1,4 +1,3 @@
-
 import Quick
 import Nimble
 
@@ -28,7 +27,7 @@ class ServiceQueueSpec: QuickSpec {
                 beforeEach {
                     isFinalCalled = false
                     taskSucceed = false
-                    service = ServiceQueue(configuration: config, faroSession: mockSession) { failedTasks in
+                    service = ServiceQueue(configuration: config, faroSession: mockSession) { _ in
                         isFinalCalled = true
                         taskSucceed = true
                     }
@@ -36,7 +35,7 @@ class ServiceQueueSpec: QuickSpec {
                 }
 
                 it("add one") {
-                    service.perform(call, autoStart: false) { (result: Result<MockModel>) in
+                    service.perform(call, autoStart: false) { (_: Result<MockModel>) in
                         taskSucceed = true
                     }
                     expect(service.hasOustandingTasks) == true
@@ -44,14 +43,14 @@ class ServiceQueueSpec: QuickSpec {
                 }
 
                 it("add multiple") {
-                    let task1 = service.perform(call, autoStart: false) { (result: Result<MockModel>) in
+                    let task1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in
                         taskSucceed = true
                         }!
-                    let task2 = service.perform(call, autoStart: false) { (result: Result<MockModel>) in
+                    let task2 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in
                         taskSucceed = true
                         }!
 
-                    let task3 = service.perform(call, autoStart: false) { (result: Result<MockModel>) in
+                    let task3 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in
                         taskSucceed = true
                         }!
 
@@ -78,7 +77,7 @@ class ServiceQueueSpec: QuickSpec {
                         print("final")
                     }
                     waitUntil { done in
-                        service.perform(call, autoStart: true) { (result: Result<MockModel>) in
+                        service.perform(call, autoStart: true) { (_: Result<MockModel>) in
                             expect(service.hasOustandingTasks) == false
                             done()
                         }
@@ -170,7 +169,7 @@ class ServiceQueueSpec: QuickSpec {
                             service.resumeAll()
                             expect(failedTasks?.first).toEventually(equal(fail1))
                         }
-                        
+
                     }
 
                 }
@@ -178,5 +177,5 @@ class ServiceQueueSpec: QuickSpec {
 
         }
     }
-    
+
 }

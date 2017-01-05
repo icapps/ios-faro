@@ -118,7 +118,7 @@ class DeserializeOperatorsSpec: QuickSpec {
                 }
 
                 it("should deserialize Date with TimeInterval") {
-					guard let o1 = DeserializableObject(from: ["":""]) else {
+					guard let o1 = DeserializableObject(from: ["": ""]) else {
 						XCTFail()
 						return
 					}

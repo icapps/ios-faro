@@ -54,7 +54,7 @@ class ServiceSpec: QuickSpec {
 
                 service.perform(call, page: { (pageInfo) in
                     pagesInformation = pageInfo
-                    }, modelResult: { (result: Result<MockModel>) in
+                    }, modelResult: { (_: Result<MockModel>) in
                 })
 
                 expect(pagesInformation.pages) == 10
@@ -90,7 +90,6 @@ class ServiceSpec: QuickSpec {
         describe("Parsing to model") {
             var service: Service!
             var mockJSON: Any!
-
 
             context("array of objects response") {
                 beforeEach {
