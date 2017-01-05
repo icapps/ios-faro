@@ -1,5 +1,8 @@
 # Faro
 
+## Version 1.0.7
+* using to swiftlint
+
 ## Version 1.0.6
 * deprecating convinience functions on `Service`
 
