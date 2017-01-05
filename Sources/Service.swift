@@ -65,7 +65,10 @@ open class Service {
 	/// - parameter autostart: by default this is true. This means that `resume()` is called immeditatly on the `URLSessionDataTask` created by this function.
 	/// - parameter updateModel: JSON will be given to this model to update
 	/// - parameter modelResult: `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure. It can contain throwing functions. If something is thrown in the closure it it printed.
+	/// - parameter throwHandler: handle any throw that happens. Provide a function that can accept throws but does not rethrow them. In the function implementation you can wrap the function in a do, catch block.
+	/// by default this parameter is filled with `faroDefaultThrowHandler`. Take a look at that implementation to implement your own function
 	/// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
+	/// - throws: any error can be thrown, your own errors inside your modelResult closure or errors from the service. The latter will be of type `FaroError`.
 	@discardableResult
 	open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, autoStart: Bool = true, modelResult: @escaping (Result<M>) throws -> (), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) throws -> URLSessionDataTask? {
 
@@ -111,7 +114,26 @@ open class Service {
 	/// - parameter call: gives the details to find the entity on the server
 	/// - parameter autostart: by default this is true. This means that `resume()` is called immeditatly on the `URLSessionDataTask` created by this function.
 	/// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure. It can contain throwing functions. If something is thrown in the closure it it printed.
-	/// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
+	/// - parameter throwHandler: handle any throw that happens. Provide a function that can accept throws but does not rethrow them. In the function implementation you can wrap the function in a do, catch block.
+	/// by default this parameter is filled with `faroDefaultThrowHandler`. Take a look at that implementation to implement your own function
+	/// - returns: URLSessionDataTask if it does not throw
+	/// - throws: any error can be thrown, your own errors inside your modelResult closure or errors from the service. The latter will be of type `FaroError`.
+	/**
+	Example implementation of throwHandler
+	```
+	public func faroDefaultThrowHandler(_ handler: ()throws->()) {
+		do {
+			try handler()
+		} catch {
+			guard let faroError = error as? FaroError else {
+				print(error)
+			return
+			}
+			printFaroError(faroError)
+		}
+	}
+	```
+	**/
 	@discardableResult
 	open func perform<M: Deserializable>(_ call: Call, autoStart: Bool = true, modelResult: @escaping (Result<M>) throws -> (), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) throws -> URLSessionDataTask {
 
@@ -158,7 +180,26 @@ open class Service {
 	/// - parameter call: gives the details to find the entity on the server
 	/// - parameter autostart: by default this is true. This means that `resume()` is called immeditatly on the `URLSessionDataTask` created by this function.
 	/// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure. It can contain throwing functions. If something is thrown in the closure it it printed.
-	/// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
+	/// - parameter throwHandler: handle any throw that happens. Provide a function that can accept throws but does not rethrow them. In the function implementation you can wrap the function in a do, catch block.
+	/// by default this parameter is filled with `faroDefaultThrowHandler`. Take a look at that implementation to implement your own function
+	/// - returns: URLSessionDataTask if it does not throw
+	/// - throws: any error can be thrown, your own errors inside your modelResult closure or errors from the service. The latter will be of type `FaroError`.
+	/**
+	Example implementation of throwHandler
+	```
+	public func faroDefaultThrowHandler(_ handler: ()throws->()) {
+		do {
+			try handler()
+		} catch {
+			guard let faroError = error as? FaroError else {
+				print(error)
+				return
+			}
+			printFaroError(faroError)
+		}
+	}
+	```
+	**/
 	@discardableResult
 	open func perform<M: Deserializable, P: Deserializable>(_ call: Call, page: @escaping(P?)->(),  autoStart: Bool = true, modelResult: @escaping (Result<M>) throws -> (), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) throws -> URLSessionDataTask {
 
@@ -211,7 +252,26 @@ open class Service {
 	/// If you expect a data result use `perform(call:result:)`
 	/// - parameter call: should be of a type that does not expect data in the result.
 	/// - parameter writeResult: `WriteResult` closure should be called with `.ok` other cases are a failure. It can contain throwing functions. If something is thrown in the closure it it printed.
-	/// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
+	/// - parameter throwHandler: handle any throw that happens. Provide a function that can accept throws but does not rethrow them. In the function implementation you can wrap the function in a do, catch block.
+	/// by default this parameter is filled with `faroDefaultThrowHandler`. Take a look at that implementation to implement your own function
+	/// - returns: URLSessionDataTask if it does not throw
+	/// - throws: any error can be thrown, your own errors inside your modelResult closure or errors from the service. The latter will be of type `FaroError`.
+	/**
+	Example implementation of throwHandler
+	```
+	public func faroDefaultThrowHandler(_ handler: ()throws->()) {
+		do {
+			try handler()
+		} catch {
+			guard let faroError = error as? FaroError else {
+				print(error)
+				return
+			}
+			printFaroError(faroError)
+		}
+	}
+	```
+	**/
 	@discardableResult
 	open func performWrite(_ writeCall: Call, autoStart: Bool = true, writeResult: @escaping (WriteResult) throws -> (), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) throws -> URLSessionDataTask {
 
@@ -280,7 +340,26 @@ open class Service {
 	/// - parameter call: gives the details to find the entity on the server
 	/// - parameter autostart: by default this is true. This means that `resume()` is called immeditatly on the `URLSessionDataTask` created by this function.
 	/// - parameter jsonResult: closure is called when valid or invalid json data is received.
-	/// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
+	/// - parameter throwHandler: handle any throw that happens. Provide a function that can accept throws but does not rethrow them. In the function implementation you can wrap the function in a do, catch block.
+	/// by default this parameter is filled with `faroDefaultThrowHandler`. Take a look at that implementation to implement your own function
+	/// - returns: URLSessionDataTask if it does not throw
+	/// - throws: any error can be thrown, your own errors inside your modelResult closure or errors from the service. The latter will be of type `FaroError`.
+	/**
+	Example implementation of throwHandler
+	```
+	public func faroDefaultThrowHandler(_ handler: ()throws->()) {
+		do {
+			try handler()
+		} catch {
+			guard let faroError = error as? FaroError else {
+				print(error)
+			return
+			}
+			printFaroError(faroError)
+		}
+	}
+	```
+	**/
 	@discardableResult
 	open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) throws -> (), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) throws -> URLSessionDataTask {
 
