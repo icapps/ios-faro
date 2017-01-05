@@ -1,4 +1,3 @@
-
 import Quick
 import Nimble
 
@@ -13,15 +12,13 @@ class SerializableObject: Serializable {
     var date: Date?
     var cities: [String]?
     var json: [String : Any] {
-        get {
-            var json = [String: Any]()
-            json["uuid"] <-> uuid
-            json["amount"] <-> amount
-            json["price"] <-> price
-            json["tapped"] <-> tapped
-            json["date"] <-> date
-            return json
-        }
+		var json = [String: Any]()
+		json["uuid"] <-> uuid
+		json["amount"] <-> amount
+		json["price"] <-> price
+		json["tapped"] <-> tapped
+		json["date"] <-> date
+		return json
     }
 
 }
@@ -50,7 +47,6 @@ class SerializeOpereratorsSpec: QuickSpec {
                 var serializedDate: Any?
                 serializedDate <-> (date, "yyyy-MM-dd")
 
-
                 expect(serializedDate as? String) == "1994-08-20"
 
             }
@@ -66,10 +62,10 @@ class SerializeOpereratorsSpec: QuickSpec {
 
                 serializedDictionary <-> o1
 
-                let dict = serializedDictionary as! [String: Any]
+                let dict = serializedDictionary as? [String: Any]
 
-                expect(dict["uuid"] as? String) == o1.uuid
-                expect(dict["amount"] as? Int) == o1.amount
+                expect(dict?["uuid"] as? String) == o1.uuid
+                expect(dict?["amount"] as? Int) == o1.amount
             }
 
             it("should serialize to JSON array") {
@@ -81,11 +77,11 @@ class SerializeOpereratorsSpec: QuickSpec {
 
                 serializedDictionary <-> [o1, o2]
 
-                let dictArray = serializedDictionary as! [[String: Any]]
+                let dictArray = serializedDictionary as? [[String: Any]]
 
-                expect(dictArray.count) == 2
-                expect(dictArray.first!["uuid"] as? String) == o1.uuid
-                expect(dictArray.last!["uuid"] as? String) == o2.uuid
+                expect(dictArray?.count) == 2
+                expect(dictArray?.first?["uuid"] as? String) == o1.uuid
+                expect(dictArray?.last?["uuid"] as? String) == o2.uuid
 
             }
 
@@ -96,19 +92,19 @@ class SerializeOpereratorsSpec: QuickSpec {
 
                 serializedType <-> o1.uuid
 
-                let serializedString = serializedType as! String
+                let serializedString = serializedType as? String
 
                 expect(serializedString) == o1.uuid
             }
-            
+
             it("should serialize an array of string") {
                 var serializedType: Any?
                 let o1 = SerializableObject()
                 o1.cities = ["Antwerpen", "Brussel", "Halle", "Gent"]
-                
+
                 serializedType <-> o1.cities
-                let serializedArray = serializedType as! [String]
-                
+                let serializedArray = serializedType as? [String]
+
                 expect(serializedArray) == o1.cities
             }
 
@@ -119,7 +115,7 @@ class SerializeOpereratorsSpec: QuickSpec {
 
                 serializedType <-> o1.amount
 
-                let serializedInt = serializedType as! Int
+                let serializedInt = serializedType as? Int
 
                 expect(serializedInt) == o1.amount
             }
@@ -131,7 +127,7 @@ class SerializeOpereratorsSpec: QuickSpec {
 
                 serializedType <-> o1.tapped
 
-                let serializedBool = serializedType as! Bool
+                let serializedBool = serializedType as? Bool
 
                 expect(serializedBool) == o1.tapped
             }
@@ -143,7 +139,7 @@ class SerializeOpereratorsSpec: QuickSpec {
 
                 serializedType <-> o1.price
 
-                let serializedDouble = serializedType as! Double
+                let serializedDouble = serializedType as? Double
 
                 expect(serializedDouble) == o1.price
             }
