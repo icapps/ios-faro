@@ -291,7 +291,7 @@
 				607FACCE1AFB9204008FA782 /* Resources */,
 				9E4E2588A36734BAA10B96CB /* [CP] Embed Pods Frameworks */,
 				80AA7510C437D2D7116289DD /* [CP] Copy Pods Resources */,
-				9400C51E9BF8574AEB835DAD /* Tailor */,
+				9400C51E9BF8574AEB835DAD /* Swiftlint */,
 			);
 			buildRules = (
 			);
@@ -451,19 +451,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Faro_Example/Pods-Faro_Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9400C51E9BF8574AEB835DAD /* Tailor */ = {
+		9400C51E9BF8574AEB835DAD /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = Tailor;
+			name = Swiftlint;
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if hash tailor 2>/dev/null; then\n    tailor --except=trailing-whitespace,terminating-newline ../Example/Example\nelse\n  echo \"warning: Please install Tailor from https://tailor.sh\"\nfi";
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 		9E4E2588A36734BAA10B96CB /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

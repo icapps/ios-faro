@@ -1,0 +1,12 @@
+excluded:
+  - ./Pods
+
+disabled_rules:
+  - type_name
+  - void_return
+
+line_length:
+  - 180
+
+function_body_length:
+  - 200

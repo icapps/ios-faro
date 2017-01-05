@@ -12,16 +12,20 @@ class PagingInformation: Deserializable {
         guard let json = raw as? [String: Any] else {
             return nil
         }
-
-        print("\(raw)")
-        pages = try! parse("pages", from: json)
-        currentPage = try! parse("currentPage", from: json)
-    }
-
+		do {
+			pages = try parse("pages", from: json)
+			currentPage = try parse("currentPage", from: json)
+		} catch {
+			print(error)
+			return nil
+		}
+	}
 }
 
 class ServiceSpec: QuickSpec {
-    override func spec() {
+
+	//swiftlint:disable cyclomatic_complexity
+	override func spec() {
 
         describe("Mocked session") {
             var service: Service!
@@ -51,7 +55,7 @@ class ServiceSpec: QuickSpec {
 
                 service.perform(call, page: { (pageInfo) in
                     pagesInformation = pageInfo
-                    }, modelResult: { (result: Result<MockModel>) in
+                    }, modelResult: { (_: Result<MockModel>) in
                 })
 
                 expect(pagesInformation.pages) == 10
@@ -60,21 +64,24 @@ class ServiceSpec: QuickSpec {
             context ("update an existing model") {
 
                 it("when respons contains data") {
-                    let jsonDict = ["uuid": "mockUUID"]
-                    let mockModel = MockModel(from: jsonDict)!
-                    let data = try! JSONSerialization.data(withJSONObject: jsonDict,
-                                                           options: .prettyPrinted)
-                    mockSession.data = data
+					expect {
+						let jsonDict = ["uuid": "mockUUID"]
+						let mockModel = MockModel(from: jsonDict)!
+						let data = try JSONSerialization.data(withJSONObject: jsonDict,
+						                                      options: .prettyPrinted)
+						mockSession.data = data
 
-                    service.perform(call, on: mockModel) { (result: Result<MockModel>) in
-                        switch result {
-                        case .model(let model):
-                            let identical = (model === mockModel)
-                            expect(identical).to(beTrue())
-                        default:
-                            XCTFail("\(result)")
-                        }
-                    }
+						service.perform(call, on: mockModel) { (result: Result<MockModel>) in
+							switch result {
+							case .model(let model):
+								let identical = (model === mockModel)
+								expect(identical).to(beTrue())
+							default:
+								XCTFail("\(result)")
+							}
+						}
+						return true
+					}.toNot(throwError())
 
                 }
             }
@@ -84,7 +91,6 @@ class ServiceSpec: QuickSpec {
         describe("Parsing to model") {
             var service: Service!
             var mockJSON: Any!
-
 
             context("array of objects response") {
                 beforeEach {
@@ -185,8 +191,6 @@ class ServiceSpec: QuickSpec {
                 }
             }
 
-
-
             context("success cases") {
 
                 context("data in response") {
@@ -213,7 +217,6 @@ class ServiceSpec: QuickSpec {
                     }
                 }
             }
-
 
         }
 

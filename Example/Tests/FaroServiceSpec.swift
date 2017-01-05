@@ -39,6 +39,5 @@ class FaroServiceSpec: QuickSpec {
             }
         }
 
-
     }
 }

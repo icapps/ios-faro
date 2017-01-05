@@ -23,12 +23,15 @@ class DeserializeFunctionSpec: QuickSpec {
 
 					it("Any value") {
 						let uuidKey = "uuid"
-						let json = [uuidKey:"some id" as Any]
-						let o1 = DeserializableObject(from: ["":""])!
+						let json = [uuidKey: "some id" as Any]
+						let o1 = DeserializableObject(from: ["": ""])!
 
-						o1.uuid = try! parse(uuidKey, from: json)
+						expect {
+							o1.uuid = try parse(uuidKey, from: json)
 
-						expect(o1.uuid) == json["uuid"] as? String
+							return expect(o1.uuid) == json["uuid"] as? String
+						}.toNot(throwError())
+
 					}
 
 					context("RawRepresentable") {
@@ -78,23 +81,28 @@ class DeserializeFunctionSpec: QuickSpec {
 						let dateKey = "date"
 						let dateTimeInterval: TimeInterval = 12345.0
 						let json = ["date": dateTimeInterval]
-						let o1 = DeserializableObject(from: ["":""])!
+						let o1 = DeserializableObject(from: ["": ""])!
 
-						o1.date = try! parse(dateKey, from: json)
+						expect {
+							o1.date = try parse(dateKey, from: json)
 
-						let date = Date(timeIntervalSince1970: json["date"]!)
-						expect(o1.date) == date
+							let date = Date(timeIntervalSince1970: json["date"]!)
+							return expect(o1.date) == date
+						}.toNot(throwError())
+
 					}
 
 					it("has String") {
 						let dateKey = "date"
 						let dateString = "1994-08-20"
 						let json = [dateKey: dateString as Any]
-						let o1 = DeserializableObject(from: ["":""])!
+						let o1 = DeserializableObject(from: ["": ""])
 
-						o1.date = try! parse(dateKey, from: json, format: "yyyy-MM-dd")
+						expect {
+							o1?.date = try parse(dateKey, from: json, format: "yyyy-MM-dd")
 
-						expect(o1.date).toNot(beNil())
+							return expect(o1?.date).toNot(beNil())
+						}.toNot(throwError())
 					}
 
 				}
@@ -102,28 +110,32 @@ class DeserializeFunctionSpec: QuickSpec {
 				context("Object") {
 
 					it("single") {
-						let dict: [String: Any] = ["uuid":"some id"]
+						let dict: [String: Any] = ["uuid": "some id"]
 						let json: [String: Any] = ["node": dict]
 
-						let o1: DeserializableObject = try! parse("node", from: json)
+						expect {
+							let o1: DeserializableObject = try parse("node", from: json)
 
-						expect(o1.uuid) == "some id"
+							return expect(o1.uuid) == "some id"
+						}.toNot(throwError())
+
 					}
 
 					it("collection") {
 						let dict1 = ["uuid": "id1"]
-						let dict2 = ["uuid":"id2"]
+						let dict2 = ["uuid": "id2"]
 						let json: [String: Any] = ["node": [dict1, dict2]]
 
+						expect {
+							let objectArray: [DeserializableObject] = try parse("node", from: json)
 
-						let objectArray: [DeserializableObject] = try! parse("node", from: json)
+							expect(objectArray.count) == 2
+							expect(objectArray.first?.uuid) == "id1"
+							return expect(objectArray.last?.uuid) == "id2"
+						}.toNot(throwError())
 
-						expect(objectArray.count) == 2
-						expect(objectArray.first?.uuid) == "id1"
-						expect(objectArray.last?.uuid) == "id2"
 					}
 				}
-
 
 			}
 

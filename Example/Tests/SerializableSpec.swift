@@ -7,25 +7,21 @@ import Faro
 extension Zoo: Serializable {
 
     var json: [String : Any] {
-        get {
-            var json = [String: Any]()
-            json["uuid"] <-> self.uuid
-            json["color"] <-> self.color
-            json["animal"] <-> self.animal
-            json["animalArray"] <-> self.animalArray
-            json["date"] <-> self.date
-            return json
-        }
+		var json = [String: Any]()
+		json["uuid"] <-> self.uuid
+		json["color"] <-> self.color
+		json["animal"] <-> self.animal
+		json["animalArray"] <-> self.animalArray
+		json["date"] <-> self.date
+		return json
     }
 }
 
 extension Animal: Serializable {
     var json: [String : Any] {
-        get {
-            var json = [String: Any]()
-            json["uuid"] <-> self.uuid
-            return json
-        }
+		var json = [String: Any]()
+		json["uuid"] <-> self.uuid
+		return json
     }
 }
 
@@ -34,10 +30,9 @@ class SerializableSpec: QuickSpec {
     override func spec() {
 
         describe("should return valid JSON") {
-            let zoo = Zoo(from: ["":""])!
+            let zoo = Zoo(from: ["": ""])!
             zoo.uuid = "some id"
             let serializedZoo = zoo.json
-
 
             it("should not throw when some of the json data is nil") {
                 expect {try JSONSerialization.data(withJSONObject: serializedZoo, options: .prettyPrinted)}.toNot(throwError())
@@ -51,18 +46,18 @@ class SerializableSpec: QuickSpec {
                 let serializedZoo = zoo.json
 
                 it("should serilize") {
-                    expect(serializedZoo[uuidKey] as! String?).to(equal("id 1"))
-                    expect(serializedZoo["color"] as! String?).to(equal("something"))
+                    expect(serializedZoo[uuidKey] as? String).to(equal("id 1"))
+                    expect(serializedZoo["color"] as? String).to(equal("something"))
                 }
             }
 
             context("One to one relation - animal") {
                 let json = ["animal": ["uuid": "pet"]] as [String : Any?]
                 let animal = Zoo(from: json)!
-                let animalSerialized = animal.json["animal"] as! [String: Any]
+                let animalSerialized = animal.json["animal"] as? [String: Any]
 
                 it("should contain uuid of animal") {
-                    expect(animalSerialized["uuid"] as! String?).to(equal("pet"))
+                    expect(animalSerialized?["uuid"] as? String).to(equal("pet"))
                 }
             }
 
@@ -74,14 +69,14 @@ class SerializableSpec: QuickSpec {
                 let zoo = Zoo(from: json)!
 
                 let serializedzoo = zoo.json
-                let serializedAnimalArray = serializedzoo["animalArray"] as! [[String: Any]]
-                let animal1 = serializedAnimalArray.first as! [String: Any?]
-                let animal2 = serializedAnimalArray.last as! [String: Any?]
+                let serializedAnimalArray = serializedzoo["animalArray"] as? [[String: Any]]
+                let animal1 = serializedAnimalArray?.first
+                let animal2 = serializedAnimalArray?.last
 
                 it("should contain the animal ids in the array") {
-                    expect(serializedAnimalArray.count).to(equal(2))
-                    expect(animal1[uuidKey] as! String?).to(equal(animalIDs[0]))
-                    expect(animal2[uuidKey] as! String?).to(equal(animalIDs[1]))
+                    expect(serializedAnimalArray?.count).to(equal(2))
+                    expect(animal1?[uuidKey] as? String).to(equal(animalIDs[0]))
+                    expect(animal2?[uuidKey] as? String).to(equal(animalIDs[1]))
                 }
 
             }
