@@ -29,12 +29,9 @@ open class Service {
 
     let faroSession: FaroSessionable
 
-	let throwHandler: (()throws ->()) -> ()
-
-	public init(configuration: Configuration, faroSession: FaroSessionable = FaroSession(), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) {
+	public init(configuration: Configuration, faroSession: FaroSessionable = FaroSession()) {
         self.configuration = configuration
         self.faroSession = faroSession
-		self.throwHandler = throwHandler
     }
 
     // MARK: - Results transformed to Model(s)
@@ -70,16 +67,16 @@ open class Service {
 	/// - parameter modelResult: `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure. It can contain throwing functions. If something is thrown in the closure it it printed.
 	/// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
 	@discardableResult
-	open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, autoStart: Bool = true, modelResult: @escaping (Result<M>) throws -> ()) throws -> URLSessionDataTask? {
+	open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, autoStart: Bool = true, modelResult: @escaping (Result<M>) throws -> (), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) throws -> URLSessionDataTask? {
 
 		return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
 			switch jsonResult {
 			case .json(let json):
-				self.throwHandler {
+				throwHandler {
 					try modelResult(self.handle(json: json, on: updateModel, call: call))
 				}
 			default:
-				self.throwHandler {
+				throwHandler {
 					try modelResult(jsonResult)
 				}
 				break
@@ -116,21 +113,21 @@ open class Service {
 	/// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure. It can contain throwing functions. If something is thrown in the closure it it printed.
 	/// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
 	@discardableResult
-	open func perform<M: Deserializable>(_ call: Call, autoStart: Bool = true, modelResult: @escaping (Result<M>) throws -> ()) throws -> URLSessionDataTask {
+	open func perform<M: Deserializable>(_ call: Call, autoStart: Bool = true, modelResult: @escaping (Result<M>) throws -> (), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) throws -> URLSessionDataTask {
 
-		return try performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
+		return try performJsonResult(call, autoStart: autoStart, jsonResult: { (jsonResult: Result<M>) in
 			switch jsonResult {
 			case .json(let json):
-				self.throwHandler {
+				throwHandler {
 					try modelResult(self.handle(json: json, call: call))
 				}
 			default:
-				self.throwHandler {
+				throwHandler {
 					try modelResult(jsonResult)
 				}
 				break
 			}
-		}
+		}, throwHandler: throwHandler)
 	}
 
     // MARK: - Paging information
@@ -163,22 +160,22 @@ open class Service {
 	/// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure. It can contain throwing functions. If something is thrown in the closure it it printed.
 	/// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
 	@discardableResult
-	open func perform<M: Deserializable, P: Deserializable>(_ call: Call, page: @escaping(P?)->(),  autoStart: Bool = true, modelResult: @escaping (Result<M>) throws -> ()) throws -> URLSessionDataTask {
+	open func perform<M: Deserializable, P: Deserializable>(_ call: Call, page: @escaping(P?)->(),  autoStart: Bool = true, modelResult: @escaping (Result<M>) throws -> (), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) throws -> URLSessionDataTask {
 
-		return try performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
+		return try performJsonResult(call, autoStart: autoStart, jsonResult: { (jsonResult: Result<M>) in
 			switch jsonResult {
 			case .json(let json):
-				self.throwHandler {
+				throwHandler {
 					try modelResult(self.handle(json: json, call: call))
 					page(P(from: json))
 				}
 			default:
-				self.throwHandler {
+				throwHandler {
 					try modelResult(jsonResult)
 				}
 				break
 			}
-		}
+		}, throwHandler: throwHandler)
 	}
 
 	// MARK: - WRITE calls (like .POST, .PUT, ...)
@@ -216,14 +213,14 @@ open class Service {
 	/// - parameter writeResult: `WriteResult` closure should be called with `.ok` other cases are a failure. It can contain throwing functions. If something is thrown in the closure it it printed.
 	/// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
 	@discardableResult
-	open func performWrite(_ writeCall: Call, autoStart: Bool = true, writeResult: @escaping (WriteResult) throws -> ()) throws -> URLSessionDataTask {
+	open func performWrite(_ writeCall: Call, autoStart: Bool = true, writeResult: @escaping (WriteResult) throws -> (), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) throws -> URLSessionDataTask {
 
 		guard let request = writeCall.request(withConfiguration: configuration) else {
 			throw FaroError.invalidUrl("\(configuration.baseURL)/\(writeCall.path)")
 		}
 
 		let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
-			self.throwHandler {
+			throwHandler {
 				try writeResult(self.handleWrite(data: data, urlResponse: response, error: error))
 			}
 		})
@@ -285,7 +282,7 @@ open class Service {
 	/// - parameter jsonResult: closure is called when valid or invalid json data is received.
 	/// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
 	@discardableResult
-	open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) throws -> ()) throws -> URLSessionDataTask {
+	open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) throws -> (), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) throws -> URLSessionDataTask {
 
 		guard let request = call.request(withConfiguration: configuration) else {
 			throw FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")
@@ -296,7 +293,7 @@ open class Service {
 			switch dataResult {
 			case .data(let data):
 				self.configuration.adaptor.serialize(from: data) { (serializedResult: Result<M>) in
-					self.throwHandler {
+					throwHandler {
 						switch serializedResult {
 						case .json(json: let json):
 							try jsonResult(.json(json))
@@ -306,7 +303,7 @@ open class Service {
 					}
 				}
 			default:
-				self.throwHandler {
+				throwHandler {
 					try jsonResult(dataResult)
 				}
 			}
