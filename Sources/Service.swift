@@ -1,4 +1,21 @@
-// MARK: Class implementation
+
+// MARK: - General Throw Throw Handler
+
+/// This  default function is used to handle and print throws.
+/// Provide another throwing function in the init of `Service` to capture throws.
+public func faroDefaultThrowHandler(_ handler: ()throws->()) {
+	do {
+		try handler()
+	} catch {
+		guard let faroError = error as? FaroError else {
+			print(error)
+			return
+		}
+		printFaroError(faroError)
+	}
+}
+
+// MARK: Service Class implementation
 
 /// Default implementation of a service.
 /// Serves your `Call` to a server and parses the respons.
@@ -12,9 +29,12 @@ open class Service {
 
     let faroSession: FaroSessionable
 
-    public init(configuration: Configuration, faroSession: FaroSessionable = FaroSession()) {
+	let throwHandler: (()throws ->()) -> ()
+
+	public init(configuration: Configuration, faroSession: FaroSessionable = FaroSession(), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) {
         self.configuration = configuration
         self.faroSession = faroSession
+		self.throwHandler = throwHandler
     }
 
     // MARK: - Results transformed to Model(s)
