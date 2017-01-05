@@ -30,7 +30,10 @@ class DeserializeOperatorsSpec: QuickSpec {
     override func spec() {
         describe("DeserializeOperatorsSpec") {
             let testAny = ["uuid": "some id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"] as Any?
-            let json = testAny as! [String: Any]
+			guard let json = testAny as? [String: Any] else {
+				XCTFail()
+				return
+			}
 
             context("should give value for") {
                 it("should work for relations") {
@@ -38,7 +41,7 @@ class DeserializeOperatorsSpec: QuickSpec {
                     let animalArray =  [["uuid": relationId[0]], ["uuid": relationId[1]]]
                     let json = ["animalArray": animalArray] as Any?
 
-                    var zoo = Zoo(from: ["":""])
+                    var zoo = Zoo(from: ["": ""])
 
                     zoo <-> json
 
@@ -49,7 +52,7 @@ class DeserializeOperatorsSpec: QuickSpec {
                     let randomNumber = "randomNumber"
                     let json = ["cellNumber": randomNumber, "foodTicket": "ticket"] as Any?
 
-                    var gail = Jail(from: ["":""])
+                    var gail = Jail(from: ["": ""])
 
                     gail <-> json
 
@@ -58,7 +61,7 @@ class DeserializeOperatorsSpec: QuickSpec {
                 }
 
                 it("should deserialize from object Array") {
-                    let json = [["uuid": "id1"],["uuid": "id2"]] as Any?
+                    let json = [["uuid": "id1"], ["uuid": "id2"]] as Any?
                     var animalArray: [Animal]?
 
                     animalArray <-> json
@@ -71,35 +74,38 @@ class DeserializeOperatorsSpec: QuickSpec {
 
                     o1?.amount <-> json["amount"]
 
-                    expect(o1?.amount) == json["amount"] as! Int?
+                    expect(o1?.amount) == json["amount"] as? Int
                 }
 
                 it("should deserialize Doubles") {
-                    let o1 = DeserializableObject(from: ["":""])
+                    let o1 = DeserializableObject(from: ["": ""])
 
                     o1?.price <-> json["price"]
 
-                    expect(o1?.price) == json["price"] as! Double?
+                    expect(o1?.price) == json["price"] as? Double
                 }
 
                 it("should deserialize Booleans") {
-                    let o1 = DeserializableObject(from: ["":""])
+                    let o1 = DeserializableObject(from: ["": ""])
 
                     o1?.tapped <-> json["tapped"]
 
-                    expect(o1?.tapped) == json["tapped"] as! Bool?
+                    expect(o1?.tapped) == json["tapped"] as? Bool
                 }
 
                 it("should deserialize Strings") {
-                    let o1 = DeserializableObject(from: ["":""])
+                    let o1 = DeserializableObject(from: ["": ""])
 
                     o1?.uuid <-> json["uuid"]
 
-                    expect(o1?.uuid) == json["uuid"] as! String?
+                    expect(o1?.uuid) == json["uuid"] as? String
                 }
 
                 it("should deserialize Date") {
-                    let o1 = DeserializableObject(from: ["":""])!
+					guard let o1 = DeserializableObject(from: ["": ""]) else {
+						XCTFail()
+						return
+					}
 
                     o1.date <-> (json["date"], "yyyy-MM-dd")
 
@@ -112,7 +118,10 @@ class DeserializeOperatorsSpec: QuickSpec {
                 }
 
                 it("should deserialize Date with TimeInterval") {
-                    let o1 = DeserializableObject(from: ["":""])!
+					guard let o1 = DeserializableObject(from: ["":""]) else {
+						XCTFail()
+						return
+					}
                     let anyTimeInterval: TimeInterval = 1234.0
 
                     o1.date <-> anyTimeInterval
@@ -122,7 +131,10 @@ class DeserializeOperatorsSpec: QuickSpec {
                 }
 
                 it("should deserialize Date with json and String") {
-                    let o1 = DeserializableObject(from: ["":""])!
+					guard let o1 = DeserializableObject(from: ["": ""]) else {
+						XCTFail()
+						return
+					}
 
                     o1.date <-> ("1994-08-20" as Any?, "yyyy-MM-dd")
 

@@ -131,20 +131,20 @@ class CallSpec: QuickSpec {
 
             it("should insert http headers into the request") {
 
-                let headers = allHTTPHeaderFields(.httpHeader(["Accept-Language" : "en-US",
-                                                                                  "Accept-Charset" : "utf-8"]))
+                let headers = allHTTPHeaderFields(.httpHeader(["Accept-Language": "en-US",
+                                                                                  "Accept-Charset": "utf-8"]))
                 expect(headers.keys).to(contain("Accept-Language"))
                 expect(headers.values).to(contain("utf-8"))
             }
 
-            context("\(Parameter.urlComponents(["":""]))") {
+            context("\(Parameter.urlComponents(["": ""]))") {
                 it("insert") {
                     let string = componentString(.urlComponents(["some query item": "aa🗿🤔aej"]))
                     expect(string).to(contain("some%20query%20item=aa%F0%9F%97%BF%F0%9F%A4%94aej"))
                 }
 
                 it("insert sorted") {
-                    let string = componentString(.urlComponents(["X": "X", "B": "B", "A":"A"]))
+                    let string = componentString(.urlComponents(["X": "X", "B": "B", "A": "A"]))
                     expect(string).to(contain("?A=A&B=B&X=X"))
                 }
             }
@@ -155,28 +155,46 @@ class CallSpec: QuickSpec {
             context("should add JSON into httpBody for") {
 
                 it("PUT") {
-                    let data = body(.jsonNode(bodyJson), method: .PUT)
-                    let jsonDict = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: Any]
+					expect {
+						if let data = body(.jsonNode(bodyJson), method: .PUT) {
+							let jsonDict = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
 
-                    expect(jsonDict.keys.count).to(equal(2))
-                }
+							expect(jsonDict?.keys.flatMap {$0}) == ["a string", "a number"]
+						} else {
+							XCTFail()
+						}
+						return true
+					}.toNot(throwError())
+				}
 
                 it("POST") {
-                    let data = body(.jsonNode(bodyJson), method: .POST)
-                    let jsonDict = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: Any]
+					expect {
+						if let data = body(.jsonNode(bodyJson), method: .POST) {
+							let jsonDict = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
 
-                    expect(jsonDict.keys.count).to(equal(2))
+							expect(jsonDict?.keys.flatMap {$0}) == ["a string", "a number"]
+						} else {
+							XCTFail()
+						}
+						return true
+					}.toNot(throwError())
                 }
 
                 it("DELETE") {
-                    let data = body(.jsonNode(bodyJson), method: .DELETE)
-                    let jsonDict = try! JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String: Any]
+					expect {
+						if let data = body(.jsonNode(bodyJson), method: .DELETE) {
+							let jsonDict = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
 
-                    expect(jsonDict.keys.count).to(equal(2))
+							expect(jsonDict?.keys.count).to(equal(2))
+						} else {
+							XCTFail()
+						}
+						return true
+					}.toNot(throwError())
+
                 }
 
             }
-
 
             it("should fail to add JSON into a GET") {
                 let data = body(.jsonNode(bodyJson), method: .GET)
@@ -190,13 +208,13 @@ class CallSpec: QuickSpec {
             }
 
             it("should not produce invalid URL's when given parameters with missing keys") {
-                let parameters = ["" : "aValue"]
+                let parameters = ["": "aValue"]
                 let callString: String = componentString(.urlComponents(parameters))
                 expect(callString.characters.last) != "?"
             }
 
             it("should not produce invalid URL's when given parameters with missing values") {
-                let parameters = ["aKey" : ""]
+                let parameters = ["aKey": ""]
                 let callString: String = componentString(.urlComponents(parameters))
                 expect(callString.characters.last) != "?"
             }

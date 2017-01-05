@@ -157,7 +157,7 @@ class ServiceQueueSpec: QuickSpec {
                         var fail1: MockURLSessionTask!
 
                         beforeEach {
-                            fail1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in } as! MockURLSessionTask
+                            fail1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in } as? MockURLSessionTask
                             mockSession.tasksToFail = [fail1]
                         }
 
