@@ -22,6 +22,8 @@ open class ServiceQueue: Service {
         super.init(configuration: configuration, faroSession: faroSession)
     }
 
+	// MARK: - Override not throwing
+
     open override func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = false, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
         var task: URLSessionDataTask?
         task = super.performJsonResult(call, autoStart: autoStart) { [weak self] (stage1JsonResult: Result<M>) in
@@ -70,6 +72,56 @@ open class ServiceQueue: Service {
         return task
     }
 
+	// MARK: - Override Throwing
+
+	open override func performJsonResult<M : Deserializable>(_ call: Call, autoStart: Bool, jsonResult: @escaping (Result<M>) throws -> (), throwHandler: @escaping (() throws -> ()) -> ()) throws -> URLSessionDataTask {
+		var task: URLSessionDataTask!
+		task = try super.performJsonResult(call, autoStart: autoStart, jsonResult: { [weak self] (stage1JsonResult: Result<M>) in
+			guard let strongSelf = self else {
+				try jsonResult(stage1JsonResult)
+				return
+			}
+			/// Store ID of failed tasks to report
+			switch stage1JsonResult {
+			case .json(_), .ok:
+				strongSelf.cleanupQueue(for: task)
+			case .failure(_):
+				strongSelf.cleanupQueue(for: task, didFail: true)
+			default:
+				strongSelf.cleanupQueue(for: task)
+			}
+
+
+			try jsonResult(stage1JsonResult)
+			strongSelf.shouldCallFinal()
+		}, throwHandler: throwHandler)
+
+		add(task)
+		return task
+	}
+	open override func performWrite(_ writeCall: Call, autoStart: Bool = true, writeResult: @escaping (WriteResult) throws -> (), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) throws -> URLSessionDataTask {
+		var task: URLSessionDataTask!
+		task = try super.performWrite(writeCall, autoStart: autoStart, writeResult: { [weak self] (result) in
+			guard let strongSelf = self else {
+				try writeResult(result)
+				return
+			}
+
+			switch result {
+			case .ok:
+				strongSelf.cleanupQueue(for: task)
+			default:
+				strongSelf.cleanupQueue(for: task, didFail: true)
+			}
+
+			try writeResult(result)
+			strongSelf.shouldCallFinal()
+		}, throwHandler: throwHandler)
+		add(task)
+		return task
+	}
+	
+	// MARK: - Private
     private func add(_ task: URLSessionDataTask?) {
         guard let createdTask = task else {
             printFaroError(FaroError.invalidSession(message: "\(self) tried to "))
