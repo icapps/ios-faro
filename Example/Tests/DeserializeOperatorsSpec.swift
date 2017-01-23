@@ -236,6 +236,20 @@ class DeserializeOperatorsSpec: QuickSpec {
 					it("updates") {
 						try? parent.update(from: updateAny)
 						expect(parent.tooMany.map {$0.uuid}) == ["uuid 0", "uuid 1", "uuid 2"]
+
+						let originalTooMany = parent.tooMany
+
+						try? parent.update(from: updateAny)
+
+						expect(parent.tooMany[0]) === originalTooMany[0]
+						expect(parent.tooMany[1]) === originalTooMany[1]
+						expect(parent.tooMany[2]) === originalTooMany[2]
+
+						expect(parent.tooMany.map {$0.uuid}) == [originalTooMany[0].uuid, originalTooMany[1].uuid, originalTooMany[2].uuid]
+					}
+
+					it("removes ids no longer in JSON") {
+						updateAny
 					}
 
 				}
