@@ -68,7 +68,6 @@
 		8DFA5FB7B4651E41A8010276FFBC304B /* ExampleMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282F714FB68204F6F6AE67E3A5187AC4 /* ExampleMetadata.swift */; };
 		9093FCD3B4DE4768C95B102296D88FAB /* DSL.h in Headers */ = {isa = PBXBuildFile; fileRef = C20D34449F185BBF0B84BA08C3450E6F /* DSL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9665BF98B002ED5082D836666CF3EE65 /* Pods-Faro_Example-Faro_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 2B3FBF20B31A1D16861DC4DF946EE569 /* Pods-Faro_Example-Faro_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		975A394A93D45CFDD532ED86BFC34A79 /* ServiceConvenienceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82ECC3AD21EDACD6BB0C11D9817C0F64 /* ServiceConvenienceExtension.swift */; };
 		987D1924A76D963FBC6DDADACD6C8C02 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32DF21EF8268E32D359CD23F2CF3EFE3 /* Foundation.framework */; };
 		988FE132342623577C913A9A57D3A08D /* QuickSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = F376C1DA74EA28C16FAD15BBB9A80DF6 /* QuickSpec.m */; };
 		98CD96D1031E7400AAAF90AAE0402C96 /* BeLessThan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A66E35CFB8347ED50850F0E57BAC2BB /* BeLessThan.swift */; };
@@ -274,7 +273,6 @@
 		7DEE13302C43BDBDEAA62BA65163EB75 /* Example.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Example.swift; path = Sources/Quick/Example.swift; sourceTree = "<group>"; };
 		812ECBBE1BF1E7E03540A46CDADD2527 /* Quick.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Quick.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		822C04E82EE64B81016B8914952718A8 /* Faro.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Faro.xcconfig; sourceTree = "<group>"; };
-		82ECC3AD21EDACD6BB0C11D9817C0F64 /* ServiceConvenienceExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ServiceConvenienceExtension.swift; sourceTree = "<group>"; };
 		847156B90C4126E189F094C727AFB094 /* Pods-Faro_Example-Faro_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Faro_Example-Faro_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		861613EAC0A86ED8252D400304EC7BC6 /* Configuration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Configuration.swift; path = Sources/Quick/Configuration/Configuration.swift; sourceTree = "<group>"; };
 		8868851AFBC32289FB90E5789A5C3CE9 /* XCTestSuite+QuickTestSuiteBuilder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "XCTestSuite+QuickTestSuiteBuilder.m"; path = "Sources/QuickObjectiveC/XCTestSuite+QuickTestSuiteBuilder.m"; sourceTree = "<group>"; };
@@ -657,7 +655,6 @@
 				C6F2DC7AB9A55F5EE8363FE10E747CEB /* ParameterEnum.swift */,
 				7B18650E1C9EC4B1B3435F10BB0500E1 /* Result.swift */,
 				781BE0FE5A61AD8C01C8D4BBE692EEE3 /* Service.swift */,
-				82ECC3AD21EDACD6BB0C11D9817C0F64 /* ServiceConvenienceExtension.swift */,
 				27BE1FE5F99AB9621059B7A264F93117 /* ServiceQueue.swift */,
 				58E12E116E7A87B70DA6AB56268B1C53 /* Adaptor */,
 				3952198DE0BB7558F301841063DC2C0D /* Deserialize */,
@@ -1022,7 +1019,6 @@
 				3D92082EFDBA3474D94A09AF79CCE3B8 /* Serializable.swift in Sources */,
 				E95FA53887BFDAA39C126A70B6FD6A23 /* SerializeOperators.swift in Sources */,
 				62FE242F1C6C76157511A7B82FB0A267 /* Service.swift in Sources */,
-				975A394A93D45CFDD532ED86BFC34A79 /* ServiceConvenienceExtension.swift in Sources */,
 				DC599E74AF3861C795708C05E56DB216 /* ServiceQueue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

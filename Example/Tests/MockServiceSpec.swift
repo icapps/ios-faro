@@ -19,14 +19,13 @@ class MockServiceSpec: QuickSpec {
                     let uuid = "dictionary for testing"
                     mockService.mockDictionary = ["uuid": uuid]
 
-                    mockService.perform(Call(path: "unit tests")) { (result: Result<MockModel>) in
-                        switch result {
-                        case .model( let model):
-                            expect(model!.uuid) == uuid
-                        default:
-                            XCTFail("should provide a model")
-                        }
-                    }
+					expect {
+						try mockService.perform(Call(path: "unit tests"), success: { (result: Success<MockModel>) in
+							return expect(try result.singleModel().uuid) == uuid
+						}) {_ in XCTFail()}
+						return true
+					}.toNot(throwError())
+
                 }
             }
 
@@ -40,25 +39,22 @@ class MockServiceSpec: QuickSpec {
                 it("JSON node") {
                     let uuid = "some id"
 
-                    mockService.perform(Call(path: "mockJsonNode")) { (result: Result<MockModel>) in
-                        switch result {
-                        case .model( let model):
-                            expect(model!.uuid) == uuid
-                        default:
-                            XCTFail("should provide a model")
-                        }
-                    }
+					expect {
+						try mockService.perform(Call(path: "mockJsonNode"), success: { (result: Success<MockModel>) in
+							expect(try result.singleModel().uuid) == uuid
+						}) {_ in XCTFail()}
+						return true
+					}.toNot(throwError())
+
                 }
 
                 it("ARRAY of JSON nodes") {
-                    mockService.perform(Call(path: "mockJsonArray")) { (result: Result<MockModel>) in
-                        switch result {
-                        case .models( let models):
-                            expect(models!.count) == 3
-                        default:
-                            XCTFail("should provide an array")
-                        }
-                    }
+					expect {
+						try mockService.perform(Call(path: "mockJsonArray"), success: { (result: Success<MockModel>) in
+							expect(try result.arrayModels().count) == 3
+						})
+						return true
+					}.toNot(throwError())
                 }
             }
         }

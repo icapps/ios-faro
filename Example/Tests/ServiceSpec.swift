@@ -53,9 +53,9 @@ class ServiceSpec: QuickSpec {
 
                 mockSession.data = "{\"pages\":10, \"currentPage\":25}".data(using: .utf8)
 
-                service.perform(call, page: { (pageInfo) in
+                let _ = try? service.perform(call, page: { (pageInfo) in
                     pagesInformation = pageInfo
-                    }, modelResult: { (_: Result<MockModel>) in
+                    }, success: { (_: Success<MockModel>) in
                 })
 
                 expect(pagesInformation.pages) == 10
@@ -71,15 +71,9 @@ class ServiceSpec: QuickSpec {
 						                                      options: .prettyPrinted)
 						mockSession.data = data
 
-						service.perform(call, on: mockModel) { (result: Result<MockModel>) in
-							switch result {
-							case .model(let model):
-								let identical = (model === mockModel)
-								expect(identical).to(beTrue())
-							default:
-								XCTFail("\(result)")
-							}
-						}
+						try service.perform(call, on: mockModel, success: { (result: Success<MockModel>) in
+							expect(try result.singleModel()) === mockModel
+						})
 						return true
 					}.toNot(throwError())
 
@@ -102,17 +96,14 @@ class ServiceSpec: QuickSpec {
                     let call = Call(path: "unitTest")
                     var isInSync = false
 
-                    service.perform(call) { (result: Result<MockModel>) in
-                        isInSync = true
-                        switch result {
-                        case .models(let models):
-                            expect(models?.count).to(equal(2))
-                        default:
-                            XCTFail("You should succeed")
-                        }
-                    }
+					expect {
+						try service.perform(call, success: { (result: Success<MockModel>) in
+							expect(try result.arrayModels().count).to(equal(2))
+							isInSync = true
+						})
 
-                    expect(isInSync).to(beTrue())
+						return expect(isInSync).to(beTrue())
+					}.toNot(throwError())
                 }
             }
 
@@ -130,17 +121,14 @@ class ServiceSpec: QuickSpec {
                     let call = Call(path: "unitTest")
                     var isInSync = false
 
-                    service.perform(call) { (result: Result<MockModel>) in
-                        isInSync = true
-                        switch result {
-                        case .model(model: let model):
-                            expect(model?.uuid).to(equal("object id 1"))
-                        default:
-                            XCTFail("You should succeed")
-                        }
-                    }
+					expect {
+						try service.perform(call, success: { (result: Success<MockModel>) in
+							isInSync = true
+							expect(try result.singleModel().uuid).to(equal("object id 1"))
+						})
 
-                    expect(isInSync).to(beTrue())
+						return expect(isInSync).to(beTrue())
+					}.toNot(throwError())
                 }
             }
         }
@@ -229,16 +217,20 @@ class ServiceSpec: QuickSpec {
 
                 var failed = false
 
-                service.perform(call, modelResult: { (result: Result<MockModel>) in
-                    switch result {
-                    case .failure:
-                        failed = true
-                    default:
-                        XCTFail("💣should fail")
-                    }
-                })
+				expect {
+					try service.perform(call, success: { (_: Success<MockModel>) in
+						XCTFail("💣should fail")
+					}) {
+						do {
+							try $0()
+						} catch {
+							failed = true
+						}
+					}
 
-                expect(failed).toEventually(beTrue())
+					return expect(failed).toEventually(beTrue())
+				}.toNot(throwError())
+
             }
         })
 
