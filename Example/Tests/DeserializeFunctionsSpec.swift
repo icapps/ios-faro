@@ -17,6 +17,10 @@ class DeserializeFunctionSpec: QuickSpec {
     override func spec() {
         describe("DeserializeFunctionSpec") {
 
+			var o1: DeserializableObject!
+			beforeEach {
+				 o1 = DeserializableObject()
+			}
 			context("should parse form JSON") {
 
 				context("Values") {
@@ -24,7 +28,6 @@ class DeserializeFunctionSpec: QuickSpec {
 					it("Any value") {
 						let uuidKey = "uuid"
 						let json = [uuidKey: "some id" as Any]
-						let o1 = DeserializableObject(from: ["": ""])!
 
 						expect {
 							o1.uuid = try parse(uuidKey, from: json)
@@ -81,7 +84,6 @@ class DeserializeFunctionSpec: QuickSpec {
 						let dateKey = "date"
 						let dateTimeInterval: TimeInterval = 12345.0
 						let json = ["date": dateTimeInterval]
-						let o1 = DeserializableObject(from: ["": ""])!
 
 						expect {
 							o1.date = try parse(dateKey, from: json)
@@ -96,12 +98,11 @@ class DeserializeFunctionSpec: QuickSpec {
 						let dateKey = "date"
 						let dateString = "1994-08-20"
 						let json = [dateKey: dateString as Any]
-						let o1 = DeserializableObject(from: ["": ""])
 
 						expect {
-							o1?.date = try parse(dateKey, from: json, format: "yyyy-MM-dd")
+							o1.date = try parse(dateKey, from: json, format: "yyyy-MM-dd")
 
-							return expect(o1?.date).toNot(beNil())
+							return expect(o1.date).toNot(beNil())
 						}.toNot(throwError())
 					}
 
