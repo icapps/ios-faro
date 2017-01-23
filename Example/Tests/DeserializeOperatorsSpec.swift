@@ -33,7 +33,6 @@ class Parent: Deserializable, Updatable, Linkable {
 		}
 		try uuid <-> json["uuid"]
 		try relation <-> json["relation"]
-		try relation <-> json["tooMany"]
 	}
 
 }
@@ -193,18 +192,10 @@ class DeserializeOperatorsSpec: QuickSpec {
             }
 
 			fcontext("Update") {
-				var relationDict: [String: Any] = ["uuid": "relation id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"]
-				var updateAny: [String: Any] = ["uuid": "route id", "relation": relationDict]
-
-				var tooMany = [[String: Any]]()
-				for i in 0..<3 {
-					relationDict["uuid"] = "uuid \(i)"
-					tooMany.append(relationDict)
-				}
-				updateAny["tooMany"] = tooMany
+				let updateAny = ["uuid": "route id", "relation": ["uuid": "relation id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"]] as Any
 
 				it("updates existing object") {
-					let parent = Parent(from: updateAny as Any)
+					let parent = Parent(from: updateAny)
 
 					expect(parent?.uuid) == "route id"
 					expect(parent?.relation.uuid) == "relation id"
