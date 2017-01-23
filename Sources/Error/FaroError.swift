@@ -4,6 +4,8 @@ public enum FaroError: Error, Equatable {
     }
 
     case general
+	case emptyResponse(Call)
+	case invalidInterMediateResult(Call)
     case invalidUrl(String)
     case invalidResponseData(Data?)
     case invalidAuthentication

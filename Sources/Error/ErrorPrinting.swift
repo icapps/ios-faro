@@ -45,6 +45,10 @@ public func printFaroError(_ error: Error) {
         print("💀 message: \(message)")
 	case .couldNotCreateTask:
 		print("💀 a valid urlSessionTask could not be created")
+	case .invalidInterMediateResult(let call):
+		print("💀 intermediate result wrong on request: \(call.request(withConfiguration: FaroService.shared.configuration))")
+	case .emptyResponse(let call):
+		print("❓ a successfull response without any parsable data for request: \(call.request(withConfiguration: FaroService.shared.configuration)) ")
     }
     
 }

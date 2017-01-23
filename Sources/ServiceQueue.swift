@@ -1,5 +1,8 @@
 import Foundation
 
+public enum ServiceQueueError: Error {
+	case selfReleased
+}
 /// Tasks can be autostarted or started manualy. The taks are still handled bij an URLSession like in `Service`, but
 /// we store the TaskIdentifiers. When a task completes it is removed from the queue and `final()`.
 /// It has its own `URLSession` which it invalidates once the queue is finished. You need to create another instance of `ServiceQueue` to be able to
@@ -50,7 +53,7 @@ open class ServiceQueue: Service {
         return task
     }
 
-    open override func performWrite(_ writeCall: Call, autoStart: Bool, writeResult: @escaping (WriteResult) -> ()) -> URLSessionDataTask? {
+    open override func performWrite(_ writeCall: Call, autoStart: Bool = false, writeResult: @escaping (WriteResult) -> ()) -> URLSessionDataTask? {
         var task: URLSessionDataTask?
         task = super.performWrite(writeCall, autoStart: autoStart) { [weak self] (result) in
             guard let strongSelf = self else {
@@ -74,51 +77,46 @@ open class ServiceQueue: Service {
 
 	// MARK: - Override Throwing
 
-	open override func performJsonResult<M : Deserializable>(_ call: Call, autoStart: Bool, jsonResult: @escaping (Result<M>) throws -> (), throwHandler: @escaping (() throws -> ()) -> ()) throws -> URLSessionDataTask {
+	open override func performJsonResult(_ call: Call, autoStart: Bool = false,
+	                                     intermediate: @escaping (Intermediate) throws -> Void,
+	                                     fail: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) throws -> URLSessionDataTask {
 		var task: URLSessionDataTask!
-		task = try super.performJsonResult(call, autoStart: autoStart, jsonResult: { [weak self] (stage1JsonResult: Result<M>) in
-			guard let strongSelf = self else {
-				try jsonResult(stage1JsonResult)
-				return
-			}
-			/// Store ID of failed tasks to report
-			switch stage1JsonResult {
-			case .json(_), .ok:
+		do {
+			task = try super.performJsonResult(call, autoStart: autoStart, intermediate: { [weak self] (jsonResult) in
+				guard let strongSelf = self else {
+					throw ServiceQueueError.selfReleased
+				}
 				strongSelf.cleanupQueue(for: task)
-			case .failure(_):
-				strongSelf.cleanupQueue(for: task, didFail: true)
-			default:
-				strongSelf.cleanupQueue(for: task)
-			}
-
-
-			try jsonResult(stage1JsonResult)
-			strongSelf.shouldCallFinal()
-		}, throwHandler: throwHandler)
+				try intermediate(jsonResult)
+				strongSelf.shouldCallFinal()
+			}, fail: fail)
+		} catch {
+			print(error)
+			cleanupQueue(for: task, didFail: true)
+			throw error
+		}
 
 		add(task)
 		return task
 	}
-	open override func performWrite(_ writeCall: Call, autoStart: Bool = true, writeResult: @escaping (WriteResult) throws -> (), throwHandler: @escaping (()throws ->()) -> () = faroDefaultThrowHandler) throws -> URLSessionDataTask {
+	open override func performWrite(_ writeCall: Call,
+	                                autoStart: Bool = false,
+	                                success: @escaping (WriteSuccess) throws -> (),
+	                                fail: @escaping (() throws -> ()) -> ()) throws -> URLSessionDataTask {
 		var task: URLSessionDataTask!
-		task = try super.performWrite(writeCall, autoStart: autoStart, writeResult: { [weak self] (result) in
+		task = try super.performWrite(writeCall, autoStart: autoStart, success: { [weak self] (writeSuccess) in
 			guard let strongSelf = self else {
-				try writeResult(result)
-				return
+				throw ServiceQueueError.selfReleased
 			}
+			strongSelf.cleanupQueue(for: task)
 
-			switch result {
-			case .ok:
-				strongSelf.cleanupQueue(for: task)
-			default:
-				strongSelf.cleanupQueue(for: task, didFail: true)
-			}
-
-			try writeResult(result)
+			try success(writeSuccess)
 			strongSelf.shouldCallFinal()
-		}, throwHandler: throwHandler)
+		}, fail: fail)
+
 		add(task)
 		return task
+
 	}
 	
 	// MARK: - Private

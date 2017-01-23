@@ -35,29 +35,32 @@ class ServiceQueueSpec: QuickSpec {
                 }
 
                 it("add one") {
-                    service.perform(call, autoStart: false) { (_: Result<MockModel>) in
+					let _ = try? service.perform(call, autoStart: false, success: { (_: Success<MockModel>) in
                         taskSucceed = true
-                    }
+                    }) {_ in XCTFail()}
                     expect(service.hasOustandingTasks) == true
                     expect(taskSucceed).toNotEventually(beTrue())
                 }
 
                 it("add multiple") {
-                    let task1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in
-                        taskSucceed = true
-                        }!
-                    let task2 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in
-                        taskSucceed = true
-                        }!
+					expect {
+						let task1 = try service.perform(call, autoStart: false, success: { (_: Success<MockModel>) in
+							taskSucceed = true
+						}) {_ in XCTFail()}
 
-                    let task3 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in
-                        taskSucceed = true
-                        }!
+						let task2 = try service.perform(call, autoStart: false, success: { (_: Success<MockModel>) in
+							taskSucceed = true
+						}) {_ in XCTFail()}
 
-                    expect(service.hasOustandingTasks) == true
-                    expect(taskSucceed).toNotEventually(beTrue())
-                    expect(service.taskQueue).to(contain([task1, task2, task3]))
-                    expect(isFinalCalled).toNotEventually(beTrue())
+						let task3 = try service.perform(call, autoStart: false, success: { (_: Success<MockModel>) in
+							taskSucceed = true
+						}) {_ in XCTFail()}
+
+						expect(service.hasOustandingTasks) == true
+						expect(taskSucceed).toNotEventually(beTrue())
+						expect(service.taskQueue) == [task1, task2, task3]
+						return expect(isFinalCalled).toNotEventually(beTrue())
+					}.toNot(throwError())
                 }
 
                 context("performWrite") {
@@ -77,10 +80,10 @@ class ServiceQueueSpec: QuickSpec {
                         print("final")
                     }
                     waitUntil { done in
-                        service.perform(call, autoStart: true) { (_: Result<MockModel>) in
+						let _ = try? service.perform(call, autoStart: true, success: { (_: Success<MockModel>) in
                             expect(service.hasOustandingTasks) == false
                             done()
-                        }
+                        })
                     }
                 }
 
@@ -92,16 +95,20 @@ class ServiceQueueSpec: QuickSpec {
                     var failedTasks: Set<URLSessionTask>?
 
                     beforeEach {
-                        isFinalCalled = false
-                        service = ServiceQueue(configuration: config, faroSession: mockSession) { failures in
-                            isFinalCalled = true
-                            failedTasks = failures
-                        }
+						do {
+							isFinalCalled = false
+							service = ServiceQueue(configuration: config, faroSession: mockSession) { failures in
+								isFinalCalled = true
+								failedTasks = failures
+							}
 
-                        task1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in }!
-                        task2 = service.perform(call, autoStart: true) { (_: Result<MockModel>) in }!
-                        task3 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in }!
-                    }
+							task1 = try service.perform(call, autoStart: false, success: { (_: Success<MockModel>) in })
+							task2 = try service.perform(call, autoStart: true, success: { (_: Success<MockModel>) in })
+							task3 = try service.perform(call, autoStart: false, success: { (_: Success<MockModel>) in })
+						} catch {
+							XCTFail("\(error)")
+						}
+                                            }
 
                     it("not have failedTasks") {
                         expect(failedTasks).to(beNil())
@@ -156,9 +163,13 @@ class ServiceQueueSpec: QuickSpec {
                         var fail1: MockURLSessionTask!
 
                         beforeEach {
-                            fail1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in } as? MockURLSessionTask
-                            mockSession.tasksToFail = [fail1]
-                        }
+							do {
+								fail1 = try service.perform(call, autoStart: false, success: { (_: Success<MockModel>) in }) as? MockURLSessionTask
+								mockSession.tasksToFail = [fail1]
+							} catch {
+								XCTFail("\(error)")
+							}
+						}
 
                         it("should queue the failed task") {
                             expect(service.taskQueue).to(contain(fail1))
