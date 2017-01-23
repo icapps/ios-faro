@@ -249,7 +249,12 @@ class DeserializeOperatorsSpec: QuickSpec {
 					}
 
 					it("removes ids no longer in JSON") {
-						updateAny
+						//swiftlint:disable force_cast
+						updateAny["tooMany"] = (updateAny["tooMany"] as! [[String: Any]]).filter {($0["uuid"] as? String) != "uuid 0"}
+
+						try? parent.update(from: updateAny)
+
+						expect(parent.tooMany.map {$0.uuid}) == ["uuid 1", "uuid 2"]
 					}
 
 				}
