@@ -73,33 +73,84 @@ public func <-> <P>(lhs: inout P, rhs: Any?) throws where P: Deserializable & Up
 	try lhs.update(from: dict)
 }
 
+// MARK: - Array relations
 /// Removes `Linkable.link.key` elements not found in rhs
 /// ValueType of `Linkable.link.Value` is `Int`
 public func <-> <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & Updatable & Linkable, P.ValueType: Equatable,  P.ValueType: ExpressibleByStringLiteral {
-	guard let rawObjects = rhs as? [[String: Any]] else {
+	guard var nodesToProcess = rhs as? [[String: Any]] else {
 		throw FaroDeserializableError.wrongJSON(rhs)
 	}
 	if !lhs.isEmpty {
-		var removeIndexes = [Int]()
 		try lhs.enumerated().forEach {
 			let element = $0.element
-			let dict = (rawObjects.filter {($0[element.link.key] as? P.ValueType)  == element.link.value})
-			guard !dict.isEmpty else {
-				removeIndexes.append($0.offset)
+
+			let filterFunction: ([String: Any]) -> Bool = {($0[element.link.key] as? P.ValueType)  == element.link.value}
+			let dict = nodesToProcess.filter(filterFunction)
+
+			guard !dict.isEmpty, let index = nodesToProcess.index(where: filterFunction) else {
+				lhs.remove(at: $0.offset)
 				return
 			}
 			guard dict.count == 1 else {
-				throw FaroDeserializableError.linkNotUniqueInJSON(rawObjects, linkValue: "\(element.link.value)")
+				throw FaroDeserializableError.linkNotUniqueInJSON(nodesToProcess, linkValue: "\(element.link.value)")
 			}
 
 			try element.update(from: dict.first)
-
+			// remove all nodes we processed
+			nodesToProcess.remove(at: index)
 		}
-		removeIndexes.forEach { lhs.remove(at: $0)}
+
+		// If we still have nodes to process. Add them.
+		nodesToProcess.forEach {
+			if let model = P(from: $0) {
+				lhs.append(model)
+			}
+		}
+
 	} else {
-		lhs = rawObjects.flatMap { P(from: $0) }
+		lhs = nodesToProcess.flatMap { P(from: $0) }
 	}
 
+}
+
+/// MARK: - Set Relation
+/// Removes `Linkable.link.key` elements not found in rhs
+/// ValueType of `Linkable.link.Value` is `Int`
+public func <-> <P>(lhs: inout Set<P>, rhs: Any?) throws where P: Deserializable & Updatable & Linkable, P.ValueType: Equatable,  P.ValueType: ExpressibleByStringLiteral {
+	guard var nodesToProcess = rhs as? [[String: Any]] else {
+		throw FaroDeserializableError.wrongJSON(rhs)
+	}
+	if !lhs.isEmpty {
+		try lhs.enumerated().forEach {
+			let element = $0.element
+
+			let filterFunction: ([String: Any]) -> Bool = {($0[element.link.key] as? P.ValueType)  == element.link.value}
+			let dict = nodesToProcess.filter(filterFunction)
+
+			guard !dict.isEmpty, let index = nodesToProcess.index(where: filterFunction) else {
+				lhs.remove($0.element)
+				return
+			}
+			guard dict.count == 1 else {
+				throw FaroDeserializableError.linkNotUniqueInJSON(nodesToProcess, linkValue: "\(element.link.value)")
+			}
+
+			try element.update(from: dict.first)
+			// remove all nodes we processed
+			nodesToProcess.remove(at: index)
+		}
+
+		// If we still have nodes to process. Add them.
+		nodesToProcess.forEach {
+			if let model = P(from: $0) {
+				lhs.insert(model)
+			}
+		}
+
+	} else {
+		lhs = Set<P>(nodesToProcess.flatMap { P(from: $0) })
+	}
+	
 }
 
 /// MARK: - Deserialize operators
