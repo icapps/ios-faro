@@ -5,6 +5,7 @@ import Stella
 import Faro
 @testable import Faro_Example
 
+//swiftlint:disable file_length
 class DeserializeOperatorsSpec: QuickSpec {
 
 	override func spec() {
