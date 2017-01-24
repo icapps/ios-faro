@@ -1,5 +1,35 @@
 import Foundation
 
+// MARK: - RawRepresentable Types
+
+// MARK: - String
+
+public func parse <T: RawRepresentable>(_ named: String, from: [String: Any]) throws -> T! where T.RawValue == String {
+	if !named.isEmpty {
+		guard let raw = from[named] as? T.RawValue, let value = T(rawValue:raw) else {
+			throw FaroError.emptyValue(key: named)
+		}
+		return value
+	} else {
+		throw FaroError.emptyKey
+	}
+}
+
+// MARK: - Int
+
+public func parse <T: RawRepresentable>(_ named: String, from: [String: Any]) throws -> T! where T.RawValue == Int {
+	if !named.isEmpty {
+		guard let raw = from[named] as? T.RawValue, let value = T(rawValue:raw) else {
+			throw FaroError.emptyValue(key: named)
+		}
+		return value
+	} else {
+		throw FaroError.emptyKey
+	}
+}
+
+// MARK: - Any Type
+
 public func parse <T>(_ named: String, from: [String: Any]) throws -> T! {
     if !named.isEmpty {
         guard let value = from[named] as? T else {
