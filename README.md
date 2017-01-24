@@ -85,17 +85,17 @@ do {
 Can be an array or a set:
 ```swift
 class Foo {
-  let tooMany: [Child]
+  let toMany: [Child]
   // or Set
-  let tooMany: Set<Child>
+  let toMany: Set<Child>
 }
 ```
 ```swift
 // Not interested if nil
-let _ = try? tooMany <-> json["too many relation key"]
+let _ = try? toMany <-> json["too many relation key"]
 // If interested in nil, or any other error
 do {
-  try tooMany <-> json["too many relation key"]
+  try toMany <-> json["too many relation key"]
 } catch {
   // handle error
   print(error)

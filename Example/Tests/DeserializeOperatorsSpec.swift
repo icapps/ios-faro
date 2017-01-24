@@ -149,55 +149,55 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 				context("Too many") {
 
-					var tooMany = [[String: Any]]()
+					var toMany = [[String: Any]]()
 					let allUUIDs = ["uuid 1", "uuid 2", "uuid 0"]
 
 					beforeEach {
-						tooMany.removeAll()
+						toMany.removeAll()
 						for i in 0..<3 {
 							relation["uuid"] = allUUIDs[i]
-							tooMany.append(relation)
+							toMany.append(relation)
 						}
-						json["tooMany"] = tooMany
+						json["toMany"] = toMany
 
 						try? parent.update(from: json)
 					}
 
-					it("has tooMany relation in JSON") {
-						expect(json["tooMany"]).toNot(beNil())
+					it("has toMany relation in JSON") {
+						expect(json["toMany"]).toNot(beNil())
 					}
 
-					it("has tooMany relation in Parent") {
-						expect(parent.tooMany.map {$0.uuid}) == allUUIDs
+					it("has toMany relation in Parent") {
+						expect(parent.toMany.map {$0.uuid}) == allUUIDs
 					}
 
 					context("Array relation") {
 
 						it("updates") {
 							//swiftlint:disable force_cast
-							let originalTooMany = parent.tooMany
+							let originalTooMany = parent.toMany
 
 							var relationDifferentPrice = relation
-							relationDifferentPrice["uuid"] = parent.tooMany[0].uuid
-							relationDifferentPrice["price"] = (parent.tooMany[0].price ?? 0) + 100
+							relationDifferentPrice["uuid"] = parent.toMany[0].uuid
+							relationDifferentPrice["price"] = (parent.toMany[0].price ?? 0) + 100
 
 							// remove original price from json
-							json["tooMany"] = (json["tooMany"] as! [[String: Any]]).filter {($0["uuid"] as? String) != parent.tooMany[0].uuid}
+							json["toMany"] = (json["toMany"] as! [[String: Any]]).filter {($0["uuid"] as? String) != parent.toMany[0].uuid}
 							// set new price
-							var jsonTooManyWithDifferentPrice = json["tooMany"] as? [[String: Any]]
+							var jsonTooManyWithDifferentPrice = json["toMany"] as? [[String: Any]]
 							jsonTooManyWithDifferentPrice?.append(relationDifferentPrice)
-							json["tooMany"] = jsonTooManyWithDifferentPrice
+							json["toMany"] = jsonTooManyWithDifferentPrice
 
-							expect((json["tooMany"] as? [[String: Any]])?.map {($0["price"] as? Double) ?? 0}) == [5.0, 5.0, 105.0]
+							expect((json["toMany"] as? [[String: Any]])?.map {($0["price"] as? Double) ?? 0}) == [5.0, 5.0, 105.0]
 
 							try? parent.update(from: json)
 
-							expect(parent.tooMany[0]) === originalTooMany[0]
-							expect(parent.tooMany[1]) === originalTooMany[1]
-							expect(parent.tooMany[2]) === originalTooMany[2]
+							expect(parent.toMany[0]) === originalTooMany[0]
+							expect(parent.toMany[1]) === originalTooMany[1]
+							expect(parent.toMany[2]) === originalTooMany[2]
 
-							expect(parent.tooMany.map {$0.uuid}) == [originalTooMany[0].uuid, originalTooMany[1].uuid, originalTooMany[2].uuid]
-							expect(parent.tooMany.map {$0.price ?? 0}) == [105.0, 5.0, 5.0]
+							expect(parent.toMany.map {$0.uuid}) == [originalTooMany[0].uuid, originalTooMany[1].uuid, originalTooMany[2].uuid]
+							expect(parent.toMany.map {$0.price ?? 0}) == [105.0, 5.0, 5.0]
 
 						}
 
@@ -205,31 +205,31 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 							it("removes id's no longer in JSON") {
 								//swiftlint:disable force_cast
-								json["tooMany"] = (json["tooMany"] as! [[String: Any]]).filter {($0["uuid"] as? String) != "uuid 0"}
+								json["toMany"] = (json["toMany"] as! [[String: Any]]).filter {($0["uuid"] as? String) != "uuid 0"}
 
-								try? parent.tooMany <-> json["tooMany"]
+								try? parent.toMany <-> json["toMany"]
 
-								expect(parent.tooMany.map {$0.uuid}) == ["uuid 2", "uuid 1"]
+								expect(parent.toMany.map {$0.uuid}) == ["uuid 2", "uuid 1"]
 							}
 
 							it("add id's in JSON") {
 								let uuidAdded = "added id"
 								relation["uuid"] = uuidAdded
-								tooMany.append(relation)
-								json["tooMany"] = tooMany
+								toMany.append(relation)
+								json["toMany"] = toMany
 
-								let relations = json["tooMany"] as? [[String: Any]]
+								let relations = json["toMany"] as? [[String: Any]]
 
 								var expected = allUUIDs
 								expected.append(uuidAdded)
 
 								expect(relations?.map {($0["uuid"] as? String) ?? ""}) == expected
 
-								expect(parent.tooMany.map {$0.uuid}) == allUUIDs
+								expect(parent.toMany.map {$0.uuid}) == allUUIDs
 
-								try? parent.tooMany <-> json["tooMany"]
+								try? parent.toMany <-> json["toMany"]
 
-								expect(parent.tooMany.map {$0.uuid}) == expected
+								expect(parent.toMany.map {$0.uuid}) == expected
 							}
 
 						}
@@ -237,69 +237,71 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 					context("Set relation") {
 
-						var setTooMany = [[String: Any]]()
+						var setToMany = [[String: Any]]()
 						var setRelation = [String: Any]()
 
 						beforeEach {
 								setRelation[.uuid] = "set id 1"
-								setTooMany.append(setRelation)
-								json[.setTooMany] = setTooMany
+								setToMany.append(setRelation)
+								json[.setToMany] = setToMany
 
 								try? parent.update(from: json)
 						}
 
 						it("has set too many") {
-							expect(parent.setTooMany.map {$0.uuid}) == ["set id 1"]
+							expect(parent.setToMany.map {$0.uuid}) == ["set id 1"]
 						}
 
 						it("updates") {
 							//swiftlint:disable force_cast
-							let originalTooMany = parent.setTooMany
+							let originalTooMany = parent.setToMany
 
 							setRelation[.price] = 100.0
-							json[.setTooMany] = [setRelation]
+							json[.setToMany] = [setRelation]
 
-							expect((json[.setTooMany] as? [[String: Any]])?.map {($0[.price] as? Double) ?? 0}) == [100]
-							expect((json[.setTooMany] as? [[String: Any]])?.map {($0[.uuid] as? String) ?? ""}) == ["set id 1"]
+							expect((json[.setToMany] as? [[String: Any]])?.map {($0[.price] as? Double) ?? 0}) == [100]
+							expect((json[.setToMany] as? [[String: Any]])?.map {($0[.uuid] as? String) ?? ""}) == ["set id 1"]
 
 							try? parent.update(from: json)
 
-							expect(parent.setTooMany.first) === originalTooMany.first
+							expect(parent.setToMany.first) === originalTooMany.first
 
-							expect(parent.setTooMany.map {$0.uuid}) == [originalTooMany.first!.uuid]
-							expect(parent.setTooMany.map {$0.price ?? 0}) == [100]
+							expect(parent.setToMany.map {$0.uuid}) == [originalTooMany.first!.uuid]
+							expect(parent.setToMany.map {$0.price ?? 0}) == [100]
 
 						}
 
-						xcontext("relation deserialize operator") {
+						context("relation deserialize operator") {
+
+							it("has element in set") {
+								expect(parent.setToMany.map {$0.uuid}) == ["set id 1"]
+							}
 
 							it("removes id's no longer in JSON") {
-								//swiftlint:disable force_cast
-								json["tooMany"] = (json["tooMany"] as! [[String: Any]]).filter {($0["uuid"] as? String) != "uuid 0"}
 
-								try? parent.tooMany <-> json["tooMany"]
+								try? parent.setToMany <-> [[String: Any]]()
 
-								expect(parent.tooMany.map {$0.uuid}) == ["uuid 1", "uuid 2"]
+								expect(parent.setToMany.map {$0.uuid}) == []
 							}
 
 							it("add id's in JSON") {
-								let uuidAdded = "added id"
-								relation["uuid"] = uuidAdded
-								tooMany.append(relation)
-								json["tooMany"] = tooMany
+								let uuidAdded = "set added id"
+								relation[.uuid] = uuidAdded
 
-								let relations = json["tooMany"] as? [[String: Any]]
+								var originalRelation = relation
+								originalRelation[.uuid] = "set id 1"
 
-								var expected = allUUIDs
-								expected.append(uuidAdded)
+								json[.setToMany] = [relation, originalRelation]
 
-								expect(relations?.map {($0["uuid"] as? String) ?? ""}) == expected
+								let relations = json[.setToMany] as? [[String: Any]]
 
-								expect(parent.tooMany.map {$0.uuid}) == allUUIDs
+								expect(relations?.map {($0[.uuid] as? String) ?? ""}) == ["set added id", "set id 1"]
 
-								try? parent.tooMany <-> json["tooMany"]
+								expect(parent.setToMany.map {$0.uuid}) == ["set id 1"]
 
-								expect(parent.tooMany.map {$0.uuid}) == expected
+								try? parent.setToMany <-> json[.setToMany]
+
+								expect(parent.setToMany.map {$0.uuid}) == ["set id 1", "set added id" ]
 							}
 
 						}
@@ -319,8 +321,8 @@ class Parent: Deserializable, Updatable, Linkable {
 
 	var uuid: String
 	var relation: DeserializableObject
-	var tooMany = [DeserializableObject]()
-	var setTooMany = Set<DeserializableObject>()
+	var toMany = [DeserializableObject]()
+	var setToMany = Set<DeserializableObject>()
 
 	// MARK: - Linkable
 
@@ -346,8 +348,8 @@ class Parent: Deserializable, Updatable, Linkable {
 		try uuid <-> json[.uuid]
 		try relation <-> json[.relation]
 		do {
-			try tooMany <-> json[.tooMany]
-			try setTooMany <-> json[.setTooMany]
+			try toMany <-> json[.toMany]
+			try setToMany <-> json[.setToMany]
 		} catch {
 			printError(error)
 		}
@@ -420,7 +422,7 @@ enum API {
 	}
 
 	enum Relation: String {
-		case tooMany, setTooMany, relation
+		case toMany, setToMany, relation
 	}
 }
 
