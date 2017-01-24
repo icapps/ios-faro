@@ -56,9 +56,53 @@ Take a look at the `ServiceSpec`, in short:
 ```
 ## Serialize / Deserialize
 
-Deserialization and Serialization can happen automagically. For a more detailed example you can take a look at the ParseableSpec tests.
+Deserialization and Serialization can happen automagically. For a more detailed example you can take a look at the `DeserializeOperatorsSpec` tests.
 
-### Deserializable
+You can do:
+
+### Single relation
+
+Can be any instance that is `Updatable` or not. If you implement `Updatable` you can use `let` and the relations properties are updated rather. If you don't the childe is always replaced with a new instance with updated properties.
+```swift
+class Foo {
+let child: Child
+}
+```
+```swift
+// Not interested if nil
+let _ = try? singleRelation <-> json["single relation key"]
+// If interested in nil, or any other error
+do {
+  try singleRelation <-> json["single relation key"]
+} catch {
+  // handle error
+  print(error)
+}
+```
+
+### To many relation
+
+Can be an array or a set:
+```swift
+class Foo {
+  let tooMany: [Child]
+  // or Set
+  let tooMany: Set<Child>
+}
+```
+```swift
+// Not interested if nil
+let _ = try? tooMany <-> json["too many relation key"]
+// If interested in nil, or any other error
+do {
+  try tooMany <-> json["too many relation key"]
+} catch {
+  // handle error
+  print(error)
+}
+```
+
+### Deserializable example implementation
 
 ```swift
 class Zoo: Deserializable {
@@ -81,7 +125,7 @@ class Zoo: Deserializable {
 }
 
 ```
-### Serializable
+### Serializable example implementation
 
 ```swift
 extension Zoo: Serializable {
