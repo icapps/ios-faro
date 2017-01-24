@@ -12,7 +12,6 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 			context("Create from JSON") {
 
-
 				context("Relations") {
 
 					it("Single") {
@@ -260,7 +259,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 							setRelation[.price] = 100.0
 							json[.setTooMany] = [setRelation]
 
-							expect((json[.setTooMany] as? [[String: Any]])?.map {($0[.price] as? Double) ?? 0}) == [0]
+							expect((json[.setTooMany] as? [[String: Any]])?.map {($0[.price] as? Double) ?? 0}) == [100]
 							expect((json[.setTooMany] as? [[String: Any]])?.map {($0[.uuid] as? String) ?? ""}) == ["set id 1"]
 
 							try? parent.update(from: json)
@@ -268,7 +267,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 							expect(parent.setTooMany.first) === originalTooMany.first
 
 							expect(parent.setTooMany.map {$0.uuid}) == [originalTooMany.first!.uuid]
-							expect(parent.setTooMany.map {$0.price ?? 0}) == [105.0, 5.0, 5.0]
+							expect(parent.setTooMany.map {$0.price ?? 0}) == [100]
 
 						}
 
