@@ -4,127 +4,39 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-class Parent: Deserializable, Updatable, Linkable {
-	typealias ValueType = String
-
-	var uuid: String
-	var relation: DeserializableObject
-	var tooMany = [DeserializableObject]()
-
-	// MARK: - Linkable
-	var link: (key: String, value: String) { return (key: "uuid", value: uuid) }
-
-	required init?(from raw: Any) {
-		// Temp values are required because swift needs initialization
-		uuid = ""
-		relation = DeserializableObject()
-
-		do {
-			try update(from: raw)
-		} catch {
-			print(error)
-			return nil
-		}
-	}
-
-	func update(from raw: Any) throws {
-		guard let json = raw as? [String: Any] else {
-			throw FaroDeserializableError.wrongJSON(raw)
-		}
-		try uuid <-> json["uuid"]
-		try relation <-> json["relation"]
-		do {
-			try tooMany <-> json["tooMany"]
-		} catch {}
-	}
-
-}
-class DeserializableObject: Deserializable, Updatable, Linkable {
-	typealias ValueType = String
-
-    var uuid: String
-    var amount: Int?
-    var price: Double?
-    var tapped: Bool?
-    var date: Date?
-
-	// MARK: - Linkable
-	var link: (key: String, value: String) { return (key: "uuid", value: uuid) }
-
-	convenience init () {
-		self.init(from: ["uuid": UUID().uuidString])!
-	}
-
-    required init?(from raw: Any) {
-		uuid = UUID().uuidString
-		do {
-			try update(from: raw)
-		} catch {
-			print(error)
-			return nil
-		}
-
-    }
-
-	func update(from raw: Any) throws {
-		guard let json = raw as? [String: Any] else {
-			throw FaroDeserializableError.wrongJSON(raw)
-		}
-
-		try self.uuid <-> json["uuid"]
-		self.amount <-> json["amount"]
-		self.price <-> json["price"]
-		self.tapped <-> json["tapped"]
-		self.date <-> (json["date"], "yyyy-MM-dd")
-	}
-
-}
-
 class DeserializeOperatorsSpec: QuickSpec {
 
     override func spec() {
         describe("DeserializeOperatorsSpec") {
-            let testAny = ["uuid": "some id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"] as Any?
-			guard let json = testAny as? [String: Any] else {
-				XCTFail()
-				return
-			}
 
-            context("should give value for") {
-                it("should work for relations") {
-                    let relationId = ["relation 1", "relation 2"]
-                    let animalArray =  [["uuid": relationId[0]], ["uuid": relationId[1]]]
-                    let json = ["animalArray": animalArray] as Any?
+            context("Create from JSON") {
 
-                    var zoo = Zoo(from: ["": ""])
+				let json: [String: Any] = ["uuid": "some id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"]
 
-                    zoo <-> json
+				context("Relations") {
+					it("Single") {
+						let randomNumber = "randomNumber"
+						let json = ["cellNumber": randomNumber, "foodTicket": "ticket"] as Any?
 
-                    expect(zoo?.animalArray?.count) == 2
-                }
+						var gail = Jail(from: ["": ""])
 
-                it("should deserialize from object") {
-                    let randomNumber = "randomNumber"
-                    let json = ["cellNumber": randomNumber, "foodTicket": "ticket"] as Any?
+						gail <-> json
 
-                    var gail = Jail(from: ["": ""])
+						expect(gail?.cellNumber) == randomNumber
 
-                    gail <-> json
+					}
 
-                    expect(gail?.cellNumber) == randomNumber
+					it("Too many") {
+						let json = [["uuid": "id1"], ["uuid": "id2"]] as Any?
+						var animalArray: [Animal]?
 
-                }
+						animalArray <-> json
 
-                it("should deserialize from object Array") {
-                    let json = [["uuid": "id1"], ["uuid": "id2"]] as Any?
-                    var animalArray: [Animal]?
+						expect(animalArray?.count) == 2
+					}
+				}
 
-                    animalArray <-> json
-
-                    expect(animalArray?.count) == 2
-                }
-
-				context("Primitive types on object") {
+				context("Primitive Types") {
 					var o1: DeserializableObject!
 
 					beforeEach {
@@ -194,13 +106,15 @@ class DeserializeOperatorsSpec: QuickSpec {
 
             }
 
-			context("Update") {
-				var relation: [String: Any] = ["uuid": "relation id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"]
-				var updateAny: [String: Any] = ["uuid": "route id", "relation": relation]
+			context("Update form JSON") {
+				var relation = [String: Any]()
+				var json = [String: Any]()
 
 				var parent: Parent!
 				beforeEach {
-					 parent = Parent(from: updateAny)
+					 relation = ["uuid": "relation id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"]
+					 json  = ["uuid": "route id", "relation": relation]
+					 parent = Parent(from: json)
 				}
 
 				it("updates existing object") {
@@ -213,33 +127,36 @@ class DeserializeOperatorsSpec: QuickSpec {
 					expect(parent?.relation.date).toNot(beNil())
 
 					let initialRelation = parent?.relation
-					try? parent?.update(from: updateAny)
+					try? parent?.update(from: json)
 
 					expect(parent?.relation) === initialRelation
 				}
 
-				context("too many") {
+				context("Too many") {
+
+					var tooMany = [[String: Any]]()
+					let allUUIDs = ["uuid 0", "uuid 1", "uuid 2"]
 
 					beforeEach {
-						var tooMany = [[String: Any]]()
+						tooMany.removeAll()
 						for i in 0..<3 {
-							relation["uuid"] = "uuid \(i)"
+							relation["uuid"] = allUUIDs[i]
 							tooMany.append(relation)
 						}
-						updateAny["tooMany"] = tooMany
+						json["tooMany"] = tooMany
 					}
 
 					it("has tooMany relation") {
-						expect(updateAny["tooMany"]).toNot(beNil())
+						expect(json["tooMany"]).toNot(beNil())
 					}
 
 					it("updates") {
-						try? parent.update(from: updateAny)
-						expect(parent.tooMany.map {$0.uuid}) == ["uuid 0", "uuid 1", "uuid 2"]
+						try? parent.update(from: json)
+						expect(parent.tooMany.map {$0.uuid}) == allUUIDs
 
 						let originalTooMany = parent.tooMany
 
-						try? parent.update(from: updateAny)
+						try? parent.update(from: json)
 
 						expect(parent.tooMany[0]) === originalTooMany[0]
 						expect(parent.tooMany[1]) === originalTooMany[1]
@@ -248,18 +165,118 @@ class DeserializeOperatorsSpec: QuickSpec {
 						expect(parent.tooMany.map {$0.uuid}) == [originalTooMany[0].uuid, originalTooMany[1].uuid, originalTooMany[2].uuid]
 					}
 
-					it("removes ids no longer in JSON") {
-						//swiftlint:disable force_cast
-						updateAny["tooMany"] = (updateAny["tooMany"] as! [[String: Any]]).filter {($0["uuid"] as? String) != "uuid 0"}
+					context("relation deserialize operator") {
 
-						try? parent.update(from: updateAny)
+						it("removes id's no longer in JSON") {
+							//swiftlint:disable force_cast
+							json["tooMany"] = (json["tooMany"] as! [[String: Any]]).filter {($0["uuid"] as? String) != "uuid 0"}
 
-						expect(parent.tooMany.map {$0.uuid}) == ["uuid 1", "uuid 2"]
+							try? parent.tooMany <-> json["tooMany"]
+
+							expect(parent.tooMany.map {$0.uuid}) == ["uuid 1", "uuid 2"]
+						}
+
+						it("add id's in JSON") {
+							let uuidAdded = "added id"
+							relation["uuid"] = uuidAdded
+							tooMany.append(relation)
+							json["tooMany"] = tooMany
+
+							let relations = json["tooMany"] as? [[String: Any]]
+
+							var expected = allUUIDs
+							expected.append(uuidAdded)
+
+							expect(relations?.map {($0["uuid"] as? String) ?? ""}) == expected
+
+							try? parent.tooMany <-> json["tooMany"]
+							
+							expect(parent.tooMany.map {$0.uuid}) == expected
+						}
+
 					}
 
 				}
 			}
         }
     }
+
+}
+
+// MARK: - Example Models
+
+class Parent: Deserializable, Updatable, Linkable {
+	typealias ValueType = String
+
+	var uuid: String
+	var relation: DeserializableObject
+	var tooMany = [DeserializableObject]()
+
+	// MARK: - Linkable
+	var link: (key: String, value: String) { return (key: "uuid", value: uuid) }
+
+	required init?(from raw: Any) {
+		// Temp values are required because swift needs initialization
+		uuid = ""
+		relation = DeserializableObject()
+
+		do {
+			try update(from: raw)
+		} catch {
+			print(error)
+			return nil
+		}
+	}
+
+	func update(from raw: Any) throws {
+		guard let json = raw as? [String: Any] else {
+			throw FaroDeserializableError.wrongJSON(raw)
+		}
+		try uuid <-> json["uuid"]
+		try relation <-> json["relation"]
+		do {
+			try tooMany <-> json["tooMany"]
+		} catch {}
+	}
+
+}
+class DeserializableObject: Deserializable, Updatable, Linkable {
+	typealias ValueType = String
+
+	var uuid: String
+	var amount: Int?
+	var price: Double?
+	var tapped: Bool?
+	var date: Date?
+
+	// MARK: - Linkable
+	var link: (key: String, value: String) { return (key: "uuid", value: uuid) }
+
+	convenience init () {
+		self.init(from: ["uuid": UUID().uuidString])!
+	}
+
+	required init?(from raw: Any) {
+		uuid = UUID().uuidString
+		do {
+			try update(from: raw)
+		} catch {
+			print(error)
+			return nil
+		}
+
+	}
+
+	func update(from raw: Any) throws {
+		guard let json = raw as? [String: Any] else {
+			throw FaroDeserializableError.wrongJSON(raw)
+		}
+
+		try self.uuid <-> json["uuid"]
+		self.amount <-> json["amount"]
+		self.price <-> json["price"]
+		self.tapped <-> json["tapped"]
+		self.date <-> (json["date"], "yyyy-MM-dd")
+	}
 
 }
