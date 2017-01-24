@@ -7,7 +7,10 @@ public enum FaroDeserializableError: Error {
 	case linkNotUniqueInJSON([[String: Any]], linkValue: String)
 }
 
-// MARK: - Instantiates
+// MARK: - Deserializable objects
+
+// MARK: - Always instantiates new object
+
 /// The operator we define assings a value. Therefore its Precendencegroup is AssignmentPrecedence.
 /// Used for optional properties
 infix operator <->: AssignmentPrecedence
@@ -63,8 +66,7 @@ public func <-> <P>(lhs: inout [P]?, rhs: Any?) throws where P: Deserializable &
 	}
 }
 
-// MARK: - Required properties
-
+// MARK: - Required
 
 public func <-> <P>(lhs: inout P, rhs: Any?) throws where P: Deserializable & Updatable {
 	guard let dict = rhs as? [String: Any] else {
@@ -74,6 +76,7 @@ public func <-> <P>(lhs: inout P, rhs: Any?) throws where P: Deserializable & Up
 }
 
 // MARK: - Array relations
+
 /// Removes `Linkable.link.key` elements not found in rhs
 /// ValueType of `Linkable.link.Value` is `Int`
 public func <-> <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & Updatable & Linkable, P.ValueType: Equatable,  P.ValueType: ExpressibleByStringLiteral {
@@ -113,7 +116,8 @@ public func <-> <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & 
 
 }
 
-/// MARK: - Set Relation
+// MARK: - Set Relation
+
 /// Removes `Linkable.link.key` elements not found in rhs
 /// ValueType of `Linkable.link.Value` is `Int`
 public func <-> <P>(lhs: inout Set<P>, rhs: Any?) throws where P: Deserializable & Updatable & Linkable, P.ValueType: Equatable,  P.ValueType: ExpressibleByStringLiteral {
@@ -153,7 +157,7 @@ public func <-> <P>(lhs: inout Set<P>, rhs: Any?) throws where P: Deserializable
 	
 }
 
-/// MARK: - Deserialize operators
+// MARK: - Primitive Types
 
 /// `Any?` is taken and set to the left hand side.
 public func <-> (lhs: inout Int?, rhs: Any?) {
@@ -188,6 +192,7 @@ public func <-> (lhs: inout Date?, rhs: (Any?, String)) {
     DateParser.shared.dateFormat = rhs.1
     lhs = DateParser.shared.dateFormatter.date(from: date)
 }
+
 // MARK: - Required
 
 public func <-> (lhs: inout Int, rhs: Any?) throws {
