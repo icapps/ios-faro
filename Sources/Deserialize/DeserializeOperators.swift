@@ -134,7 +134,7 @@ public func <-> <P>(lhs: inout Set<P>, rhs: Any?) throws where P: Deserializable
 			guard dict.count == 1 else {
 				throw FaroDeserializableError.linkNotUniqueInJSON(nodesToProcess, linkValue: "\(element.link.value)")
 			}
-
+			
 			try element.update(from: dict.first)
 			// remove all nodes we processed
 			nodesToProcess.remove(at: index)

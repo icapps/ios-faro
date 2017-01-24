@@ -236,37 +236,43 @@ class DeserializeOperatorsSpec: QuickSpec {
 						}
 					}
 
-					xcontext("Set relation") {
+					context("Set relation") {
+
+						var setTooMany = [[String: Any]]()
+						var setRelation = [String: Any]()
+
+						beforeEach {
+								setRelation[.uuid] = "set id 1"
+								setTooMany.append(setRelation)
+								json[.setTooMany] = setTooMany
+
+								try? parent.update(from: json)
+						}
+
+						it("has set too many") {
+							expect(parent.setTooMany.map {$0.uuid}) == ["set id 1"]
+						}
 
 						it("updates") {
 							//swiftlint:disable force_cast
-							let originalTooMany = parent.tooMany
+							let originalTooMany = parent.setTooMany
 
-							var relationDifferentPrice = relation
-							relationDifferentPrice["uuid"] = parent.tooMany[0].uuid
-							relationDifferentPrice["price"] = (parent.tooMany[0].price ?? 0) + 100
+							setRelation[.price] = 100.0
+							json[.setTooMany] = [setRelation]
 
-							// remove original price from json
-							json["tooMany"] = (json["setTooMany"] as! [[String: Any]]).filter {($0["uuid"] as? String) != parent.tooMany[0].uuid}
-							// set new price
-							var jsonTooManyWithDifferentPrice = json["tooMany"] as? [[String: Any]]
-							jsonTooManyWithDifferentPrice?.append(relationDifferentPrice)
-							json["tooMany"] = jsonTooManyWithDifferentPrice
-
-							expect((json["tooMany"] as? [[String: Any]])?.map {($0["price"] as? Double) ?? 0}) == [5.0, 5.0, 105.0]
+							expect((json[.setTooMany] as? [[String: Any]])?.map {($0[.price] as? Double) ?? 0}) == [0]
+							expect((json[.setTooMany] as? [[String: Any]])?.map {($0[.uuid] as? String) ?? ""}) == ["set id 1"]
 
 							try? parent.update(from: json)
 
-							expect(parent.tooMany[0]) === originalTooMany[0]
-							expect(parent.tooMany[1]) === originalTooMany[1]
-							expect(parent.tooMany[2]) === originalTooMany[2]
+							expect(parent.setTooMany.first) === originalTooMany.first
 
-							expect(parent.tooMany.map {$0.uuid}) == [originalTooMany[0].uuid, originalTooMany[1].uuid, originalTooMany[2].uuid]
-							expect(parent.tooMany.map {$0.price ?? 0}) == [105.0, 5.0, 5.0]
+							expect(parent.setTooMany.map {$0.uuid}) == [originalTooMany.first!.uuid]
+							expect(parent.setTooMany.map {$0.price ?? 0}) == [105.0, 5.0, 5.0]
 
 						}
 
-						context("relation deserialize operator") {
+						xcontext("relation deserialize operator") {
 
 							it("removes id's no longer in JSON") {
 								//swiftlint:disable force_cast
@@ -299,7 +305,6 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 						}
 					}
-
 
 				}
 			}
@@ -339,17 +344,18 @@ class Parent: Deserializable, Updatable, Linkable {
 		guard let json = raw as? [String: Any] else {
 			throw FaroDeserializableError.wrongJSON(raw)
 		}
-		try uuid <-> json["uuid"]
-		try relation <-> json["relation"]
+		try uuid <-> json[.uuid]
+		try relation <-> json[.relation]
 		do {
-			try tooMany <-> json["tooMany"]
+			try tooMany <-> json[.tooMany]
+			try setTooMany <-> json[.setTooMany]
 		} catch {
 			printError(error)
 		}
 	}
 
 }
-class DeserializableObject: Deserializable, Updatable, Linkable, Hashable {
+class DeserializableObject: Deserializable, Updatable, Linkable, Hashable, CustomDebugStringConvertible, CustomStringConvertible {
 	typealias ValueType = String
 
 	var uuid: String
@@ -392,13 +398,18 @@ class DeserializableObject: Deserializable, Updatable, Linkable, Hashable {
 			throw FaroDeserializableError.wrongJSON(raw)
 		}
 
-		print("PRICE updating \(price) to \(json["price"] as? Double)")
+		print("PRICE updating \(price) to \(json[.price] as? Double)")
 		try self.uuid <-> json[.uuid]
-		self.amount <-> json["amount"]
-		self.price <-> json["price"]
-		self.tapped <-> json["tapped"]
-		self.date <-> (json["date"], "yyyy-MM-dd")
+		self.amount <-> json[.amount]
+		self.price <-> json[.price]
+		self.tapped <-> json[.tapped]
+		self.date <-> (json[.date], "yyyy-MM-dd")
 	}
+
+	// MARK: - Custom String Convertible
+
+	var description: String {return "DeserializableObject id: \(uuid) price: \(price)"}
+	var debugDescription: String { return "DeserializableObject id: \(uuid) price: \(price), amount: \(amount), tapped: \(tapped), date: \(date)" }
 
 }
 
