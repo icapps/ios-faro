@@ -109,7 +109,7 @@ public extension UserDefaults {
     /// ```
     public subscript(key: DefaultsKey<Bool?>) -> Bool {
         get {
-            return bool(forKey: key.key) ?? false
+            return bool(forKey: key.key)
         }
         set {
             set(newValue, forKey: key.key)
