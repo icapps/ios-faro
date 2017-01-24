@@ -7,10 +7,10 @@ import Faro
 
 class DeserializeOperatorsSpec: QuickSpec {
 
-    override func spec() {
-        describe("DeserializeOperatorsSpec") {
+	override func spec() {
+		describe("DeserializeOperatorsSpec") {
 
-            context("Create from JSON") {
+			context("Create from JSON") {
 
 
 				context("Relations") {
@@ -74,7 +74,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 							try o1.uuid <-> json[.uuid]
 
 							return expect(o1?.uuid) == json[.uuid] as? String
-						}.toNot(throwError())
+							}.toNot(throwError())
 					}
 
 					context("Date") {
@@ -112,7 +112,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 					}
 				}
 
-            }
+			}
 
 			context("Update form JSON") {
 				var relation = [String: Any]()
@@ -121,10 +121,16 @@ class DeserializeOperatorsSpec: QuickSpec {
 				var parent: Parent!
 
 				beforeEach {
-					 relation = ["uuid": "relation id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"]
+					relation[.uuid] = "relation id"
+					relation[.amount] = 20
+					relation[.tapped] = true
+					relation[.date] =  "1994-08-20"
+					relation[.price] = 5.0
 
-					 json  = ["uuid": "route id", "relation": relation]
-					 parent = Parent(from: json)
+					json[.uuid] = "route id"
+					json[.relation] = relation
+
+					parent = Parent(from: json)
 				}
 
 				it("updates existing object") {
@@ -145,7 +151,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 				context("Too many") {
 
 					var tooMany = [[String: Any]]()
-					let allUUIDs = ["uuid 0", "uuid 1", "uuid 2"]
+					let allUUIDs = ["uuid 1", "uuid 2", "uuid 0"]
 
 					beforeEach {
 						tooMany.removeAll()
@@ -204,7 +210,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 								try? parent.tooMany <-> json["tooMany"]
 
-								expect(parent.tooMany.map {$0.uuid}) == ["uuid 1", "uuid 2"]
+								expect(parent.tooMany.map {$0.uuid}) == ["uuid 2", "uuid 1"]
 							}
 
 							it("add id's in JSON") {
@@ -221,12 +227,12 @@ class DeserializeOperatorsSpec: QuickSpec {
 								expect(relations?.map {($0["uuid"] as? String) ?? ""}) == expected
 
 								expect(parent.tooMany.map {$0.uuid}) == allUUIDs
-								
+
 								try? parent.tooMany <-> json["tooMany"]
-								
+
 								expect(parent.tooMany.map {$0.uuid}) == expected
 							}
-							
+
 						}
 					}
 
@@ -287,18 +293,18 @@ class DeserializeOperatorsSpec: QuickSpec {
 								expect(parent.tooMany.map {$0.uuid}) == allUUIDs
 
 								try? parent.tooMany <-> json["tooMany"]
-								
+
 								expect(parent.tooMany.map {$0.uuid}) == expected
 							}
-							
+
 						}
 					}
 
 
 				}
 			}
-        }
-    }
+		}
+	}
 
 }
 
@@ -404,7 +410,7 @@ enum API {
 	}
 
 	enum Relation: String {
-		case tooMany, setTooMany
+		case tooMany, setTooMany, relation
 	}
 }
 
@@ -423,29 +429,29 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
 			guard let newValue = newValue, let key = map.rawValue as? Key  else {
 				return
 			}
-
+			
 			self[key] = newValue
 		}
 	}
-
+	
 }
 
 extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
-
+	
 	subscript (map: API.Relation) -> Value? {
 		get {
 			guard let key = map.rawValue as? Key else {
 				return nil
 			}
-
+			
 			let dict = self[key] as Value?
 			return dict
-
+			
 		} set (newValue) {
 			guard let newValue = newValue, let key = map.rawValue as? Key  else {
 				return
 			}
-
+			
 			self[key] = newValue
 		}
 	}
