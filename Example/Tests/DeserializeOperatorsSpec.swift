@@ -1,5 +1,6 @@
 import Quick
 import Nimble
+import Stella
 
 import Faro
 @testable import Faro_Example
@@ -144,17 +145,34 @@ class DeserializeOperatorsSpec: QuickSpec {
 							tooMany.append(relation)
 						}
 						json["tooMany"] = tooMany
+
+						try? parent.update(from: json)
 					}
 
-					it("has tooMany relation") {
+					it("has tooMany relation in JSON") {
 						expect(json["tooMany"]).toNot(beNil())
 					}
 
-					it("updates") {
-						try? parent.update(from: json)
+					it("has tooMany relation in Parent") {
 						expect(parent.tooMany.map {$0.uuid}) == allUUIDs
+					}
 
+					it("updates") {
+						//swiftlint:disable force_cast
 						let originalTooMany = parent.tooMany
+
+						var relationDifferentPrice = relation
+						relationDifferentPrice["uuid"] = parent.tooMany[0].uuid
+						relationDifferentPrice["price"] = (parent.tooMany[0].price ?? 0) + 100
+
+						// remove original price from json
+						json["tooMany"] = (json["tooMany"] as! [[String: Any]]).filter {($0["uuid"] as? String) != parent.tooMany[0].uuid}
+						// set new price
+						var jsonTooManyWithDifferentPrice = json["tooMany"] as? [[String: Any]]
+						jsonTooManyWithDifferentPrice?.append(relationDifferentPrice)
+						json["tooMany"] = jsonTooManyWithDifferentPrice
+
+						expect((json["tooMany"] as? [[String: Any]])?.map {($0["price"] as? Double) ?? 0}) == [5.0, 5.0, 105.0]
 
 						try? parent.update(from: json)
 
@@ -163,6 +181,8 @@ class DeserializeOperatorsSpec: QuickSpec {
 						expect(parent.tooMany[2]) === originalTooMany[2]
 
 						expect(parent.tooMany.map {$0.uuid}) == [originalTooMany[0].uuid, originalTooMany[1].uuid, originalTooMany[2].uuid]
+						expect(parent.tooMany.map {$0.price ?? 0}) == [105.0, 5.0, 5.0]
+
 					}
 
 					context("relation deserialize operator") {
@@ -188,6 +208,8 @@ class DeserializeOperatorsSpec: QuickSpec {
 							expected.append(uuidAdded)
 
 							expect(relations?.map {($0["uuid"] as? String) ?? ""}) == expected
+
+							expect(parent.tooMany.map {$0.uuid}) == allUUIDs
 
 							try? parent.tooMany <-> json["tooMany"]
 							
@@ -236,7 +258,9 @@ class Parent: Deserializable, Updatable, Linkable {
 		try relation <-> json["relation"]
 		do {
 			try tooMany <-> json["tooMany"]
-		} catch {}
+		} catch {
+			printError(error)
+		}
 	}
 
 }
@@ -272,6 +296,7 @@ class DeserializableObject: Deserializable, Updatable, Linkable {
 			throw FaroDeserializableError.wrongJSON(raw)
 		}
 
+		print("PRICE updating \(price) to \(json["price"] as? Double)")
 		try self.uuid <-> json["uuid"]
 		self.amount <-> json["amount"]
 		self.price <-> json["price"]

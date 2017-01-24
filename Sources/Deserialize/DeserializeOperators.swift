@@ -4,6 +4,7 @@ public enum FaroDeserializableError: Error {
 	case wrongJSON(Any?)
 	case valueMissing
 	case invalidDate(String)
+	case linkNotUniqueInJSON([[String: Any]], linkValue: String)
 }
 
 // MARK: - Instantiates
@@ -74,20 +75,27 @@ public func <-> <P>(lhs: inout P, rhs: Any?) throws where P: Deserializable & Up
 
 /// Removes `Linkable.link.key` elements not found in rhs
 /// ValueType of `Linkable.link.Value` is `Int`
-public func <-> <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & Updatable & Linkable, P.ValueType: Equatable {
+public func <-> <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & Updatable & Linkable, P.ValueType: Equatable,  P.ValueType: ExpressibleByStringLiteral {
 	guard let rawObjects = rhs as? [[String: Any]] else {
 		throw FaroDeserializableError.wrongJSON(rhs)
 	}
 	if !lhs.isEmpty {
+		var removeIndexes = [Int]()
 		try lhs.enumerated().forEach {
 			let element = $0.element
 			let dict = (rawObjects.filter {($0[element.link.key] as? P.ValueType)  == element.link.value})
-			if !dict.isEmpty {
-				try element.update(from: dict)
-			} else {
-				lhs.remove(at: $0.offset)
+			guard !dict.isEmpty else {
+				removeIndexes.append($0.offset)
+				return
 			}
+			guard dict.count == 1 else {
+				throw FaroDeserializableError.linkNotUniqueInJSON(rawObjects, linkValue: "\(element.link.value)")
+			}
+
+			try element.update(from: dict.first)
+
 		}
+		removeIndexes.forEach { lhs.remove(at: $0)}
 	} else {
 		lhs = rawObjects.flatMap { P(from: $0) }
 	}
