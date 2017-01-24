@@ -56,7 +56,7 @@ Take a look at the `ServiceSpec`, in short:
 ```
 ## Serialize / Deserialize
 
-Deserialization and Serialization can happen automagically. For a more detailed example you can take a look at the `DeserializeOperatorsSpec` tests.
+Deserialization and Serialization can happen automagically. For a more detailed example you can take a look at the `DeserializeOperatorSimplifiedSpec` tests.
 
 You can do:
 
