@@ -194,7 +194,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 
             }
 
-			fcontext("Update") {
+			context("Update") {
 				var relation: [String: Any] = ["uuid": "relation id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"]
 				var updateAny: [String: Any] = ["uuid": "route id", "relation": relation]
 
