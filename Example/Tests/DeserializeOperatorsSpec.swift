@@ -81,12 +81,14 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 						it("String in json") {
 							o1.date <-> (json[.date], "yyyy-MM-dd")
+							try? o1.requiredDate <-> (json[.date], "yyyy-MM-dd")
 
 							let formatter = DateFormatter()
 							formatter.dateFormat = "yyyy-MM-dd"
 							let currentDate = formatter.date(from: "1994-08-20")
 
 							expect(o1.date) == currentDate
+							expect(o1.requiredDate) == currentDate
 
 						}
 
