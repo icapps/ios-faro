@@ -12,18 +12,18 @@ class DeserializeOperatorsSpec: QuickSpec {
 
             context("Create from JSON") {
 
-				let json: [String: Any] = ["uuid": "some id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"]
 
 				context("Relations") {
+
 					it("Single") {
 						let randomNumber = "randomNumber"
-						let json = ["cellNumber": randomNumber, "foodTicket": "ticket"] as Any?
+						let json: [String: Any] = ["cellNumber": randomNumber, "foodTicket": "ticket"]
 
-						var gail = Jail(from: ["": ""])
+						var jail = Jail(from: ["": ""])
 
-						gail <-> json
+						jail <-> json
 
-						expect(gail?.cellNumber) == randomNumber
+						expect(jail?.cellNumber) == randomNumber
 
 					}
 
@@ -38,42 +38,49 @@ class DeserializeOperatorsSpec: QuickSpec {
 				}
 
 				context("Primitive Types") {
+					var json = [String: Any]()
 					var o1: DeserializableObject!
 
 					beforeEach {
-						 o1 = DeserializableObject()
+						o1 = DeserializableObject()
+
+						json[.uuid] = "some id"
+						json[.amount] = 20
+						json[.price] = 5.0
+						json[.tapped] = true
+						json[.date] = "1994-08-20"
 					}
 
 					it("Int") {
-						o1.amount <-> json["amount"]
+						o1.amount <-> json[.amount]
 
-						expect(o1.amount) == json["amount"] as? Int
+						expect(o1.amount) == json[.amount] as? Int
 					}
 
 					it("Double") {
-						o1.price <-> json["price"]
+						o1.price <-> json[.price]
 
-						expect(o1?.price) == json["price"] as? Double
+						expect(o1?.price) == json[.price] as? Double
 					}
 
 					it("Bool") {
-						o1?.tapped <-> json["tapped"]
+						o1?.tapped <-> json[.tapped]
 
-						expect(o1?.tapped) == json["tapped"] as? Bool
+						expect(o1?.tapped) == json[.tapped] as? Bool
 					}
 
 					it("String") {
 						expect {
-							try o1.uuid <-> json["uuid"]
+							try o1.uuid <-> json[.uuid]
 
-							return expect(o1?.uuid) == json["uuid"] as? String
+							return expect(o1?.uuid) == json[.uuid] as? String
 						}.toNot(throwError())
 					}
 
 					context("Date") {
 
 						it("String in json") {
-							o1.date <-> (json["date"], "yyyy-MM-dd")
+							o1.date <-> (json[.date], "yyyy-MM-dd")
 
 							let formatter = DateFormatter()
 							formatter.dateFormat = "yyyy-MM-dd"
@@ -112,8 +119,10 @@ class DeserializeOperatorsSpec: QuickSpec {
 				var json = [String: Any]()
 
 				var parent: Parent!
+
 				beforeEach {
 					 relation = ["uuid": "relation id", "amount": 20, "price": 5.0, "tapped": true, "date": "1994-08-20"]
+
 					 json  = ["uuid": "route id", "relation": relation]
 					 parent = Parent(from: json)
 				}
@@ -221,6 +230,70 @@ class DeserializeOperatorsSpec: QuickSpec {
 						}
 					}
 
+					xcontext("Set relation") {
+
+						it("updates") {
+							//swiftlint:disable force_cast
+							let originalTooMany = parent.tooMany
+
+							var relationDifferentPrice = relation
+							relationDifferentPrice["uuid"] = parent.tooMany[0].uuid
+							relationDifferentPrice["price"] = (parent.tooMany[0].price ?? 0) + 100
+
+							// remove original price from json
+							json["tooMany"] = (json["setTooMany"] as! [[String: Any]]).filter {($0["uuid"] as? String) != parent.tooMany[0].uuid}
+							// set new price
+							var jsonTooManyWithDifferentPrice = json["tooMany"] as? [[String: Any]]
+							jsonTooManyWithDifferentPrice?.append(relationDifferentPrice)
+							json["tooMany"] = jsonTooManyWithDifferentPrice
+
+							expect((json["tooMany"] as? [[String: Any]])?.map {($0["price"] as? Double) ?? 0}) == [5.0, 5.0, 105.0]
+
+							try? parent.update(from: json)
+
+							expect(parent.tooMany[0]) === originalTooMany[0]
+							expect(parent.tooMany[1]) === originalTooMany[1]
+							expect(parent.tooMany[2]) === originalTooMany[2]
+
+							expect(parent.tooMany.map {$0.uuid}) == [originalTooMany[0].uuid, originalTooMany[1].uuid, originalTooMany[2].uuid]
+							expect(parent.tooMany.map {$0.price ?? 0}) == [105.0, 5.0, 5.0]
+
+						}
+
+						context("relation deserialize operator") {
+
+							it("removes id's no longer in JSON") {
+								//swiftlint:disable force_cast
+								json["tooMany"] = (json["tooMany"] as! [[String: Any]]).filter {($0["uuid"] as? String) != "uuid 0"}
+
+								try? parent.tooMany <-> json["tooMany"]
+
+								expect(parent.tooMany.map {$0.uuid}) == ["uuid 1", "uuid 2"]
+							}
+
+							it("add id's in JSON") {
+								let uuidAdded = "added id"
+								relation["uuid"] = uuidAdded
+								tooMany.append(relation)
+								json["tooMany"] = tooMany
+
+								let relations = json["tooMany"] as? [[String: Any]]
+
+								var expected = allUUIDs
+								expected.append(uuidAdded)
+
+								expect(relations?.map {($0["uuid"] as? String) ?? ""}) == expected
+
+								expect(parent.tooMany.map {$0.uuid}) == allUUIDs
+
+								try? parent.tooMany <-> json["tooMany"]
+								
+								expect(parent.tooMany.map {$0.uuid}) == expected
+							}
+							
+						}
+					}
+
 
 				}
 			}
@@ -237,8 +310,10 @@ class Parent: Deserializable, Updatable, Linkable {
 	var uuid: String
 	var relation: DeserializableObject
 	var tooMany = [DeserializableObject]()
+	var setTooMany = Set<DeserializableObject>()
 
 	// MARK: - Linkable
+
 	var link: (key: String, value: String) { return (key: "uuid", value: uuid) }
 
 	required init?(from raw: Any) {
@@ -268,7 +343,7 @@ class Parent: Deserializable, Updatable, Linkable {
 	}
 
 }
-class DeserializableObject: Deserializable, Updatable, Linkable {
+class DeserializableObject: Deserializable, Updatable, Linkable, Hashable {
 	typealias ValueType = String
 
 	var uuid: String
@@ -277,7 +352,18 @@ class DeserializableObject: Deserializable, Updatable, Linkable {
 	var tapped: Bool?
 	var date: Date?
 
+	// MARK: - Hashable
+
+	var hashValue: Int {
+		return uuid.hashValue
+	}
+
+	static func == (lhs: DeserializableObject, rhs: DeserializableObject) -> Bool {
+		return lhs.uuid == rhs.uuid
+	}
+
 	// MARK: - Linkable
+
 	var link: (key: String, value: String) { return (key: "uuid", value: uuid) }
 
 	convenience init () {
@@ -301,11 +387,67 @@ class DeserializableObject: Deserializable, Updatable, Linkable {
 		}
 
 		print("PRICE updating \(price) to \(json["price"] as? Double)")
-		try self.uuid <-> json["uuid"]
+		try self.uuid <-> json[.uuid]
 		self.amount <-> json["amount"]
 		self.price <-> json["price"]
 		self.tapped <-> json["tapped"]
 		self.date <-> (json["date"], "yyyy-MM-dd")
 	}
 
+}
+
+// MARK: - Dictionary Helpers
+enum API {
+
+	enum Common: String {
+		case uuid, amount, price, tapped, date
+	}
+
+	enum Relation: String {
+		case tooMany, setTooMany
+	}
+}
+
+extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
+
+	subscript (map: API.Common) -> Value? {
+		get {
+			guard let key = map.rawValue as? Key else {
+				return nil
+			}
+
+			let dict = self[key] as Value?
+			return dict
+
+		} set (newValue) {
+			guard let newValue = newValue, let key = map.rawValue as? Key  else {
+				return
+			}
+
+			self[key] = newValue
+		}
+	}
+
+}
+
+extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
+
+	subscript (map: API.Relation) -> Value? {
+		get {
+			guard let key = map.rawValue as? Key else {
+				return nil
+			}
+
+			let dict = self[key] as Value?
+			return dict
+
+		} set (newValue) {
+			guard let newValue = newValue, let key = map.rawValue as? Key  else {
+				return
+			}
+
+			self[key] = newValue
+		}
+	}
+	
 }
