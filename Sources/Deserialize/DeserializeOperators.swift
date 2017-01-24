@@ -79,7 +79,7 @@ public func <-> <P>(lhs: inout P, rhs: Any?) throws where P: Deserializable & Up
 
 /// Removes `Linkable.link.key` elements not found in rhs
 /// ValueType of `Linkable.link.Value` is `Int`
-public func <-> <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & Updatable & Linkable, P.ValueType: Equatable,  P.ValueType: ExpressibleByStringLiteral {
+public func <-> <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & Updatable & Linkable, P.ValueType: Equatable {
 	guard var nodesToProcess = rhs as? [[String: Any]] else {
 		throw FaroDeserializableError.wrongJSON(rhs)
 	}
@@ -120,7 +120,7 @@ public func <-> <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & 
 
 /// Removes `Linkable.link.key` elements not found in rhs
 /// ValueType of `Linkable.link.Value` is `Int`
-public func <-> <P>(lhs: inout Set<P>, rhs: Any?) throws where P: Deserializable & Updatable & Linkable, P.ValueType: Equatable,  P.ValueType: ExpressibleByStringLiteral {
+public func <-> <P>(lhs: inout Set<P>, rhs: Any?) throws where P: Deserializable & Updatable & Linkable, P.ValueType: Equatable {
 	guard var nodesToProcess = rhs as? [[String: Any]] else {
 		throw FaroDeserializableError.wrongJSON(rhs)
 	}
