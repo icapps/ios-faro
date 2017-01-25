@@ -31,7 +31,7 @@ class IntegerLink: Deserializable, Updatable, Linkable, Hashable, CustomDebugStr
 	var link: (key: String, value: Int) { return (key: "uuid", value: uuid) }
 
 	convenience init () {
-		self.init(from: ["uuid": UUID().uuidString])!
+		self.init(from: ["uuid": UUID().uuidString.hashValue])!
 	}
 
 	required init?(from raw: Any) {

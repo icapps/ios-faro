@@ -43,6 +43,15 @@ class DeserializeOperatorSimplifiedSpec: QuickSpec {
 					return true
 				}.toNot(throwError())
 			}
+
+			it("removes") {
+				let foo = Foo()
+				foo.integerLink = [IntegerLink(), IntegerLink(), IntegerLink()]
+
+				try? foo.integerLink <-> [[String: Any]]()
+
+				expect(foo.integerLink.map {$0.uuid}) == []
+			}
 		}
 	}
 
