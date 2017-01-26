@@ -138,6 +138,120 @@ class DeserializeFunctionSpec: QuickSpec {
 					}
 				}
 
+				context("RawRepresentable") {
+
+					enum StringRaw: String {
+						case foo, invalid
+					}
+
+					enum IntRaw: Int {
+						case foo, invalid
+					}
+
+					context("String") {
+
+						context("required") {
+
+							it("set correct value") {
+								var foo: StringRaw = StringRaw(rawValue: "invalid")!
+
+								try? foo <-> "foo"
+
+								expect(foo.rawValue) == StringRaw.foo.rawValue
+							}
+
+							it("throws for unknown") {
+								var foo: StringRaw = StringRaw(rawValue: "invalid")!
+
+								expect {return try foo <-> "bullshit"}.to(throwError {
+									if let error = $0 as? FaroDeserializableError {
+										switch error {
+										case .rawRepresentableFail(let string):
+											expect(string as? String) == "bullshit"
+										default:
+											XCTFail("\(error)")
+										}
+									} else {
+										XCTFail("\($0)")
+									}
+								})
+							}
+						}
+
+						context("Optional") {
+
+							it("set correct value") {
+								var foo: StringRaw? = StringRaw(rawValue: "invalid")
+
+								foo <-> "foo"
+
+								expect(foo?.rawValue) == StringRaw.foo.rawValue
+							}
+
+							it("nil for unknown") {
+								var foo: StringRaw? = StringRaw(rawValue: "invalid")
+
+								foo <-> "bullshit"
+
+								expect(foo).to(beNil())
+							}
+						}
+
+					}
+
+					context("Int") {
+
+						context("required") {
+
+							it("set value") {
+								var foo: IntRaw = IntRaw(rawValue: IntRaw.invalid.rawValue)!
+
+								try? foo <->  IntRaw.foo.rawValue
+
+								expect(foo.rawValue) == IntRaw.foo.rawValue
+							}
+
+							it("throws for unknown") {
+								var foo: StringRaw = StringRaw(rawValue: "invalid")!
+
+								expect {return try foo <-> 1000}.to(throwError {
+									if let error = $0 as? FaroDeserializableError {
+										switch error {
+										case .rawRepresentableFail(let string):
+											expect(string as? Int) == 1000
+										default:
+											XCTFail("\(error)")
+										}
+									} else {
+										XCTFail("\($0)")
+									}
+								})
+							}
+						}
+
+						context("Optional") {
+
+							it("set value") {
+								var foo: IntRaw? = IntRaw(rawValue: IntRaw.invalid.rawValue)
+
+								foo <-> IntRaw.foo.rawValue
+
+								expect(foo?.rawValue) == IntRaw.foo.rawValue
+							}
+
+							it("nil for unknown") {
+								var foo: IntRaw? = IntRaw(rawValue: IntRaw.invalid.rawValue)
+
+								foo <-> 100
+								expect(foo).to(beNil())
+							}
+
+						}
+
+					}
+
+				}
+
 			}
 
         }
