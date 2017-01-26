@@ -18,6 +18,7 @@ public enum FaroError: Error, Equatable {
     case serializationError
     case updateNotPossible(json: Any, model: Any)
     case invalidSession(message: String)
+	case couldNotCreateTask
 }
 
 public func == (lhs: FaroError, rhs: FaroError) -> Bool {

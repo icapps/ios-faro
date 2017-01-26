@@ -8,7 +8,7 @@ class MockService: Service {
         super.init(configuration: Configuration(baseURL: "mockService"))
     }
 
-    override func perform<M: Deserializable>(_ call: Call, result: @escaping (Result<M>) -> ()) {
+    override func perform<M: Deserializable>(_ call: Call, result: @escaping (Result<M>) -> Void) {
         result(handle(json: self.mockJSON, call: call))
     }
 

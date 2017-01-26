@@ -1,7 +1,7 @@
 import Foundation
 
-#if _runtime(_ObjC)
-
+/// If you are running on a slower machine, it could be useful to increase the default timeout value
+/// or slow down poll interval. Default timeout interval is 1, and poll interval is 0.01.
 public struct AsyncDefaults {
     public static var Timeout: TimeInterval = 1
     public static var PollInterval: TimeInterval = 0.01
@@ -30,7 +30,7 @@ internal struct AsyncMatcherWrapper<T, U>: Matcher
             fnName: fnName) {
                 try self.fullMatcher.matches(uncachedExpression, failureMessage: failureMessage)
         }
-        switch (result) {
+        switch result {
         case let .completed(isSuccessful): return isSuccessful
         case .timedOut: return false
         case let .errorThrown(error):
@@ -57,7 +57,7 @@ internal struct AsyncMatcherWrapper<T, U>: Matcher
             fnName: "expect(...).toEventuallyNot(...)") {
                 try self.fullMatcher.doesNotMatch(uncachedExpression, failureMessage: failureMessage)
         }
-        switch (result) {
+        switch result {
         case let .completed(isSuccessful): return isSuccessful
         case .timedOut: return false
         case let .errorThrown(error):
@@ -139,5 +139,3 @@ extension Expectation {
         return toEventuallyNot(matcher, timeout: timeout, pollInterval: pollInterval, description: description)
     }
 }
-
-#endif

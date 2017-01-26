@@ -20,13 +20,13 @@ extension Service {
             case .model(let model):
                 guard let model = model else {
                     let faroError = FaroError.malformed(info: "UpdateModel \(updateModel) could not be updated. Maybe you did not implement update correctly failed?")
-                    self.print(faroError, and: fail)
+                    self.printConvenience(faroError, and: fail)
                     return
                 }
                 ok(model)
             case .models( _ ):
                 let faroError = FaroError.malformed(info: "Requested a single response be received a collection.")
-                self.print(faroError, and: fail)
+                self.printConvenience(faroError, and: fail)
             default:
                 self.handle(result, and: fail)
             }
@@ -48,13 +48,13 @@ extension Service {
             case .model(let model):
                 guard let model = model else {
                     let faroError = FaroError.malformed(info: "Model could not be initialized. Maybe your init(from raw:) failed?")
-                    self.print(faroError, and: fail)
+                    self.printConvenience(faroError, and: fail)
                     return
                 }
                 ok(model)
             case .models( _ ):
                 let faroError = FaroError.malformed(info: "Requested a single response be received a collection.")
-                self.print(faroError, and: fail)
+                self.printConvenience(faroError, and: fail)
             default:
                 self.handle(result, and: fail)
             }
@@ -74,7 +74,7 @@ extension Service {
             case .models(let models):
                 guard let models = models else {
                     let faroError = FaroError.malformed(info: "Model could not be initialized. Maybe your init(from raw:) failed?")
-                    self.print(faroError, and: fail)
+                    self.printConvenience(faroError, and: fail)
                     return
                 }
                 ok(models)
@@ -93,7 +93,7 @@ extension Service {
             case .model(let model):
                 guard let model = model else {
                     let faroError = FaroError.malformed(info: "Model could not be initialized. Maybe your init(from raw:) failed?")
-                    self.print(faroError, and: fail)
+                    self.printConvenience(faroError, and: fail)
                     return
                 }
                 ok(model)
@@ -110,7 +110,7 @@ extension Service {
             case .models(let models):
                 guard let models = models else {
                     let faroError = FaroError.malformed(info: "Models could not be initialized. Maybe your init(from raw:) failed?")
-                    self.print(faroError, and: fail)
+                    self.printConvenience(faroError, and: fail)
                     return
                 }
                 ok(models)
@@ -119,5 +119,23 @@ extension Service {
             }
         }
     }
+
+	// MARK: - Internal
+
+	func printConvenience(_ error: FaroError, and fail: (FaroError)->()) {
+		printFaroError(error)
+		fail(error)
+	}
+
+	func handle<ModelType: Deserializable>(_ result: Result<ModelType>, and fail: (FaroError)->()) {
+		switch result {
+		case .failure(let faroError):
+			printConvenience(faroError, and: fail)
+		default:
+			let faroError = FaroError.general
+			printFaroError(faroError)
+			fail(faroError)
+		}
+	}
 
 }

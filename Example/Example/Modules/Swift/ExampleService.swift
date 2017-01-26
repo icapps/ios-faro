@@ -11,7 +11,7 @@ class ExampleService: Service {
 
 class ExampleServiceQueue: ServiceQueue {
 
-    init(final: @escaping (_ failedTasks: Set<URLSessionTask>?) -> ()) {
+    init(final: @escaping (_ failedTasks: Set<URLSessionTask>?) -> Void) {
         super.init(configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com"), final: final)
     }
 

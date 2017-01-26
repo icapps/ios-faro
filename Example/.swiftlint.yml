@@ -3,7 +3,7 @@ excluded:
 
 disabled_rules:
   - type_name
-  - void_return
+  - trailing_whitespace
 
 line_length:
   - 180
