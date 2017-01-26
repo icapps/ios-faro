@@ -2,7 +2,8 @@ import Foundation
 
 public enum FaroDeserializableError: Error {
 	case wrongJSON(Any?)
-	case valueMissing
+	case valueMissing(rhs: Any?)
+	case rawRepresentableFail(rhs: Any?)
 	case invalidDate(String)
 	case linkNotUniqueInJSON([[String: Any]], linkValue: String)
 }
@@ -199,35 +200,35 @@ public func <-> (lhs: inout Date?, rhs: (Any?, String)) {
 
 public func <-> (lhs: inout Int, rhs: Any?) throws {
 	guard let value = rhs as? Int else {
-		throw FaroDeserializableError.valueMissing
+		throw FaroDeserializableError.valueMissing(rhs: rhs)
 	}
 	lhs = value
 }
 
 public func <-> (lhs: inout Double, rhs: Any?) throws {
 	guard let value = rhs as? Double else {
-		throw FaroDeserializableError.valueMissing
+		throw FaroDeserializableError.valueMissing(rhs: rhs)
 	}
 	lhs = value
 }
 
 public func <-> (lhs: inout Bool, rhs: Any?) throws {
 	guard let value = rhs as? Bool else {
-		throw FaroDeserializableError.valueMissing
+		throw FaroDeserializableError.valueMissing(rhs: rhs)
 	}
 	lhs = value
 }
 
 public func <-> (lhs: inout String, rhs: Any?) throws {
 	guard let value = rhs as? String else {
-		throw FaroDeserializableError.valueMissing
+		throw FaroDeserializableError.valueMissing(rhs: rhs)
 	}
 	lhs = value
 }
 
 public func <-> (lhs: inout Date, rhs: TimeInterval?) throws {
 	guard let timeInterval = rhs else {
-		throw FaroDeserializableError.valueMissing
+		throw FaroDeserializableError.valueMissing(rhs: rhs)
 	}
 
 	lhs = Date(timeIntervalSince1970: timeInterval)
@@ -235,7 +236,7 @@ public func <-> (lhs: inout Date, rhs: TimeInterval?) throws {
 
 public func <-> (lhs: inout Date, rhs: (Any?, String)) throws {
 	guard let date = rhs.0 as? String else {
-		throw FaroDeserializableError.valueMissing
+		throw FaroDeserializableError.valueMissing(rhs: rhs)
 	}
 
 	DateParser.shared.dateFormat = rhs.1
@@ -245,4 +246,49 @@ public func <-> (lhs: inout Date, rhs: (Any?, String)) throws {
 
 	lhs = parsedDate
 }
+
+// MARK: - RawRepresentable Types
+
+// MARK: - String
+
+// MARK: - Required
+
+public func <-> <T> (lhs: inout T, rhs: Any?) throws where T: RawRepresentable, T.RawValue == String {
+	guard let stringValue = rhs as? T.RawValue, let value = T(rawValue: stringValue) else {
+		throw FaroDeserializableError.rawRepresentableFail(rhs: rhs)
+	}
+	lhs = value
+}
+
+// MARK: - Optional
+
+public func <-> <T> (lhs: inout T?, rhs: Any?) where T: RawRepresentable, T.RawValue == String {
+	guard let stringValue = rhs as? T.RawValue, let value = T(rawValue: stringValue) else {
+		lhs = nil
+		return
+	}
+	lhs = value
+}
+
+// MARK: - Int
+
+// MARK: - Required
+
+public func <-> <T> (lhs: inout T, rhs: Any?) throws where T: RawRepresentable, T.RawValue == Int {
+	guard let stringValue = rhs as? T.RawValue, let value = T(rawValue: stringValue) else {
+		throw FaroDeserializableError.rawRepresentableFail(rhs: rhs)
+	}
+	lhs = value
+}
+
+// MARK: - Optional
+
+public func <-> <T> (lhs: inout T?, rhs: Any?) where T: RawRepresentable, T.RawValue == Int {
+	guard let stringValue = rhs as? T.RawValue, let value = T(rawValue: stringValue) else {
+		lhs = nil
+		return
+	}
+	lhs = value
+}
+
 
