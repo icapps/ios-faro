@@ -1,11 +1,25 @@
 import Foundation
 
 public enum FaroDeserializableError: Error {
-	case wrongJSON(Any?)
-	case valueMissing(rhs: Any?)
-	case rawRepresentableFail(rhs: Any?)
+	case intMissing(rhs: Int? , lhs: Any?)
+	case doubleMissing(lhs: Double? , rhs: Any?)
+	case stringMissing(lhs: String? , rhs: Any?)
+
+	case deserializableMissing(lhs: Any?, rhs: Any?)
+	case rawRepresentableMissing(lhs: Any?, rhs: Any?)
+
+	case dateMissing(lhs: Date?, rhs: Any?)
+	case dateMissingWithKey(key: String, json: [String: Any])
+
+	case boolMissing(lhs: Bool?, rhs: Any?)
+
 	case invalidDate(String)
+	case invalidJSON(model: Any, json: Any)
+
 	case linkNotUniqueInJSON([[String: Any]], linkValue: String)
+
+	case emptyValue(key: String)
+	case emptyKey
 }
 
 // MARK: - Deserializable objects
@@ -18,19 +32,19 @@ infix operator <->: AssignmentPrecedence
 
 
 public func <-> <P>(lhs: inout P?, rhs: Any?) where P: Deserializable {
-    guard let dict = rhs as? [String: Any] else {
-        lhs = nil
-        return
-    }
-    lhs = P(from: dict)
+	guard let dict = rhs as? [String: Any] else {
+		lhs = nil
+		return
+	}
+	lhs = P(from: dict)
 }
 
 public func <-> <P>(lhs: inout [P]?, rhs: Any?) where P: Deserializable {
-    guard let rawObjects = rhs as? [[String: Any]] else {
-        lhs = nil
-        return
-    }
-    lhs = rawObjects.flatMap { P(from: $0) }
+	guard let rawObjects = rhs as? [[String: Any]] else {
+		lhs = nil
+		return
+	}
+	lhs = rawObjects.flatMap { P(from: $0) }
 }
 
 // MARK: - Instantiates or Updates
@@ -71,7 +85,7 @@ public func <-> <P>(lhs: inout [P]?, rhs: Any?) throws where P: Deserializable &
 
 public func <-> <P>(lhs: inout P, rhs: Any?) throws where P: Deserializable & Updatable {
 	guard let dict = rhs as? [String: Any] else {
-		throw FaroDeserializableError.wrongJSON(rhs)
+		throw FaroDeserializableError.deserializableMissing(lhs: lhs, rhs: rhs)
 	}
 	try lhs.update(from: dict)
 }
@@ -82,7 +96,7 @@ public func <-> <P>(lhs: inout P, rhs: Any?) throws where P: Deserializable & Up
 /// ValueType of `Linkable.link.Value` is `Int`
 public func <-> <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & Updatable & Linkable & Hashable, P.ValueType: Equatable {
 	guard var nodesToProcess = rhs as? [[String: Any]] else {
-		throw FaroDeserializableError.wrongJSON(rhs)
+		throw FaroDeserializableError.deserializableMissing(lhs: lhs, rhs: rhs)
 	}
 	if !lhs.isEmpty {
 		var elementsToRemove = Set<P>()
@@ -125,7 +139,7 @@ public func <-> <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & 
 /// ValueType of `Linkable.link.Value` is `Int`
 public func <-> <P>(lhs: inout Set<P>, rhs: Any?) throws where P: Deserializable & Updatable & Linkable, P.ValueType: Equatable {
 	guard var nodesToProcess = rhs as? [[String: Any]] else {
-		throw FaroDeserializableError.wrongJSON(rhs)
+		throw FaroDeserializableError.deserializableMissing(lhs: lhs, rhs: rhs)
 	}
 	if !lhs.isEmpty {
 		try lhs.enumerated().forEach {
@@ -141,7 +155,7 @@ public func <-> <P>(lhs: inout Set<P>, rhs: Any?) throws where P: Deserializable
 			guard dict.count == 1 else {
 				throw FaroDeserializableError.linkNotUniqueInJSON(nodesToProcess, linkValue: "\(element.link.value)")
 			}
-			
+
 			try element.update(from: dict.first)
 			// remove all nodes we processed
 			nodesToProcess.remove(at: index)
@@ -157,78 +171,78 @@ public func <-> <P>(lhs: inout Set<P>, rhs: Any?) throws where P: Deserializable
 	} else {
 		lhs = Set<P>(nodesToProcess.flatMap { P(from: $0) })
 	}
-	
+
 }
 
 // MARK: - Primitive Types
 
 /// `Any?` is taken and set to the left hand side.
 public func <-> (lhs: inout Int?, rhs: Any?) {
-    lhs = rhs as? Int
+	lhs = rhs as? Int
 }
 
 public func <-> (lhs: inout Double?, rhs: Any?) {
-    lhs = rhs as? Double
+	lhs = rhs as? Double
 }
 
 public func <-> (lhs: inout Bool?, rhs: Any?) {
-    lhs = rhs as? Bool
+	lhs = rhs as? Bool
 }
 
 public func <-> (lhs: inout String?, rhs: Any?) {
-    lhs = rhs as? String
+	lhs = rhs as? String
 }
 
 public func <-> (lhs: inout Date?, rhs: TimeInterval?) {
-    guard let timeInterval = rhs else {
-        return
-    }
+	guard let timeInterval = rhs else {
+		return
+	}
 
-    lhs = Date(timeIntervalSince1970: timeInterval)
+	lhs = Date(timeIntervalSince1970: timeInterval)
 }
 
 public func <-> (lhs: inout Date?, rhs: (Any?, String)) {
-    guard let date = rhs.0 as? String else {
-        return
-    }
+	guard let date = rhs.0 as? String else {
+		return
+	}
 
-    DateParser.shared.dateFormat = rhs.1
-    lhs = DateParser.shared.dateFormatter.date(from: date)
+	DateParser.shared.dateFormat = rhs.1
+	lhs = DateParser.shared.dateFormatter.date(from: date)
 }
 
 // MARK: - Required
 
 public func <-> (lhs: inout Int, rhs: Any?) throws {
 	guard let value = rhs as? Int else {
-		throw FaroDeserializableError.valueMissing(rhs: rhs)
+		throw FaroDeserializableError.intMissing(rhs: lhs, lhs: rhs)
 	}
 	lhs = value
 }
 
 public func <-> (lhs: inout Double, rhs: Any?) throws {
 	guard let value = rhs as? Double else {
-		throw FaroDeserializableError.valueMissing(rhs: rhs)
+		throw FaroDeserializableError.doubleMissing(lhs: lhs, rhs: rhs)
 	}
 	lhs = value
 }
 
 public func <-> (lhs: inout Bool, rhs: Any?) throws {
 	guard let value = rhs as? Bool else {
-		throw FaroDeserializableError.valueMissing(rhs: rhs)
+		throw FaroDeserializableError.boolMissing(lhs: lhs, rhs: rhs)
 	}
 	lhs = value
 }
 
 public func <-> (lhs: inout String, rhs: Any?) throws {
 	guard let value = rhs as? String else {
-		throw FaroDeserializableError.valueMissing(rhs: rhs)
+		throw FaroDeserializableError.stringMissing(lhs: lhs, rhs: rhs)
 	}
 	lhs = value
 }
 
 public func <-> (lhs: inout Date, rhs: TimeInterval?) throws {
 	guard let timeInterval = rhs else {
-		throw FaroDeserializableError.valueMissing(rhs: rhs)
+		throw FaroDeserializableError.dateMissing(lhs: lhs, rhs: rhs)
 	}
 
 	lhs = Date(timeIntervalSince1970: timeInterval)
@@ -236,7 +250,7 @@ public func <-> (lhs: inout Date, rhs: TimeInterval?) throws {
 
 public func <-> (lhs: inout Date, rhs: (Any?, String)) throws {
 	guard let date = rhs.0 as? String else {
-		throw FaroDeserializableError.valueMissing(rhs: rhs)
+		throw FaroDeserializableError.dateMissing(lhs: lhs, rhs: rhs)
 	}
 
 	DateParser.shared.dateFormat = rhs.1
@@ -255,7 +269,7 @@ public func <-> (lhs: inout Date, rhs: (Any?, String)) throws {
 
 public func <-> <T> (lhs: inout T, rhs: Any?) throws where T: RawRepresentable, T.RawValue == String {
 	guard let stringValue = rhs as? T.RawValue, let value = T(rawValue: stringValue) else {
-		throw FaroDeserializableError.rawRepresentableFail(rhs: rhs)
+		throw FaroDeserializableError.rawRepresentableMissing(lhs: lhs, rhs: rhs)
 	}
 	lhs = value
 }
@@ -276,7 +290,7 @@ public func <-> <T> (lhs: inout T?, rhs: Any?) where T: RawRepresentable, T.RawV
 
 public func <-> <T> (lhs: inout T, rhs: Any?) throws where T: RawRepresentable, T.RawValue == Int {
 	guard let stringValue = rhs as? T.RawValue, let value = T(rawValue: stringValue) else {
-		throw FaroDeserializableError.rawRepresentableFail(rhs: rhs)
+		throw FaroDeserializableError.rawRepresentableMissing(lhs: lhs, rhs: rhs)
 	}
 	lhs = value
 }

@@ -86,7 +86,7 @@ class DeserializeFunctionSpec: QuickSpec {
 						let json = ["date": dateTimeInterval]
 
 						expect {
-							o1.date = try parse(dateKey, from: json)
+							o1.date = try parse(dateKey, from: json, format:"")
 
 							let date = Date(timeIntervalSince1970: json["date"]!)
 							return expect(o1.date) == date
@@ -166,7 +166,7 @@ class DeserializeFunctionSpec: QuickSpec {
 								expect {return try foo <-> "bullshit"}.to(throwError {
 									if let error = $0 as? FaroDeserializableError {
 										switch error {
-										case .rawRepresentableFail(let string):
+										case .rawRepresentableMissing(lhs: _, rhs: let string):
 											expect(string as? String) == "bullshit"
 										default:
 											XCTFail("\(error)")
@@ -217,8 +217,8 @@ class DeserializeFunctionSpec: QuickSpec {
 								expect {return try foo <-> 1000}.to(throwError {
 									if let error = $0 as? FaroDeserializableError {
 										switch error {
-										case .rawRepresentableFail(let string):
-											expect(string as? Int) == 1000
+										case .rawRepresentableMissing(lhs: _, rhs: let int):
+											expect(int as? Int) == 1000
 										default:
 											XCTFail("\(error)")
 										}

@@ -47,7 +47,7 @@ class IntegerLink: Deserializable, Updatable, Linkable, Hashable, CustomDebugStr
 
 	func update(from raw: Any) throws {
 		guard let json = raw as? [String: Any] else {
-			throw FaroDeserializableError.wrongJSON(raw)
+			throw FaroDeserializableError.invalidJSON(model: self, json: raw)
 		}
 
 		try self.uuid <-> json[.uuid]
@@ -86,7 +86,7 @@ class Parent: Deserializable, Updatable, Linkable {
 
 	func update(from raw: Any) throws {
 		guard let json = raw as? [String: Any] else {
-			throw FaroDeserializableError.wrongJSON(raw)
+			throw FaroDeserializableError.invalidJSON(model: self, json: raw)
 		}
 		try uuid <-> json[.uuid]
 		try relation <-> json[.relation]
@@ -142,7 +142,7 @@ class DeserializableObject: Deserializable, Updatable, Linkable, Hashable, Custo
 
 	func update(from raw: Any) throws {
 		guard let json = raw as? [String: Any] else {
-			throw FaroDeserializableError.wrongJSON(raw)
+			throw FaroDeserializableError.invalidJSON(model: self, json: raw)
 		}
 
 		try self.uuid <-> json[.uuid]
