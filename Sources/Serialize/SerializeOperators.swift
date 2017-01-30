@@ -58,7 +58,8 @@ public func  <| (lhs: inout Any?, rhs: Date?) {
     lhs = rhs.timeIntervalSince1970
 }
 
-/// Arrays
+
+// MARK: - Arrays
 
 public func  <| (lhs: inout Any?, rhs: [String]?) {
     guard let rhs = rhs else {

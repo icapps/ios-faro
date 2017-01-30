@@ -4,16 +4,18 @@ import Foundation
 
 // Use these to create new instances 
 
-// MARK: - String
-
+// MARK: String
 public func create <T: RawRepresentable>(_ named: String, from json: [String: Any]) throws -> T! where T.RawValue == String {
 	if !named.isEmpty {
-		guard let raw = json[named] as? T.RawValue, let value = T(rawValue:raw) else {
-			throw FaroDeserializableError.emptyValue(key: named)
+		guard let jsonKey = json[named] as? T.RawValue else {
+			throw FaroDeserializableError.rawRepresentableMissingWithKey(key: named, json: json)
+		}
+		guard let value = T(rawValue:jsonKey) else {
+			throw FaroDeserializableError.rawRepresentableWrongValue(key: named, value: jsonKey)
 		}
 		return value
 	} else {
-		throw FaroDeserializableError.emptyKey
+		throw FaroDeserializableError.emptyValue(key: named)
 	}
 }
 
@@ -21,15 +23,17 @@ public func create <T: RawRepresentable>(_ named: String, from json: [String: An
 
 public func create <T: RawRepresentable>(_ named: String, from json: [String: Any]) throws -> T! where T.RawValue == Int {
 	if !named.isEmpty {
-		guard let raw = json[named] as? T.RawValue, let value = T(rawValue:raw) else {
-			throw FaroDeserializableError.emptyValue(key: named)
+		guard let jsonKey = json[named] as? T.RawValue else {
+			throw FaroDeserializableError.rawRepresentableMissingWithKey(key: named, json: json)
+		}
+		guard let value = T(rawValue:jsonKey) else {
+			throw FaroDeserializableError.rawRepresentableWrongValue(key: named, value: jsonKey)
 		}
 		return value
 	} else {
-		throw FaroDeserializableError.emptyKey
+		throw FaroDeserializableError.emptyValue(key: named)
 	}
 }
-
 // MARK: - Any Type
 
 public func create <T>(_ named: String, from json: [String: Any]) throws -> T! {
