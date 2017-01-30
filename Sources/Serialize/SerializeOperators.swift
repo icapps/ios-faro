@@ -1,9 +1,12 @@
 import Foundation
 
 /// MARK: - Serizalise operators
+/// The operator we define assings a value. Therefore its Precendencegroup is AssignmentPrecedence.
+/// Used for optional properties
+infix operator <|: AssignmentPrecedence
 
 /// Will put a 'Type' into 'Any?' Type that can receive it.
-public func <-> <P>(lhs: inout Any?, rhs: [P]?) where P: Serializable {
+public func <| <P>(lhs: inout Any?, rhs: [P]?) where P: Serializable {
     guard let rhs = rhs else {
         return
     }
@@ -14,41 +17,41 @@ public func <-> <P>(lhs: inout Any?, rhs: [P]?) where P: Serializable {
     lhs = array
 }
 
-public func <-> <P>(lhs: inout Any?, rhs: P?) where P: Serializable {
+public func <| <P>(lhs: inout Any?, rhs: P?) where P: Serializable {
     lhs = rhs?.json
 }
 
 /// Handy operators
 
-public func <-> (lhs: inout Any?, rhs: String?) {
+public func <| (lhs: inout Any?, rhs: String?) {
     guard let rhs = rhs else {
         return
     }
     lhs = rhs
 }
 
-public func <-> (lhs: inout Any?, rhs: Int?) {
+public func <| (lhs: inout Any?, rhs: Int?) {
     guard let rhs = rhs else {
         return
     }
     lhs = rhs
 }
 
-public func <-> (lhs: inout Any?, rhs: Bool?) {
+public func  <| (lhs: inout Any?, rhs: Bool?) {
     guard let rhs = rhs else {
         return
     }
     lhs = rhs
 }
 
-public func <-> (lhs: inout Any?, rhs: Double?) {
+public func  <| (lhs: inout Any?, rhs: Double?) {
     guard let rhs = rhs else {
         return
     }
     lhs = rhs
 }
 
-public func <-> (lhs: inout Any?, rhs: Date?) {
+public func  <| (lhs: inout Any?, rhs: Date?) {
     guard let rhs = rhs else {
         return
     }
@@ -57,7 +60,7 @@ public func <-> (lhs: inout Any?, rhs: Date?) {
 
 /// Arrays
 
-public func <-> (lhs: inout Any?, rhs: [String]?) {
+public func  <| (lhs: inout Any?, rhs: [String]?) {
     guard let rhs = rhs else {
         return
     }
@@ -65,7 +68,7 @@ public func <-> (lhs: inout Any?, rhs: [String]?) {
 }
 
 /// Serialize a date to the requested format as the string in the tupple
-public func <-> (lhs: inout Any?, rhs: (Date?, String)) {
+public func  <| (lhs: inout Any?, rhs: (Date?, String)) {
     guard let date = rhs.0 else {
         return
     }
