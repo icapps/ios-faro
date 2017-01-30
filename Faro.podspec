@@ -11,7 +11,7 @@ __Faro__ is a service layer built in Swift by using generics. We focussed on:
 * Easily write a 'MockService' to load JSON from a local drive
 
 *Automagically Parse*
-* Use our Deserialization and Serialization operators to parse relations and properties
+* Use our Deserialization and Serialization operators to create relations and properties
 
 *Protocols*
 * Because we use Protocols you can use any type including CoreData's `NSManagedObject` 💪

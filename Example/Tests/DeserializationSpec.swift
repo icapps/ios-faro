@@ -5,7 +5,7 @@ import Faro
 @testable import Faro_Example
 
 /// For testing with required variable
-class Jail: Deserializable {
+class Jail: Deserializable, Updatable {
     var cellNumber: String
     var foodTicket: String?
 
@@ -15,12 +15,21 @@ class Jail: Deserializable {
         }
 
         do {
-            cellNumber = try parse("cellNumber", from: json)
+			cellNumber  = try create("cellNumber", from: json)
         } catch {
             return nil
         }
-        self.foodTicket <-> json["foodTicket"]
+
+		foodTicket |< json["foodTicket"]
     }
+
+	func update(from raw: Any) throws {
+		guard let json = raw as? [String: String] else {
+			throw FaroDeserializableError.invalidJSON(model: self, json: raw)
+		}
+		try cellNumber |< json["cellNumber"]
+		foodTicket |< json["foodTicket"]
+	}
 
 }
 
@@ -35,23 +44,47 @@ class Zoo: Deserializable {
         guard let json = raw as? [String: Any] else {
             return nil
         }
-        self.uuid <-> json["uuid"]
-        self.color <-> json["color"]
-        self.animal <-> json["animal"]
-        self.animalArray <-> json["animalArray"]
-        self.date <-> (json["date"], "yyyy-MM-dd")
+        self.uuid |< json["uuid"]
+        self.color |< json["color"]
+		self.date |< (json["date"], "yyyy-MM-dd")
+
+		// Create Deserializable models
+
+        self.animal  = try? create("animal", from: json)
+        self.animalArray = try?  create("animalArray", from: json)
     }
 }
 
-class Animal: Deserializable {
-    var uuid: String?
+class Animal: Deserializable, Updatable, Linkable, Hashable {
+
+	public static func ==(lhs: Animal, rhs: Animal) -> Bool {
+		return lhs.hashValue == rhs.hashValue
+	}
+
+	typealias ValueType = String
+
+    var uuid: String
+
+	var hashValue: Int {
+		return uuid.hashValue
+	}
+
+	var link: (key: String, value: String) {return (key: "uuid", value: uuid)}
 
     required init?(from raw: Any) {
         guard  let json = raw as? [String: Any] else {
             return nil
         }
-        self.uuid <-> json["uuid"] as Any
+		do {
+			self.uuid = try create("uuid", from: json)
+		} catch {
+			return nil
+		}
     }
+
+	func update(from raw: Any) throws {
+		try self.uuid |< json["uuid"]
+	}
 
 }
 
@@ -105,7 +138,7 @@ class DeserializableSpec: QuickSpec {
             }
 
             context("required properties") {
-                it("should parse required UUID") {
+                it("should create required UUID") {
                     let gail = Jail(from: ["cellNumber": "007"])!
 
                     expect(gail.cellNumber) == "007"
@@ -123,7 +156,7 @@ class DeserializableSpec: QuickSpec {
                     expect(gail.foodTicket) == "ticket"
                 }
 
-                it("should not parse when json has keys but no uuid") {
+                it("should not create when json has keys but no uuid") {
                      let gail = Jail(from: ["foodTicket": "ticket"])
 
                     expect(gail).to(beNil())

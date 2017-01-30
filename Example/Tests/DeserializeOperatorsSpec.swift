@@ -21,7 +21,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 						var jail = Jail(from: ["": ""])
 
-						jail <-> json
+						try? jail |< json
 
 						expect(jail?.cellNumber) == randomNumber
 
@@ -29,11 +29,11 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 					it("Too many") {
 						let json = [["uuid": "id1"], ["uuid": "id2"]] as Any?
-						var animalArray: [Animal]?
+						var animalArray = [Animal]()
 
-						animalArray <-> json
+						try? animalArray |< json
 
-						expect(animalArray?.count) == 2
+						expect(animalArray.map {$0.uuid}) == ["id1", "id2"]
 					}
 				}
 
@@ -52,26 +52,26 @@ class DeserializeOperatorsSpec: QuickSpec {
 					}
 
 					it("Int") {
-						o1.amount <-> json[.amount]
+						o1.amount |< json[.amount]
 
 						expect(o1.amount) == json[.amount] as? Int
 					}
 
 					it("Double") {
-						o1.price <-> json[.price]
+						o1.price |< json[.price]
 
 						expect(o1?.price) == json[.price] as? Double
 					}
 
 					it("Bool") {
-						o1?.tapped <-> json[.tapped]
+						o1?.tapped |< json[.tapped]
 
 						expect(o1?.tapped) == json[.tapped] as? Bool
 					}
 
 					it("String") {
 						expect {
-							try o1.uuid <-> json[.uuid]
+							try o1.uuid |< json[.uuid]
 
 							return expect(o1?.uuid) == json[.uuid] as? String
 							}.toNot(throwError())
@@ -80,8 +80,8 @@ class DeserializeOperatorsSpec: QuickSpec {
 					context("Date") {
 
 						it("String in json") {
-							o1.date <-> (json[.date], "yyyy-MM-dd")
-							try? o1.requiredDate <-> (json[.date], "yyyy-MM-dd")
+							o1.date |< (json[.date], "yyyy-MM-dd")
+							try? o1.requiredDate |< (json[.date], "yyyy-MM-dd")
 
 							let formatter = DateFormatter()
 							formatter.dateFormat = "yyyy-MM-dd"
@@ -96,14 +96,14 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 							let anyTimeInterval: TimeInterval = 1234.0
 
-							o1.date <-> anyTimeInterval
+							o1.date |< anyTimeInterval
 
 							let date = Date(timeIntervalSince1970: anyTimeInterval)
 							expect(o1.date) == date
 						}
 
 						it("String") {
-							o1.date <-> ("1994-08-20" as Any?, "yyyy-MM-dd")
+							o1.date |< ("1994-08-20" as Any?, "yyyy-MM-dd")
 
 							let formatter = DateFormatter()
 							formatter.dateFormat = "yyyy-MM-dd"
@@ -210,7 +210,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 								//swiftlint:disable force_cast
 								json["toMany"] = (json["toMany"] as! [[String: Any]]).filter {($0["uuid"] as? String) != "uuid 0"}
 
-								try? parent.toMany <-> json["toMany"]
+								try? parent.toMany |< json["toMany"]
 
 								expect(parent.toMany.map {$0.uuid}) == ["uuid 2", "uuid 1"]
 							}
@@ -230,7 +230,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 								expect(parent.toMany.map {$0.uuid}) == allUUIDs
 
-								try? parent.toMany <-> json["toMany"]
+								try? parent.toMany |< json["toMany"]
 
 								expect(parent.toMany.map {$0.uuid}) == expected
 							}
@@ -282,7 +282,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 							it("removes id's no longer in JSON") {
 
-								try? parent.setToMany <-> [[String: Any]]()
+								try? parent.setToMany |< [[String: Any]]()
 
 								expect(parent.setToMany.map {$0.uuid}) == []
 							}
@@ -302,7 +302,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 								expect(parent.setToMany.map {$0.uuid}) == ["set id 1"]
 
-								try? parent.setToMany <-> json[.setToMany]
+								try? parent.setToMany |< json[.setToMany]
 
 								expect(parent.setToMany.map {$0.uuid}) == ["set id 1", "set added id" ]
 							}

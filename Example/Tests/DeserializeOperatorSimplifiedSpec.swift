@@ -19,7 +19,7 @@ class Foo: Deserializable {
 		}
 
 		do {
-			try stringLink <-> json["stringLink"]
+			try stringLink |< json["stringLink"]
 		} catch {
 			printError(error)
 		}
@@ -34,8 +34,8 @@ class DeserializeOperatorSimplifiedSpec: QuickSpec {
 			it("links") {
 				let foo = Foo()
 				expect {
-					try foo.integerLink <-> [["uuid": 1]]
-					try foo.stringLink <-> ["uuid": "changed id"]
+					try foo.integerLink |< [["uuid": 1]]
+					try foo.stringLink |< ["uuid": "changed id"]
 
 					expect(foo.integerLink.first?.uuid) == 1
 					expect(foo.stringLink.uuid) == "changed id"
@@ -48,7 +48,7 @@ class DeserializeOperatorSimplifiedSpec: QuickSpec {
 				let foo = Foo()
 				foo.integerLink = [IntegerLink(), IntegerLink(), IntegerLink()]
 
-				try? foo.integerLink <-> [[String: Any]]()
+				try? foo.integerLink |< [[String: Any]]()
 
 				expect(foo.integerLink.map {$0.uuid}) == []
 			}

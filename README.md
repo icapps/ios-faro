@@ -19,7 +19,7 @@ We build a service request by using a `Service` class as the point where you fir
 * Easily write a 'MockService' to load JSON from a local drive
 
 *Automagically Parse*
-* Use our Deserialization and Serialization operators to parse relations and properties
+* Use our Deserialization and Serialization operators to create relations and properties
 
 *Protocols*
 * Because we use Protocols you can use any type including CoreData's `NSManagedObject` 💪🏼
@@ -70,10 +70,10 @@ let child: Child
 ```
 ```swift
 // Not interested if nil
-let _ = try? singleRelation <-> json["single relation key"]
+let _ = try? singleRelation |< json["single relation key"]
 // If interested in nil, or any other error
 do {
-  try singleRelation <-> json["single relation key"]
+  try singleRelation |< json["single relation key"]
 } catch {
   // handle error
   print(error)
@@ -92,10 +92,10 @@ class Foo {
 ```
 ```swift
 // Not interested if nil
-let _ = try? toMany <-> json["too many relation key"]
+let _ = try? toMany |< json["too many relation key"]
 // If interested in nil, or any other error
 do {
-  try toMany <-> json["too many relation key"]
+  try toMany |< json["too many relation key"]
 } catch {
   // handle error
   print(error)
@@ -116,11 +116,11 @@ class Zoo: Deserializable {
         guard let json = raw as? [String: Any?] else {
             return nil
         }
-        self.uuid <-> json["uuid"]
-        self.color <-> json["color"]
-        self.animal <-> json["animal"]
-        self.animalArray <-> json["animalArray"]
-        self.date <-> (json["date"], "yyyy-MM-dd")
+        self.uuid |< json["uuid"]
+        self.color |< json["color"]
+        self.animal |< json["animal"]
+        self.animalArray |< json["animalArray"]
+        self.date |< (json["date"], "yyyy-MM-dd")
     }
 }
 
@@ -133,11 +133,11 @@ extension Zoo: Serializable {
     var json: [String : Any?] {
         get {
             var json = [String: Any]()
-            json["uuid"] <-> self.uuid
-            json["color"] <-> self.color
-            json["animal"] <-> self.animal
-            json["animalArray"] <-> self.animalArray
-            json["date"] <-> self.date
+            json["uuid"] |< self.uuid
+            json["color"] |< self.color
+            json["animal"] |< self.animal
+            json["animalArray"] |< self.animalArray
+            json["date"] |< self.date
             return json
         }
     }
@@ -159,11 +159,11 @@ class Gail: Deserializable {
         }
 
         do {
-            cellNumber = try parse("cellNumber", from: json)
+            cellNumber = try create("cellNumber", from: json)
         } catch {
             return nil
         }
-        self.foodTicket <-> json["foodTicket"]
+        self.foodTicket |< json["foodTicket"]
     }
 
 }

@@ -50,7 +50,7 @@ class IntegerLink: Deserializable, Updatable, Linkable, Hashable, CustomDebugStr
 			throw FaroDeserializableError.invalidJSON(model: self, json: raw)
 		}
 
-		try self.uuid <-> json[.uuid]
+		try self.uuid |< json[.uuid]
 	}
 
 	// MARK: - Custom String Convertible
@@ -88,11 +88,11 @@ class Parent: Deserializable, Updatable, Linkable {
 		guard let json = raw as? [String: Any] else {
 			throw FaroDeserializableError.invalidJSON(model: self, json: raw)
 		}
-		try uuid <-> json[.uuid]
-		try relation <-> json[.relation]
+		try uuid |< json[.uuid]
+		try relation |< json[.relation]
 		do {
-			try toMany <-> json[.toMany]
-			try setToMany <-> json[.setToMany]
+			try toMany |< json[.toMany]
+			try setToMany |< json[.setToMany]
 		} catch {
 			printError(error)
 		}
@@ -145,11 +145,11 @@ class DeserializableObject: Deserializable, Updatable, Linkable, Hashable, Custo
 			throw FaroDeserializableError.invalidJSON(model: self, json: raw)
 		}
 
-		try self.uuid <-> json[.uuid]
-		self.amount <-> json[.amount]
-		self.price <-> json[.price]
-		self.tapped <-> json[.tapped]
-		self.date <-> (json[.date], "yyyy-MM-dd")
+		try self.uuid |< json[.uuid]
+		self.amount |< json[.amount]
+		self.price |< json[.price]
+		self.tapped |< json[.tapped]
+		self.date |< (json[.date], "yyyy-MM-dd")
 	}
 
 	// MARK: - Custom String Convertible

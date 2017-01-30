@@ -18,7 +18,7 @@ public func faroDefaultThrowHandler(_ handler: ()throws->()) {
 // MARK: Service Class implementation
 
 /// Default implementation of a service.
-/// Serves your `Call` to a server and parses the respons.
+/// Serves your `Call` to a server and creates the respons.
 /// Response is delivered to you as a `Result` that you can use in a switch. You get the most detailed results with the functions below.
 /// If you want you can use the convenience functions in the extension. They call these functions and print the errors by default. 
 /// If you need more control over the errors you can use these functions directly.
@@ -295,7 +295,7 @@ open class Service {
 
     // MARK: - JSON results
 
-    /// Handles incomming data and tries to parse the data as JSON.
+    /// Handles incomming data and tries to create the data as JSON.
     /// - parameter call: gives the details to find the entity on the server
     /// - parameter autostart: by default this is true. This means that `resume()` is called immeditatly on the `URLSessionDataTask` created by this function.
     /// - parameter jsonResult: closure is called when valid or invalid json data is received.
@@ -336,7 +336,7 @@ open class Service {
 
 	// MARK: - Throwing variant
 
-	/// Handles incomming data and tries to parse the data as JSON.
+	/// Handles incomming data and tries to create the data as JSON.
 	/// - parameter call: gives the details to find the entity on the server
 	/// - parameter autostart: by default this is true. This means that `resume()` is called immeditatly on the `URLSessionDataTask` created by this function.
 	/// - parameter jsonResult: closure is called when valid or invalid json data is received.
@@ -499,7 +499,7 @@ extension Service {
 
     fileprivate func handleNodeArray<M: Deserializable>(_ nodes: [Any], on updateModel: M? = nil, call: Call) -> Result<M> {
         if let _ = updateModel {
-            let faroError = FaroError.malformed(info: "Could not parse \(nodes) for type \(M.self) into updateModel \(updateModel). We currently only support updating of single objects. An arry of objects was returned")
+            let faroError = FaroError.malformed(info: "Could not create \(nodes) for type \(M.self) into updateModel \(updateModel). We currently only support updating of single objects. An arry of objects was returned")
             printFaroError(faroError)
             return Result.failure(faroError)
         }
@@ -508,7 +508,7 @@ extension Service {
             if let model = M(from: node) {
                 models.append(model)
             } else {
-                let faroError = FaroError.malformed(info: "Could not parse \(nodes) for type \(M.self)")
+                let faroError = FaroError.malformed(info: "Could not create \(nodes) for type \(M.self)")
                 printFaroError(faroError)
                 return Result.failure(faroError)
             }
