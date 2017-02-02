@@ -49,13 +49,13 @@ class Service<T: Deserializable> {
 class FailService<T: Deserializable>: Service<T> {
 
 	override func singleEnum(complete: @escaping(Result<T>) -> Void) {
-		DispatchQueue(label: "success background").async {
+		DispatchQueue(label: "fail background").async {
 			complete (.fail(ServiceError.fail("Single enum wrong")))
 		}
 	}
 
 	override func collectionEnum(complete: @escaping ((Result<[T]>) -> Void))  {
-		DispatchQueue(label: "success background").async {
+		DispatchQueue(label: "fail background").async {
 			complete (.fail(ServiceError.fail("Collection enum wrong")))
 		}
 	}
