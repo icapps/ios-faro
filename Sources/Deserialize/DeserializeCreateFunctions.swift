@@ -2,9 +2,10 @@ import Foundation
 
 // MARK: - RawRepresentable Types
 
-// Use these to create new instances 
+// Use these to create new instances
 
 // MARK: String
+
 public func create <T: RawRepresentable>(_ named: String, from json: [String: Any]) throws -> T! where T.RawValue == String {
 	if !named.isEmpty {
 		guard let jsonKey = json[named] as? T.RawValue else {
@@ -34,6 +35,7 @@ public func create <T: RawRepresentable>(_ named: String, from json: [String: An
 		throw FaroDeserializableError.emptyValue(key: named)
 	}
 }
+
 // MARK: - Any Type
 
 public func create <T>(_ named: String, from json: [String: Any]) throws -> T! {
@@ -46,6 +48,8 @@ public func create <T>(_ named: String, from json: [String: Any]) throws -> T! {
 		throw FaroError.emptyKey
 	}
 }
+
+// MARK: - Date
 
 public func create(_ named: String, from json: [String: Any], format: String) throws -> Date! {
 
@@ -67,6 +71,8 @@ public func create(_ named: String, from json: [String: Any], format: String) th
 	}
 }
 
+// MARK: - Deserializable Type
+
 public func create<T: Deserializable>(_ named: String, from json: [String: Any]) throws -> T {
 	guard let jsonForKey = json[named] as? [String: Any] else {
 		throw FaroError.emptyCollection(key: named, json: json)
@@ -77,9 +83,21 @@ public func create<T: Deserializable>(_ named: String, from json: [String: Any])
 	return model
 }
 
+// MARK: - Array
+
 public func create<T: Deserializable>(_ named: String, from json: [String: Any]) throws -> [T] {
 	if let json = json[named]  as? [[String: Any]] {
 		return json.flatMap { T(from: $0) }
+	} else {
+		throw FaroError.emptyCollection(key: named, json: json)
+	}
+}
+
+// MARK: - Set
+
+public func create<T: Deserializable>(_ named: String, from json: [String: Any]) throws -> Set<T> {
+	if let json = json[named]  as? [[String: Any]] {
+		return Set<T>(json.flatMap { T(from: $0) })
 	} else {
 		throw FaroError.emptyCollection(key: named, json: json)
 	}
