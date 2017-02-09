@@ -31,7 +31,7 @@ __Faro__ is a service layer built in Swift by using generics. We focussed on:
   }
   s.social_media_url = 'https://twitter.com/icapps'
 
-  s.ios.deployment_target     = '8.0'
+  s.ios.deployment_target     = '9.0'
   s.osx.deployment_target     = '10.10'
   s.tvos.deployment_target    = '9.0'
   s.watchos.deployment_target = '3.0'
