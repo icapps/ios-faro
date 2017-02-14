@@ -63,10 +63,22 @@ class DeserializeOperatorsSpec: QuickSpec {
 						expect(o1?.price) == json[.price] as? Double
 					}
 
-					it("Bool") {
-						o1?.tapped |< json[.tapped]
+					context("Bool") {
 
-						expect(o1?.tapped) == json[.tapped] as? Bool
+						it("Optional") {
+							o1?.tapped |< json[.tapped]
+
+							expect(o1?.tapped) == json[.tapped] as? Bool
+						}
+
+						it("Required") {
+
+							var requiredBool = true
+							try? requiredBool |< NSNumber(booleanLiteral: false)
+
+							expect(requiredBool) == false
+						}
+
 					}
 
 					it("String") {
