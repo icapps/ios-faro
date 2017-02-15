@@ -57,7 +57,7 @@ class Zoo: Deserializable {
 
 class Animal: Deserializable, Updatable, Linkable, Hashable {
 
-	public static func ==(lhs: Animal, rhs: Animal) -> Bool {
+	public static func == (lhs: Animal, rhs: Animal) -> Bool {
 		return lhs.hashValue == rhs.hashValue
 	}
 

@@ -74,7 +74,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 						it("Required") {
 
 							var requiredBool = true
-							try? requiredBool |< NSNumber(booleanLiteral: false)
+							try? requiredBool |< false
 
 							expect(requiredBool) == false
 						}
@@ -123,6 +123,37 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 							expect(o1.date) == currentDate
 						}
+					}
+				}
+
+				context("Array of primitive types") {
+
+					it("Int") {
+						var numbers: [Int]? = [Int](repeatElement(2, count: 5))
+						let jsonArray: Any? =  [Int](repeatElement(6, count: 5))
+
+						numbers |< jsonArray
+
+						expect(numbers) == [Int](repeatElement(6, count: 5))
+					}
+
+					it("String") {
+						var strings: [String]? = [String](repeatElement("before", count: 5))
+						let jsonArray: Any? =  [String](repeatElement("after", count: 5))
+
+						strings |< jsonArray
+
+						expect(strings) == [String](repeatElement("after", count: 5))
+					}
+
+					it("Date") {
+						var dates: [Date]? = [Date](repeatElement(Date(), count: 5))
+						let jsonArray:[(Any?, String)]? =  [(Any?, String)](repeatElement(("1994-08-20" as Any?, "yyyy-MM-dd"), count: 5))
+
+						dates |< jsonArray
+
+						let calendar = NSCalendar.current
+						expect(dates?.flatMap {calendar.dateComponents([.year, .month, .day], from: $0).year}) == [1994, 1994, 1994, 1994, 1994]
 					}
 				}
 

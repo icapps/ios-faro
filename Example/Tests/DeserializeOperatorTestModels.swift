@@ -11,6 +11,7 @@ import Faro
 import Stella
 
 // MARK: - Example Models
+
 class IntegerLink: Deserializable, Updatable, Linkable, Hashable, CustomDebugStringConvertible, CustomStringConvertible {
 	typealias ValueType = Int
 
@@ -159,8 +160,8 @@ class DeserializableObject: Deserializable, Updatable, Linkable, Hashable, Custo
 
 }
 
-
 // MARK: - Dictionary Helpers
+
 enum API {
 
 	enum Common: String {
