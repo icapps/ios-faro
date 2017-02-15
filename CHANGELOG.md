@@ -1,4 +1,6 @@
-# Faro
+ope# Faro
+## Version 1.0.8
+*  Array of primitive types Deserialisable
 
 ## Version 1.0.7
 * using to swiftlint
