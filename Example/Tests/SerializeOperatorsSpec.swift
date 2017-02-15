@@ -13,11 +13,11 @@ class SerializableObject: Serializable {
     var cities: [String]?
     var json: [String : Any] {
 		var json = [String: Any]()
-		json["uuid"] <-> uuid
-		json["amount"] <-> amount
-		json["price"] <-> price
-		json["tapped"] <-> tapped
-		json["date"] <-> date
+		json["uuid"] <| uuid
+		json["amount"] <| amount
+		json["price"] <| price
+		json["tapped"] <| tapped
+		json["date"] <| date
 		return json
     }
 
@@ -34,7 +34,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 let date = formatter.date(from: "1994-08-20")!
 
                 var serializedDate: Any?
-                serializedDate <-> date
+                serializedDate <| date
 
                 expect(serializedDate as? Double) == date.timeIntervalSince1970
             }
@@ -45,7 +45,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 let date = formatter.date(from: "1994-08-20")
 
                 var serializedDate: Any?
-                serializedDate <-> (date, "yyyy-MM-dd")
+                serializedDate <| (date, "yyyy-MM-dd")
 
                 expect(serializedDate as? String) == "1994-08-20"
 
@@ -60,7 +60,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 o1.uuid = "ID1"
                 o1.amount = 20
 
-                serializedDictionary <-> o1
+                serializedDictionary <| o1
 
                 let dict = serializedDictionary as? [String: Any]
 
@@ -75,7 +75,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 let o2 = SerializableObject()
                 o2.uuid = "ID2"
 
-                serializedDictionary <-> [o1, o2]
+                serializedDictionary <| [o1, o2]
 
                 let dictArray = serializedDictionary as? [[String: Any]]
 
@@ -90,7 +90,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 let o1 = SerializableObject()
                 o1.uuid = "id1"
 
-                serializedType <-> o1.uuid
+                serializedType <| o1.uuid
 
                 let serializedString = serializedType as? String
 
@@ -102,7 +102,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 let o1 = SerializableObject()
                 o1.cities = ["Antwerpen", "Brussel", "Halle", "Gent"]
 
-                serializedType <-> o1.cities
+                serializedType <| o1.cities
                 let serializedArray = serializedType as? [String]
 
                 expect(serializedArray) == o1.cities
@@ -113,7 +113,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 let o1 = SerializableObject()
                 o1.amount = 20
 
-                serializedType <-> o1.amount
+                serializedType <| o1.amount
 
                 let serializedInt = serializedType as? Int
 
@@ -125,7 +125,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 let o1 = SerializableObject()
                 o1.tapped = true
 
-                serializedType <-> o1.tapped
+                serializedType <| o1.tapped
 
                 let serializedBool = serializedType as? Bool
 
@@ -137,7 +137,7 @@ class SerializeOpereratorsSpec: QuickSpec {
                 let o1 = SerializableObject()
                 o1.price = 5.0
 
-                serializedType <-> o1.price
+                serializedType <| o1.price
 
                 let serializedDouble = serializedType as? Double
 

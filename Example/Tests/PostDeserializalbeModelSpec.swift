@@ -9,7 +9,7 @@ class PostDeserializableModelSpec: QuickSpec {
     override func spec() {
         describe("PostDeserializableModel") {
 
-            context("Should parse") {
+            context("Should create") {
                 it("from dictionary") {
                     let title = "some title"
                     let map: [Post.ServiceMap: Any] = [.id: 1, .title: title]

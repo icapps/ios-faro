@@ -1,5 +1,5 @@
 class JSONReader: NSObject {
-    static func parseFile(named: String!, for bundle: Bundle) -> Any? {
+    static func createFile(named: String!, for bundle: Bundle) -> Any? {
         var named = named.replacingOccurrences(of: "/", with: "_")
         let start = named.startIndex
         let end = named.index(named.startIndex, offsetBy: 1)

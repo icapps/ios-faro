@@ -19,7 +19,7 @@ extension MockModel: Updatable {
         guard let json = raw as? [String: Any] else {
             throw FaroError.updateNotPossible(json: raw, model: self)
         }
-        self.uuid <-> json["uuid"]
+        self.uuid |< json["uuid"]
     }
 
 }

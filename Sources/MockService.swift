@@ -29,7 +29,7 @@ open class MockService: Service {
             return MockURLSessionTask()
         }
 
-        guard let mockJSON = JSONReader.parseFile(named: url, for: bundle!) else {
+        guard let mockJSON = JSONReader.createFile(named: url, for: bundle!) else {
             let faroError = FaroError.malformed(info: "Could not find dummy file at \(url)")
             printFaroError(faroError)
             jsonResult(.failure(faroError))
@@ -56,7 +56,7 @@ open class MockService: Service {
 			return MockURLSessionTask()
 		}
 
-		guard let mockJSON = JSONReader.parseFile(named: url, for: bundle!) else {
+		guard let mockJSON = JSONReader.createFile(named: url, for: bundle!) else {
 			let faroError = FaroError.malformed(info: "Could not find dummy file at \(url)")
 			printFaroError(faroError)
 			try jsonResult(.failure(faroError))
