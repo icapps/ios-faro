@@ -1,4 +1,7 @@
 ope# Faro
+## Version 1.0.9
+* Using URLRequest default timeout instead of 10 seconds
+
 ## Version 1.0.8
 *  Array of primitive types Deserialisable
 
