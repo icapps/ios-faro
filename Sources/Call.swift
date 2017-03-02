@@ -12,7 +12,11 @@ open class Call {
 		self.init(path: path, method: method, rootNode: rootNode, parameter: [.jsonNode(serializableModel.json)])
 	}
 	/// Initializes Call to retreive object(s) from the server.
+	/// parameter path: the path to point the call too
+	/// parameter method: the method to use for the urlRequest
 	/// parameter rootNode: used to extract JSON in method `rootNode(from:)`.
+	/// parameter parameter: array of parameters to be added to the request when created.
+	/// parameter authenticate: optionally add authentication information to the request
 	public init(path: String, method: HTTPMethod = .GET, rootNode: String? = nil, parameter: [Parameter]? = nil) {
 		self.path = path
 		self.httpMethod = method
@@ -25,10 +29,11 @@ open class Call {
 		request.httpMethod = httpMethod.rawValue
 		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 		insertParameter(request: &request)
+		configuration.authenticate?(&request)
 		return request
 	}
 
-	/// Use to begin paring at the correct `rootnode`.
+	/// Used to begin parsing at the correct `rootnode`.
 	/// Override if you want different behaviour then:
 	/// `{"rootNode": <Any Node>}` `<Any Node> is returned when `rootNode` is set.
 	open func rootNode(from json: Any) -> JsonNode {
@@ -43,6 +48,7 @@ open class Call {
 		}
 	}
 
+	/// Called when creating a request.
 	open func insertParameter(request: inout URLRequest) {
 		parameter?.forEach {
 			do {

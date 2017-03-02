@@ -14,11 +14,6 @@ class ConfigurationSpec: QuickSpec {
                 it("should have a baseURL") {
                     expect(configuration.baseURL).to(equal(expected))
                 }
-
-                it("should have a valid NSURL") {
-                    expect(configuration.url).toNot(beNil())
-                    expect(configuration.url?.absoluteString).to(equal(expected))
-                }
             }
         }
     }
