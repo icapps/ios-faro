@@ -14,13 +14,13 @@ open class Service {
 
     let faroSession: FaroSessionable
 
-	private let errorHandler: ((_ error: FaroError, _ performRetry: @escaping()-> Void, _ noRetryNeeded: @escaping()-> Void) -> Void)?
+	private let errorHandler: ((_ error: FaroError, _ performRetry: @escaping() -> Void, _ noRetryNeeded: @escaping() -> Void) -> Void)?
 
 	/// Initializes Service for a specific Configuration and session.
 	/// - parameter configuration: The Configuration to define for example the baseURL
 	/// - parameter faroSession: the URLSession to use to dispatch `URLSessionDataTask` too. defaults to `FaroSession`
 	/// - parameter errorHandler: in case of an error this handler is always called. Use it for general error handling.
-	public init(configuration: Configuration, faroSession: FaroSessionable = FaroSession(), errorHandler: ((_ error: FaroError, _ performRetry: @escaping()-> Void, _ noRetryNeeded: @escaping()-> Void) -> Void)? = nil) {
+	public init(configuration: Configuration, faroSession: FaroSessionable = FaroSession(), errorHandler: ((_ error: FaroError, _ performRetry: @escaping() -> Void, _ noRetryNeeded: @escaping() -> Void) -> Void)? = nil) {
         self.configuration = configuration
         self.faroSession = faroSession
 		self.errorHandler = errorHandler
@@ -154,7 +154,7 @@ open class Service {
     /// - parameter writeResult: `WriteResult` closure should be called with `.ok` other cases are a failure.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func performWrite(_ writeCall: Call, autoStart: Bool = true, writeResult: @escaping (WriteResult) -> ()) -> URLSessionDataTask? {
+    open func performWrite(_ writeCall: Call, autoStart: Bool = true, writeResult: @escaping (WriteResult) -> Void) -> URLSessionDataTask? {
 
         guard let request = writeCall.request(withConfiguration: configuration) else {
             writeResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(writeCall.path)")))
@@ -162,8 +162,24 @@ open class Service {
         }
 
         let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
-			let writeResult = self.handleWrite(data: data, urlResponse: response, error: error)
-            writeResult()
+			let firstResult = self.handleWrite(data: data, urlResponse: response, error: error)
+			switch firstResult {
+			case .failure(let error):
+				if let handler = self.errorHandler {
+					handler(error, {
+						print("🎯 performing retry after \(error)")
+						self.performWrite(writeCall, autoStart: autoStart, writeResult: writeResult)
+					}, {
+						// no retry needed
+						writeResult(firstResult)
+					})
+				} else {
+					// no retry needed
+					writeResult(firstResult)
+				}
+			case .ok:
+				writeResult(firstResult)
+			}
         })
 
         guard autoStart else {
@@ -214,12 +230,12 @@ open class Service {
 
     // MARK: - Internal
 
-    func servicePrint(_ error: FaroError, and fail: (FaroError)->()) {
+    func servicePrint(_ error: FaroError, and fail: (FaroError)->Void) {
         printFaroError(error)
         fail(error)
     }
 
-    func handle<ModelType: Deserializable>(_ result: Result<ModelType>, and fail: (FaroError)->()) {
+    func handle<ModelType: Deserializable>(_ result: Result<ModelType>, and fail: (FaroError)->Void) {
         switch result {
         case .failure(let faroError):
             servicePrint(faroError, and: fail)
@@ -263,7 +279,7 @@ open class Service {
 
 extension Service {
 
-    fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?)-> FaroError? {
+    fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?) -> FaroError? {
         guard error == nil else {
             let returnError = FaroError.nonFaroError(error!)
             printFaroError(returnError)
@@ -315,7 +331,7 @@ extension Service {
         if let updateModel = updateModel as? Updatable {
             do {
                 try             updateModel.update(from: node)
-            }catch {
+            } catch {
                 return Result.failure(.nonFaroError(error))
             }
             return Result.model(updateModel as? M)
@@ -327,6 +343,5 @@ extension Service {
             return Result.model(M(from: node))
         }
     }
-
 
 }
