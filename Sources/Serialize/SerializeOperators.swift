@@ -72,5 +72,3 @@ public func <-> (lhs: inout Any?, rhs: (Date?, String)) {
     DateParser.shared.dateFormat = rhs.1
     lhs = DateParser.shared.dateFormatter.string(from: date)
 }
-
-

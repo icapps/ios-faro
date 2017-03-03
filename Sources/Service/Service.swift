@@ -37,7 +37,7 @@ open class Service {
     /// - parameter modelResult: `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> Void) -> URLSessionDataTask? {
 
         return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
             switch jsonResult {
@@ -58,7 +58,7 @@ open class Service {
     /// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func perform<M: Deserializable>(_ call: Call, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open func perform<M: Deserializable>(_ call: Call, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> Void) -> URLSessionDataTask? {
 
         return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
             switch jsonResult {
@@ -79,7 +79,7 @@ open class Service {
     /// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, page: @escaping(P?)->(),  autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, page: @escaping(P?)->Void, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> Void) -> URLSessionDataTask? {
 
         return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
             switch jsonResult {
@@ -101,7 +101,7 @@ open class Service {
     /// - parameter jsonResult: closure is called when valid or invalid json data is received.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) -> Void) -> URLSessionDataTask? {
 
         guard let request = call.request(withConfiguration: configuration) else {
             jsonResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")))

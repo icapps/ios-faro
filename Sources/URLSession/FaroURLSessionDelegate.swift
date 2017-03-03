@@ -21,5 +21,5 @@ class FaroURLSessionDelegate: NSObject, URLSessionDelegate {
 	func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
 		self.challengeFunction(challenge, completionHandler)
 	}
-	
+
 }

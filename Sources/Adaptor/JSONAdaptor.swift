@@ -6,7 +6,7 @@ open class JSONAdaptor: Adaptable {
 
     }
 
-    open func serialize<M: Deserializable>(from data: Data, result: (Result <M>) -> ()) {
+    open func serialize<M: Deserializable>(from data: Data, result: (Result <M>) -> Void) {
         do {
             let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
             result(.json(json))

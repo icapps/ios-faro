@@ -1,5 +1,3 @@
-
-
 // MARK: - Classes
 
 /// `URLSession` is wrapped in this class to control datatasks creation.
@@ -7,7 +5,7 @@ open class FaroSession: FaroSessionable {
     public let session: URLSession
 
     /// Is instanitated with a default `URLSession.shared` singleton or anything you provide.
-    public init(_ session : URLSession = URLSession.shared) {
+    public init(_ session: URLSession = URLSession.shared) {
         self.session = session
     }
 
@@ -18,7 +16,7 @@ open class FaroSession: FaroSessionable {
     open func resume(_ task: URLSessionDataTask) {
         task.resume()
     }
-    
+
 }
 
 // MARK: - Invalidate session 
@@ -47,4 +45,3 @@ public extension FaroSessionable {
     }
 
 }
-

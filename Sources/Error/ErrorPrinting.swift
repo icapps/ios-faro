@@ -44,5 +44,5 @@ public func printFaroError(_ error: Error) {
         print("💀 you tried to perform a request on a session that is invalid")
         print("💀 message: \(message)")
     }
-    
+
 }

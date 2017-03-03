@@ -14,5 +14,5 @@ open class Configuration {
         self.baseURL = baseURL
         self.adaptor = adaptor
     }
-    
+
 }

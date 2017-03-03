@@ -18,6 +18,16 @@ public enum FaroError: Error, Equatable {
     case serializationError
     case updateNotPossible(json: Any, model: Any)
     case invalidSession(message: String)
+
+	public var networkErrorCode: Int? {
+		switch self {
+		case .networkError(let code, data: _ ):
+			return code
+		default:
+			return nil
+		}
+	}
+
 }
 
 public func == (lhs: FaroError, rhs: FaroError) -> Bool {

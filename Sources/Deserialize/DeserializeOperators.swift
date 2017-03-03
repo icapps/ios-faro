@@ -4,7 +4,6 @@ import Foundation
 /// Used for optional properties
 infix operator <->: AssignmentPrecedence
 
-
 public func <-> <P>(lhs: inout P?, rhs: Any?) where P: Deserializable {
     guard let dict = rhs as? [String: Any] else {
         lhs = nil
@@ -56,7 +55,6 @@ public func <-> (lhs: inout Date?, rhs: (Any?, String)) {
     DateParser.shared.dateFormat = rhs.1
     lhs = DateParser.shared.dateFormatter.date(from: date)
 }
-
 
 // MARK: - Primitive Types -  Array
 public func <-> (lhs: inout [Int]?, rhs: Any?) {

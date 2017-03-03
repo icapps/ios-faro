@@ -18,7 +18,7 @@ open class MockSession: FaroQueueSessionable {
     public var urlResponse: URLResponse?
     public var error: Error?
 
-    var completionHandlers = [Int : ((Data?, URLResponse?, Error?) -> ())]()
+    var completionHandlers = [Int: ((Data?, URLResponse?, Error?) -> Void)]()
 
     public init(data: Data? = nil, urlResponse: URLResponse? = nil, error: Error? = nil) {
         self.data = data
@@ -27,7 +27,7 @@ open class MockSession: FaroQueueSessionable {
         self.session = MockURLSession()
     }
 
-    open func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask {
+    open func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         let task = MockURLSessionTask()
         completionHandlers[task.taskIdentifier] = completionHandler
         return task
@@ -69,10 +69,10 @@ open class MockAsyncSession: MockSession {
             }
         }
     }
-    
+
 }
 
-open class MockURLSessionTask : URLSessionDataTask{
+open class MockURLSessionTask: URLSessionDataTask {
 
     private let uuid: UUID
     public override init() {
@@ -98,7 +98,6 @@ open class MockURLSessionTask : URLSessionDataTask{
         mockedState = .canceling
     }
 
-
     override open func suspend() {
         mockedState = .suspended
     }
@@ -106,5 +105,5 @@ open class MockURLSessionTask : URLSessionDataTask{
     override open func resume() {
         mockedState = .running
     }
-    
+
 }
