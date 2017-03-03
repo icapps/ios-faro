@@ -100,12 +100,26 @@ class ServiceSpec: QuickSpec {
 					mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)
 				}
 
-				it("should call retry for authorisation 401") {
+				it("ANY perform should call retry for authorisation 401") {
 
 					mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 401, httpVersion:nil, headerFields: nil)
 
 					var shouldCallResult = false
 					service.perform(call, modelResult: { (result: Result<MockModel>) in
+						shouldCallResult = true
+						expect(result.error?.networkErrorCode) == 401
+					})
+
+					expect(shouldCallResult) == true
+					expect(receivedErrorToRetry?.networkErrorCode) == 401
+				}
+
+				it("WRITE perform should call retry for authorisation 401") {
+
+					mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 401, httpVersion:nil, headerFields: nil)
+
+					var shouldCallResult = false
+					service.performWrite(call, writeResult: { (result) in
 						shouldCallResult = true
 						expect(result.error?.networkErrorCode) == 401
 					})
