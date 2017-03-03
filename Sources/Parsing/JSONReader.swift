@@ -5,7 +5,7 @@ class JSONReader: NSObject {
         let end = named.index(named.startIndex, offsetBy: 1)
 
         let range = start..<end
-        named = named.replacingCharacters(in: range , with: "")
+        named = named.replacingCharacters(in: range, with: "")
 
         print("🍞 fetching file named: \(named)")
 

@@ -1,3 +1,5 @@
+import Foundation
+
 // MARK: Class implementation
 
 /// Default implementation of a service.
@@ -12,9 +14,16 @@ open class Service {
 
     let faroSession: FaroSessionable
 
-    public init(configuration: Configuration, faroSession: FaroSessionable = FaroSession()) {
+	private let errorHandler: ((_ error: FaroError, _ performRetry: @escaping() -> Void, _ noRetryNeeded: @escaping() -> Void) -> Void)?
+
+	/// Initializes Service for a specific Configuration and session.
+	/// - parameter configuration: The Configuration to define for example the baseURL
+	/// - parameter faroSession: the URLSession to use to dispatch `URLSessionDataTask` too. defaults to `FaroSession`
+	/// - parameter errorHandler: in case of an error this handler is always called. Use it for general error handling.
+	public init(configuration: Configuration, faroSession: FaroSessionable = FaroSession(), errorHandler: ((_ error: FaroError, _ performRetry: @escaping() -> Void, _ noRetryNeeded: @escaping() -> Void) -> Void)? = nil) {
         self.configuration = configuration
         self.faroSession = faroSession
+		self.errorHandler = errorHandler
     }
 
     // MARK: - Results transformed to Model(s)
@@ -28,7 +37,7 @@ open class Service {
     /// - parameter modelResult: `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> Void) -> URLSessionDataTask? {
 
         return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
             switch jsonResult {
@@ -49,7 +58,7 @@ open class Service {
     /// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func perform<M: Deserializable>(_ call: Call, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open func perform<M: Deserializable>(_ call: Call, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> Void) -> URLSessionDataTask? {
 
         return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
             switch jsonResult {
@@ -70,7 +79,7 @@ open class Service {
     /// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, page: @escaping(P?)->(),  autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, page: @escaping(P?)->Void, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> Void) -> URLSessionDataTask? {
 
         return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
             switch jsonResult {
@@ -92,7 +101,7 @@ open class Service {
     /// - parameter jsonResult: closure is called when valid or invalid json data is received.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) -> Void) -> URLSessionDataTask? {
 
         guard let request = call.request(withConfiguration: configuration) else {
             jsonResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")))
@@ -111,6 +120,19 @@ open class Service {
                         jsonResult(serializedResult)
                     }
                 }
+			case .failure(let error):
+				if let handler =  self.errorHandler {
+					handler(error, { [weak self] in
+						// should retry
+						print("🎯 performing retry after \(error)")
+						let _ = self?.performJsonResult(call, autoStart: autoStart, jsonResult: jsonResult)
+					}, {
+						// no retry needed
+						jsonResult(dataResult)
+					})
+				} else {
+					jsonResult(dataResult)
+				}
             default:
                 jsonResult(dataResult)
             }
@@ -132,7 +154,7 @@ open class Service {
     /// - parameter writeResult: `WriteResult` closure should be called with `.ok` other cases are a failure.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func performWrite(_ writeCall: Call, autoStart: Bool = true, writeResult: @escaping (WriteResult) -> ()) -> URLSessionDataTask? {
+    open func performWrite(_ writeCall: Call, autoStart: Bool = true, writeResult: @escaping (WriteResult) -> Void) -> URLSessionDataTask? {
 
         guard let request = writeCall.request(withConfiguration: configuration) else {
             writeResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(writeCall.path)")))
@@ -140,7 +162,24 @@ open class Service {
         }
 
         let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
-            writeResult(self.handleWrite(data: data, urlResponse: response, error: error))
+			let firstResult = self.handleWrite(data: data, urlResponse: response, error: error)
+			switch firstResult {
+			case .failure(let error):
+				if let handler = self.errorHandler {
+					handler(error, {
+						print("🎯 performing retry after \(error)")
+						self.performWrite(writeCall, autoStart: autoStart, writeResult: writeResult)
+					}, {
+						// no retry needed
+						writeResult(firstResult)
+					})
+				} else {
+					// no retry needed
+					writeResult(firstResult)
+				}
+			case .ok:
+				writeResult(firstResult)
+			}
         })
 
         guard autoStart else {
@@ -191,15 +230,15 @@ open class Service {
 
     // MARK: - Internal
 
-    func print(_ error: FaroError, and fail: (FaroError)->()) {
+    func servicePrint(_ error: FaroError, and fail: (FaroError)->Void) {
         printFaroError(error)
         fail(error)
     }
 
-    func handle<ModelType: Deserializable>(_ result: Result<ModelType>, and fail: (FaroError)->()) {
+    func handle<ModelType: Deserializable>(_ result: Result<ModelType>, and fail: (FaroError)->Void) {
         switch result {
         case .failure(let faroError):
-            print(faroError, and: fail)
+            servicePrint(faroError, and: fail)
         default:
             let faroError = FaroError.general
             printFaroError(faroError)
@@ -240,7 +279,7 @@ open class Service {
 
 extension Service {
 
-    fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?)-> FaroError? {
+    fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?) -> FaroError? {
         guard error == nil else {
             let returnError = FaroError.nonFaroError(error!)
             printFaroError(returnError)
@@ -292,7 +331,7 @@ extension Service {
         if let updateModel = updateModel as? Updatable {
             do {
                 try             updateModel.update(from: node)
-            }catch {
+            } catch {
                 return Result.failure(.nonFaroError(error))
             }
             return Result.model(updateModel as? M)
@@ -304,6 +343,5 @@ extension Service {
             return Result.model(M(from: node))
         }
     }
-
 
 }

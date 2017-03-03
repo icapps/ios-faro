@@ -74,4 +74,3 @@ public func parse<T: Deserializable>(_ named: String, from: [String: Any]) throw
         throw FaroError.emptyCollection(key: named, json: from)
     }
 }
-

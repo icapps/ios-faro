@@ -27,7 +27,7 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 					completionHandler(.useCredential, URLCredential(trust:trust))
 				}
 			}
-			
+
 		}
 
 		session = URLSession(configuration: configuration, delegate: urlSessionDelegate, delegateQueue: nil)
@@ -42,5 +42,5 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 	public func resume(_ task: URLSessionDataTask) {
 		task.resume()
 	}
-	
+
 }

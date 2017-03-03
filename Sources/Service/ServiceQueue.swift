@@ -9,20 +9,20 @@ open class ServiceQueue: Service {
     var taskQueue: Set<URLSessionDataTask>
     var failedTasks: Set<URLSessionTask>?
 
-    private let final: (_ failedTasks: Set<URLSessionTask>?)->()
+    private let final: (_ failedTasks: Set<URLSessionTask>?)->Void
 
     /// Creates a queue that lasts until final is called. When all request in the queue are finished the session becomes invalid.
     /// For future queued request you have to create a new ServiceQueue instance.
     /// - parameter configuration: Faro service configuration
     /// - parameter faroSession: You can provide a custom `URLSession` via `FaroQueueSession`.
     /// - parameter final: closure is callen when all requests are performed.
-    public init(configuration: Configuration, faroSession: FaroQueueSessionable = FaroQueueSession(), final: @escaping(_ failedTasks: Set<URLSessionTask>?)->()) {
+    public init(configuration: Configuration, faroSession: FaroQueueSessionable = FaroQueueSession(), final: @escaping(_ failedTasks: Set<URLSessionTask>?)->Void) {
         self.final = final
         taskQueue = Set<URLSessionDataTask>()
         super.init(configuration: configuration, faroSession: faroSession)
     }
 
-    open override func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = false, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open override func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = false, jsonResult: @escaping (Result<M>) -> Void) -> URLSessionDataTask? {
         var task: URLSessionDataTask?
         task = super.performJsonResult(call, autoStart: autoStart) { [weak self] (stage1JsonResult: Result<M>) in
             guard let strongSelf = self else {
@@ -39,7 +39,6 @@ open class ServiceQueue: Service {
                 strongSelf.cleanupQueue(for: task)
             }
 
-
             jsonResult(stage1JsonResult)
             strongSelf.shouldCallFinal()
         }
@@ -48,7 +47,7 @@ open class ServiceQueue: Service {
         return task
     }
 
-    open override func performWrite(_ writeCall: Call, autoStart: Bool, writeResult: @escaping (WriteResult) -> ()) -> URLSessionDataTask? {
+    open override func performWrite(_ writeCall: Call, autoStart: Bool, writeResult: @escaping (WriteResult) -> Void) -> URLSessionDataTask? {
         var task: URLSessionDataTask?
         task = super.performWrite(writeCall, autoStart: autoStart) { [weak self] (result) in
             guard let strongSelf = self else {
