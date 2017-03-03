@@ -1,22 +1,24 @@
 import Foundation
 
-class FaroURLSessionConfiguration {
+open class FaroURLSessionConfiguration {
 	let allowUntrustedCertificates: Bool
 
-	init(allowUntrustedCertificates: Bool) {
+	public init(allowUntrustedCertificates: Bool) {
 		self.allowUntrustedCertificates = allowUntrustedCertificates
 	}
 }
 
-class FaroSecureURLSession: NSObject, FaroSessionable {
-	let session: URLSession
+/// Handles delegate calls from 'URLSessionDelegate' and uses 'FaroURLSessionConfiguration to do a few common use cases. 
+/// Faro also works with your own URLSession but you can use this as a convenience
+open class FaroSecureURLSession: NSObject, FaroSessionable {
 
-	//swiftlint:disable weak_delegate
-	private let  urlSessionDelegate: FaroURLSessionDelegate
+	public let session: URLSession
 
-	init(config: FaroURLSessionConfiguration) {
+	public init(config: FaroURLSessionConfiguration) {
 		let configuration = URLSessionConfiguration.default
-		urlSessionDelegate = FaroURLSessionDelegate { (challenge, completionHandler) in
+
+		let urlSessionDelegate = FaroURLSessionDelegate { (challenge, completionHandler) in
+
 			if config.allowUntrustedCertificates {
 				if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
 					guard let trust  =  challenge.protectionSpace.serverTrust else {
@@ -25,17 +27,19 @@ class FaroSecureURLSession: NSObject, FaroSessionable {
 					completionHandler(.useCredential, URLCredential(trust:trust))
 				}
 			}
+			
 		}
-		session = URLSession(configuration: configuration, delegate: urlSessionDelegate, delegateQueue: nil)
-		super.init()
 
+		session = URLSession(configuration: configuration, delegate: urlSessionDelegate, delegateQueue: nil)
+
+		super.init()
 	}
 
-	func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTask {
+	public func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTask {
 		return session.dataTask(with: request, completionHandler: completionHandler)
 	}
 
-	func resume(_ task: URLSessionDataTask) {
+	public func resume(_ task: URLSessionDataTask) {
 		task.resume()
 	}
 	
