@@ -1,3 +1,5 @@
+import Foundation
+
 // MARK: Class implementation
 
 /// Default implementation of a service.
@@ -12,9 +14,16 @@ open class Service {
 
     let faroSession: FaroSessionable
 
-    public init(configuration: Configuration, faroSession: FaroSessionable = FaroSession()) {
+	private let errorHandler: ((_ error: FaroError, _ performRetry: @escaping()-> Void, _ noRetryNeeded: @escaping()-> Void) -> Void)?
+
+	/// Initializes Service for a specific Configuration and session.
+	/// - parameter configuration: The Configuration to define for example the baseURL
+	/// - parameter faroSession: the URLSession to use to dispatch `URLSessionDataTask` too. defaults to `FaroSession`
+	/// - parameter errorHandler: in case of an error this handler is always called. Use it for general error handling.
+	public init(configuration: Configuration, faroSession: FaroSessionable = FaroSession(), errorHandler: ((_ error: FaroError, _ performRetry: @escaping()-> Void, _ noRetryNeeded: @escaping()-> Void) -> Void)? = nil) {
         self.configuration = configuration
         self.faroSession = faroSession
+		self.errorHandler = errorHandler
     }
 
     // MARK: - Results transformed to Model(s)
@@ -111,6 +120,19 @@ open class Service {
                         jsonResult(serializedResult)
                     }
                 }
+			case .failure(let error):
+				if let handler =  self.errorHandler {
+					handler(error, { [weak self] in
+						// should retry
+						print("🎯 performing retry after \(error)")
+						let _ = self?.performJsonResult(call, autoStart: autoStart, jsonResult: jsonResult)
+					}, {
+						// no retry needed
+						jsonResult(dataResult)
+					})
+				} else {
+					jsonResult(dataResult)
+				}
             default:
                 jsonResult(dataResult)
             }
@@ -140,7 +162,8 @@ open class Service {
         }
 
         let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
-            writeResult(self.handleWrite(data: data, urlResponse: response, error: error))
+			let writeResult = self.handleWrite(data: data, urlResponse: response, error: error)
+            writeResult()
         })
 
         guard autoStart else {
@@ -191,7 +214,7 @@ open class Service {
 
     // MARK: - Internal
 
-    func print(_ error: FaroError, and fail: (FaroError)->()) {
+    func servicePrint(_ error: FaroError, and fail: (FaroError)->()) {
         printFaroError(error)
         fail(error)
     }
@@ -199,7 +222,7 @@ open class Service {
     func handle<ModelType: Deserializable>(_ result: Result<ModelType>, and fail: (FaroError)->()) {
         switch result {
         case .failure(let faroError):
-            print(faroError, and: fail)
+            servicePrint(faroError, and: fail)
         default:
             let faroError = FaroError.general
             printFaroError(faroError)
