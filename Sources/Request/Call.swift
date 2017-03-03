@@ -13,9 +13,16 @@ open class Call {
 	open var parameter: [Parameter]?
 	open var authenticate: ((_ request: inout URLRequest) -> Void)?
 
-	public convenience init<T: Serializable> (path: String, method: HTTPMethod = .POST, rootNode: String? = nil, serializableModel: T) {
-		self.init(path: path, method: method, rootNode: rootNode, parameter: [.jsonNode(serializableModel.json)])
+	/// Initializes Call to retreive object(s) from the server.
+	/// parameter path: the path to point the call too
+	/// parameter method: the method to use for the urlRequest
+	/// parameter rootNode: used to extract JSON in method `rootNode(from:)`.
+	/// parameter serializableModel: the model is put into the body of the request as json.
+	/// parameter authenticate: optionally add authentication information to the request. Every time a request the authenticate function is called. So you can deal with authentication methods that change over time
+	public convenience init<T: Serializable> (path: String, method: HTTPMethod = .POST, rootNode: String? = nil, serializableModel: T, authenticate: ((_ request: inout URLRequest) -> Void)? = nil) {
+		self.init(path: path, method: method, rootNode: rootNode, parameter: [.jsonNode(serializableModel.json)], authenticate: authenticate)
 	}
+
 	/// Initializes Call to retreive object(s) from the server.
 	/// parameter path: the path to point the call too
 	/// parameter method: the method to use for the urlRequest
