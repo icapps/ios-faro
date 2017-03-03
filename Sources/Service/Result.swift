@@ -49,6 +49,16 @@ public enum Result<M: Deserializable> {
 public enum WriteResult {
     case ok
     case failure(FaroError)
+
+	public var error: FaroError? {
+		switch self {
+		case .failure(let error):
+			return error
+		default:
+			return nil
+		}
+	}
+	
 }
 
 public enum JsonNode {
