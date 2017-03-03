@@ -1,19 +1,29 @@
 import Foundation
 
+class FaroURLSessionConfiguration {
+	let allowUntrustedCertificates: Bool
+
+	init(allowUntrustedCertificates: Bool) {
+		self.allowUntrustedCertificates = allowUntrustedCertificates
+	}
+}
+
 class FaroSecureURLSession: NSObject, FaroSessionable {
 	let session: URLSession
 
 	//swiftlint:disable weak_delegate
 	private let  urlSessionDelegate: FaroURLSessionDelegate
 
-	override init() {
+	init(config: FaroURLSessionConfiguration) {
 		let configuration = URLSessionConfiguration.default
 		urlSessionDelegate = FaroURLSessionDelegate { (challenge, completionHandler) in
-			if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
-				guard let trust  =  challenge.protectionSpace.serverTrust else {
-					return
+			if config.allowUntrustedCertificates {
+				if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+					guard let trust  =  challenge.protectionSpace.serverTrust else {
+						return
+					}
+					completionHandler(.useCredential, URLCredential(trust:trust))
 				}
-				completionHandler(.useCredential, URLCredential(trust:trust))
 			}
 		}
 		session = URLSession(configuration: configuration, delegate: urlSessionDelegate, delegateQueue: nil)
