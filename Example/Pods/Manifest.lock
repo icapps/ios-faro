@@ -1,6 +1,6 @@
 PODS:
   - BuddyBuildSDK (1.0.12)
-  - Faro (1.0.7)
+  - Faro (1.0.9)
   - Nimble (6.0.0)
   - Quick (1.0.0)
   - Stella (1.1.0)
@@ -18,11 +18,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   BuddyBuildSDK: f4682598772ae66c9ef5554d2d78d0a19fb413a0
-  Faro: ee998bc52473e867cc270d98f6455c6e69f5d103
+  Faro: 58696cdd4caf956f0423e6ec8b71dab4d63b7b4a
   Nimble: 8fb9b4b34c535b2f32f52c6b9852d6f02d48610b
   Quick: 8024e4a47e6cc03a9d5245ef0948264fc6d27cff
   Stella: 8f62d6f595ed49ff0f7069ba6a308b3f51d1e083
 
 PODFILE CHECKSUM: 21c18457bc5f15e89098040279412510dadcb715
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0
