@@ -27,7 +27,7 @@ class ServiceSpec: QuickSpec {
 	//swiftlint:disable cyclomatic_complexity
 	override func spec() {
 
-        describe("Mocked session") {
+        describe("Mocked session - returning from urlsession task with expected result") {
             var service: Service!
             let call = Call(path: "mock")
             var mockSession: MockSession!
@@ -85,6 +85,36 @@ class ServiceSpec: QuickSpec {
 
                 }
             }
+
+			context("general error handler") {
+
+				var receivedErrorToRetry: FaroError?
+
+				beforeEach {
+					mockSession = MockSession()
+					//swiftlint:disable comma
+					service = Service(configuration: Configuration(baseURL: ""), faroSession: mockSession, errorHandler: { (error, _, noRetryNeeded) in
+						receivedErrorToRetry = error
+						noRetryNeeded()
+					})
+					mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)
+				}
+
+				it("should call retry for authorisation 401") {
+
+					mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 401, httpVersion:nil, headerFields: nil)
+
+					var shouldCallResult = false
+					service.perform(call, modelResult: { (result: Result<MockModel>) in
+						shouldCallResult = true
+						expect(result.error?.networkErrorCode) == 401
+					})
+
+					expect(shouldCallResult) == true
+					expect(receivedErrorToRetry?.networkErrorCode) == 401
+				}
+
+			}
 
         }
 
