@@ -37,7 +37,7 @@ class CallSpec: QuickSpec {
         describe("Call .POST with parameters") {
             let expected = "path"
             let parameters: Parameter = .jsonNode(["id": "someId"])
-            let call = Call(path: expected, method: .POST, parameter: parameters)
+            let call = Call(path: expected, method: .POST, parameter: [parameters])
             let configuration = Faro.Configuration(baseURL: "http://someURL")
 
             it("should use POST method") {
@@ -112,19 +112,19 @@ class CallSpec: QuickSpec {
             let configuration = Faro.Configuration(baseURL: "http://someURL")
 
             func allHTTPHeaderFields(_ parameter: Parameter) -> [String: String] {
-                let call = Call(path: "path", parameter: parameter)
+                let call = Call(path: "path", parameter: [parameter])
                 let request = call.request(withConfiguration: configuration)
                 return request!.allHTTPHeaderFields!
             }
 
             func componentString(_ parameter: Parameter) -> String {
-                let call = Call(path: "path", parameter: parameter)
+                let call = Call(path: "path", parameter: [parameter])
                 let request = call.request(withConfiguration: configuration)
                 return request!.url!.absoluteString
             }
 
             func body(_ parameter: Parameter, method: HTTPMethod) -> Data? {
-                let call = Call(path: "path", method: method, parameter: parameter)
+                let call = Call(path: "path", method: method, parameter: [parameter])
                 let request = call.request(withConfiguration: configuration)
                 return request!.httpBody
             }
@@ -219,6 +219,26 @@ class CallSpec: QuickSpec {
                 expect(callString.characters.last) != "?"
             }
         }
+
+		describe("Authorised Call") {
+
+			var call: Call!
+			let fakeHeader = ["Authorization": "super secret stuff"]
+
+			beforeEach {
+				call = Call(path: "", method: .GET, rootNode: nil, parameter: nil, authenticate: { (urlRequest) in
+					urlRequest.allHTTPHeaderFields = fakeHeader
+				})
+			}
+
+			it("has authorization header") {
+				let request = call.request(withConfiguration: Configuration(baseURL: ""))
+
+				let header = request?.allHTTPHeaderFields?.filter {$0.key == "Authorization"}
+
+				expect(header?.first?.value) == fakeHeader.first?.value
+			}
+		}
     }
 
 }
