@@ -2,11 +2,16 @@ public enum HTTPMethod: String {
 	case GET, POST, PUT, DELETE, PATCH
 }
 
+
+
+/// Defines a request that will be called in the Service
+/// You can add `[Parameter]` to the request and optionally authenticate the request when needed.
 open class Call {
 	open let path: String
 	open let httpMethod: HTTPMethod
 	open var rootNode: String?
 	open var parameter: [Parameter]?
+	open var authenticate: ((_ request: inout URLRequest) -> Void)?
 
 	public convenience init<T: Serializable> (path: String, method: HTTPMethod = .POST, rootNode: String? = nil, serializableModel: T) {
 		self.init(path: path, method: method, rootNode: rootNode, parameter: [.jsonNode(serializableModel.json)])
@@ -16,12 +21,13 @@ open class Call {
 	/// parameter method: the method to use for the urlRequest
 	/// parameter rootNode: used to extract JSON in method `rootNode(from:)`.
 	/// parameter parameter: array of parameters to be added to the request when created.
-	/// parameter authenticate: optionally add authentication information to the request
-	public init(path: String, method: HTTPMethod = .GET, rootNode: String? = nil, parameter: [Parameter]? = nil) {
+	/// parameter authenticate: optionally add authentication information to the request. Every time a request the authenticate function is called. So you can deal with authentication methods that change over time
+	public init(path: String, method: HTTPMethod = .GET, rootNode: String? = nil, parameter: [Parameter]? = nil, authenticate: ((_ request: inout URLRequest) -> Void)? = nil) {
 		self.path = path
 		self.httpMethod = method
 		self.rootNode = rootNode
 		self.parameter = parameter
+		self.authenticate = authenticate
 	}
 
 	open func request(withConfiguration configuration: Configuration) -> URLRequest? {
@@ -29,7 +35,7 @@ open class Call {
 		request.httpMethod = httpMethod.rawValue
 		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 		insertParameter(request: &request)
-		configuration.authenticate?(&request)
+		authenticate?(&request)
 		return request
 	}
 
