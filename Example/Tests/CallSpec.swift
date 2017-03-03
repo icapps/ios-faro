@@ -219,6 +219,26 @@ class CallSpec: QuickSpec {
                 expect(callString.characters.last) != "?"
             }
         }
+
+		describe("Authorised Call") {
+
+			var call: Call!
+			let fakeHeader = ["Authorization": "super secret stuff"]
+
+			beforeEach {
+				call = Call(path: "", method: .GET, rootNode: nil, parameter: nil, authenticate: { (urlRequest) in
+					urlRequest.allHTTPHeaderFields = fakeHeader
+				})
+			}
+
+			it("has authorization header") {
+				let request = call.request(withConfiguration: Configuration(baseURL: ""))
+
+				let header = request?.allHTTPHeaderFields?.filter {$0.key == "Authorization"}
+
+				expect(header?.first?.value) == fakeHeader.first?.value
+			}
+		}
     }
 
 }
