@@ -1,0 +1,19 @@
+excluded:
+  - ./Pods
+
+disabled_rules:
+  - variable_name
+  - type_name
+  - implicit_getter
+  - void_return
+  - closure_parameter_position
+  - trailing_whitespace
+
+line_length:
+  - 180
+
+function_body_length:
+  - 200
+
+large_tuple:
+  - 4
