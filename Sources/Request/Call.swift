@@ -6,21 +6,20 @@ public enum HTTPMethod: String {
 
 /// Defines a request that will be called in the Service
 /// You can add `[Parameter]` to the request and optionally authenticate the request when needed.
+/// Optionally implement `Authenticatable` to make it possible to authenticate requests
 open class Call {
 	open let path: String
 	open let httpMethod: HTTPMethod
 	open var rootNode: String?
 	open var parameter: [Parameter]?
-	open var authenticate: ((_ request: inout URLRequest) -> Void)?
 
 	/// Initializes Call to retreive object(s) from the server.
 	/// parameter path: the path to point the call too
 	/// parameter method: the method to use for the urlRequest
 	/// parameter rootNode: used to extract JSON in method `rootNode(from:)`.
 	/// parameter serializableModel: the model is put into the body of the request as json.
-	/// parameter authenticate: optionally add authentication information to the request. Every time a request the authenticate function is called. So you can deal with authentication methods that change over time
-	public convenience init<T: Serializable> (path: String, method: HTTPMethod = .POST, rootNode: String? = nil, serializableModel: T, authenticate: ((_ request: inout URLRequest) -> Void)? = nil) {
-		self.init(path: path, method: method, rootNode: rootNode, parameter: [.jsonNode(serializableModel.json)], authenticate: authenticate)
+	public convenience init<T: Serializable> (path: String, method: HTTPMethod = .POST, rootNode: String? = nil, serializableModel: T) {
+		self.init(path: path, method: method, rootNode: rootNode, parameter: [.jsonNode(serializableModel.json)])
 	}
 
 	/// Initializes Call to retreive object(s) from the server.
@@ -28,21 +27,23 @@ open class Call {
 	/// parameter method: the method to use for the urlRequest
 	/// parameter rootNode: used to extract JSON in method `rootNode(from:)`.
 	/// parameter parameter: array of parameters to be added to the request when created.
-	/// parameter authenticate: optionally add authentication information to the request. Every time a request the authenticate function is called. So you can deal with authentication methods that change over time
-	public init(path: String, method: HTTPMethod = .GET, rootNode: String? = nil, parameter: [Parameter]? = nil, authenticate: ((_ request: inout URLRequest) -> Void)? = nil) {
+	public init(path: String, method: HTTPMethod = .GET, rootNode: String? = nil, parameter: [Parameter]? = nil) {
 		self.path = path
 		self.httpMethod = method
 		self.rootNode = rootNode
 		self.parameter = parameter
-		self.authenticate = authenticate
 	}
 
-	open func request(withConfiguration configuration: Configuration) -> URLRequest? {
+	/// Makes a request from this call every time. This is done to every service call has its own request and can change time dependend parameters, like authorization.
+	/// Optionally implement `Authenticatable` to make it possible to authenticate requests. In this function on self the functions in 'Authenticatable` will be called.
+	open func request(with configuration: Configuration) -> URLRequest? {
 		var request = URLRequest(url: URL(string: "\(configuration.baseURL)/\(path)")!, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData) // uses default timeout
 		request.httpMethod = httpMethod.rawValue
 		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 		insertParameter(request: &request)
-		authenticate?(&request)
+		if let authenticatableSelf = self as? Authenticatable {
+			authenticatableSelf.authenticate(&request)
+		}
 		return request
 	}
 

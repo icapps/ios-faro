@@ -70,7 +70,7 @@ open class MockService: Service {
     /// You can override this for custom behaviour
     /// by default returns the url from the call
     open func url(from call: Call) -> String? {
-        let request = call.request(withConfiguration: configuration)
+        let request = call.request(with: configuration)
         return request?.url?.absoluteString
     }
 
