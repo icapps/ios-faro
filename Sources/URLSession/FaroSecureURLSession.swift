@@ -13,7 +13,8 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 		super.init()
 	}
 
-	///
+	/// For any response that is a 'HTTPURLResponse` this function checks if self implements `HTTPURLResponseRetryable`. 
+	/// If implemented the a task can be retried with a latered request as explained in the protocol.
 	open func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTask {
 
 		var task: URLSessionDataTask!
