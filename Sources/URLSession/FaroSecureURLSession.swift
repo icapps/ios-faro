@@ -14,7 +14,7 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 
 	public let session: URLSession
 
-	private lazy var retryCountTuples: [(hashValue: Int, count: Int)] = [(hashValue: Int, count: Int)]()
+	lazy var retryCountTuples: [(hashValue: Int, count: Int)] = [(hashValue: Int, count: Int)]()
 
 	public init(_ configuration: URLSessionConfiguration = URLSessionConfiguration.default, urlSessionDelegate: FaroURLSessionDelegate, delegateQueue: OperationQueue? = nil ) {
 		session = URLSession(configuration: configuration, delegate: urlSessionDelegate, delegateQueue: delegateQueue)
@@ -40,7 +40,7 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 			// In case the session is ResponseRetryable the task can be retried with an updated request.
 
 			if responseRetryableSelf.shouldRetry(httpResponse) {
-				guard var request = task.originalRequest else {
+				guard let request = task.originalRequest else {
 					completionHandler(data, response, error)
 					return
 				}
@@ -51,7 +51,11 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 				}
 				self.resume(retryTask)
 			} else {
-				// TODO remove from retry count
+				guard let request = task.originalRequest else {
+					completionHandler(data, response, error)
+					return
+				}
+
 				completionHandler(data, response, error)
 			}
 
@@ -72,6 +76,10 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 			return 1
 		}
 		return countTuple.count
+	}
+
+	func handleEding(for request: URLRequest) {
+		removeFromRetryCount(for: request)
 	}
 
 	func handleRetry(data:Data?, httpResponse: HTTPURLResponse, for request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTask? {
@@ -101,6 +109,10 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 		}
 	}
 
-
+	private func removeFromRetryCount(for request: URLRequest) {
+		if let currentCount = (retryCountTuples.enumerated().first {$0.element.hashValue == request.hashValue}) {
+			retryCountTuples.remove(at: currentCount.offset)
+		}
+	}
 	
 }

@@ -8,14 +8,11 @@ import Nimble
 
 class RetryFaroSecureURLSession: FaroSecureURLSession, HTTPURLResponseRetryable {
 
-	var retryCount: Int = 0
-
 	func shouldRetry(_ response: HTTPURLResponse) -> Bool {
 		return true
 	}
 
 	func makeRequestValidforRetry(_ request: inout URLRequest, after httpResponse: HTTPURLResponse, retryCount: Int) throws {
-		self.retryCount = retryCount
 	}
 
 }
@@ -39,22 +36,31 @@ class FaroSecureURLSessionSpec: QuickSpec {
 			it("should retry and count") {
 
 				expect(session.shouldRetry(httpResponse)) == true
-				expect(session.retryCount) == 0
+				expect(session.retryCountTuples.map {$0.count}) == []
 
 				var variableRequest = testRequest
 
 				try? session.makeRequestValidforRetry(&variableRequest!, after: httpResponse, retryCount: session.retryCount(for: testRequest))
 
-				expect(session.retryCount) == 1
+				expect(session.retryCountTuples.map {$0.count}) == [1]
 			}
 
 			it("count should increase a second time") {
 				let _ = session.handleRetry(data:nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in })
 				let _ = session.handleRetry(data:nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in })
 
-				expect(session.retryCount) == 2
+				expect(session.retryCountTuples.map {$0.count}) == [2]
 			}
 
+			it("removes request from retryCount when finished") {
+				let _ = session.handleRetry(data:nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in })
+
+				expect(session.retryCountTuples.map {$0.count}) == [1]
+
+				session.handleEding(for: testRequest)
+
+				expect(session.retryCountTuples.map {$0.count}) == []
+			}
 		}
 		
 	}
