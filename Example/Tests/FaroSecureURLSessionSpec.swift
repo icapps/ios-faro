@@ -17,6 +17,22 @@ class RetryFaroSecureURLSession: FaroSecureURLSession, HTTPURLResponseRetryable 
 
 }
 
+enum RetryError: Error {
+	case stop
+}
+
+class RetryStoppedFaroSecureURLSession: FaroSecureURLSession, HTTPURLResponseRetryable {
+
+	func shouldRetry(_ response: HTTPURLResponse) -> Bool {
+		return true
+	}
+
+	func makeRequestValidforRetry(_ request: inout URLRequest, after httpResponse: HTTPURLResponse, retryCount: Int) throws {
+		throw RetryError.stop
+	}
+	
+}
+
 class FaroSecureURLSessionSpec: QuickSpec {
 
 	override func spec() {
@@ -45,24 +61,33 @@ class FaroSecureURLSessionSpec: QuickSpec {
 				expect(session.retryCountTuples.map {$0.count}) == [1]
 			}
 
-			it("count should increase a second time") {
-				let _ = session.handleRetry(data:nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in })
-				let _ = session.handleRetry(data:nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in })
+			context("has tried once") {
+				beforeEach {
+					let _ = session.handleRetry(data:nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in })
 
-				expect(session.retryCountTuples.map {$0.count}) == [2]
+					expect(session.retryCountTuples.map {$0.count}) == [1]
+				}
+
+				it("count should increase a second time") {
+					let _ = session.handleRetry(data:nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in })
+
+					expect(session.retryCountTuples.map {$0.count}) == [2]
+				}
+
+
+				it("removes request from retryCount when finished") {
+					session.handleEding(for: testRequest)
+
+					expect(session.retryCountTuples.map {$0.count}) == []
+				}
+				
+				it("does stop after throw") {
+					
+				}
 			}
 
-			it("removes request from retryCount when finished") {
-				let _ = session.handleRetry(data:nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in })
-
-				expect(session.retryCountTuples.map {$0.count}) == [1]
-
-				session.handleEding(for: testRequest)
-
-				expect(session.retryCountTuples.map {$0.count}) == []
-			}
 		}
-		
+
 	}
 
 }
