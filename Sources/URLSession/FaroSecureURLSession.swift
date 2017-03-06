@@ -1,13 +1,5 @@
 import Foundation
 
-open class FaroURLSessionConfiguration {
-	let allowUntrustedCertificates: Bool
-
-	public init(allowUntrustedCertificates: Bool) {
-		self.allowUntrustedCertificates = allowUntrustedCertificates
-	}
-}
-
 /// Handles delegate calls from 'URLSessionDelegate' and uses 'FaroURLSessionConfiguration to do a few common use cases. 
 /// Faro also works with your own URLSession but you can use this as a convenience
 open class FaroSecureURLSession: NSObject, FaroSessionable {
