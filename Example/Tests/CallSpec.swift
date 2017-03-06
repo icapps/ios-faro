@@ -12,6 +12,15 @@ class Car: Serializable {
 
 }
 
+private class AuthorizableCall: Call, Authenticatable {
+	static let fakeHeader = ["Authorization": "super secret stuff"]
+
+	func authenticate(_ request: inout URLRequest) {
+		request.allHTTPHeaderFields = AuthorizableCall.fakeHeader
+	}
+
+}
+
 class CallSpec: QuickSpec {
 
     override func spec() {
@@ -24,12 +33,12 @@ class CallSpec: QuickSpec {
             let configuration = Faro.Configuration(baseURL: "http://someURL")
 
             it("should use POST method") {
-                let request = call.request(withConfiguration: configuration)
+                let request = call.request(with: configuration)
                 expect(request!.httpMethod).to(equal("POST"))
             }
 
             it("should use Serialize object as parameter in call") {
-                let request = call.request(withConfiguration:configuration)
+                let request = call.request(with:configuration)
                 expect(request?.httpBody).toNot(beNil())
             }
         }
@@ -41,7 +50,7 @@ class CallSpec: QuickSpec {
             let configuration = Faro.Configuration(baseURL: "http://someURL")
 
             it("should use POST method") {
-                let request = call.request(withConfiguration: configuration)
+                let request = call.request(with: configuration)
                 expect(request!.httpMethod) == "POST"
             }
         }
@@ -57,12 +66,12 @@ class CallSpec: QuickSpec {
                 }
 
                 it("should default to .GET") {
-                    let request = call.request(withConfiguration: configuration)!
+                    let request = call.request(with: configuration)!
                     expect(request.httpMethod).to(equal("GET"))
                 }
 
                 it("should configuration should make up request") {
-                    let request = call.request(withConfiguration: configuration)!
+                    let request = call.request(with: configuration)!
                     expect(request.url!.absoluteString).to(equal("http://someURL/path"))
                 }
             }
@@ -113,19 +122,19 @@ class CallSpec: QuickSpec {
 
             func allHTTPHeaderFields(_ parameter: Parameter) -> [String: String] {
                 let call = Call(path: "path", parameter: [parameter])
-                let request = call.request(withConfiguration: configuration)
+                let request = call.request(with: configuration)
                 return request!.allHTTPHeaderFields!
             }
 
             func componentString(_ parameter: Parameter) -> String {
                 let call = Call(path: "path", parameter: [parameter])
-                let request = call.request(withConfiguration: configuration)
+                let request = call.request(with: configuration)
                 return request!.url!.absoluteString
             }
 
             func body(_ parameter: Parameter, method: HTTPMethod) -> Data? {
                 let call = Call(path: "path", method: method, parameter: [parameter])
-                let request = call.request(withConfiguration: configuration)
+                let request = call.request(with: configuration)
                 return request!.httpBody
             }
 
@@ -222,21 +231,18 @@ class CallSpec: QuickSpec {
 
 		describe("Authorised Call") {
 
-			var call: Call!
-			let fakeHeader = ["Authorization": "super secret stuff"]
+			var call: AuthorizableCall!
 
 			beforeEach {
-				call = Call(path: "", method: .GET, rootNode: nil, parameter: nil, authenticate: { (urlRequest) in
-					urlRequest.allHTTPHeaderFields = fakeHeader
-				})
+				call = AuthorizableCall(path: "", method: .GET, rootNode: nil, parameter: nil)
 			}
 
 			it("has authorization header") {
-				let request = call.request(withConfiguration: Configuration(baseURL: ""))
+				let request = call.request(with: Configuration(baseURL: ""))
 
 				let header = request?.allHTTPHeaderFields?.filter {$0.key == "Authorization"}
 
-				expect(header?.first?.value) == fakeHeader.first?.value
+				expect(header?.first?.value) == AuthorizableCall.fakeHeader.first?.value
 			}
 		}
     }

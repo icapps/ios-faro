@@ -94,7 +94,7 @@ open class Service {
     @discardableResult
     open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
 
-        guard let request = call.request(withConfiguration: configuration) else {
+        guard let request = call.request(with: configuration) else {
             jsonResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")))
             return nil
         }
@@ -134,7 +134,7 @@ open class Service {
     @discardableResult
     open func performWrite(_ writeCall: Call, autoStart: Bool = true, writeResult: @escaping (WriteResult) -> ()) -> URLSessionDataTask? {
 
-        guard let request = writeCall.request(withConfiguration: configuration) else {
+        guard let request = writeCall.request(with: configuration) else {
             writeResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(writeCall.path)")))
             return nil
         }
