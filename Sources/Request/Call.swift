@@ -11,7 +11,7 @@ open class Call {
 	open let path: String
 	open let httpMethod: HTTPMethod
 	open var rootNode: String?
-	open var parameter: [Parameter]?
+	open var parameters: [Parameter]?
 
 	/// Initializes Call to retreive object(s) from the server.
 	/// parameter path: the path to point the call too
@@ -31,7 +31,7 @@ open class Call {
 		self.path = path
 		self.httpMethod = method
 		self.rootNode = rootNode
-		self.parameter = parameter
+		self.parameters = parameter
 	}
 
 	/// Makes a request from this call every time. This is done to every service call has its own request and can change time dependend parameters, like authorization.
@@ -64,7 +64,7 @@ open class Call {
 
 	/// Called when creating a request.
 	open func insertParameter(request: inout URLRequest) {
-		parameter?.forEach {
+		parameters?.forEach {
 			do {
 				switch $0 {
 				case .httpHeader(let headers):
