@@ -55,7 +55,7 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 					completionHandler(data, response, error)
 					return
 				}
-
+				self.handleEnding(for: request)
 				completionHandler(data, response, error)
 			}
 
@@ -78,7 +78,7 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 		return countTuple.count
 	}
 
-	func handleEding(for request: URLRequest) {
+	func handleEnding(for request: URLRequest) {
 		removeFromRetryCount(for: request)
 	}
 
@@ -95,6 +95,7 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 			return self.dataTask(with: variableRequest, completionHandler: completionHandler)
 		} catch let thrownError {
 			print("\(self) stopping retry after \(thrownError)")
+			removeFromRetryCount(for: request)
 			completionHandler(data, httpResponse, thrownError)
 			return nil
 		}

@@ -21,16 +21,12 @@ enum RetryError: Error {
 	case stop
 }
 
-class RetryStoppedFaroSecureURLSession: FaroSecureURLSession, HTTPURLResponseRetryable {
+class RetryStoppedFaroSecureURLSession: RetryFaroSecureURLSession {
 
-	func shouldRetry(_ response: HTTPURLResponse) -> Bool {
-		return true
-	}
-
-	func makeRequestValidforRetry(_ request: inout URLRequest, after httpResponse: HTTPURLResponse, retryCount: Int) throws {
+	override func makeRequestValidforRetry(_ request: inout URLRequest, after httpResponse: HTTPURLResponse, retryCount: Int) throws {
 		throw RetryError.stop
 	}
-	
+
 }
 
 class FaroSecureURLSessionSpec: QuickSpec {
@@ -74,16 +70,51 @@ class FaroSecureURLSessionSpec: QuickSpec {
 					expect(session.retryCountTuples.map {$0.count}) == [2]
 				}
 
-
 				it("removes request from retryCount when finished") {
-					session.handleEding(for: testRequest)
+					session.handleEnding(for: testRequest)
 
 					expect(session.retryCountTuples.map {$0.count}) == []
 				}
-				
-				it("does stop after throw") {
-					
+
+				it("still contains other retry counts after one is stopped") {
+					session.retryCountTuples.append((hashValue: 169, count: 10))
+
+					session.handleEnding(for: testRequest)
+
+					expect(session.retryCountTuples.map {$0.hashValue}) == [169]
 				}
+
+			}
+
+		}
+
+		describe("Stop retrying") {
+			var session: RetryStoppedFaroSecureURLSession!
+			var testRequest: URLRequest!
+			var httpResponse: HTTPURLResponse!
+
+			beforeEach {
+				session = RetryStoppedFaroSecureURLSession(urlSessionDelegate: FaroURLSessionDelegate(allowUntrustedCertificates: false))
+				testRequest = URLRequest(url: URL(string: "http://www.google.com")!)
+				session.retryCountTuples.append((hashValue: testRequest.hashValue, count: 1))
+				httpResponse =  HTTPURLResponse(url: testRequest.url!, statusCode: 401, httpVersion:nil, headerFields: nil)!
+			}
+
+			it("has request in retry") {
+				expect(session.retryCountTuples.map {$0.hashValue}) == [testRequest.hashValue]
+			}
+
+			it("removes request when stopped") {
+				session.handleEnding(for: testRequest)
+				expect(session.retryCountTuples.map {$0.hashValue}) == []
+			}
+
+			it("still contains other retry counts after one is stopped") {
+				session.retryCountTuples.append((hashValue: 169, count: 10))
+
+				let _ = session.handleRetry(data: nil, httpResponse: httpResponse, for: testRequest, completionHandler: { (_, _, _) in})
+
+				expect(session.retryCountTuples.map {$0.hashValue}) == [169]
 			}
 
 		}
