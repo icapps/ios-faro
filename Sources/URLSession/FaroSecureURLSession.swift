@@ -34,22 +34,22 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 			// In case the session is ResponseRetryable the task can be retried with an updated request.
 
 			if responseRetryableSelf.shouldRetry(httpResponse) {
-				guard let request = task.originalRequest else {
+				guard var request = task.originalRequest else {
 					completionHandler(data, response, error)
 					return
 				}
+				self.handleRetry(data: data, httpResponse: httpResponse, for: &request, completionHandler: completionHandler, task: { (task) in
+					self.resume(task)
+				}, noRetryNeeded: { (faroError) in
+					completionHandler(data, httpResponse, faroError)
+				})
 
-				guard let retryTask = self.handleRetry(data: data, httpResponse: httpResponse, for: request, completionHandler: completionHandler) else {
-					completionHandler(data, httpResponse, error)
-					return
-				}
-				self.resume(retryTask)
 			} else {
-				guard let request = task.originalRequest else {
+				guard var request = task.originalRequest else {
 					completionHandler(data, response, error)
 					return
 				}
-				self.handleEnding(for: request)
+				self.handleEnding(for: &request)
 				completionHandler(data, response, error)
 			}
 
@@ -64,38 +64,36 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 
 	// MARK: - Retry count
 
-	public func retryCount(for request: URLRequest) -> Int {
+	public func retryCount(for request: inout URLRequest) -> Int {
 		guard let countTuple = (retryCountTuples.first {$0.hashValue == request.hashValue}) else {
-			plusRetryCount(for: request)
+			plusRetryCount(for: &request)
 			return 1
 		}
 		return countTuple.count
 	}
 
-	func handleEnding(for request: URLRequest) {
-		removeFromRetryCount(for: request)
+	func handleEnding(for request: inout URLRequest) {
+		removeFromRetryCount(for: &request)
 	}
 
-	func handleRetry(data:Data?, httpResponse: HTTPURLResponse, for request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTask? {
+	func handleRetry(data:Data?, httpResponse: HTTPURLResponse, for request: inout URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void, task: @escaping (URLSessionDataTask) -> Void, noRetryNeeded: @escaping (FaroError?) -> Void) {
 		guard let responseRetryableSelf = self as? HTTPURLResponseRetryable else {
 			print("❓ \(self) can implement '\(Faro.HTTPURLResponseRetryable)' and react to specific responses for any task handeld by \(self).")
-			return nil
+			noRetryNeeded(nil)
+			return
 		}
 
-		self.plusRetryCount(for: request)
-		do {
-			var variableRequest = request
-			try responseRetryableSelf.makeRequestValidforRetry(&variableRequest, after: httpResponse, retryCount: self.retryCount(for: request))
-			return self.dataTask(with: variableRequest, completionHandler: completionHandler)
-		} catch let thrownError {
-			print("\(self) stopping retry after \(thrownError)")
-			removeFromRetryCount(for: request)
-			completionHandler(data, httpResponse, thrownError)
-			return nil
-		}
+		self.plusRetryCount(for: &request)
+		let requestHashValue = request.hashValue
+		responseRetryableSelf.makeRequestValidforRetry(failedRequest: &request, after: httpResponse, retryCount: retryCount(for: &request), requestForRetry: { (requestForRetry) in
+			task(self.dataTask(with: requestForRetry, completionHandler: completionHandler))
+		}, noRetryNeeded: {(error) in
+			self.removeFromRetryCount(hashValue: requestHashValue)
+			noRetryNeeded(error)
+		})
 	}
 	
-	private func plusRetryCount(for request: URLRequest) {
+	private func plusRetryCount(for request: inout URLRequest) {
 		if let currentCount = (retryCountTuples.enumerated().first {$0.element.hashValue == request.hashValue}) {
 			retryCountTuples.remove(at: currentCount.offset)
 			retryCountTuples.insert((hashValue: request.hashValue, count: currentCount.element.count + 1), at: currentCount.offset)
@@ -104,8 +102,12 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 		}
 	}
 
-	private func removeFromRetryCount(for request: URLRequest) {
-		if let currentCount = (retryCountTuples.enumerated().first {$0.element.hashValue == request.hashValue}) {
+	private func removeFromRetryCount(for request: inout URLRequest) {
+		removeFromRetryCount(hashValue: request.hashValue)
+	}
+
+	private func removeFromRetryCount(hashValue: Int) {
+		if let currentCount = (retryCountTuples.enumerated().first {$0.element.hashValue == hashValue}) {
 			retryCountTuples.remove(at: currentCount.offset)
 		}
 	}

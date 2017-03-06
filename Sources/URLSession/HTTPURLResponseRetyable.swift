@@ -19,6 +19,6 @@ public protocol HTTPURLResponseRetryable {
 	/// - parameter request: the request to make valid again
 	/// - parameter httpResponse: the received response
 	/// - parameter retryCount: the amount of times we asked the implementer of HTTPURLResponseRetryable to retry the request. If this is to high throw any error to stop.
-	func makeRequestValidforRetry(_ request: inout URLRequest, after httpResponse: HTTPURLResponse, retryCount: Int) throws
+	func makeRequestValidforRetry(failedRequest: inout URLRequest, after httpResponse: HTTPURLResponse, retryCount: Int, requestForRetry: @escaping (inout URLRequest) -> Void, noRetryNeeded: @escaping (FaroError?) -> Void)
 
 }
