@@ -35,11 +35,11 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 		super.init()
 	}
 
-	public func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTask {
+	open func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTask {
 		return session.dataTask(with: request, completionHandler: completionHandler)
 	}
 
-	public func resume(_ task: URLSessionDataTask) {
+	open func resume(_ task: URLSessionDataTask) {
 		task.resume()
 	}
 	

@@ -8,17 +8,17 @@
 
 import Foundation
 
-class FaroURLSessionDelegate: NSObject, URLSessionDelegate {
+open class FaroURLSessionDelegate: NSObject, URLSessionDelegate {
 
 	let challengeFunction: (_ challenge: URLAuthenticationChallenge, _ completionHandler: (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void
 
-	init(_ challenge: @escaping (_ challenge: URLAuthenticationChallenge, _ completionHandler: (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void) {
+	public init(_ challenge: @escaping (_ challenge: URLAuthenticationChallenge, _ completionHandler: (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void) {
 		self.challengeFunction = challenge
 		super.init()
 	}
 
 	//swiftlint:disable line_length
-	func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+	open func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
 		self.challengeFunction(challenge, completionHandler)
 	}
 	
