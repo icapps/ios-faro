@@ -40,7 +40,7 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 					return
 				}
 				self.handleRetry(data: data, httpResponse: httpResponse, for: request, completionHandler: completionHandler, task: { (fixedTask) in
-					self.resume(task)
+					self.resume(fixedTask)
 				}, noRetryNeeded: { (faroError) in
 					completionHandler(data, httpResponse, faroError)
 				})
