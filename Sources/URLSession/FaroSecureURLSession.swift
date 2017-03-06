@@ -27,6 +27,7 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 
 			guard let responseRetryableSelf = self as? HTTPURLResponseRetryable else {
 				print("❓ \(self) can implement '\(Faro.HTTPURLResponseRetryable)' and react to specific responses for any task handeld by \(self).")
+				completionHandler(data, response, error)
 				return
 			}
 
