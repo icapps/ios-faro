@@ -14,24 +14,10 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 
 	public let session: URLSession
 
-	public init(config: FaroURLSessionConfiguration) {
-		let configuration = URLSessionConfiguration.default
+	private lazy var retryCountTuples: [(hashValue: Int, count: Int)] = [(hashValue: Int, count: Int)]()
 
-		let urlSessionDelegate = FaroURLSessionDelegate { (challenge, completionHandler) in
-
-			if config.allowUntrustedCertificates {
-				if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
-					guard let trust  =  challenge.protectionSpace.serverTrust else {
-						return
-					}
-					completionHandler(.useCredential, URLCredential(trust:trust))
-				}
-			}
-			
-		}
-
-		session = URLSession(configuration: configuration, delegate: urlSessionDelegate, delegateQueue: nil)
-
+	public init(_ configuration: URLSessionConfiguration = URLSessionConfiguration.default, urlSessionDelegate: FaroURLSessionDelegate, delegateQueue: OperationQueue? = nil ) {
+		session = URLSession(configuration: configuration, delegate: urlSessionDelegate, delegateQueue: delegateQueue)
 		super.init()
 	}
 
@@ -58,13 +44,12 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 					completionHandler(data, response, error)
 					return
 				}
-				self.plusRetryCount(for: request)
-				do {
-					try responseRetryableSelf.makeRequestValidforRetry(&request, after: httpResponse, retryCount: self.retryCount(for: request))
-				} catch let thrownError {
-					print("\(self) stopping retry after \(thrownError)")
-					completionHandler(data, response, thrownError)
+
+				guard let retryTask = self.handleRetry(data: data, httpResponse: httpResponse, for: request, completionHandler: completionHandler) else {
+					completionHandler(data, httpResponse, error)
+					return
 				}
+				self.resume(retryTask)
 			} else {
 				// TODO remove from retry count
 				completionHandler(data, response, error)
@@ -87,6 +72,24 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 			return 1
 		}
 		return countTuple.count
+	}
+
+	func handleRetry(data:Data?, httpResponse: HTTPURLResponse, for request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTask? {
+		guard let responseRetryableSelf = self as? HTTPURLResponseRetryable else {
+			print("❓ \(self) can implement '\(Faro.HTTPURLResponseRetryable)' and react to specific responses for any task handeld by \(self).")
+			return nil
+		}
+
+		self.plusRetryCount(for: request)
+		do {
+			var variableRequest = request
+			try responseRetryableSelf.makeRequestValidforRetry(&variableRequest, after: httpResponse, retryCount: self.retryCount(for: request))
+			return self.dataTask(with: variableRequest, completionHandler: completionHandler)
+		} catch let thrownError {
+			print("\(self) stopping retry after \(thrownError)")
+			completionHandler(data, httpResponse, thrownError)
+			return nil
+		}
 	}
 	
 	private func plusRetryCount(for request: URLRequest) {

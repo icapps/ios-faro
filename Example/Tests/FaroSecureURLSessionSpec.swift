@@ -3,7 +3,7 @@ import Foundation
 import Quick
 import Nimble
 
-import Faro
+@testable import Faro
 @testable import Faro_Example
 
 class RetryFaroSecureURLSession: FaroSecureURLSession, HTTPURLResponseRetryable {
@@ -49,10 +49,8 @@ class FaroSecureURLSessionSpec: QuickSpec {
 			}
 
 			it("count should increase a second time") {
-				var variableRequest = testRequest
-
-				try? session.makeRequestValidforRetry(&variableRequest!, after: httpResponse, retryCount: session.retryCount(for: testRequest))
-				try? session.makeRequestValidforRetry(&variableRequest!, after: httpResponse, retryCount: session.retryCount(for: testRequest))
+				let _ = session.handleRetry(data:nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in })
+				let _ = session.handleRetry(data:nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in })
 
 				expect(session.retryCount) == 2
 			}
