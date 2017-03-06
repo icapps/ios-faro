@@ -12,12 +12,12 @@ class RetryFaroSecureURLSession: FaroSecureURLSession, HTTPURLResponseRetryable 
 		return true
 	}
 
-	func makeRequestValidforRetry(failedRequest: inout URLRequest,
+	func makeRequestValidforRetry(failedRequest: URLRequest,
 	                              after httpResponse: HTTPURLResponse,
 	                              retryCount: Int,
-	                              requestForRetry: @escaping (inout URLRequest) -> Void,
+	                              requestForRetry: @escaping (URLRequest) -> Void,
 	                              noRetryNeeded: @escaping (FaroError?) -> Void) {
-		requestForRetry(&failedRequest)
+		requestForRetry(failedRequest)
 	}
 
 }
@@ -28,10 +28,10 @@ enum RetryError: Error {
 
 class RetryStoppedFaroSecureURLSession: RetryFaroSecureURLSession {
 
-	override func makeRequestValidforRetry(failedRequest: inout URLRequest,
+	override func makeRequestValidforRetry(failedRequest: URLRequest,
 	                                       after httpResponse: HTTPURLResponse,
 	                                       retryCount: Int,
-	                                       requestForRetry: @escaping (inout URLRequest) -> Void,
+	                                       requestForRetry: @escaping (URLRequest) -> Void,
 	                                       noRetryNeeded: @escaping (FaroError?) -> Void) {
 		noRetryNeeded(nil)
 	}
@@ -45,13 +45,13 @@ class FaroSecureURLSessionSpec: QuickSpec {
 		describe("Keep track of the retry count") {
 
 			var session: RetryFaroSecureURLSession!
-			var testRequest: URLRequest?
+			var testRequest: URLRequest!
 			var httpResponse: HTTPURLResponse!
 
 			beforeEach {
 				session = RetryFaroSecureURLSession(urlSessionDelegate: FaroURLSessionDelegate(allowUntrustedCertificates: false))
 				testRequest = URLRequest(url: URL(string: "http://www.google.com")!)
-				httpResponse =  HTTPURLResponse(url: testRequest!.url!, statusCode: 401, httpVersion:nil, headerFields: nil)!
+				httpResponse =  HTTPURLResponse(url: testRequest.url!, statusCode: 401, httpVersion:nil, headerFields: nil)!
 			}
 
 			fit("should retry and count") {
@@ -59,7 +59,7 @@ class FaroSecureURLSessionSpec: QuickSpec {
 				expect(session.shouldRetry(httpResponse)) == true
 				expect(session.retryCountTuples.map {$0.count}) == []
 
-				session.handleRetry(data: nil, httpResponse: httpResponse, for: &testRequest!, completionHandler: {(_, _, _) in }, task: { (_) in
+				session.handleRetry(data: nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in }, task: { (_) in
 				}, noRetryNeeded: {_ in})
 
 				expect(session.retryCountTuples.map {$0.count}) == [1]
@@ -67,7 +67,7 @@ class FaroSecureURLSessionSpec: QuickSpec {
 
 			context("has tried once") {
 				beforeEach {
-					session.handleRetry(data: nil, httpResponse: httpResponse, for: &testRequest!, completionHandler: {(_, _, _) in }, task: { (task) in
+					session.handleRetry(data: nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in }, task: { (task) in
 					}, noRetryNeeded: { (_) in
 					})
 
@@ -75,7 +75,7 @@ class FaroSecureURLSessionSpec: QuickSpec {
 				}
 
 				it("count should increase a second time") {
-					session.handleRetry(data: nil, httpResponse: httpResponse, for: &testRequest!, completionHandler: {(_, _, _) in }, task: { (task) in
+					session.handleRetry(data: nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in }, task: { (task) in
 					}, noRetryNeeded: { (_) in
 					})
 
@@ -83,17 +83,17 @@ class FaroSecureURLSessionSpec: QuickSpec {
 				}
 
 				it("removes request from retryCount when finished") {
-					session.handleEnding(for: &testRequest!)
+					session.handleEnding(for: testRequest)
 
 					expect(session.retryCountTuples.map {$0.count}) == []
 				}
 
 				it("still contains other retry counts after one is stopped") {
-					session.retryCountTuples.append((hashValue: 169, count: 10))
+					session.retryCountTuples.append((requestIdentifier: "169", count: 10))
 
-					session.handleEnding(for: &testRequest!)
+					session.handleEnding(for: testRequest)
 
-					expect(session.retryCountTuples.map {$0.hashValue}) == [169]
+					expect(session.retryCountTuples.map {$0.requestIdentifier}) == ["169"]
 				}
 
 			}
@@ -102,33 +102,33 @@ class FaroSecureURLSessionSpec: QuickSpec {
 
 		describe("Stop retrying") {
 			var session: RetryStoppedFaroSecureURLSession!
-			var testRequest: URLRequest?
+			var testRequest: URLRequest!
 			var httpResponse: HTTPURLResponse!
 
 			beforeEach {
 				session = RetryStoppedFaroSecureURLSession(urlSessionDelegate: FaroURLSessionDelegate(allowUntrustedCertificates: false))
 				testRequest = URLRequest(url: URL(string: "http://www.google.com")!)
-				session.retryCountTuples.append((hashValue: testRequest!.hashValue, count: 1))
-				httpResponse =  HTTPURLResponse(url: testRequest!.url!, statusCode: 401, httpVersion:nil, headerFields: nil)!
+				session.retryCountTuples.append((requestIdentifier: testRequest.requestIdentifier, count: 1))
+				httpResponse =  HTTPURLResponse(url: testRequest.url!, statusCode: 401, httpVersion:nil, headerFields: nil)!
 			}
 
 			it("has request in retry") {
-				expect(session.retryCountTuples.map {$0.hashValue}) == [testRequest!.hashValue]
+				expect(session.retryCountTuples.map {$0.requestIdentifier}) == [testRequest.requestIdentifier]
 			}
 
 			it("removes request when stopped") {
-				session.handleEnding(for: &testRequest!)
-				expect(session.retryCountTuples.map {$0.hashValue}) == []
+				session.handleEnding(for: testRequest)
+				expect(session.retryCountTuples.map {$0.requestIdentifier}) == []
 			}
 
 			it("still contains other retry counts after one is stopped") {
-				session.retryCountTuples.append((hashValue: 169, count: 10))
+				session.retryCountTuples.append((requestIdentifier: "169", count: 10))
 
-				session.handleRetry(data: nil, httpResponse: httpResponse, for: &testRequest!, completionHandler: {(_, _, _) in }, task: { (task) in
+				session.handleRetry(data: nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in }, task: { (task) in
 				}, noRetryNeeded: { (_) in
 				})
 
-				expect(session.retryCountTuples.map {$0.hashValue}) == [169]
+				expect(session.retryCountTuples.map {$0.requestIdentifier}) == ["169"]
 			}
 
 		}
