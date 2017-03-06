@@ -54,7 +54,7 @@ class FaroSecureURLSessionSpec: QuickSpec {
 				httpResponse =  HTTPURLResponse(url: testRequest.url!, statusCode: 401, httpVersion:nil, headerFields: nil)!
 			}
 
-			fit("should retry and count") {
+			it("should retry and count") {
 
 				expect(session.shouldRetry(httpResponse)) == true
 				expect(session.retryCountTuples.map {$0.count}) == []

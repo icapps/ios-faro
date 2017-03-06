@@ -35,7 +35,7 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 			// In case the session is ResponseRetryable the task can be retried with an updated request.
 
 			if responseRetryableSelf.shouldRetry(httpResponse) {
-				guard var request = task.originalRequest else {
+				guard let request = task.originalRequest else {
 					completionHandler(data, response, error)
 					return
 				}
