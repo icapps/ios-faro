@@ -235,7 +235,7 @@ open class Service {
 		}
 
 		let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
-			writeResult(self.handleWrite(data: data, urlResponse: response, error: error))
+			writeResult(self.handleWrite(data: data, urlResponse: response, error: error, for: request))
 		})
 
 		guard autoStart else {
@@ -281,7 +281,7 @@ open class Service {
 
 		let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
 			throwHandler {
-				try writeResult(self.handleWrite(data: data, urlResponse: response, error: error))
+				try writeResult(self.handleWrite(data: data, urlResponse: response, error: error, for: request))
 			}
 		})
 
@@ -309,7 +309,7 @@ open class Service {
         }
 
         let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
-            let dataResult = self.handle(data: data, urlResponse: response, error: error) as Result<M>
+			let dataResult = self.handle(data: data, urlResponse: response, error: error, for: request) as Result<M>
             switch dataResult {
             case .data(let data):
                 self.configuration.adaptor.serialize(from: data) { (serializedResult: Result<M>) in
@@ -368,7 +368,7 @@ open class Service {
 		}
 
 		let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
-			let dataResult = self.handle(data: data, urlResponse: response, error: error) as Result<M>
+			let dataResult = self.handle(data: data, urlResponse: response, error: error, for: request) as Result<M>
 			switch dataResult {
 			case .data(let data):
 				self.configuration.adaptor.serialize(from: data) { (serializedResult: Result<M>) in
@@ -399,17 +399,17 @@ open class Service {
 
     // MARK: - Handles
 
-    open func handleWrite(data: Data?, urlResponse: URLResponse?, error: Error?) -> WriteResult {
-        if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error) {
+	open func handleWrite(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest) -> WriteResult {
+		if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error, for: request) {
             return .failure(faroError)
         }
 
         return .ok
     }
 
-    open func handle<M: Deserializable>(data: Data?, urlResponse: URLResponse?, error: Error?) -> Result<M> {
+	open func handle<M: Deserializable>(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest) -> Result<M> {
 
-        if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error) {
+		if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error, for: request) {
             return .failure(faroError)
         }
 
@@ -468,34 +468,34 @@ open class Service {
 
 extension Service {
 
-    fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?)-> FaroError? {
-        guard error == nil else {
-            let returnError = FaroError.nonFaroError(error!)
-            printFaroError(returnError)
-            return returnError
-        }
+	fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest)-> FaroError? {
+		guard error == nil else {
+			let returnError = FaroError.nonFaroError(error!)
+			printFaroError(returnError)
+			return returnError
+		}
 
-        guard let httpResponse = urlResponse as? HTTPURLResponse else {
-            let returnError = FaroError.networkError(0, data: data)
-            printFaroError(returnError)
-            return returnError
-        }
+		guard let httpResponse = urlResponse as? HTTPURLResponse else {
+			let returnError = FaroError.networkError(0, data: data, request: request)
+			printFaroError(returnError)
+			return returnError
+		}
 
-        let statusCode = httpResponse.statusCode
-        guard statusCode < 400 else {
-            let returnError = FaroError.networkError(statusCode, data: data)
-            printFaroError(returnError)
-            return returnError
-        }
+		let statusCode = httpResponse.statusCode
+		guard statusCode < 400 else {
+			let returnError = FaroError.networkError(statusCode, data: data, request: request)
+			printFaroError(returnError)
+			return returnError
+		}
 
-        guard 200...204 ~= statusCode else {
-            let returnError = FaroError.networkError(statusCode, data: data)
-            printFaroError(returnError)
-            return returnError
-        }
+		guard 200...204 ~= statusCode else {
+			let returnError = FaroError.networkError(statusCode, data: data, request: request)
+			printFaroError(returnError)
+			return returnError
+		}
 
-        return nil
-    }
+		return nil
+	}
 
     fileprivate func handleNodeArray<M: Deserializable>(_ nodes: [Any], on updateModel: M? = nil, call: Call) -> Result<M> {
         if let _ = updateModel {
