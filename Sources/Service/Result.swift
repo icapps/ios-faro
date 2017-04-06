@@ -1,4 +1,3 @@
-/// `Result` is used to deliver results mapped in the `Bar`.
 public enum Result<M: Deserializable> {
     case model(M?)
     case models([M]?)
