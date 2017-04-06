@@ -20,6 +20,7 @@ We build a service request by using a `Service` class as the point where you fir
 
 *Automagically Parse*
 * Use our Deserialization and Serialization operators to create relations and properties
+* Implement `Updatable` for any instance to update from JSON rather then initiate a new instance
 
 *Protocols*
 * Because we use Protocols you can use any type including CoreData's `NSManagedObject` 💪🏼
@@ -62,7 +63,7 @@ You can do:
 
 ### Single relation
 
-Can be any instance that is `Updatable` or not. If you implement `Updatable` you can use `let` and the relations properties are updated rather. If you don't the childe is always replaced with a new instance with updated properties.
+Can be any instance that is `Updatable` or not. If you implement `Updatable` you can use `let` and the relations properties are updated rather. If you don't the child is always replaced with a new instance with updated properties.
 ```swift
 class Foo {
 let child: Child
@@ -148,8 +149,8 @@ extension Zoo: Serializable {
 
 Because swift requires all properties to be set before we can call `map(from:)` on `self` you will have to do required properties manually.
 
-````swift
-class Gail: Deserializable {
+```swift
+class Jail: Deserializable {
     var cellNumber: String
     var foodTicket: String?
 
@@ -170,11 +171,10 @@ class Gail: Deserializable {
 
 ```
 
-
 ## Requirements
 
 - iOS 8 or higher
-- Because we use generics you can only use this pod in Swift only files. You can mix and Match with Objective-C but not with generic classes.  Types [More info](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithObjective-CAPIs.html#//apple_ref/doc/uid/TP40014216-CH4-ID53)
+- Because we use generics you can only use this pod in Swift only files. You can mix and Match with Objective-C but not with generic classes. [More info](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithObjective-CAPIs.html#//apple_ref/doc/uid/TP40014216-CH4-ID53)
 
 ## Installation
 
