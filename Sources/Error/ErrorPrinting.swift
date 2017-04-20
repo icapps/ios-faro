@@ -43,6 +43,10 @@ public func printFaroError(_ error: Error) {
     case .invalidSession(message: let message):
         print("💀 you tried to perform a request on a session that is invalid")
         print("💀 message: \(message)")
+	case .noModelFor(call: let call, inJson: let jsonNode):
+		print("")
+	case .invalidDeprecatedResult(resultString: let result):
+		print("")
     }
     
 }
