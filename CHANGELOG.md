@@ -1,6 +1,9 @@
-ope# Faro
-## Version 1.1.0
+# Faro
+
+## Version 2.0.0
+
 *! Warning this is a breaking change*
+
 * Parse functions
   * `parse(.. rename` -> `create(...`
 * Operator rename:
