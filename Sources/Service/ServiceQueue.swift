@@ -31,7 +31,7 @@ open class ServiceQueue {
 					complete {try T(node)}
 				default:
 					complete { [unowned self] in
-						let error = FaroError.noModelFor(call: call, inJson: rootNode)
+						let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
 						self.handleError(error)
 						throw error
 					}
@@ -43,7 +43,7 @@ open class ServiceQueue {
 				}
 			default:
 				complete {
-					let error = FaroError.invalidDeprecatedResult(call: call, resultString: "\(result)")
+					let error = FaroError.invalidDeprecatedResult(resultString: "\(result)", call: call)
 					self.handleError(error)
 					throw error
 				}
@@ -63,8 +63,7 @@ open class ServiceQueue {
 				case .nodeArray(let nodeArray):
 					guard let nodeArray = nodeArray as? [[String: Any]] else {
 						complete { [unowned self] in
-							let error = FaroError.noModelFor(call: call, inJson: rootNode)
-							self.handleError(error)
+							let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
 							throw error
 						}
 						return
@@ -75,7 +74,7 @@ open class ServiceQueue {
 					complete { try nodeArray.map {try T($0)} }
 				default:
 					complete {
-						let error = FaroError.noModelFor(call: call, inJson: rootNode)
+						let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
 						self.handleError(error)
 						throw error
 					}
@@ -87,7 +86,7 @@ open class ServiceQueue {
 				}
 			default:
 				complete {
-					let error = FaroError.invalidDeprecatedResult(call: call, resultString: "\(result)")
+					let error = FaroError.invalidDeprecatedResult(resultString: "\(result)", call: call)
 					self.handleError(error)
 					throw error
 				}

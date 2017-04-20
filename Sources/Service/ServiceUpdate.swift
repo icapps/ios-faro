@@ -8,9 +8,9 @@
 
 import Foundation
 
-class ServiceUpdate<T>: Service <T> where T: JSONDeserializable & Deserializable & JSONUpdatable {
+open class ServiceUpdate<T>: Service <T> where T: JSONDeserializable & Deserializable & JSONUpdatable {
 
-	func updateSingle(_ singleModel: T,complete: @escaping(@escaping () throws -> Void) -> Void) {
+	open func updateSingle(_ singleModel: T,complete: @escaping(@escaping () throws -> Void) -> Void) {
 		let call = self.call
 		deprecatedService.performJsonResult(call, autoStart: autoStart) { [weak self](result: DeprecatedResult<T>) in
 			switch result {
@@ -24,7 +24,7 @@ class ServiceUpdate<T>: Service <T> where T: JSONDeserializable & Deserializable
 					complete {try singleModel.update(node)}
 				default:
 					complete { [weak self] in
-						let error = FaroError.noModelFor(call: call, inJson: rootNode)
+						let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
 						self?.handleError(error)
 						throw error
 					}
@@ -36,7 +36,7 @@ class ServiceUpdate<T>: Service <T> where T: JSONDeserializable & Deserializable
 				}
 			default:
 				complete { [weak self] in
-					let error = FaroError.invalidDeprecatedResult(call: call, resultString: "\(result)")
+					let error = FaroError.invalidDeprecatedResult(resultString: "\(result)", call: call)
 					self?.handleError(error)
 					throw error
 				}
@@ -47,9 +47,11 @@ class ServiceUpdate<T>: Service <T> where T: JSONDeserializable & Deserializable
 }
 
 
-class ServiceUpdateCollection<T>: Service <T> where T: JSONDeserializable & Deserializable & JSONUpdatable & Linkable {
+open class ServiceUpdateCollection<T>: Service <T> where T: JSONDeserializable & Deserializable & JSONUpdatable & Linkable & JSONMatchable {
 
-	func updateCollection(_ collection: [T],complete: @escaping(@escaping () throws -> Void) -> Void) {
+	/// Updates every object in `collection` paramter with a json node in the response
+	/// When you do not mind that the reponse contains nodes that are not in collection put parameter `allowMissingNodes` to true, default is false.
+	open func updateCollection(_ collection: [T], allowMissingNodes: Bool = false, complete: @escaping(@escaping () throws -> Void) -> Void) {
 		let call = self.call
 		deprecatedService.performJsonResult(call, autoStart: autoStart) { [weak self](result: DeprecatedResult<T>) in
 			switch result {
@@ -62,22 +64,30 @@ class ServiceUpdateCollection<T>: Service <T> where T: JSONDeserializable & Dese
 					guard let nodeArray = nodeArray as? [[String: Any]] else {
 
 						complete {
-							let error = FaroError.noModelFor(call: call, inJson: rootNode)
+							let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
 							self?.handleError(error)
 							throw error
 						}
 						return
 					}
+
 					// Update Model with nodeObject. When this is not possible an error is thrown.
-					complete {
+					complete { [weak self] in
 						for node in nodeArray {
-							let modelToUpdate = collection.first? {$0.ma}
-							try model.update(node)
+							if let modelToUpdate = (collection.first {$0.matchesJson(node)}) {
+								try modelToUpdate.update(node)
+							} else {
+								let error = FaroError.noUpdateModelOf(type: "\(T.self)", ofJsonNode: node, call: call)
+								self?.handleError(error)
+								if !allowMissingNodes {
+									throw error
+								}
+							}
 						}
 					}
 				default:
 					complete { [weak self] in
-						let error = FaroError.noModelFor(call: call, inJson: rootNode)
+						let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
 						self?.handleError(error)
 						throw error
 					}
@@ -89,7 +99,7 @@ class ServiceUpdateCollection<T>: Service <T> where T: JSONDeserializable & Dese
 				}
 			default:
 				complete { [weak self] in
-					let error = FaroError.invalidDeprecatedResult(call: call, resultString: "\(result)")
+					let error = FaroError.invalidDeprecatedResult(resultString: "\(result)", call: call)
 					self?.handleError(error)
 					throw error
 				}

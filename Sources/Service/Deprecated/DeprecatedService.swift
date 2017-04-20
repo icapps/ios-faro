@@ -95,7 +95,7 @@ open class DeprecatedService {
     open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (DeprecatedResult<M>) -> ()) -> URLSessionDataTask? {
 
         guard let request = call.request(with: configuration) else {
-            jsonResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")))
+            jsonResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)", call: call)))
             return nil
         }
 
@@ -135,7 +135,7 @@ open class DeprecatedService {
     open func performWrite(_ writeCall: Call, autoStart: Bool = true, writeResult: @escaping (WriteResult) -> ()) -> URLSessionDataTask? {
 
         guard let request = writeCall.request(with: configuration) else {
-            writeResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(writeCall.path)")))
+            writeResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(writeCall.path)", call: writeCall)))
             return nil
         }
 
@@ -182,10 +182,8 @@ open class DeprecatedService {
             return handleNode(node, on: updateModel, call: call)
         case .nodeArray(let nodes):
             return handleNodeArray(nodes, on: updateModel, call: call)
-        case .nodeNotFound(let json):
-            return DeprecatedResult.failure(.rootNodeNotFound(json: json))
-        case .nodeNotSerialized:
-            return DeprecatedResult.failure(.serializationError)
+		default:
+            return DeprecatedResult.failure(.noModelOf(type: "\(M.self)", inJson: rootNode, call: call))
         }
     }
 

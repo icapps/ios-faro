@@ -39,3 +39,9 @@ public protocol Linkable: class {
 
 	var link: (key: String, value: ValueType) {get}
 }
+
+/// Implement to be able to update models in an array. -> `ServiceUpdateCollection`
+public protocol JSONMatchable {
+
+	func matchesJson(_ json: [String: Any]) -> Bool
+}

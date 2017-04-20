@@ -46,12 +46,12 @@ public func create <T>(_ named: String, from json: [String: Any]) throws -> T! {
 			do {
 				return try create(named, from: json, format: "") as! T
 			} catch {
-				throw FaroError.emptyValue(key: named)
+				throw FaroDeserializableError.emptyValue(key: named)
 			}
 		}
 		return value
 	} else {
-		throw FaroError.emptyKey
+		throw FaroDeserializableError.emptyKey
 	}
 }
 
@@ -81,10 +81,10 @@ public func create(_ named: String, from json: [String: Any], format: String) th
 
 public func create<T: Deserializable>(_ named: String, from json: [String: Any]) throws -> T {
 	guard let jsonForKey = json[named] as? [String: Any] else {
-		throw FaroError.emptyCollection(key: named, json: json)
+		throw FaroDeserializableError.emptyCollection(key: named, json: json)
 	}
 	guard let model = T(from: jsonForKey) else {
-		throw FaroError.emptyCollection(key: named, json: json)
+		throw FaroDeserializableError.emptyCollection(key: named, json: json)
 	}
 	return model
 }
@@ -95,7 +95,7 @@ public func create<T: Deserializable>(_ named: String, from json: [String: Any])
 	if let json = json[named]  as? [[String: Any]] {
 		return json.flatMap { T(from: $0) }
 	} else {
-		throw FaroError.emptyCollection(key: named, json: json)
+		throw FaroDeserializableError.emptyCollection(key: named, json: json)
 	}
 }
 
@@ -105,6 +105,6 @@ public func create<T: Deserializable>(_ named: String, from json: [String: Any])
 	if let json = json[named]  as? [[String: Any]] {
 		return Set<T>(json.flatMap { T(from: $0) })
 	} else {
-		throw FaroError.emptyCollection(key: named, json: json)
+		throw FaroDeserializableError.emptyCollection(key: named, json: json)
 	}
 }

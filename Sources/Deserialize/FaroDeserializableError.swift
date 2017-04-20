@@ -22,6 +22,15 @@ public enum FaroDeserializableError: Error {
 	case linkNotUniqueInJSON([[String: Any]], linkValue: String)
 
 	case emptyValue(key: String)
-
+	case emptyCollection(key: String, json: Any)
 	case emptyKey
+
+	public var emptyValueKey: String? {
+		switch self {
+		case .emptyValue(key: let key ):
+			return key
+		default:
+			return nil
+		}
+	}
 }

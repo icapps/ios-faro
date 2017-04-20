@@ -47,10 +47,18 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 				switch rootNode {
 				case .nodeObject(let node):
 					// Convert node to model of type T. When this is not possible an error is thrown.
-					complete {try T(node)}
+					complete {[weak self] in
+						do {
+							return try T(node)
+						} catch {
+							let faroError = FaroError.couldNotCreateInstance(ofType: "\(T.self)", call: call, error: error)
+							self?.handleError(faroError)
+							throw faroError
+						}
+					}
 				default:
 					complete { [weak self] in
-						let error = FaroError.noModelFor(call: call, inJson: rootNode)
+						let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
 						self?.handleError(error)
 						throw error
 					}
@@ -62,7 +70,7 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 				}
 			default:
 				complete { [weak self] in
-					let error = FaroError.invalidDeprecatedResult(call: call, resultString: "\(result)")
+					let error = FaroError.invalidDeprecatedResult(resultString: "\(result)", call: call)
 					self?.handleError(error)
 					throw error
 				}
@@ -83,7 +91,7 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 				case .nodeArray(let nodeArray):
 					guard let nodeArray = nodeArray as? [[String: Any]] else {
 						complete { [weak self] in
-							let error = FaroError.noModelFor(call: call, inJson: rootNode)
+							let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
 							self?.handleError(error)
 							throw error
 						}
@@ -95,7 +103,7 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 					complete { try nodeArray.map {try T($0)} }
 				default:
 					complete { [weak self] in
-						let error = FaroError.noModelFor(call: call, inJson: rootNode)
+						let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
 						self?.handleError(error)
 						throw error
 					}
@@ -107,7 +115,7 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 				}
 			default:
 				complete { [weak self] in
-					let error = FaroError.invalidDeprecatedResult(call: call, resultString: "\(result)")
+					let error = FaroError.invalidDeprecatedResult(resultString: "\(result)", call: call)
 					self?.handleError(error)
 					throw error
 				}

@@ -18,8 +18,8 @@ public func printFaroError(_ error: Error) {
 		print("📡🔥 You should override this method")
 	case .nonFaroError(let nonFaroError):
 		print("📡🔥 Error from service: \(nonFaroError)")
-	case .rootNodeNotFound(json: let json):
-		print("📡🔥 Could not find root node in json: \(json)")
+	case .rootNodeNotFoundIn(json: let json, call: let call):
+		print("📡🔥 \(call) no root node in json: \(json) ")
 	case .networkError(let networkError, let data, let request):
 		if let data = data {
 			var string: String!
@@ -34,27 +34,21 @@ public func printFaroError(_ error: Error) {
 		} else {
 			print("📡🔥 HTTP error: \(networkError) in \(request)")
 		}
-	case .emptyCollection:
-		print("📡🔥 empty collection")
-	case .emptyKey:
-		print("📡🔥 missing key")
-	case .emptyValue(let key):
-		print("📡❓no value for key " + key)
 	case .malformed(let info):
 		print("📡🔥 \(info)")
-	case .serializationError:
-		print("📡🔥 serialization error")
-	case .updateNotPossible(json: let json, model: let model):
-		print("📡❓ update not possilbe with \(json) on model \(model)")
 	case .invalidSession(message: let message, request: let request):
 		print("📡🔥 you tried to perform a \(request) on a session that is invalid")
 		print("📡🔥 message: \(message)")
 	case .couldNotCreateTask:
 		print("📡🔥 a valid urlSessionTask could not be created")
-	case .noModelFor(call: let call, inJson: let jsonNode):
-		print("📡🔥 \(call) could not instantiate model(s) form \(jsonNode).")
-	case .invalidDeprecatedResult(call: let call, resultString: let result):
+	case .noModelOf(type: let type, inJson: let json, call: let call):
+		print("📡🔥 \(call) could not instantiate of type \(type) form \(json).")
+	case .invalidDeprecatedResult(resultString: let result, call: let call):
 		print("📡🔥 \(call) invalid \(result)")
+	case .noUpdateModelOf(type: let type, ofJsonNode: let node, call: let call):
+		print("📡🔥 \(call) could not update model of type \(type) form json: \(node).")
+	case .couldNotCreateInstance(ofType: let type, call: let call, error: let error):
+		print("📡🔥 \(call) could not create instance of type \(type) \(error).")
 	}
 
 }
