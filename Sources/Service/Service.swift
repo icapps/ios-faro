@@ -27,7 +27,7 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 	private let call: Call
 	private let autoStart: Bool
 
-	init(call: Call, autoStart: Bool, deprecatedService: DeprecatedService = FaroDeprecatedSingleton.shared) {
+	public init(call: Call, autoStart: Bool = true, deprecatedService: DeprecatedService = FaroDeprecatedSingleton.shared) {
 		self.deprecatedService = deprecatedService
 		self.call = call
 		self.autoStart = autoStart
@@ -35,7 +35,7 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 
 	// MARK: Requests that expect a JSON response
 
-	open func single(complete: @escaping(() throws -> (T)) -> Void) {
+	open func single(complete: @escaping(@escaping () throws -> (T)) -> Void) {
 		deprecatedService.performJsonResult(call, autoStart: autoStart) {[unowned self] (result: DeprecatedResult<T>) in
 			switch result {
 
@@ -60,7 +60,7 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 	}
 
 	/// Converts every node in the json to T. When one of the nodes has invalid json conversion is stopped and an error is trhown.
-	open func collection(complete: @escaping (() throws -> [T]) -> Void)  {
+	open func collection(complete: @escaping ( @escaping() throws -> [T]) -> Void)  {
 		deprecatedService.performJsonResult(call, autoStart: autoStart) { (result: DeprecatedResult<T>) in
 			switch result {
 
