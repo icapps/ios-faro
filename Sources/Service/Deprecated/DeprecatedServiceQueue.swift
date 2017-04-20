@@ -69,6 +69,27 @@ open class DeprecatedServiceQueue: DeprecatedService {
         return task
     }
 
+	// MARK: - Interact with tasks
+
+	open var hasOustandingTasks: Bool {
+		get {
+			return taskQueue.count > 0
+		}
+	}
+
+	open func resume(_ task: URLSessionDataTask) {
+		faroSession.resume(task)
+	}
+
+	open func resumeAll() {
+		let notStartedTasks = taskQueue.filter { $0.state != .running || $0.state != .completed}
+		notStartedTasks.forEach { (task) in
+			faroSession.resume(task)
+		}
+	}
+
+	// MARK: - Private
+
     private func add(_ task: URLSessionDataTask?) {
         guard let createdTask = task else {
             printFaroError(FaroError.couldNotCreateTask)
@@ -93,25 +114,6 @@ open class DeprecatedServiceQueue: DeprecatedService {
         if !hasOustandingTasks {
             final(failedTasks)
             finishTasksAndInvalidate()
-        }
-    }
-
-    // MARK: - Interact with tasks
-
-    open var hasOustandingTasks: Bool {
-        get {
-            return taskQueue.count > 0
-        }
-    }
-
-    open func resume(_ task: URLSessionDataTask) {
-        faroSession.resume(task)
-    }
-
-    open func resumeAll() {
-        let notStartedTasks = taskQueue.filter { $0.state != .running || $0.state != .completed}
-        notStartedTasks.forEach { (task) in
-            faroSession.resume(task)
         }
     }
 

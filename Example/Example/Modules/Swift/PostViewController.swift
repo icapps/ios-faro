@@ -17,29 +17,31 @@ class PostViewController: UIViewController {
 				do {
 					let posts = try resultFunction()
 					self?.label.text = "Performed call for posts"
-					printBreadcrumb("\(posts.map {"\($0.uuid): \(String(describing: $0.title))"})")
+					printAction("Service \(posts.map {"\($0.uuid): \($0.title ?? "")"}.reduce("") {"\($0)\n\($1)"})")
 				} catch {
 					printError(error)
 				}
 			}
 		}
 
-
-        let serviceQueue = Service<Post>(call: call, deprecatedService: ExampleDeprecatedServiceQueue { _ in
-            printBreadcrumb("🎉 queued call finished")
+        let serviceQueue = ServiceQueue(deprecatedServiceQueue: ExampleDeprecatedServiceQueue { _ in
+            printAction("🎉 queued call finished")
         })
 
-        serviceQueue.collection {
-            printBreadcrumb("Task 1 finished  \(String(describing: try? $0()))")
-        }
+		serviceQueue.collection(call: call, autoStart: true) { (resultFunction: () throws -> [Post]) in
+			let posts = try? resultFunction()
+			printAction("ServiceQueue Task 1 finished  \(posts?.count ?? -1)")
+		}
 
-        serviceQueue.collection {
-            printBreadcrumb("Task 2 finished  \(String(describing: try? $0()))")
-        }
+		serviceQueue.collection(call: call, autoStart: true) { (resultFunction: () throws -> [Post]) in
+			let posts = try? resultFunction()
+			printAction("ServiceQueue Task 2 finished  \(posts?.count ?? -1)")
+		}
 
-        serviceQueue.collection {
-            printBreadcrumb("Task 3 finished \(String(describing: try? $0()))")
-        }
+		serviceQueue.collection(call: call, autoStart: true) { (resultFunction: () throws -> [Post]) in
+			let posts = try? resultFunction()
+			printAction("ServiceQueue Task 3 finished  \(posts?.count ?? -1)")
+		}
 
         serviceQueue.resumeAll()
     }
