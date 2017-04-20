@@ -13,28 +13,28 @@ import Faro
 
 @testable import Faro_Example
 
-class FaroDeprecatedServiceSpec: QuickSpec {
+class FaroDeprecatedSingletonSpec: QuickSpec {
 
     override func spec() {
 
         describe("FaroDeprecatedService mock switching") {
             context("should mock switch = true") {
                 beforeEach {
-                    FaroDeprecatedService.sharedDeprecatedService = MockDeprecatedService()
+                    FaroDeprecatedSingleton.sharedDeprecatedService = MockDeprecatedService()
                 }
 
                 it("Should use MockDeprecatedService") {
-                    expect(FaroDeprecatedService.shared is Faro.MockDeprecatedService) == true
+                    expect(FaroDeprecatedSingleton.shared is Faro.MockDeprecatedService) == true
                 }
             }
 
             context("should mock switch = false") {
                 beforeEach {
-                    FaroDeprecatedService.sharedDeprecatedService = nil
+                    FaroDeprecatedSingleton.sharedDeprecatedService = nil
                 }
 
                 it("default to mocking when setup(with:) not called") {
-                    expect(FaroDeprecatedService.shared is Faro.MockDeprecatedService) == true
+                    expect(FaroDeprecatedSingleton.shared is Faro.MockDeprecatedService) == true
                 }
             }
         }

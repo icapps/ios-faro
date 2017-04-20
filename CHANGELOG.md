@@ -32,6 +32,13 @@ How to migrate:
 * New requests should use the new `Result`
 * Old request should rename `Result` to `DeprecatedResult`
 
+### FaroService renamed to FaroSingelton
+You can still use a singleton but the confusing name FaroService is now gone
+How to migrate:
+
+* Rename FaroService to FaroDeprecatedSingleton
+* For new projects use FaroSingelton
+
 ---
 
 ## Version 1.0.9
