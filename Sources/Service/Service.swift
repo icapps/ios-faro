@@ -100,7 +100,15 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 
 					// Convert every node to model of type T. When this is not possible an error is thrown.
 
-					complete { try nodeArray.map {try T($0)} }
+					complete {
+						do {
+							return try nodeArray.map {try T($0)}
+						} catch {
+							let faroError = FaroError.couldNotCreateInstance(ofType: "\(T.self)", call: call, error: error)
+							self?.handleError(faroError)
+							throw faroError
+						}
+					}
 				default:
 					complete { [weak self] in
 						let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)

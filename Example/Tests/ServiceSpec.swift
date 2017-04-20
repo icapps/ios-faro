@@ -76,7 +76,7 @@ class ServiceSpec: QuickSpec {
 
 		describe("Error") {
 
-			it("return valid single model for valid json") {
+			it("single model for invalid json") {
 				let invalidMock = MockDeprecatedService(mockDictionary: ["bullshit": "mock ok"])
 				let service = Service<Uuid>(call: Call(path: ""), deprecatedService: invalidMock)
 
@@ -98,12 +98,25 @@ class ServiceSpec: QuickSpec {
 				}
 			}
 
-			it("return valid collection model for valid json") {
-				let mock = MockDeprecatedService(mockDictionary: [["uuid": "mock ok 1"], ["uuid": "mock ok 2"]])
+			it("collection model for invalid json") {
+				let mock = MockDeprecatedService(mockDictionary: [["bullshit": "mock ok 1"], ["uuid": "mock ok 2"]])
 				let service = Service<Uuid>(call: Call(path: ""), deprecatedService: mock)
 
 				service.collection { resultFunction in
-					expect {try resultFunction().flatMap {$0.uuid}} == ["mock ok 1", "mock ok 2"]
+					expect {try resultFunction()}.to(throwError(closure: { (error) in
+						if let faroError = error as? FaroError {
+							switch faroError {
+							case .couldNotCreateInstance(ofType: let type, call: _, error: let error):
+								expect(type) == "Uuid"
+								expect( (error as? FaroDeserializableError)?.emptyValueKey) == "uuid"
+							default:
+								XCTFail("\(faroError)")
+							}
+						} else {
+							XCTFail("\(error)")
+						}
+
+					}))
 				}
 			}
 
