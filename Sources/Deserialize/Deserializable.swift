@@ -17,7 +17,7 @@ public protocol JSONDeserializable {
 	init(_ raw: [String : Any]) throws
 
 }
-public protocol JSONUpdatable {
+public protocol JSONUpdatable: class {
 
 	/// To update you can use the `DeserializeUpdateCreateOperators`
 	/// The operators make sure you update the memory location of an existing instance rather the asigning a different location in memory.
@@ -25,7 +25,7 @@ public protocol JSONUpdatable {
 
 }
 
-public protocol Updatable {
+public protocol Updatable: class {
 
 	/// To update you can use the `DeserializeUpdateCreateOperators`
 	/// The operators make sure you update the memory location of an existing instance rather the asigning a different location in memory.
@@ -34,7 +34,7 @@ public protocol Updatable {
 }
 
 /// Impliment to perform deserialization on linked object via the value of key.
-public protocol Linkable {
+public protocol Linkable: class {
 	associatedtype ValueType
 
 	var link: (key: String, value: ValueType) {get}

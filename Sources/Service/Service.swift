@@ -23,9 +23,9 @@ let json = [String: Any]()
 /// `Deserializable` is for legacy reasons and will be removed in version 3.0
 open class Service<T> where T: JSONDeserializable & Deserializable {
 
-	private let deprecatedService: DeprecatedService
-	private let call: Call
-	private let autoStart: Bool
+	let deprecatedService: DeprecatedService
+	let call: Call
+	let autoStart: Bool
 
 	public init(call: Call, autoStart: Bool = true, deprecatedService: DeprecatedService = FaroDeprecatedSingleton.shared) {
 		self.deprecatedService = deprecatedService
@@ -33,7 +33,7 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 		self.autoStart = autoStart
 	}
 
-	// MARK: Requests that expect a JSON response
+	// MARK: Requests that expect a JSON response and CREATE instances
 
 	open func single(complete: @escaping(@escaping () throws -> (T)) -> Void) {
 		let call = self.call
@@ -115,9 +115,23 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 		}
 	}
 
-	// MARK: Requests that expect no JSON in response
+	// MARK: Requests that expect NO JSON in response
 
-	// TODO: add write functions
+	open func sendWithoutJSONInResponse(complete: @escaping(@escaping () throws -> Void) -> Void) {
+		let call = self.call
+
+		deprecatedService.performWrite(call, autoStart: autoStart) {[weak self] (result: WriteResult) in
+			switch result {
+			case .ok:
+				complete {}
+			case .failure(let error):
+				complete { [weak self] in
+					self?.handleError(error)
+					throw error
+				}
+			}
+		}
+	}
 
 	// MARK: Error
 
