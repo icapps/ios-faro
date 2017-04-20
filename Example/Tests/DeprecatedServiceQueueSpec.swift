@@ -35,7 +35,7 @@ class DeprecatedServiceQueueSpec: QuickSpec {
                 }
 
                 it("add one") {
-                    service.perform(call, autoStart: false) { (_: Result<MockModel>) in
+                    service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in
                         taskSucceed = true
                     }
                     expect(service.hasOustandingTasks) == true
@@ -43,14 +43,14 @@ class DeprecatedServiceQueueSpec: QuickSpec {
                 }
 
                 it("add multiple") {
-                    let task1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in
+                    let task1 = service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in
                         taskSucceed = true
                         }!
-                    let task2 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in
+                    let task2 = service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in
                         taskSucceed = true
                         }!
 
-                    let task3 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in
+                    let task3 = service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in
                         taskSucceed = true
                         }!
 
@@ -77,7 +77,7 @@ class DeprecatedServiceQueueSpec: QuickSpec {
                         print("final")
                     }
                     waitUntil { done in
-                        service.perform(call, autoStart: true) { (_: Result<MockModel>) in
+                        service.perform(call, autoStart: true) { (_: DeprecatedResult<MockModel>) in
                             expect(service.hasOustandingTasks) == false
                             done()
                         }
@@ -98,9 +98,9 @@ class DeprecatedServiceQueueSpec: QuickSpec {
                             failedTasks = failures
                         }
 
-                        task1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in }!
-                        task2 = service.perform(call, autoStart: true) { (_: Result<MockModel>) in }!
-                        task3 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in }!
+                        task1 = service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in }!
+                        task2 = service.perform(call, autoStart: true) { (_: DeprecatedResult<MockModel>) in }!
+                        task3 = service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in }!
                     }
 
                     it("not have failedTasks") {
@@ -156,7 +156,7 @@ class DeprecatedServiceQueueSpec: QuickSpec {
                         var fail1: MockURLSessionTask!
 
                         beforeEach {
-                            fail1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in } as? MockURLSessionTask
+                            fail1 = service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in } as? MockURLSessionTask
                             mockSession.tasksToFail = [fail1]
                         }
 

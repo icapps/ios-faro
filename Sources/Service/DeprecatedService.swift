@@ -28,9 +28,9 @@ open class DeprecatedService {
     /// - parameter modelResult: `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open func perform<M: Deserializable & Updatable>(_ call: Call, on updateModel: M?, autoStart: Bool = true, modelResult: @escaping (DeprecatedResult<M>) -> ()) -> URLSessionDataTask? {
 
-        return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
+        return performJsonResult(call, autoStart: autoStart) { (jsonResult: DeprecatedResult<M>) in
             switch jsonResult {
             case .json(let json):
                 modelResult(self.handle(json: json, on: updateModel, call: call))
@@ -49,9 +49,9 @@ open class DeprecatedService {
     /// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func perform<M: Deserializable>(_ call: Call, autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open func perform<M: Deserializable>(_ call: Call, autoStart: Bool = true, modelResult: @escaping (DeprecatedResult<M>) -> ()) -> URLSessionDataTask? {
 
-        return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
+        return performJsonResult(call, autoStart: autoStart) { (jsonResult: DeprecatedResult<M>) in
             switch jsonResult {
             case .json(let json):
                 modelResult(self.handle(json: json, call: call))
@@ -70,9 +70,9 @@ open class DeprecatedService {
     /// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, page: @escaping(P?)->(), autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, page: @escaping(P?)->(), autoStart: Bool = true, modelResult: @escaping (DeprecatedResult<M>) -> ()) -> URLSessionDataTask? {
 
-        return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
+        return performJsonResult(call, autoStart: autoStart) { (jsonResult: DeprecatedResult<M>) in
             switch jsonResult {
             case .json(let json):
                 modelResult(self.handle(json: json, call: call))
@@ -92,7 +92,7 @@ open class DeprecatedService {
     /// - parameter jsonResult: closure is called when valid or invalid json data is received.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (DeprecatedResult<M>) -> ()) -> URLSessionDataTask? {
 
         guard let request = call.request(with: configuration) else {
             jsonResult(.failure(FaroError.invalidUrl("\(configuration.baseURL)/\(call.path)")))
@@ -100,10 +100,10 @@ open class DeprecatedService {
         }
 
         let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
-            let dataResult = self.handle(data: data, urlResponse: response, error: error) as Result<M>
+            let dataResult = self.handle(data: data, urlResponse: response, error: error) as DeprecatedResult<M>
             switch dataResult {
             case .data(let data):
-                self.configuration.adaptor.serialize(from: data) { (serializedResult: Result<M>) in
+                self.configuration.adaptor.serialize(from: data) { (serializedResult: DeprecatedResult<M>) in
                     switch serializedResult {
                     case .json(json: let json):
                         jsonResult(.json(json))
@@ -161,7 +161,7 @@ open class DeprecatedService {
         return .ok
     }
 
-    open func handle<M: Deserializable>(data: Data?, urlResponse: URLResponse?, error: Error?) -> Result<M> {
+    open func handle<M: Deserializable>(data: Data?, urlResponse: URLResponse?, error: Error?) -> DeprecatedResult<M> {
 
         if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error) {
             return .failure(faroError)
@@ -174,7 +174,7 @@ open class DeprecatedService {
         }
     }
 
-    open func handle<M: Deserializable>(json: Any, on updateModel: M? = nil, call: Call) -> Result<M> {
+    open func handle<M: Deserializable>(json: Any, on updateModel: M? = nil, call: Call) -> DeprecatedResult<M> {
 
         let rootNode = call.rootNode(from: json)
         switch rootNode {
@@ -183,9 +183,9 @@ open class DeprecatedService {
         case .nodeArray(let nodes):
             return handleNodeArray(nodes, on: updateModel, call: call)
         case .nodeNotFound(let json):
-            return Result.failure(.rootNodeNotFound(json: json))
+            return DeprecatedResult.failure(.rootNodeNotFound(json: json))
         case .nodeNotSerialized:
-            return Result.failure(.serializationError)
+            return DeprecatedResult.failure(.serializationError)
         }
     }
 
@@ -196,7 +196,7 @@ open class DeprecatedService {
         fail(error)
     }
 
-    func handle<ModelType: Deserializable>(_ result: Result<ModelType>, and fail: (FaroError)->()) {
+    func handle<ModelType: Deserializable>(_ result: DeprecatedResult<ModelType>, and fail: (FaroError)->()) {
         switch result {
         case .failure(let faroError):
             print(faroError, and: fail)
@@ -269,11 +269,11 @@ extension DeprecatedService {
         return nil
     }
 
-    fileprivate func handleNodeArray<M: Deserializable>(_ nodes: [Any], on updateModel: M? = nil, call: Call) -> Result<M> {
+    fileprivate func handleNodeArray<M: Deserializable>(_ nodes: [Any], on updateModel: M? = nil, call: Call) -> DeprecatedResult<M> {
         if let _ = updateModel {
             let faroError = FaroError.malformed(info: "Could not parse \(nodes) for type \(M.self) into updateModel \(updateModel). We currently only support updating of single objects. An arry of objects was returned")
             printFaroError(faroError)
-            return Result.failure(faroError)
+            return DeprecatedResult.failure(faroError)
         }
         var models = [M]()
         for node in nodes {
@@ -282,26 +282,26 @@ extension DeprecatedService {
             } else {
                 let faroError = FaroError.malformed(info: "Could not parse \(nodes) for type \(M.self)")
                 printFaroError(faroError)
-                return Result.failure(faroError)
+                return DeprecatedResult.failure(faroError)
             }
         }
-        return Result.models(models)
+        return DeprecatedResult.models(models)
     }
 
-    fileprivate func handleNode<M: Deserializable>(_ node: [String: Any], on updateModel: M? = nil, call: Call) -> Result<M> {
+    fileprivate func handleNode<M: Deserializable>(_ node: [String: Any], on updateModel: M? = nil, call: Call) -> DeprecatedResult<M> {
         if let updateModel = updateModel as? Updatable {
             do {
                 try             updateModel.update(from: node)
             } catch {
-                return Result.failure(.nonFaroError(error))
+                return DeprecatedResult.failure(.nonFaroError(error))
             }
-            return Result.model(updateModel as? M)
+            return DeprecatedResult.model(updateModel as? M)
         } else {
             if let _ = updateModel {
                 let faroError = FaroError.malformed(info: "An updateModel \(updateModel) was provided. But does not conform to protocol \(Updatable.self)")
                 printFaroError(faroError)
             }
-            return Result.model(M(from: node))
+            return DeprecatedResult.model(M(from: node))
         }
     }
 

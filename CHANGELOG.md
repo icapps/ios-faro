@@ -24,6 +24,14 @@ How to migrate:
 * For new requests that use the new `Service` use `JSONDeserialisable` and `JSONSerialisable`
 * `Deserialisable and `Serialisable` will still be available in the future as we might implement a more parsing from XML
 
+### Result to DeprecatedResult
+
+`DeprecatedService` still uses DeprecatedResult.
+How to migrate:
+
+* New requests should use the new `Result`
+* Old request should rename `Result` to `DeprecatedResult`
+
 ---
 
 ## Version 1.0.9

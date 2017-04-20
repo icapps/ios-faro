@@ -19,7 +19,7 @@ class MockDeprecatedServiceSpec: QuickSpec {
                     let uuid = "dictionary for testing"
                     mockDeprecatedService.mockDictionary = ["uuid": uuid]
 
-                    mockDeprecatedService.perform(Call(path: "unit tests")) { (result: Result<MockModel>) in
+                    mockDeprecatedService.perform(Call(path: "unit tests")) { (result: DeprecatedResult<MockModel>) in
                         switch result {
                         case .model( let model):
                             expect(model!.uuid) == uuid
@@ -40,7 +40,7 @@ class MockDeprecatedServiceSpec: QuickSpec {
                 it("JSON node") {
                     let uuid = "some id"
 
-                    mockDeprecatedService.perform(Call(path: "mockJsonNode")) { (result: Result<MockModel>) in
+                    mockDeprecatedService.perform(Call(path: "mockJsonNode")) { (result: DeprecatedResult<MockModel>) in
                         switch result {
                         case .model( let model):
                             expect(model!.uuid) == uuid
@@ -51,7 +51,7 @@ class MockDeprecatedServiceSpec: QuickSpec {
                 }
 
                 it("ARRAY of JSON nodes") {
-                    mockDeprecatedService.perform(Call(path: "mockJsonArray")) { (result: Result<MockModel>) in
+                    mockDeprecatedService.perform(Call(path: "mockJsonArray")) { (result: DeprecatedResult<MockModel>) in
                         switch result {
                         case .models( let models):
                             expect(models!.count) == 3

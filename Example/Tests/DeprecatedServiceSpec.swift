@@ -55,7 +55,7 @@ class DeprecatedServiceSpec: QuickSpec {
 
                 service.perform(call, page: { (pageInfo) in
                     pagesInformation = pageInfo
-                    }, modelResult: { (_: Result<MockModel>) in
+                    }, modelResult: { (_: DeprecatedResult<MockModel>) in
                 })
 
                 expect(pagesInformation.pages) == 10
@@ -71,7 +71,7 @@ class DeprecatedServiceSpec: QuickSpec {
 						                                      options: .prettyPrinted)
 						mockSession.data = data
 
-						service.perform(call, on: mockModel) { (result: Result<MockModel>) in
+						service.perform(call, on: mockModel) { (result: DeprecatedResult<MockModel>) in
 							switch result {
 							case .model(let model):
 								let identical = (model === mockModel)
@@ -102,7 +102,7 @@ class DeprecatedServiceSpec: QuickSpec {
                     let call = Call(path: "unitTest")
                     var isInSync = false
 
-                    service.perform(call) { (result: Result<MockModel>) in
+                    service.perform(call) { (result: DeprecatedResult<MockModel>) in
                         isInSync = true
                         switch result {
                         case .models(let models):
@@ -130,7 +130,7 @@ class DeprecatedServiceSpec: QuickSpec {
                     let call = Call(path: "unitTest")
                     var isInSync = false
 
-                    service.perform(call) { (result: Result<MockModel>) in
+                    service.perform(call) { (result: DeprecatedResult<MockModel>) in
                         isInSync = true
                         switch result {
                         case .model(model: let model):
@@ -156,7 +156,7 @@ class DeprecatedServiceSpec: QuickSpec {
             context("error cases") {
                 it("HttpError when statuscode > 400") {
                     let response =  HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: 404, httpVersion: nil, headerFields: nil)
-                    let result = service.handle(data: nil, urlResponse: response, error: nil) as Result<MockModel>
+                    let result = service.handle(data: nil, urlResponse: response, error: nil) as DeprecatedResult<MockModel>
                     switch result {
                     case .failure(let faroError):
                         switch faroError {
@@ -175,7 +175,7 @@ class DeprecatedServiceSpec: QuickSpec {
 
                 it("Fail for NSError") {
                     let nsError = NSError(domain: "tests", code: 101, userInfo: nil)
-                    let result = service.handle(data: nil, urlResponse: nil, error: nsError) as Result<MockModel>
+                    let result = service.handle(data: nil, urlResponse: nil, error: nsError) as DeprecatedResult<MockModel>
                     switch result {
                     case .failure(let faroError):
                         switch faroError {
@@ -229,7 +229,7 @@ class DeprecatedServiceSpec: QuickSpec {
 
                 var failed = false
 
-                service.perform(call, modelResult: { (result: Result<MockModel>) in
+                service.perform(call, modelResult: { (result: DeprecatedResult<MockModel>) in
                     switch result {
                     case .failure:
                         failed = true
@@ -248,7 +248,7 @@ class DeprecatedServiceSpec: QuickSpec {
 class ExpectResponse {
     static func statusCode(_ statusCode: Int, data: Data? = nil, service: DeprecatedService) {
         let response = HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: statusCode, httpVersion: nil, headerFields: nil)
-        let result = service.handle(data: data, urlResponse: response, error: nil) as Result<MockModel>
+        let result = service.handle(data: data, urlResponse: response, error: nil) as DeprecatedResult<MockModel>
         if let data = data {
             switch result {
             case .data(_):

@@ -11,7 +11,7 @@ class PostViewController: UIViewController {
         let service = ExampleDeprecatedService()
         let call = Call(path: "posts")
 
-        service.perform(call) { (result: Result<Post>) in
+        service.perform(call) { (result: DeprecatedResult<Post>) in
             DispatchQueue.main.async {
                 switch result {
                 case .models(let models):
@@ -27,15 +27,15 @@ class PostViewController: UIViewController {
             printBreadcrumb("🎉 queued call finished")
         }
 
-        serviceQueue.perform(call, autoStart: false) { (result: Result<Post>) in
+        serviceQueue.perform(call, autoStart: false) { (result: DeprecatedResult<Post>) in
             printBreadcrumb("Task 1 finished  \(result)")
         }
 
-        serviceQueue.perform(call, autoStart: false) { (result: Result<Post>) in
+        serviceQueue.perform(call, autoStart: false) { (result: DeprecatedResult<Post>) in
             printBreadcrumb("Task 2 finished  \(result)")
         }
 
-        serviceQueue.perform(call, autoStart: false) { (result: Result<Post>) in
+        serviceQueue.perform(call, autoStart: false) { (result: DeprecatedResult<Post>) in
             printBreadcrumb("Task 3 finished \(result)")
         }
 

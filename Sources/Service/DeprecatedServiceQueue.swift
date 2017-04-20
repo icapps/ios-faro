@@ -22,9 +22,9 @@ open class DeprecatedServiceQueue: DeprecatedService {
         super.init(configuration: configuration, faroSession: faroSession)
     }
 
-    open override func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = false, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open override func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = false, jsonResult: @escaping (DeprecatedResult<M>) -> ()) -> URLSessionDataTask? {
         var task: URLSessionDataTask?
-        task = super.performJsonResult(call, autoStart: autoStart) { [weak self] (stage1JsonResult: Result<M>) in
+        task = super.performJsonResult(call, autoStart: autoStart) { [weak self] (stage1JsonResult: DeprecatedResult<M>) in
             guard let strongSelf = self else {
                 jsonResult(stage1JsonResult)
                 return
