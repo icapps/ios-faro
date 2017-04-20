@@ -12,7 +12,7 @@ enum RawString: String {
 	case first, second
 }
 
-class DeserializeFunctionSpec: QuickSpec {
+class DeserializeCreateFunctionSpec: QuickSpec {
 
     override func spec() {
         describe("DeserializeFunctionSpec") {
