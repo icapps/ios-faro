@@ -12,6 +12,18 @@
 * Operators on models require the model to adopt 'Updatable'
   * This is done so it is more clear we create a new instance or update an existing one.
 
+### Service has been deprecated
+How to migrate:
+* Original `Service` class is renamed to `DeprecatedService` and tagged. Rename all instances you have of Service to `DeprecatedService`
+* Use the new `Service` for any new request you make.
+
+### Deserialisable and Serialisable
+We favor the use of `JSONDeserialisable` and `JSONSerialisable`
+How to migrate:
+
+* For new requests that use the new `Service` use `JSONDeserialisable` and `JSONSerialisable`
+* `Deserialisable and `Serialisable` will still be available in the future as we might implement a more parsing from XML
+
 ---
 
 ## Version 1.0.9
