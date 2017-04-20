@@ -1,9 +1,9 @@
 import Foundation
 
 public enum FaroDeserializableError: Error {
-	case intMissing(rhs: Int? , lhs: Any?)
-	case doubleMissing(lhs: Double? , rhs: Any?)
-	case stringMissing(lhs: String? , rhs: Any?)
+	case intMissing(rhs: Int?, lhs: Any?)
+	case doubleMissing(lhs: Double?, rhs: Any?)
+	case stringMissing(lhs: String?, rhs: Any?)
 
 	case deserializableMissing(lhs: Any?, rhs: Any?)
 

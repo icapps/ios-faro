@@ -2,8 +2,6 @@ public enum HTTPMethod: String {
 	case GET, POST, PUT, DELETE, PATCH
 }
 
-
-
 /// Defines a request that will be called in the Service
 /// You can add `[Parameter]` to the request and optionally authenticate the request when needed.
 /// Optionally implement `Authenticatable` to make it possible to authenticate requests
@@ -55,9 +53,9 @@ open class Call {
 
 		if let jsonArray = json as? [Any] {
 			return .nodeArray(jsonArray)
-		}else if let json = json as? [String: Any] {
+		} else if let json = json as? [String: Any] {
 			return .nodeObject(json)
-		}else {
+		} else {
 			return .nodeNotFound(json: json ?? "")
 		}
 	}
@@ -120,5 +118,3 @@ open class Call {
 	}
 
 }
-
-

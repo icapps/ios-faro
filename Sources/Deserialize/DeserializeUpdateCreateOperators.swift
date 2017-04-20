@@ -65,7 +65,6 @@ public func |< <P>(lhs: inout P, rhs: Any?) throws where P: Deserializable & Upd
 	try lhs.update(from: dict)
 }
 
-
 /// Removes `Linkable.link.key` elements not found in rhs
 /// ValueType of `Linkable.link.Value` is `Int`
 public func |< <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & Updatable & Linkable & Hashable, P.ValueType: Equatable {

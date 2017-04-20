@@ -5,7 +5,7 @@ open class FaroService: Service {
     public static var sharedService: Service?
 
 	/// Call this function before using FaroService.
-    public static func setup(with baseURL: String , session: FaroSessionable = FaroSession()) {
+    public static func setup(with baseURL: String, session: FaroSessionable = FaroSession()) {
         FaroService.sharedService = Service(configuration: Configuration(baseURL: baseURL), faroSession: session)
     }
     

@@ -23,7 +23,7 @@ class Post: Deserializable {
 
         // Not required variables
 
-        title <-> json[.title]
+        title |< json[.title]
     }
 
 }

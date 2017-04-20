@@ -39,7 +39,6 @@ open class ServiceQueue: Service {
                 strongSelf.cleanupQueue(for: task)
             }
 
-
             jsonResult(stage1JsonResult)
             strongSelf.shouldCallFinal()
         }

@@ -70,7 +70,7 @@ open class Service {
     /// - parameter modelResult : `Result<M: Deserializable>` closure should be called with `case Model(M)` other cases are a failure.
     /// - returns: URLSessionDataTask if the task could not be created that probably means the `URLSession` is invalid.
     @discardableResult
-    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, page: @escaping(P?)->(),  autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    open func perform<M: Deserializable, P: Deserializable>(_ call: Call, page: @escaping(P?)->(), autoStart: Bool = true, modelResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
 
         return performJsonResult(call, autoStart: autoStart) { (jsonResult: Result<M>) in
             switch jsonResult {
@@ -240,7 +240,7 @@ open class Service {
 
 extension Service {
 
-    fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?)-> FaroError? {
+    fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?) -> FaroError? {
         guard error == nil else {
             let returnError = FaroError.nonFaroError(error!)
             printFaroError(returnError)
@@ -292,7 +292,7 @@ extension Service {
         if let updateModel = updateModel as? Updatable {
             do {
                 try             updateModel.update(from: node)
-            }catch {
+            } catch {
                 return Result.failure(.nonFaroError(error))
             }
             return Result.model(updateModel as? M)
@@ -304,6 +304,5 @@ extension Service {
             return Result.model(M(from: node))
         }
     }
-
 
 }

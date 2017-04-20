@@ -7,7 +7,13 @@
 * Parse functions
   * `parse(.. rename` -> `create(...`
 * Operator rename:
-  * DeserializeOperators `<->` to ``
+  * DeserializeOperators `<->` to `|<`
+  * SerializeOperators `<->` to `<|`
+* Operators on models require the model to adopt 'Updatable'
+  * This is done so it is more clear we create a new instance or update an existing one.
+
+---
+
 ## Version 1.0.9
 * Using URLRequest default timeout instead of 10 seconds
 

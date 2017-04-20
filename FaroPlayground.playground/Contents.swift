@@ -2,7 +2,6 @@
 
 import UIKit
 
-
 class Foo {
     let bar = "value of bar"
     var blue: String? = "blue"

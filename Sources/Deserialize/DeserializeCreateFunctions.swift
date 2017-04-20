@@ -108,4 +108,3 @@ public func create<T: Deserializable>(_ named: String, from json: [String: Any])
 		throw FaroError.emptyCollection(key: named, json: json)
 	}
 }
-

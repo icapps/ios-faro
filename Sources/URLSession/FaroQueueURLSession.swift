@@ -10,7 +10,7 @@ open class FaroQueueSession: FaroQueueSessionable {
 	/// # Warning
 	/// > You can cancell this request but then the session will become invalid
 	/// > If you provide the `URLSession.shared` singleton cancel will not work!
-	public init(_ session : URLSession = URLSession(configuration: URLSessionConfiguration.default)) {
+	public init(_ session: URLSession = URLSession(configuration: URLSessionConfiguration.default)) {
 		self.session = session
 	}
 

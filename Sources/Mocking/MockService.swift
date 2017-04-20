@@ -14,7 +14,7 @@ open class MockService: Service {
 
     /// This method is overridden to return json or errors like as if we would do a network call.
     @discardableResult
-    override open func performJsonResult<M : Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    override open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
         if let mockDictionary = mockDictionary {
             jsonResult(.json(mockDictionary))
             return MockURLSessionTask()
@@ -46,4 +46,3 @@ open class MockService: Service {
     }
 
 }
-

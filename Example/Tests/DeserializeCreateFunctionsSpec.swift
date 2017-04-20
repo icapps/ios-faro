@@ -24,12 +24,11 @@ class DeserializeCreateFunctionSpec: QuickSpec {
 					it("Any value") {
 						let uuidKey = "uuid"
 						let json = [uuidKey: "some id" as Any]
-						let o1 = DeserializableObject(from: ["": ""])!
 
 						expect {
-							o1.uuid = try create(uuidKey, from: json)
+							let uuid: String = try create(uuidKey, from: json)
 
-							return expect(o1.uuid) == json["uuid"] as? String
+							return expect(uuid) == json["uuid"] as? String
 						}.toNot(throwError())
 
 					}
@@ -77,17 +76,16 @@ class DeserializeCreateFunctionSpec: QuickSpec {
 
 				context ("Date") {
 
-					fit("has TimeInterval") {
+					it("has TimeInterval") {
 						let dateKey = "date"
 						let dateTimeInterval: TimeInterval = 12345.0
 						let json = ["date": dateTimeInterval]
-						let o1 = DeserializableObject(from: ["": ""])!
 
 						expect {
-							o1.date = try create(dateKey, from: json)
+							let result: Date = try create(dateKey, from: json)
 
 							let date = Date(timeIntervalSince1970: json["date"]!)
-							return expect(o1.date) == date
+							return expect(result) == date
 						}.toNot(throwError())
 
 					}
@@ -96,12 +94,11 @@ class DeserializeCreateFunctionSpec: QuickSpec {
 						let dateKey = "date"
 						let dateString = "1994-08-20"
 						let json = [dateKey: dateString as Any]
-						let o1 = DeserializableObject(from: ["": ""])
 
 						expect {
-							o1?.date = try create(dateKey, from: json, format: "yyyy-MM-dd")
+							let result: Date = try create(dateKey, from: json, format: "yyyy-MM-dd")
 
-							return expect(o1?.date).toNot(beNil())
+							return expect(result).toNot(beNil())
 						}.toNot(throwError())
 					}
 
