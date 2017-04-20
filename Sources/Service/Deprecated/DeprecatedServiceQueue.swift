@@ -71,7 +71,7 @@ open class DeprecatedServiceQueue: DeprecatedService {
 
     private func add(_ task: URLSessionDataTask?) {
         guard let createdTask = task else {
-            printFaroError(FaroError.invalidSession(message: "\(self) tried to "))
+            printFaroError(FaroError.couldNotCreateTask)
             return
         }
         taskQueue.insert(createdTask)

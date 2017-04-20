@@ -100,7 +100,7 @@ open class DeprecatedService {
         }
 
         let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
-            let dataResult = self.handle(data: data, urlResponse: response, error: error) as DeprecatedResult<M>
+			let dataResult = self.handle(data: data, urlResponse: response, error: error, for: request) as DeprecatedResult<M>
             switch dataResult {
             case .data(let data):
                 self.configuration.adaptor.serialize(from: data) { (serializedResult: DeprecatedResult<M>) in
@@ -140,7 +140,7 @@ open class DeprecatedService {
         }
 
         let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
-            writeResult(self.handleWrite(data: data, urlResponse: response, error: error))
+            writeResult(self.handleWrite(data: data, urlResponse: response, error: error, for: request))
         })
 
         guard autoStart else {
@@ -153,17 +153,17 @@ open class DeprecatedService {
 
     // MARK: - Handles
 
-    open func handleWrite(data: Data?, urlResponse: URLResponse?, error: Error?) -> WriteResult {
-        if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error) {
+    open func handleWrite(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest) -> WriteResult {
+        if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error, for: request) {
             return .failure(faroError)
         }
 
         return .ok
     }
 
-    open func handle<M: Deserializable>(data: Data?, urlResponse: URLResponse?, error: Error?) -> DeprecatedResult<M> {
+    open func handle<M: Deserializable>(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest) -> DeprecatedResult<M> {
 
-        if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error) {
+		if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error, for: request) {
             return .failure(faroError)
         }
 
@@ -240,7 +240,7 @@ open class DeprecatedService {
 
 extension DeprecatedService {
 
-    fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?) -> FaroError? {
+    fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest) -> FaroError? {
         guard error == nil else {
             let returnError = FaroError.nonFaroError(error!)
             printFaroError(returnError)
@@ -248,20 +248,20 @@ extension DeprecatedService {
         }
 
         guard let httpResponse = urlResponse as? HTTPURLResponse else {
-            let returnError = FaroError.networkError(0, data: data)
+            let returnError = FaroError.networkError(0, data: data, request: request)
             printFaroError(returnError)
             return returnError
         }
 
         let statusCode = httpResponse.statusCode
         guard statusCode < 400 else {
-            let returnError = FaroError.networkError(statusCode, data: data)
+            let returnError = FaroError.networkError(statusCode, data: data, request: request)
             printFaroError(returnError)
             return returnError
         }
 
         guard 200...204 ~= statusCode else {
-            let returnError = FaroError.networkError(statusCode, data: data)
+            let returnError = FaroError.networkError(statusCode, data: data, request: request)
             printFaroError(returnError)
             return returnError
         }

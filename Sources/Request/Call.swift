@@ -11,6 +11,8 @@ open class Call {
 	open var rootNode: String?
 	open var parameters: [Parameter]?
 
+	fileprivate var request: URLRequest?
+
 	/// Initializes Call to retreive object(s) from the server.
 	/// parameter path: the path to point the call too
 	/// parameter method: the method to use for the urlRequest
@@ -36,6 +38,7 @@ open class Call {
 	/// Optionally implement `Authenticatable` to make it possible to authenticate requests. In this function on self the functions in 'Authenticatable` will be called.
 	open func request(with configuration: Configuration) -> URLRequest? {
 		var request = URLRequest(url: URL(string: "\(configuration.baseURL)/\(path)")!, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData) // uses default timeout
+		self.request = request
 		request.httpMethod = httpMethod.rawValue
 		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 		insertParameter(request: &request)
@@ -117,4 +120,10 @@ open class Call {
 		request.httpBody = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
 	}
 
+}
+
+// MARK: - CustomDebugStringConvertible
+
+extension Call: CustomDebugStringConvertible {
+	public var debugDescription: String { return "Call \(request) rootNode: \(rootNode), parameters: \(parameters)"}
 }
