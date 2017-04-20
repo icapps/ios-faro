@@ -2,6 +2,11 @@
 
 ## Version 2.0.0
 
+* Attempt to make error more descriptive
+* Removed confusing Perform functions and added 2 functions `single...` `collection`
+* Made it more descriptive that a request does not expect a json response.
+* Moved away from result Enmum in favor of throws
+
 *! Warning this is a breaking change*
 
 * Parse functions
