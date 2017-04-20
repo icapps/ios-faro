@@ -155,12 +155,13 @@ class DeprecatedServiceSpec: QuickSpec {
 
             context("error cases") {
                 it("HttpError when statuscode > 400") {
-                    let response =  HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: 404, httpVersion: nil, headerFields: nil)
-                    let result = service.handle(data: nil, urlResponse: response, error: nil) as DeprecatedResult<MockModel>
+					let url = URL(string: "http://www.test.com")!
+                    let response =  HTTPURLResponse(url: url, statusCode: 404, httpVersion: nil, headerFields: nil)
+					let result = service.handle(data: nil, urlResponse: response, error: nil, for: URLRequest(url: url)) as DeprecatedResult<MockModel>
                     switch result {
                     case .failure(let faroError):
                         switch faroError {
-                        case .networkError(let statuscode, data: _ ):
+						case .networkError(let statuscode, data: _, request: _):
                             expect(statuscode) == 404
                             break
                         default:
@@ -175,7 +176,8 @@ class DeprecatedServiceSpec: QuickSpec {
 
                 it("Fail for NSError") {
                     let nsError = NSError(domain: "tests", code: 101, userInfo: nil)
-                    let result = service.handle(data: nil, urlResponse: nil, error: nsError) as DeprecatedResult<MockModel>
+					let url = URL(string: "http://www.test.com")!
+					let result = service.handle(data: nil, urlResponse: nil, error: nsError, for: URLRequest(url: url)) as DeprecatedResult<MockModel>
                     switch result {
                     case .failure(let faroError):
                         switch faroError {
@@ -247,8 +249,9 @@ class DeprecatedServiceSpec: QuickSpec {
 
 class ExpectResponse {
     static func statusCode(_ statusCode: Int, data: Data? = nil, service: DeprecatedService) {
-        let response = HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: statusCode, httpVersion: nil, headerFields: nil)
-        let result = service.handle(data: data, urlResponse: response, error: nil) as DeprecatedResult<MockModel>
+		let url = URL(string: "http://www.test.com")!
+        let response = HTTPURLResponse(url: url, statusCode: statusCode, httpVersion: nil, headerFields: nil)
+		let result = service.handle(data: data, urlResponse: response, error: nil, for: URLRequest(url: url)) as DeprecatedResult<MockModel>
         if let data = data {
             switch result {
             case .data(_):
