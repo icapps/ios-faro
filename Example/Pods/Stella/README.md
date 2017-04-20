@@ -1,10 +1,10 @@
-# Stella
+![](./Images/StellaShield.jpg)
 
 [![CI Status](http://img.shields.io/travis/icapps/ios-stella.svg?style=flat)](https://travis-ci.org/icapps/ios-stella)
 [![License](https://img.shields.io/cocoapods/l/Stella.svg?style=flat)](http://cocoapods.org/pods/Stella)
 [![Platform](https://img.shields.io/cocoapods/p/Stella.svg?style=flat)](http://cocoapods.org/pods/Stella)
 [![Version](https://img.shields.io/cocoapods/v/Stella.svg?style=flat)](http://cocoapods.org/pods/Stella)
-[![Language Swift 2.2](https://img.shields.io/badge/Language-Swift%202.2-orange.svg?style=flat)](https://swift.org)
+[![Language Swift 3.0](https://img.shields.io/badge/Language-Swift%203.0-orange.svg?style=flat)](https://swift.org)
 
 > Stella contains a set of utilities that can be used during iOS development in Swift.
 
@@ -13,9 +13,9 @@
 - [Installation](#installation)
 - [Features](#features)
   - [Defaults](#defaults)
+  - [Keychain](#keychain)
   - [Localization](#localization)
   - [Printing](#printing)
-  - [Threading](#threading)
 - [Bucket List](#bucket-list)
 - [Author](#author)
 - [License](#license)
@@ -25,7 +25,7 @@
 Stella is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your `Podfile`:
 
 ```ruby
-pod 'Stella', '~> 0.4'
+pod 'Stella', '~> 1.1'
 ```
 
 ## Features
@@ -73,6 +73,24 @@ Defaults[.dateValue] = NSDate()
 print(Defaults[.dateValue]) // Prints '1996-12-19T16:39:57-08:00'
 ```
 
+### Keychain
+
+We have a cleaner way to use the `Keychain`. Define the user defaults by extending the `Keys` class.
+
+```swift
+extension Keys {
+  // Writes a string object to the keychain with the 'stringValue' key.
+  static let stringValue = Key<String?>("stringValue")
+}
+```
+
+You can read/write the from/to the `Keychain` by using the `subscript` on the `Keychain` class.
+
+```swift
+Keychain[.stringValue] = "A string value"
+print(Keychain[.stringValue]) // Prints 'A string value'
+```
+
 ### Localization
 
 Localize a key in no time with this handy localization function.
@@ -97,33 +115,29 @@ printBreadcrumb("This is your breadcrumb.")
 
 printError("This is an error.")
 // The debug console will print `🔥 This is an error.`
+
+printQuestion("This is a question")
+// The debug console will print `❓ This is an question.`
 ```
+#### Print Levels
 
-### Threading
-
-Perform block on the main or on the background queue more easily.
+You can simply specify print levels like:
 
 ```swift
-dispatch_on_main {
-  // Perform this code on the main thread.
-}
-
-dispatch_on_main(after: 2) {
-  // Perform this code on the main thread after 2 seconds.
-}
-
-dispatch_in_background {
-  // Perform this code on a background thread.
-}
-
-dispatch_wait { completion in
-  // Perform an asynchronous call to a web service for example.
-  performCall {
-    // Notify the `dispatch_wait` that the asynchronous call finished it's execution.
-    completion()
-  }
-}
+Output.level = .verbose
 ```
+
+or to only print errors
+```swift
+Output.level = .error
+```
+
+Or just shut up everything, handy for in unit tests.
+
+```swift
+Output.level = .nothing
+```
+To see what is printed for what level look at the `PrintSpec`.
 
 ## Bucket List
 

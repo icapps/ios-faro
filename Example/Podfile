@@ -1,9 +1,10 @@
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
+inhibit_all_warnings!
 
 target 'Faro_Example' do
   pod "Faro", path: "../"
-  pod 'Stella', git: 'https://github.com/icapps/ios-stella.git', branch: 'feature/swift3.0'
+  pod 'Stella', git: 'https://github.com/icapps/ios-stella.git', branch: 'develop'
   pod 'BuddyBuildSDK'
 
   target 'Faro_Tests' do
