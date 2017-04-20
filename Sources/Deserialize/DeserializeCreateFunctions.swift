@@ -38,10 +38,16 @@ public func create <T: RawRepresentable>(_ named: String, from json: [String: An
 
 // MARK: - Any Type
 
+/// Will instantiate a value of type T OR try to parse it as a date from a TimeIntervalSince1970.
+/// If you want to parse a date with another format use the date functions with a format string.
 public func create <T>(_ named: String, from json: [String: Any]) throws -> T! {
 	if !named.isEmpty {
 		guard let value = json[named] as? T else {
-			throw FaroError.emptyValue(key: named)
+			do {
+				return try create(named, from: json, format: "") as! T
+			} catch {
+				throw FaroError.emptyValue(key: named)
+			}
 		}
 		return value
 	} else {
