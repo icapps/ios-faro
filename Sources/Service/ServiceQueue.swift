@@ -19,7 +19,7 @@ open class ServiceQueue {
 	// MARK: Requests that expect a JSON response
 
 	open func single<T>(call: Call, autoStart: Bool, complete: @escaping(@escaping () throws -> (T)) -> Void) where T: JSONDeserializable & Deserializable {
-		deprecatedServiceQueue.performJsonResult(call, autoStart: autoStart) { (result: DeprecatedResult<T>) in
+		deprecatedServiceQueue.performJsonResult(call, autoStart: autoStart) { [unowned self] (result: DeprecatedResult<T>) in
 			switch result {
 
 			case .json(let json):
@@ -31,20 +31,29 @@ open class ServiceQueue {
 					complete {try T(node)}
 				default:
 					complete { [unowned self] in
-						throw FaroError.noModelFor(call: call, inJson: rootNode)
+						let error = FaroError.noModelFor(call: call, inJson: rootNode)
+						self.handleError(error)
+						throw error
 					}
 				}
 			case .failure(let error):
-				complete {throw error}
+				complete {
+					self.handleError(error)
+					throw error
+				}
 			default:
-				complete {throw FaroError.general}
+				complete {
+					let error = FaroError.invalidDeprecatedResult(call: call, resultString: "\(result)")
+					self.handleError(error)
+					throw error
+				}
 			}
 		}
 	}
 
 	/// Converts every node in the json to T. When one of the nodes has invalid json conversion is stopped and an error is trhown.
 	open func collection<T>(call: Call, autoStart: Bool, complete: @escaping ( @escaping() throws -> [T]) -> Void) where T: JSONDeserializable & Deserializable {
-		deprecatedServiceQueue.performJsonResult(call, autoStart: autoStart) { (result: DeprecatedResult<T>) in
+		deprecatedServiceQueue.performJsonResult(call, autoStart: autoStart) { [unowned self] (result: DeprecatedResult<T>) in
 			switch result {
 
 			case .json(let json):
@@ -54,7 +63,9 @@ open class ServiceQueue {
 				case .nodeArray(let nodeArray):
 					guard let nodeArray = nodeArray as? [[String: Any]] else {
 						complete { [unowned self] in
-							throw FaroError.noModelFor(call: call, inJson: rootNode)
+							let error = FaroError.noModelFor(call: call, inJson: rootNode)
+							self.handleError(error)
+							throw error
 						}
 						return
 					}
@@ -64,15 +75,32 @@ open class ServiceQueue {
 					complete { try nodeArray.map {try T($0)} }
 				default:
 					complete {
-						throw FaroError.noModelFor(call: call, inJson: rootNode)
+						let error = FaroError.noModelFor(call: call, inJson: rootNode)
+						self.handleError(error)
+						throw error
 					}
 				}
 			case .failure(let error):
-				complete {throw error}
+				complete {
+					self.handleError(error)
+					throw error
+				}
 			default:
-				complete {throw FaroError.general}
+				complete {
+					let error = FaroError.invalidDeprecatedResult(call: call, resultString: "\(result)")
+					self.handleError(error)
+					throw error
+				}
 			}
 		}
+	}
+
+	// MARK: Error
+
+	/// Prints the error and throws it
+	/// Possible to override this to have custom behaviour for your app.
+	open func handleError(_ error: FaroError) {
+		printFaroError(error)
 	}
 
 	// MARK: - Interact with tasks

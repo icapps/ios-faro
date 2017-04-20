@@ -5,12 +5,13 @@ import Stella
 class PostViewController: UIViewController {
     @IBOutlet var label: UILabel!
 
+	/// !! It is important to retain the service until you have a result.
+
+	let failingService = Service<Post>(call: Call(path: "bullshit"), deprecatedService:ExampleDeprecatedService())
+	let service = Service<Post>(call: Call(path: "posts"), deprecatedService:ExampleDeprecatedService())
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-		let call = Call(path: "posts")
-
-		let service = Service<Post>(call: call, deprecatedService:ExampleDeprecatedService())
 
 		service.collection { [weak self] (resultFunction) in
 			DispatchQueue.main.async {
@@ -24,10 +25,13 @@ class PostViewController: UIViewController {
 			}
 		}
 
-        let serviceQueue = ServiceQueue(deprecatedServiceQueue: ExampleDeprecatedServiceQueue { _ in
-            printAction("🎉 queued call finished")
+		// Test service queue
+
+        let serviceQueue = ServiceQueue(deprecatedServiceQueue: ExampleDeprecatedServiceQueue { (failedTaks) in
+			printAction("🎉 queued call finished with failedTasks \(String(describing: failedTaks)))")
         })
 
+		let call = Call(path: "posts")
 		serviceQueue.collection(call: call, autoStart: true) { (resultFunction: () throws -> [Post]) in
 			let posts = try? resultFunction()
 			printAction("ServiceQueue Task 1 finished  \(posts?.count ?? -1)")
@@ -44,6 +48,16 @@ class PostViewController: UIViewController {
 		}
 
         serviceQueue.resumeAll()
+
+		// Test failure
+
+		failingService.single {  _ in
+			// should have printed failure
+		}
+
+		failingService.collection {  _ in
+			// should have printed failure
+		}
     }
 
 }

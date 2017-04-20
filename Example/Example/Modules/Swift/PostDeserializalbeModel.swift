@@ -17,7 +17,7 @@ class Post: JSONDeserializable, Deserializable {
 
 		title |< raw[.title]
 	}
-	
+
     required init?(from raw: Any) {
         guard let json = raw as? [String: Any] else {
             return nil

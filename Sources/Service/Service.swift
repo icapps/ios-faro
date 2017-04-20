@@ -36,42 +36,56 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 	// MARK: Requests that expect a JSON response
 
 	open func single(complete: @escaping(@escaping () throws -> (T)) -> Void) {
-		deprecatedService.performJsonResult(call, autoStart: autoStart) {[unowned self] (result: DeprecatedResult<T>) in
+		let call = self.call
+
+		deprecatedService.performJsonResult(call, autoStart: autoStart) {[weak self] (result: DeprecatedResult<T>) in
 			switch result {
 
 			case .json(let json):
-				let rootNode = self.call.rootNode(from: json)
+				let rootNode = call.rootNode(from: json)
 
 				switch rootNode {
 				case .nodeObject(let node):
 					// Convert node to model of type T. When this is not possible an error is thrown.
 					complete {try T(node)}
 				default:
-					complete { [unowned self] in
-						throw FaroError.noModelFor(call: self.call, inJson: rootNode)
+					complete { [weak self] in
+						let error = FaroError.noModelFor(call: call, inJson: rootNode)
+						self?.handleError(error)
+						throw error
 					}
 				}
 			case .failure(let error):
-				complete {throw error}
+				complete { [weak self] in
+					self?.handleError(error)
+					throw error
+				}
 			default:
-				complete {throw FaroError.general}
+				complete { [weak self] in
+					let error = FaroError.invalidDeprecatedResult(call: call, resultString: "\(result)")
+					self?.handleError(error)
+					throw error
+				}
 			}
 		}
 	}
 
 	/// Converts every node in the json to T. When one of the nodes has invalid json conversion is stopped and an error is trhown.
 	open func collection(complete: @escaping ( @escaping() throws -> [T]) -> Void)  {
-		deprecatedService.performJsonResult(call, autoStart: autoStart) { (result: DeprecatedResult<T>) in
+		let call = self.call
+		deprecatedService.performJsonResult(call, autoStart: autoStart) { [weak self] (result: DeprecatedResult<T>) in
 			switch result {
 
 			case .json(let json):
-				let rootNode = self.call.rootNode(from: json)
+				let rootNode = call.rootNode(from: json)
 
 				switch rootNode {
 				case .nodeArray(let nodeArray):
 					guard let nodeArray = nodeArray as? [[String: Any]] else {
-						complete { [unowned self] in
-							throw FaroError.noModelFor(call: self.call, inJson: rootNode)
+						complete { [weak self] in
+							let error = FaroError.noModelFor(call: call, inJson: rootNode)
+							self?.handleError(error)
+							throw error
 						}
 						return
 					}
@@ -80,14 +94,23 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 
 					complete { try nodeArray.map {try T($0)} }
 				default:
-					complete { [unowned self] in
-						throw FaroError.noModelFor(call: self.call, inJson: rootNode)
+					complete { [weak self] in
+						let error = FaroError.noModelFor(call: call, inJson: rootNode)
+						self?.handleError(error)
+						throw error
 					}
 				}
 			case .failure(let error):
-				complete {throw error}
+				complete { [weak self] in
+					self?.handleError(error)
+					throw error
+				}
 			default:
-				complete {throw FaroError.general}
+				complete { [weak self] in
+					let error = FaroError.invalidDeprecatedResult(call: call, resultString: "\(result)")
+					self?.handleError(error)
+					throw error
+				}
 			}
 		}
 	}
@@ -95,5 +118,13 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 	// MARK: Requests that expect no JSON in response
 
 	// TODO: add write functions
+
+	// MARK: Error
+
+	/// Prints the error and throws it
+	/// Possible to override this to have custom behaviour for your app.
+	open func handleError(_ error: FaroError) {
+		printFaroError(error)
+	}
 
 }
