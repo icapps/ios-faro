@@ -15,7 +15,7 @@ class Post: Deserializable {
             return nil
         }
         do {
-            self.uuid = try parse(Post.ServiceMap.id.rawValue, from: json)
+            self.uuid = try create(Post.ServiceMap.id.rawValue, from: json)
         } catch {
             printError("Error parsing Post with \(error).")
             return nil

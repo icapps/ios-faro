@@ -15,7 +15,7 @@ class Jail: Deserializable {
         }
 
         do {
-            cellNumber = try parse("cellNumber", from: json)
+            cellNumber = try create("cellNumber", from: json)
         } catch {
             return nil
         }

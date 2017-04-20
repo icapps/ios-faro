@@ -1,4 +1,10 @@
 ope# Faro
+## Version 1.1.0
+*! Warning this is a breaking change*
+* Parse functions
+  * `parse(.. rename` -> `create(...`
+* Operator rename:
+  * DeserializeOperators `<->` to ``
 ## Version 1.0.9
 * Using URLRequest default timeout instead of 10 seconds
 

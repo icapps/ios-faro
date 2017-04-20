@@ -13,8 +13,8 @@ class PagingInformation: Deserializable {
             return nil
         }
 		do {
-			pages = try parse("pages", from: json)
-			currentPage = try parse("currentPage", from: json)
+			pages = try create("pages", from: json)
+			currentPage = try create("currentPage", from: json)
 		} catch {
 			print(error)
 			return nil
