@@ -2,7 +2,7 @@ public enum HTTPMethod: String {
 	case GET, POST, PUT, DELETE, PATCH
 }
 
-/// Defines a request that will be called in the Service
+/// Defines a request that will be called in the DeprecatedService
 /// You can add `[Parameter]` to the request and optionally authenticate the request when needed.
 /// Optionally implement `Authenticatable` to make it possible to authenticate requests
 open class Call {

@@ -22,19 +22,19 @@ class PagingInformation: Deserializable {
 	}
 }
 
-class ServiceSpec: QuickSpec {
+class DeprecatedServiceSpec: QuickSpec {
 
 	//swiftlint:disable cyclomatic_complexity
 	override func spec() {
 
         describe("Mocked session") {
-            var service: Service!
+            var service: DeprecatedService!
             let call = Call(path: "mock")
             var mockSession: MockSession!
 
             beforeEach {
                 mockSession = MockSession()
-                service = Service(configuration: Configuration(baseURL: "mockService"), faroSession: mockSession)
+                service = DeprecatedService(configuration: Configuration(baseURL: "mockDeprecatedService"), faroSession: mockSession)
                 mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)
             }
 
@@ -89,13 +89,13 @@ class ServiceSpec: QuickSpec {
         }
 
         describe("Parsing to model") {
-            var service: Service!
+            var service: DeprecatedService!
             var mockJSON: Any!
 
             context("array of objects response") {
                 beforeEach {
                     mockJSON = [["uuid": "object 1"], ["uuid": "object 2"]]
-                    service = MockService(mockDictionary: mockJSON)
+                    service = MockDeprecatedService(mockDictionary: mockJSON)
                 }
 
                 it("should respond with array") {
@@ -119,7 +119,7 @@ class ServiceSpec: QuickSpec {
             context("single object response") {
                 beforeEach {
                     mockJSON = ["uuid": "object id 1"]
-                    service = MockService(mockDictionary: mockJSON)
+                    service = MockDeprecatedService(mockDictionary: mockJSON)
                 }
 
                 it("should have a configuration with the correct baseUrl") {
@@ -145,12 +145,12 @@ class ServiceSpec: QuickSpec {
             }
         }
 
-        describe("MockService responses") {
+        describe("MockDeprecatedService responses") {
             let expected = ["key": "value"]
-            var service: Service!
+            var service: DeprecatedService!
 
             beforeEach {
-                service = MockService(mockDictionary: expected)
+                service = MockDeprecatedService(mockDictionary: expected)
             }
 
             context("error cases") {
@@ -221,10 +221,10 @@ class ServiceSpec: QuickSpec {
         }
 
         /// You might want to disable this because it does requests to the server
-        describe("Service Asynchronous", {
+        describe("DeprecatedService Asynchronous", {
             it("should fail for a wierd url") {
                 let configuration = Faro.Configuration(baseURL: "wierd")
-                let service = Service(configuration: configuration)
+                let service = DeprecatedService(configuration: configuration)
                 let call = Call(path: "posts")
 
                 var failed = false
@@ -246,7 +246,7 @@ class ServiceSpec: QuickSpec {
 }
 
 class ExpectResponse {
-    static func statusCode(_ statusCode: Int, data: Data? = nil, service: Service) {
+    static func statusCode(_ statusCode: Int, data: Data? = nil, service: DeprecatedService) {
         let response = HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: statusCode, httpVersion: nil, headerFields: nil)
         let result = service.handle(data: data, urlResponse: response, error: nil) as Result<MockModel>
         if let data = data {

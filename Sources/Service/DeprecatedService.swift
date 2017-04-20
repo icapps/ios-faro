@@ -5,9 +5,9 @@
 /// Response is delivered to you as a `Result` that you can use in a switch. You get the most detailed results with the functions below.
 /// If you want you can use the convenience functions in the extension. They call these functions and print the errors by default. 
 /// If you need more control over the errors you can use these functions directly.
-/// _Remark_: If you need to cancel, know when everything is done, service request to continue in the background use `ServiceQueue`.
+/// _Remark_: If you need to cancel, know when everything is done, service request to continue in the background use `DeprecatedServiceQueue`.
 /// _Warning_: The session holds a strong reference to it's delegates. You should invalidate or we do in at `deinit`
-open class Service {
+open class DeprecatedService {
     open let configuration: Configuration
 
     let faroSession: FaroSessionable
@@ -238,7 +238,7 @@ open class Service {
 
 // MARK: - Privates
 
-extension Service {
+extension DeprecatedService {
 
     fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?) -> FaroError? {
         guard error == nil else {

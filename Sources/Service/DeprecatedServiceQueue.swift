@@ -1,10 +1,10 @@
 import Foundation
 
-/// Tasks can be autostarted or started manualy. The taks are still handled bij an URLSession like in `Service`, but
+/// Tasks can be autostarted or started manualy. The taks are still handled bij an URLSession like in `DeprecatedService`, but
 /// we store the TaskIdentifiers. When a task completes it is removed from the queue and `final()`.
-/// It has its own `URLSession` which it invalidates once the queue is finished. You need to create another instance of `ServiceQueue` to be able to
+/// It has its own `URLSession` which it invalidates once the queue is finished. You need to create another instance of `DeprecatedServiceQueue` to be able to
 /// perform new request after you fired the first queue.
-open class ServiceQueue: Service {
+open class DeprecatedServiceQueue: DeprecatedService {
 
     var taskQueue: Set<URLSessionDataTask>
     var failedTasks: Set<URLSessionTask>?
@@ -12,7 +12,7 @@ open class ServiceQueue: Service {
     private let final: (_ failedTasks: Set<URLSessionTask>?)->()
 
     /// Creates a queue that lasts until final is called. When all request in the queue are finished the session becomes invalid.
-    /// For future queued request you have to create a new ServiceQueue instance.
+    /// For future queued request you have to create a new DeprecatedServiceQueue instance.
     /// - parameter configuration: Faro service configuration
     /// - parameter faroSession: You can provide a custom `URLSession` via `FaroQueueSession`.
     /// - parameter final: closure is callen when all requests are performed.

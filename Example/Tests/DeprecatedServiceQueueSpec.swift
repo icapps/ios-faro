@@ -4,15 +4,15 @@ import Nimble
 @testable import Faro
 @testable import Faro_Example
 
-class ServiceQueueSpec: QuickSpec {
+class DeprecatedServiceQueueSpec: QuickSpec {
 
     override func spec() {
-        describe("ServiceQueue") {
+        describe("DeprecatedServiceQueue") {
 
             var mockSession: MockAsyncSession!
-            var service: ServiceQueue!
+            var service: DeprecatedServiceQueue!
             let call = Call(path: "mock")
-            let config = Configuration(baseURL: "mockService")
+            let config = Configuration(baseURL: "mockDeprecatedService")
             var isFinalCalled = false
 
             beforeEach {
@@ -27,7 +27,7 @@ class ServiceQueueSpec: QuickSpec {
                 beforeEach {
                     isFinalCalled = false
                     taskSucceed = false
-                    service = ServiceQueue(configuration: config, faroSession: mockSession) { _ in
+                    service = DeprecatedServiceQueue(configuration: config, faroSession: mockSession) { _ in
                         isFinalCalled = true
                         taskSucceed = true
                     }
@@ -73,7 +73,7 @@ class ServiceQueueSpec: QuickSpec {
             context("started") {
 
                 it("still start on autostart") {
-                    service = ServiceQueue(configuration: config, faroSession: mockSession) { _ in
+                    service = DeprecatedServiceQueue(configuration: config, faroSession: mockSession) { _ in
                         print("final")
                     }
                     waitUntil { done in
@@ -93,7 +93,7 @@ class ServiceQueueSpec: QuickSpec {
 
                     beforeEach {
                         isFinalCalled = false
-                        service = ServiceQueue(configuration: config, faroSession: mockSession) { failures in
+                        service = DeprecatedServiceQueue(configuration: config, faroSession: mockSession) { failures in
                             isFinalCalled = true
                             failedTasks = failures
                         }

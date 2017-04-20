@@ -1,4 +1,4 @@
-open class MockService: Service {
+open class MockDeprecatedService: DeprecatedService {
 
     /// If you provide this variable before calling `perform` we will use this instead of the file content.
     public var mockDictionary: Any?

@@ -8,7 +8,7 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let service = ExampleService()
+        let service = ExampleDeprecatedService()
         let call = Call(path: "posts")
 
         service.perform(call) { (result: Result<Post>) in
@@ -23,7 +23,7 @@ class PostViewController: UIViewController {
             }
         }
 
-        let serviceQueue = ExampleServiceQueue { _ in
+        let serviceQueue = ExampleDeprecatedServiceQueue { _ in
             printBreadcrumb("🎉 queued call finished")
         }
 
