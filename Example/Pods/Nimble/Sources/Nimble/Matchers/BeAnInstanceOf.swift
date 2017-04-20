@@ -2,7 +2,7 @@ import Foundation
 
 // A Nimble matcher that catches attempts to use beAnInstanceOf with non Objective-C types
 public func beAnInstanceOf(_ expectedClass: Any) -> NonNilMatcherFunc<Any> {
-    return NonNilMatcherFunc {_, failureMessage in
+    return NonNilMatcherFunc {actualExpression, failureMessage in
         failureMessage.stringValue = "beAnInstanceOf only works on Objective-C types since"
             + " the Swift compiler will automatically type check Swift-only types."
             + " This expectation is redundant."
