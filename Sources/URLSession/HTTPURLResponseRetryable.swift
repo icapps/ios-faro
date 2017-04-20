@@ -31,6 +31,6 @@ public protocol URLRequestRetryable {
 extension URLRequest: URLRequestRetryable {
 
 	public var requestIdentifier: String {
-		return "\(self.httpMethod) \(self.url) \(self.httpBody)"
+		return "\(String(describing: self.httpMethod)) \(String(describing: self.url)) \(String(describing: self.httpBody))"
 	}
 }

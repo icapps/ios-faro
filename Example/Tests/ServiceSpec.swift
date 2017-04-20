@@ -261,7 +261,7 @@ class ExpectResponse {
             case .ok:
                 break
             default:
-                XCTFail("Should not fail for statuscode: \(statusCode) data: \(data)")
+                XCTFail("Should not fail for statuscode: \(statusCode) data: \(String(describing: data))")
             }
         }
     }

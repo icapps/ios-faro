@@ -24,7 +24,7 @@ public func printFaroError(_ error: Error) {
         if let data = data {
             //TODO: FARO-29 Print this from the content type returned.
             let string = String(data: data, encoding: .utf8)
-            print("💣 HTTP error: \(networkError) message: \(string)")
+            print("💣 HTTP error: \(networkError) message: \(String(describing: string))")
         } else {
             print("💣 HTTP error: \(networkError)")
         }

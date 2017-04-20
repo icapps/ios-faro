@@ -109,7 +109,7 @@ public extension UserDefaults {
     /// ```
     public subscript(key: DefaultsKey<Bool?>) -> Bool {
         get {
-            return bool(forKey: key.key) ?? false
+            return bool(forKey: key.key)
         }
         set {
             set(newValue, forKey: key.key)
@@ -124,6 +124,20 @@ public extension UserDefaults {
     public subscript(key: DefaultsKey<Date?>) -> Date? {
         get {
             return object(forKey: key.key) as? Date
+        }
+        set {
+            set(newValue, forKey: key.key)
+        }
+    }
+    
+    /// Get the defaults [String] value for the given `DefaultsKey`. The preferred way to do this is to pass the static key variable defined in the `DefaultsKeys` extension.
+    ///
+    /// ```
+    /// static let strings = DefaultsKey<[String]?>("the strings defaults key")
+    /// ```
+    public subscript(key: DefaultsKey<[String]?>) -> [String]? {
+        get {
+            return object(forKey: key.key) as? [String]
         }
         set {
             set(newValue, forKey: key.key)

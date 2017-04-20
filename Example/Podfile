@@ -1,15 +1,16 @@
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
+inhibit_all_warnings!
+platform :ios, '9.0'
 
 target 'Faro_Example' do
   pod "Faro", path: "../"
-  pod 'Stella', git: 'https://github.com/icapps/ios-stella.git', branch: 'feature/swift3.0'
+  pod 'Stella', git: 'https://github.com/icapps/ios-stella.git', branch: 'develop'
   pod 'BuddyBuildSDK'
 
   target 'Faro_Tests' do
-      # The test frameworks
-      pod 'Quick',  git: 'https://github.com/Quick/Quick.git', branch: 'swift-3.0'
-      pod 'Nimble', git: 'https://github.com/Quick/Nimble.git'
+	  pod 'Quick',   '~> 1.1.0'
+	  pod 'Nimble', '~> 5.0.0'
   end
 end
 
