@@ -66,7 +66,6 @@
 		637B2E722083B555854E4FA58A824068 /* BeCloseTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EF2E278317B5E320D051B26EF9239E /* BeCloseTo.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		6541D9239A4EFA235E5C610F0C05B304 /* BeVoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13E8E5BE7FC4C4E3BD8FA7715E62F75 /* BeVoid.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		6599557DECDCFC0A3663914C42D4DE3C /* ErrorUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D53257A9F584630410CF749F6538E90 /* ErrorUtility.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		66CCB7A06C42C44D3D9569786497C9D7 /* ServiceConvenienceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC6DD0CC7D1F2561DC04485F01A4326 /* ServiceConvenienceExtension.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		69DC20D6520713027FF2C84126A13312 /* AllPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD685A0145D54302F9B6A2D5203A6C3C /* AllPass.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		6ABB21D57A04BB975EE4D532774281B2 /* DSL+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77F6F62EA26575B8A3C1CB3C10F663A /* DSL+Wait.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		6DD4A4952F400E2526EB4EEDE8282997 /* ParameterEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D100D0A72A56955A30F4E73DAD6FFC16 /* ParameterEnum.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -333,7 +332,6 @@
 		C1D08252269A158412BD47DBA9B2EFA5 /* PostNotification.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PostNotification.swift; path = Sources/Nimble/Matchers/PostNotification.swift; sourceTree = "<group>"; };
 		C6BA62F7797D42078C080F8A9831CA7F /* Adaptable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Adaptable.swift; sourceTree = "<group>"; };
 		C9EF2E278317B5E320D051B26EF9239E /* BeCloseTo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeCloseTo.swift; path = Sources/Nimble/Matchers/BeCloseTo.swift; sourceTree = "<group>"; };
-		CBC6DD0CC7D1F2561DC04485F01A4326 /* ServiceConvenienceExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ServiceConvenienceExtension.swift; sourceTree = "<group>"; };
 		CC3C4D6381C3BE133561A6EFD3CCD2C2 /* Example.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Example.swift; path = Sources/Quick/Example.swift; sourceTree = "<group>"; };
 		CD7AAE4E014888BBDC8A8344D6FE365F /* JSONAdaptor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JSONAdaptor.swift; sourceTree = "<group>"; };
 		CEF686755D53AB978548A9063160846A /* QuickSpecBase.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QuickSpecBase.m; path = Sources/QuickSpecBase/QuickSpecBase.m; sourceTree = "<group>"; };
@@ -600,7 +598,6 @@
 				4D28246B28F62F9366E9E32D78A567E5 /* FaroService.swift */,
 				77AD110D9E9C6A81BB1E1F17578C8C56 /* Result.swift */,
 				A5CA5422AF6FA3F93A3978637E028B69 /* Service.swift */,
-				CBC6DD0CC7D1F2561DC04485F01A4326 /* ServiceConvenienceExtension.swift */,
 				508E3404D0D34641F2C602AC522AF8EF /* ServiceQueue.swift */,
 			);
 			path = Service;
@@ -1071,7 +1068,6 @@
 				B4883A7A1572C5C073AB4D354C3D5D39 /* Serializable.swift in Sources */,
 				9ECC716C5255BDD5AD05A6E33A175F1A /* SerializeOperators.swift in Sources */,
 				5F127773CF71AEDB2384F8F9EEF7A21A /* Service.swift in Sources */,
-				66CCB7A06C42C44D3D9569786497C9D7 /* ServiceConvenienceExtension.swift in Sources */,
 				D04900F4FA8228BF64476B85531722C0 /* ServiceQueue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
