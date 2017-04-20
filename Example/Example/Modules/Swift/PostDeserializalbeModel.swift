@@ -2,7 +2,7 @@ import Foundation
 import Faro
 import Stella
 
-class Post: Deserializable {
+class Post: JSONDeserializable, Deserializable {
     let uuid: Int
     var title: String?
 
@@ -10,6 +10,14 @@ class Post: Deserializable {
         case id, title
     }
 
+	required init(_ raw: [String : Any]) throws {
+		self.uuid = try create(Post.DeprecatedServiceMap.id.rawValue, from: raw)
+
+		// Not required variables
+
+		title |< raw[.title]
+	}
+	
     required init?(from raw: Any) {
         guard let json = raw as? [String: Any] else {
             return nil

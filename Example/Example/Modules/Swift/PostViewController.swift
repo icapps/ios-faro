@@ -8,35 +8,37 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let service = ExampleDeprecatedService()
-        let call = Call(path: "posts")
+		let call = Call(path: "posts")
 
-        service.perform(call) { (result: DeprecatedResult<Post>) in
-            DispatchQueue.main.async {
-                switch result {
-                case .models(let models):
-                    self.label.text = "Performed call for posts"
-                    printBreadcrumb("\(models!.map {"\($0.uuid): \(String(describing: $0.title))"})")
-                default:
-                    printError("Could not perform call for posts")
-                }
-            }
-        }
+		let service = Service<Post>(call: call, deprecatedService:ExampleDeprecatedService())
 
-        let serviceQueue = ExampleDeprecatedServiceQueue { _ in
+		service.collection { [weak self] (resultFunction) in
+			DispatchQueue.main.async {
+				do {
+					let posts = try resultFunction()
+					self?.label.text = "Performed call for posts"
+					printBreadcrumb("\(posts.map {"\($0.uuid): \(String(describing: $0.title))"})")
+				} catch {
+					printError(error)
+				}
+			}
+		}
+
+
+        let serviceQueue = Service<Post>(call: call, deprecatedService: ExampleDeprecatedServiceQueue { _ in
             printBreadcrumb("🎉 queued call finished")
+        })
+
+        serviceQueue.collection {
+            printBreadcrumb("Task 1 finished  \(String(describing: try? $0()))")
         }
 
-        serviceQueue.perform(call, autoStart: false) { (result: DeprecatedResult<Post>) in
-            printBreadcrumb("Task 1 finished  \(result)")
+        serviceQueue.collection {
+            printBreadcrumb("Task 2 finished  \(String(describing: try? $0()))")
         }
 
-        serviceQueue.perform(call, autoStart: false) { (result: DeprecatedResult<Post>) in
-            printBreadcrumb("Task 2 finished  \(result)")
-        }
-
-        serviceQueue.perform(call, autoStart: false) { (result: DeprecatedResult<Post>) in
-            printBreadcrumb("Task 3 finished \(result)")
+        serviceQueue.collection {
+            printBreadcrumb("Task 3 finished \(String(describing: try? $0()))")
         }
 
         serviceQueue.resumeAll()
