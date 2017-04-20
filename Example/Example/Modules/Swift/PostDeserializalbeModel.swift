@@ -2,20 +2,28 @@ import Foundation
 import Faro
 import Stella
 
-class Post: Deserializable {
+class Post: JSONDeserializable, Deserializable {
     let uuid: Int
     var title: String?
 
-    enum ServiceMap: String {
+    enum DeprecatedServiceMap: String {
         case id, title
     }
+
+	required init(_ raw: [String : Any]) throws {
+		self.uuid = try create(Post.DeprecatedServiceMap.id.rawValue, from: raw)
+
+		// Not required variables
+
+		title |< raw[.title]
+	}
 
     required init?(from raw: Any) {
         guard let json = raw as? [String: Any] else {
             return nil
         }
         do {
-            self.uuid = try parse(Post.ServiceMap.id.rawValue, from: json)
+            self.uuid = try create(Post.DeprecatedServiceMap.id.rawValue, from: json)
         } catch {
             printError("Error parsing Post with \(error).")
             return nil
@@ -23,14 +31,14 @@ class Post: Deserializable {
 
         // Not required variables
 
-        title <-> json[.title]
+        title |< json[.title]
     }
 
 }
 
 extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
 
-    subscript (map: Post.ServiceMap) -> Value? {
+    subscript (map: Post.DeprecatedServiceMap) -> Value? {
         get {
             guard let key = map.rawValue as? Key else {
                 return nil
@@ -50,9 +58,9 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
 
 }
 
-func transform(_ map: [Post.ServiceMap: Any]) -> [String: Any] {
+func transform(_ map: [Post.DeprecatedServiceMap: Any]) -> [String: Any] {
     var result = [String: Any]()
-    map.forEach { (dict:(key: Post.ServiceMap, value: Any)) in
+    map.forEach { (dict:(key: Post.DeprecatedServiceMap, value: Any)) in
         result[dict.key.rawValue] = dict.value
     }
     return result

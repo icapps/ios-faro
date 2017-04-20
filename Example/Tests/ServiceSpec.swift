@@ -1,268 +1,127 @@
+//
+//  ServiceSpec.swift
+//  Faro
+//
+//  Created by Stijn Willems on 20/04/2017.
+//  Copyright © 2017 CocoaPods. All rights reserved.
+//
+
+import Foundation
+
 import Quick
 import Nimble
 
 import Faro
 @testable import Faro_Example
 
-class PagingInformation: Deserializable {
-    var pages: Int
-    var currentPage: Int
+class Uuid: Deserializable, JSONDeserializable, JSONUpdatable, Updatable {
+	var uuid: String
 
-    required init?(from raw: Any) {
-        guard let json = raw as? [String: Any] else {
-            return nil
-        }
+	required init(_ raw: [String: Any]) throws {
+		self.uuid = try create("uuid", from: raw)
+	}
+	required init?(from raw: Any) {
+		guard let json = raw as? [String: Any] else {
+			return nil
+		}
 		do {
-			pages = try parse("pages", from: json)
-			currentPage = try parse("currentPage", from: json)
+			self.uuid = try create("uuid", from: json)
 		} catch {
-			print(error)
 			return nil
 		}
 	}
+
+}
+
+extension Uuid {
+
+	func update(from raw: Any) throws {
+		guard let json = raw as? [String: Any] else {
+			throw FaroDeserializableError.invalidJSON(model: self, json: raw)
+		}
+		self.uuid = try create("uuid", from: json)
+	}
+
+	func update(_ raw: [String : Any]) throws {
+		self.uuid = try create("uuid", from: raw)
+	}
+
 }
 
 class ServiceSpec: QuickSpec {
 
-	//swiftlint:disable cyclomatic_complexity
 	override func spec() {
 
-        describe("Mocked session") {
-            var service: Service!
-            let call = Call(path: "mock")
-            var mockSession: MockSession!
+		describe("Succes") {
 
-            beforeEach {
-                mockSession = MockSession()
-                service = Service(configuration: Configuration(baseURL: "mockService"), faroSession: mockSession)
-                mockSession.urlResponse = HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)
-            }
+			it("return valid single model for valid json") {
+				let mock = MockDeprecatedService(mockDictionary: ["uuid": "mock ok"])
+				let service = Service<Uuid>(call: Call(path: ""), deprecatedService: mock)
 
-            it("should return in sync") {
-                var sync = false
+				service.single { resultFunction in
+					expect {try resultFunction().uuid} == "mock ok"
+				}
+			}
 
-                service.performWrite(call) { _ in
-                    sync = true
-                }
+			it("return valid collection model for valid json") {
+				let mock = MockDeprecatedService(mockDictionary: [["uuid": "mock ok 1"], ["uuid": "mock ok 2"]])
+				let service = Service<Uuid>(call: Call(path: ""), deprecatedService: mock)
 
-                expect(sync) == true
-            }
+				service.collection { resultFunction in
+					expect {try resultFunction().flatMap {$0.uuid}} == ["mock ok 1", "mock ok 2"]
+				}
+			}
 
-            it("should return paging information") {
-                var pagesInformation: PagingInformation!
+		}
 
-                mockSession.data = "{\"pages\":10, \"currentPage\":25}".data(using: .utf8)
+		describe("Error") {
 
-                service.perform(call, page: { (pageInfo) in
-                    pagesInformation = pageInfo
-                    }, modelResult: { (_: Result<MockModel>) in
-                })
+			it("single model for invalid json") {
+				let invalidMock = MockDeprecatedService(mockDictionary: ["bullshit": "mock ok"])
+				let service = Service<Uuid>(call: Call(path: ""), deprecatedService: invalidMock)
 
-                expect(pagesInformation.pages) == 10
-            }
-
-            context ("update an existing model") {
-
-                it("when respons contains data") {
-					expect {
-						let jsonDict = ["uuid": "mockUUID"]
-						let mockModel = MockModel(from: jsonDict)!
-						let data = try JSONSerialization.data(withJSONObject: jsonDict,
-						                                      options: .prettyPrinted)
-						mockSession.data = data
-
-						service.perform(call, on: mockModel) { (result: Result<MockModel>) in
-							switch result {
-							case .model(let model):
-								let identical = (model === mockModel)
-								expect(identical).to(beTrue())
+				service.single { resultFunction in
+					expect {try resultFunction()}.to(throwError(closure: { (error) in
+						if let faroError = error as? FaroError {
+							switch faroError {
+							case .couldNotCreateInstance(ofType: let type, call: _, error: let error):
+								expect(type) == "Uuid"
+								expect( (error as? FaroDeserializableError)?.emptyValueKey) == "uuid"
 							default:
-								XCTFail("\(result)")
+								XCTFail("\(faroError)")
 							}
+						} else {
+							XCTFail("\(error)")
 						}
-						return true
-					}.toNot(throwError())
 
-                }
-            }
+					}))
+				}
+			}
 
-        }
+			it("collection model for invalid json") {
+				let mock = MockDeprecatedService(mockDictionary: [["bullshit": "mock ok 1"], ["uuid": "mock ok 2"]])
+				let service = Service<Uuid>(call: Call(path: ""), deprecatedService: mock)
 
-        describe("Parsing to model") {
-            var service: Service!
-            var mockJSON: Any!
+				service.collection { resultFunction in
+					expect {try resultFunction()}.to(throwError(closure: { (error) in
+						if let faroError = error as? FaroError {
+							switch faroError {
+							case .couldNotCreateInstance(ofType: let type, call: _, error: let error):
+								expect(type) == "Uuid"
+								expect( (error as? FaroDeserializableError)?.emptyValueKey) == "uuid"
+							default:
+								XCTFail("\(faroError)")
+							}
+						} else {
+							XCTFail("\(error)")
+						}
 
-            context("array of objects response") {
-                beforeEach {
-                    mockJSON = [["uuid": "object 1"], ["uuid": "object 2"]]
-                    service = MockService(mockDictionary: mockJSON)
-                }
+					}))
+				}
+			}
 
-                it("should respond with array") {
-                    let call = Call(path: "unitTest")
-                    var isInSync = false
+		}
 
-                    service.perform(call) { (result: Result<MockModel>) in
-                        isInSync = true
-                        switch result {
-                        case .models(let models):
-                            expect(models?.count).to(equal(2))
-                        default:
-                            XCTFail("You should succeed")
-                        }
-                    }
+	}
 
-                    expect(isInSync).to(beTrue())
-                }
-            }
-
-            context("single object response") {
-                beforeEach {
-                    mockJSON = ["uuid": "object id 1"]
-                    service = MockService(mockDictionary: mockJSON)
-                }
-
-                it("should have a configuration with the correct baseUrl") {
-                    expect(service.configuration.baseURL).to(equal(""))
-                }
-
-                it("should return in sync with the mock model") {
-                    let call = Call(path: "unitTest")
-                    var isInSync = false
-
-                    service.perform(call) { (result: Result<MockModel>) in
-                        isInSync = true
-                        switch result {
-                        case .model(model: let model):
-                            expect(model?.uuid).to(equal("object id 1"))
-                        default:
-                            XCTFail("You should succeed")
-                        }
-                    }
-
-                    expect(isInSync).to(beTrue())
-                }
-            }
-        }
-
-        describe("MockService responses") {
-            let expected = ["key": "value"]
-            var service: Service!
-
-            beforeEach {
-                service = MockService(mockDictionary: expected)
-            }
-
-            context("error cases") {
-                it("HttpError when statuscode > 400") {
-                    let response =  HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: 404, httpVersion: nil, headerFields: nil)
-                    let result = service.handle(data: nil, urlResponse: response, error: nil) as Result<MockModel>
-                    switch result {
-                    case .failure(let faroError):
-                        switch faroError {
-                        case .networkError(let statuscode, data: _ ):
-                            expect(statuscode) == 404
-                            break
-                        default:
-                            XCTFail("wrong error")
-                        }
-
-                        break
-                    default:
-                        XCTFail("Should have invalid authentication error")
-                    }
-                }
-
-                it("Fail for NSError") {
-                    let nsError = NSError(domain: "tests", code: 101, userInfo: nil)
-                    let result = service.handle(data: nil, urlResponse: nil, error: nsError) as Result<MockModel>
-                    switch result {
-                    case .failure(let faroError):
-                        switch faroError {
-                        case .nonFaroError(_):
-                            break
-                        default:
-                            print("\(faroError)")
-                            XCTFail("Should have nserror")
-                        }
-                    default:
-                        XCTFail("Should have invalid authentication error")
-                    }
-                }
-            }
-
-            context("success cases") {
-
-                context("data in response") {
-                    it("data returned for statuscode 200") {
-                        ExpectResponse.statusCode(200, data: "data".data(using: String.Encoding.utf8), service: service)
-                    }
-
-                    it("data returned for statuscode 201") {
-                        ExpectResponse.statusCode(201, data: "data".data(using: String.Encoding.utf8), service: service)
-                    }
-
-                    it("data returned for statuscode 204") {
-                        ExpectResponse.statusCode(204, data: "data".data(using: String.Encoding.utf8), service: service)
-                    }
-                }
-
-                context("no data in response") {
-                    it("No fail for statuscode 200") {
-                        ExpectResponse.statusCode(200, service: service)
-                    }
-
-                    it("No fail for statuscode 201") {
-                        ExpectResponse.statusCode(201, service: service)
-                    }
-                }
-            }
-
-        }
-
-        /// You might want to disable this because it does requests to the server
-        describe("Service Asynchronous", {
-            it("should fail for a wierd url") {
-                let configuration = Faro.Configuration(baseURL: "wierd")
-                let service = Service(configuration: configuration)
-                let call = Call(path: "posts")
-
-                var failed = false
-
-                service.perform(call, modelResult: { (result: Result<MockModel>) in
-                    switch result {
-                    case .failure:
-                        failed = true
-                    default:
-                        XCTFail("💣should fail")
-                    }
-                })
-
-                expect(failed).toEventually(beTrue())
-            }
-        })
-
-    }
-}
-
-class ExpectResponse {
-    static func statusCode(_ statusCode: Int, data: Data? = nil, service: Service) {
-        let response = HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: statusCode, httpVersion: nil, headerFields: nil)
-        let result = service.handle(data: data, urlResponse: response, error: nil) as Result<MockModel>
-        if let data = data {
-            switch result {
-            case .data(_):
-                break
-            default:
-                XCTFail("Should not fail for statuscode: \(statusCode) data: \(data)")
-            }
-        } else {
-            switch result {
-            case .ok:
-                break
-            default:
-                XCTFail("Should not fail for statuscode: \(statusCode) data: \(String(describing: data))")
-            }
-        }
-    }
 }

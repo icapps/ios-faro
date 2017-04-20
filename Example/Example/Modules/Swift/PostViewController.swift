@@ -5,41 +5,59 @@ import Stella
 class PostViewController: UIViewController {
     @IBOutlet var label: UILabel!
 
+	/// !! It is important to retain the service until you have a result.
+
+	let failingService = Service<Post>(call: Call(path: "bullshit"), deprecatedService:ExampleDeprecatedService())
+	let service = Service<Post>(call: Call(path: "posts"), deprecatedService:ExampleDeprecatedService())
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let service = ExampleService()
-        let call = Call(path: "posts")
+		service.collection { [weak self] (resultFunction) in
+			DispatchQueue.main.async {
+				do {
+					let posts = try resultFunction()
+					self?.label.text = "Performed call for posts"
+					printAction("Service \(posts.map {"\($0.uuid): \($0.title ?? "")"}.reduce("") {"\($0)\n\($1)"})")
+				} catch {
+					printError(error)
+				}
+			}
+		}
 
-        service.perform(call) { (result: Result<Post>) in
-            DispatchQueue.main.async {
-                switch result {
-                case .models(let models):
-                    self.label.text = "Performed call for posts"
-                    printBreadcrumb("\(models!.map {"\($0.uuid): \(String(describing: $0.title))"})")
-                default:
-                    printError("Could not perform call for posts")
-                }
-            }
-        }
+		// Test service queue
 
-        let serviceQueue = ExampleServiceQueue { _ in
-            printBreadcrumb("🎉 queued call finished")
-        }
+        let serviceQueue = ServiceQueue(deprecatedServiceQueue: ExampleDeprecatedServiceQueue { (failedTaks) in
+			printAction("🎉 queued call finished with failedTasks \(String(describing: failedTaks)))")
+        })
 
-        serviceQueue.perform(call, autoStart: false) { (result: Result<Post>) in
-            printBreadcrumb("Task 1 finished  \(result)")
-        }
+		let call = Call(path: "posts")
+		serviceQueue.collection(call: call, autoStart: true) { (resultFunction: () throws -> [Post]) in
+			let posts = try? resultFunction()
+			printAction("ServiceQueue Task 1 finished  \(posts?.count ?? -1)")
+		}
 
-        serviceQueue.perform(call, autoStart: false) { (result: Result<Post>) in
-            printBreadcrumb("Task 2 finished  \(result)")
-        }
+		serviceQueue.collection(call: call, autoStart: true) { (resultFunction: () throws -> [Post]) in
+			let posts = try? resultFunction()
+			printAction("ServiceQueue Task 2 finished  \(posts?.count ?? -1)")
+		}
 
-        serviceQueue.perform(call, autoStart: false) { (result: Result<Post>) in
-            printBreadcrumb("Task 3 finished \(result)")
-        }
+		serviceQueue.collection(call: call, autoStart: true) { (resultFunction: () throws -> [Post]) in
+			let posts = try? resultFunction()
+			printAction("ServiceQueue Task 3 finished  \(posts?.count ?? -1)")
+		}
 
         serviceQueue.resumeAll()
+
+		// Test failure
+
+		failingService.single {  _ in
+			// should have printed failure
+		}
+
+		failingService.collection {  _ in
+			// should have printed failure
+		}
     }
 
 }

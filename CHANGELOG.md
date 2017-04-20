@@ -1,4 +1,46 @@
-ope# Faro
+# Faro
+
+## Version 2.0.0
+
+*! Warning this is a breaking change*
+
+* Parse functions
+  * `parse(.. rename` -> `create(...`
+* Operator rename:
+  * DeserializeOperators `<->` to `|<`
+  * SerializeOperators `<->` to `<|`
+* Operators on models require the model to adopt 'Updatable'
+  * This is done so it is more clear we create a new instance or update an existing one.
+
+### Service has been deprecated
+How to migrate:
+* Original `Service` class is renamed to `DeprecatedService` and tagged. Rename all instances you have of Service to `DeprecatedService`
+* Use the new `Service` for any new request you make.
+
+### Deserialisable and Serialisable
+We favor the use of `JSONDeserialisable` and `JSONSerialisable`
+How to migrate:
+
+* For new requests that use the new `Service` use `JSONDeserialisable` and `JSONSerialisable`
+* `Deserialisable and `Serialisable` will still be available in the future as we might implement a more parsing from XML
+
+### Result to DeprecatedResult
+
+`DeprecatedService` still uses DeprecatedResult.
+How to migrate:
+
+* New requests should use the new `Result`
+* Old request should rename `Result` to `DeprecatedResult`
+
+### FaroService renamed to FaroSingelton
+You can still use a singleton but the confusing name FaroService is now gone
+How to migrate:
+
+* Rename FaroService to FaroDeprecatedSingleton
+* For new projects use FaroSingelton
+
+---
+
 ## Version 1.0.9
 * Using URLRequest default timeout instead of 10 seconds
 

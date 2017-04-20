@@ -4,15 +4,15 @@ import Nimble
 @testable import Faro
 @testable import Faro_Example
 
-class ServiceQueueSpec: QuickSpec {
+class DeprecatedServiceQueueSpec: QuickSpec {
 
     override func spec() {
-        describe("ServiceQueue") {
+        describe("DeprecatedServiceQueue") {
 
             var mockSession: MockAsyncSession!
-            var service: ServiceQueue!
+            var service: DeprecatedServiceQueue!
             let call = Call(path: "mock")
-            let config = Configuration(baseURL: "mockService")
+            let config = Configuration(baseURL: "mockDeprecatedService")
             var isFinalCalled = false
 
             beforeEach {
@@ -27,7 +27,7 @@ class ServiceQueueSpec: QuickSpec {
                 beforeEach {
                     isFinalCalled = false
                     taskSucceed = false
-                    service = ServiceQueue(configuration: config, faroSession: mockSession) { _ in
+                    service = DeprecatedServiceQueue(configuration: config, faroSession: mockSession) { _ in
                         isFinalCalled = true
                         taskSucceed = true
                     }
@@ -35,7 +35,7 @@ class ServiceQueueSpec: QuickSpec {
                 }
 
                 it("add one") {
-                    service.perform(call, autoStart: false) { (_: Result<MockModel>) in
+                    service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in
                         taskSucceed = true
                     }
                     expect(service.hasOustandingTasks) == true
@@ -43,14 +43,14 @@ class ServiceQueueSpec: QuickSpec {
                 }
 
                 it("add multiple") {
-                    let task1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in
+                    let task1 = service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in
                         taskSucceed = true
                         }!
-                    let task2 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in
+                    let task2 = service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in
                         taskSucceed = true
                         }!
 
-                    let task3 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in
+                    let task3 = service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in
                         taskSucceed = true
                         }!
 
@@ -73,11 +73,11 @@ class ServiceQueueSpec: QuickSpec {
             context("started") {
 
                 it("still start on autostart") {
-                    service = ServiceQueue(configuration: config, faroSession: mockSession) { _ in
+                    service = DeprecatedServiceQueue(configuration: config, faroSession: mockSession) { _ in
                         print("final")
                     }
                     waitUntil { done in
-                        service.perform(call, autoStart: true) { (_: Result<MockModel>) in
+                        service.perform(call, autoStart: true) { (_: DeprecatedResult<MockModel>) in
                             expect(service.hasOustandingTasks) == false
                             done()
                         }
@@ -93,14 +93,14 @@ class ServiceQueueSpec: QuickSpec {
 
                     beforeEach {
                         isFinalCalled = false
-                        service = ServiceQueue(configuration: config, faroSession: mockSession) { failures in
+                        service = DeprecatedServiceQueue(configuration: config, faroSession: mockSession) { failures in
                             isFinalCalled = true
                             failedTasks = failures
                         }
 
-                        task1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in }!
-                        task2 = service.perform(call, autoStart: true) { (_: Result<MockModel>) in }!
-                        task3 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in }!
+                        task1 = service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in }!
+                        task2 = service.perform(call, autoStart: true) { (_: DeprecatedResult<MockModel>) in }!
+                        task3 = service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in }!
                     }
 
                     it("not have failedTasks") {
@@ -156,7 +156,7 @@ class ServiceQueueSpec: QuickSpec {
                         var fail1: MockURLSessionTask!
 
                         beforeEach {
-                            fail1 = service.perform(call, autoStart: false) { (_: Result<MockModel>) in } as? MockURLSessionTask
+                            fail1 = service.perform(call, autoStart: false) { (_: DeprecatedResult<MockModel>) in } as? MockURLSessionTask
                             mockSession.tasksToFail = [fail1]
                         }
 

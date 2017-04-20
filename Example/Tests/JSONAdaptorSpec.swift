@@ -15,7 +15,7 @@ class JSONAdaptorSpec: QuickSpec {
 
                     let data = "{\"key\":100}".data(using: String.Encoding.utf8)!
 
-                    adaptor.serialize(from: data, result: { (result: Result<MockModel>) in
+                    adaptor.serialize(from: data, result: { (result: DeprecatedResult<MockModel>) in
                         switch result {
                         case .json(let json):
                             if let json = json as? [String: Int] {

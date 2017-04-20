@@ -2,9 +2,7 @@ public enum HTTPMethod: String {
 	case GET, POST, PUT, DELETE, PATCH
 }
 
-
-
-/// Defines a request that will be called in the Service
+/// Defines a request that will be called in the DeprecatedService
 /// You can add `[Parameter]` to the request and optionally authenticate the request when needed.
 /// Optionally implement `Authenticatable` to make it possible to authenticate requests
 open class Call {
@@ -12,6 +10,8 @@ open class Call {
 	open let httpMethod: HTTPMethod
 	open var rootNode: String?
 	open var parameters: [Parameter]?
+
+	fileprivate var request: URLRequest?
 
 	/// Initializes Call to retreive object(s) from the server.
 	/// parameter path: the path to point the call too
@@ -38,6 +38,7 @@ open class Call {
 	/// Optionally implement `Authenticatable` to make it possible to authenticate requests. In this function on self the functions in 'Authenticatable` will be called.
 	open func request(with configuration: Configuration) -> URLRequest? {
 		var request = URLRequest(url: URL(string: "\(configuration.baseURL)/\(path)")!, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData) // uses default timeout
+		self.request = request
 		request.httpMethod = httpMethod.rawValue
 		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 		insertParameter(request: &request)
@@ -55,9 +56,9 @@ open class Call {
 
 		if let jsonArray = json as? [Any] {
 			return .nodeArray(jsonArray)
-		}else if let json = json as? [String: Any] {
+		} else if let json = json as? [String: Any] {
 			return .nodeObject(json)
-		}else {
+		} else {
 			return .nodeNotFound(json: json ?? "")
 		}
 	}
@@ -121,4 +122,8 @@ open class Call {
 
 }
 
+// MARK: - CustomDebugStringConvertible
 
+extension Call: CustomDebugStringConvertible {
+	public var debugDescription: String { return "Call \(request) rootNode: \(rootNode), parameters: \(parameters)"}
+}

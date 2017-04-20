@@ -1,4 +1,4 @@
-open class MockService: Service {
+open class MockDeprecatedService: DeprecatedService {
 
     /// If you provide this variable before calling `perform` we will use this instead of the file content.
     public var mockDictionary: Any?
@@ -14,7 +14,7 @@ open class MockService: Service {
 
     /// This method is overridden to return json or errors like as if we would do a network call.
     @discardableResult
-    override open func performJsonResult<M : Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (Result<M>) -> ()) -> URLSessionDataTask? {
+    override open func performJsonResult<M: Deserializable>(_ call: Call, autoStart: Bool = true, jsonResult: @escaping (DeprecatedResult<M>) -> ()) -> URLSessionDataTask? {
         if let mockDictionary = mockDictionary {
             jsonResult(.json(mockDictionary))
             return MockURLSessionTask()
@@ -46,4 +46,3 @@ open class MockService: Service {
     }
 
 }
-

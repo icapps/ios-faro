@@ -1,5 +1,5 @@
 //
-//  FaroServiceSpec.swift
+//  FaroDeprecatedServiceSpec.swift
 //  Faro
 //
 //  Created by Ben Algoet on 27/09/16.
@@ -13,28 +13,28 @@ import Faro
 
 @testable import Faro_Example
 
-class FaroServiceSpec: QuickSpec {
+class FaroDeprecatedSingletonSpec: QuickSpec {
 
     override func spec() {
 
-        describe("FaroService mock switching") {
+        describe("FaroDeprecatedService mock switching") {
             context("should mock switch = true") {
                 beforeEach {
-                    FaroService.sharedService = MockService()
+                    FaroDeprecatedSingleton.sharedDeprecatedService = MockDeprecatedService()
                 }
 
-                it("Should use MockService") {
-                    expect(FaroService.shared is Faro.MockService) == true
+                it("Should use MockDeprecatedService") {
+                    expect(FaroDeprecatedSingleton.shared is Faro.MockDeprecatedService) == true
                 }
             }
 
             context("should mock switch = false") {
                 beforeEach {
-                    FaroService.sharedService = nil
+                    FaroDeprecatedSingleton.sharedDeprecatedService = nil
                 }
 
                 it("default to mocking when setup(with:) not called") {
-                    expect(FaroService.shared is Faro.MockService) == true
+                    expect(FaroDeprecatedSingleton.shared is Faro.MockDeprecatedService) == true
                 }
             }
         }

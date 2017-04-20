@@ -8,11 +8,11 @@ extension Zoo: Serializable {
 
     var json: [String : Any] {
 		var json = [String: Any]()
-		json["uuid"] <-> self.uuid
-		json["color"] <-> self.color
-		json["animal"] <-> self.animal
-		json["animalArray"] <-> self.animalArray
-		json["date"] <-> self.date
+		json["uuid"] <| self.uuid
+		json["color"] <| self.color
+		json["animal"] <| self.animal
+		json["animalArray"] <| self.animalArray
+		json["date"] <| self.date
 		return json
     }
 }
@@ -20,7 +20,7 @@ extension Zoo: Serializable {
 extension Animal: Serializable {
     var json: [String : Any] {
 		var json = [String: Any]()
-		json["uuid"] <-> self.uuid
+		json["uuid"] <| self.uuid
 		return json
     }
 }

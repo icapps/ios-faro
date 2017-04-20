@@ -15,23 +15,25 @@
 		A4D85BC91CC9106A0046AF29 /* exampleBaseModel.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */; };
 		A4D85BCB1CCA150F0046AF29 /* exampleBaseModelResultsArray.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */; };
 		A4D85BCD1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */; };
-		B599F5421D9A9EB400C2BCD4 /* FaroServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = B599F5401D9A9E8900C2BCD4 /* FaroServiceSpec.swift */; };
-		C00C1D291D9D8D51002D43B7 /* MockServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00C1D281D9D8D51002D43B7 /* MockServiceSpec.swift */; };
+		B599F5421D9A9EB400C2BCD4 /* FaroDeprecatedSingletonSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = B599F5401D9A9E8900C2BCD4 /* FaroDeprecatedSingletonSpec.swift */; };
+		C00C1D291D9D8D51002D43B7 /* MockDeprecatedServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00C1D281D9D8D51002D43B7 /* MockDeprecatedServiceSpec.swift */; };
+		C012153C1EA8BB33007403ED /* DeserializeOperatorTestModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C012153A1EA8BB0D007403ED /* DeserializeOperatorTestModels.swift */; };
+		C012153D1EA8BB39007403ED /* DeserializeOperatorSimplifiedSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01215381EA8BAB5007403ED /* DeserializeOperatorSimplifiedSpec.swift */; };
 		C012EA4D1CCA5E2700B298D7 /* GET_gameScoreArray.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */; };
 		C012EA501CCA8A5B00B298D7 /* GET_gameScoreArray_1275.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */; };
 		C015C7E51D81801700E30408 /* ExampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015C7E41D81801700E30408 /* ExampleService.swift */; };
 		C02ADF801D88243A00FA5B32 /* ConfigurationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */; };
 		C02ADF811D88243A00FA5B32 /* ErrorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */; };
 		C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF781D8823F800FA5B32 /* CallSpec.swift */; };
-		C02ADF831D88243A00FA5B32 /* ServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF771D8823F800FA5B32 /* ServiceSpec.swift */; };
+		C02ADF831D88243A00FA5B32 /* DeprecatedServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF771D8823F800FA5B32 /* DeprecatedServiceSpec.swift */; };
 		C03281451D76EB590047825C /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* PostViewController.swift */; };
 		C032815F1D77319B0047825C /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815E1D77319B0047825C /* Model.swift */; };
 		C03BEC7F1D9273CF00420048 /* SerializeOperatorsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03BEC7E1D9273CF00420048 /* SerializeOperatorsSpec.swift */; };
 		C03BEC811D9275E100420048 /* DeserializeOperatorsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03BEC801D9275E100420048 /* DeserializeOperatorsSpec.swift */; };
-		C03BEC851D9292B800420048 /* DeserializeFunctionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03BEC841D9292B800420048 /* DeserializeFunctionsSpec.swift */; };
-		C03FB1501DE365D900B14A15 /* ServiceQueueSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03FB14F1DE365D900B14A15 /* ServiceQueueSpec.swift */; };
+		C03BEC851D9292B800420048 /* DeserializeCreateFunctionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03BEC841D9292B800420048 /* DeserializeCreateFunctionsSpec.swift */; };
+		C03FB1501DE365D900B14A15 /* DeprecatedServiceQueueSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03FB14F1DE365D900B14A15 /* DeprecatedServiceQueueSpec.swift */; };
 		C04CFABD1DE48486001C05CF /* PostDeserializalbeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04CFABC1DE48486001C05CF /* PostDeserializalbeModel.swift */; };
-		C04CFABF1DE4850C001C05CF /* PostDeserializalbeModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04CFABE1DE4850C001C05CF /* PostDeserializalbeModelSpec.swift */; };
+		C0514FA51EA90322005409E5 /* ServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0514FA31EA90300005409E5 /* ServiceSpec.swift */; };
 		C066958C1D87002400BD3703 /* JSONAdaptorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */; };
 		C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ACDE631D79B65100064801 /* MockModel.swift */; };
 		C0BFD2C01D90E1D200FAB4E0 /* SerializableSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BFD2BE1D90E09900FAB4E0 /* SerializableSpec.swift */; };
@@ -69,25 +71,27 @@
 		A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArray.json; sourceTree = "<group>"; };
 		A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArrayCustomRootKey.json; sourceTree = "<group>"; };
 		A9820385A9A7E4CFDE5B9F68 /* Pods-Faro_Example-Faro_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example-Faro_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		B599F5401D9A9E8900C2BCD4 /* FaroServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaroServiceSpec.swift; sourceTree = "<group>"; };
-		C00C1D281D9D8D51002D43B7 /* MockServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockServiceSpec.swift; sourceTree = "<group>"; };
+		B599F5401D9A9E8900C2BCD4 /* FaroDeprecatedSingletonSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaroDeprecatedSingletonSpec.swift; sourceTree = "<group>"; };
+		C00C1D281D9D8D51002D43B7 /* MockDeprecatedServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockDeprecatedServiceSpec.swift; sourceTree = "<group>"; };
+		C01215381EA8BAB5007403ED /* DeserializeOperatorSimplifiedSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializeOperatorSimplifiedSpec.swift; sourceTree = "<group>"; };
+		C012153A1EA8BB0D007403ED /* DeserializeOperatorTestModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializeOperatorTestModels.swift; sourceTree = "<group>"; };
 		C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray.json; sourceTree = "<group>"; };
 		C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray_1275.json; sourceTree = "<group>"; };
 		C015C7E41D81801700E30408 /* ExampleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleService.swift; sourceTree = "<group>"; };
-		C02ADF771D8823F800FA5B32 /* ServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceSpec.swift; sourceTree = "<group>"; };
+		C02ADF771D8823F800FA5B32 /* DeprecatedServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedServiceSpec.swift; sourceTree = "<group>"; };
 		C02ADF781D8823F800FA5B32 /* CallSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallSpec.swift; sourceTree = "<group>"; };
 		C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorSpec.swift; sourceTree = "<group>"; };
 		C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationSpec.swift; sourceTree = "<group>"; };
 		C032815E1D77319B0047825C /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.swift; path = Model/Model.swift; sourceTree = "<group>"; };
 		C03BEC7E1D9273CF00420048 /* SerializeOperatorsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializeOperatorsSpec.swift; sourceTree = "<group>"; };
 		C03BEC801D9275E100420048 /* DeserializeOperatorsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializeOperatorsSpec.swift; sourceTree = "<group>"; };
-		C03BEC841D9292B800420048 /* DeserializeFunctionsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializeFunctionsSpec.swift; sourceTree = "<group>"; };
-		C03FB14F1DE365D900B14A15 /* ServiceQueueSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceQueueSpec.swift; sourceTree = "<group>"; };
+		C03BEC841D9292B800420048 /* DeserializeCreateFunctionsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializeCreateFunctionsSpec.swift; sourceTree = "<group>"; };
+		C03FB14F1DE365D900B14A15 /* DeprecatedServiceQueueSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedServiceQueueSpec.swift; sourceTree = "<group>"; };
 		C04CFABC1DE48486001C05CF /* PostDeserializalbeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDeserializalbeModel.swift; sourceTree = "<group>"; };
-		C04CFABE1DE4850C001C05CF /* PostDeserializalbeModelSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDeserializalbeModelSpec.swift; sourceTree = "<group>"; };
+		C0514FA31EA90300005409E5 /* ServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceSpec.swift; sourceTree = "<group>"; };
 		C052960A1CB6629E007E1111 /* Faro_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Faro_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		C05EBF6F1D4B8E3000B950EB /* Faro_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Faro_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C05EBF731D4B8E3000B950EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C05EBF731D4B8E3000B950EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Faro_Tests/Info.plist; sourceTree = "<group>"; };
 		C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAdaptorSpec.swift; sourceTree = "<group>"; };
 		C0ACDE631D79B65100064801 /* MockModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockModel.swift; sourceTree = "<group>"; };
 		C0BFD2BE1D90E09900FAB4E0 /* SerializableSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializableSpec.swift; sourceTree = "<group>"; };
@@ -177,18 +181,22 @@
 			children = (
 				C02ADF781D8823F800FA5B32 /* CallSpec.swift */,
 				C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */,
+				C03FB14F1DE365D900B14A15 /* DeprecatedServiceQueueSpec.swift */,
+				C02ADF771D8823F800FA5B32 /* DeprecatedServiceSpec.swift */,
 				C0C3D4DD1D8EA01F0011E972 /* DeserializationSpec.swift */,
-				C03BEC841D9292B800420048 /* DeserializeFunctionsSpec.swift */,
+				C03BEC841D9292B800420048 /* DeserializeCreateFunctionsSpec.swift */,
+				C01215381EA8BAB5007403ED /* DeserializeOperatorSimplifiedSpec.swift */,
 				C03BEC801D9275E100420048 /* DeserializeOperatorsSpec.swift */,
+				C012153A1EA8BB0D007403ED /* DeserializeOperatorTestModels.swift */,
 				C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */,
-				B599F5401D9A9E8900C2BCD4 /* FaroServiceSpec.swift */,
+				B599F5401D9A9E8900C2BCD4 /* FaroDeprecatedSingletonSpec.swift */,
+				C0D9E9221E6D7197003972DD /* FaroSecureURLSessionSpec.swift */,
+				C05EBF731D4B8E3000B950EB /* Info.plist */,
 				C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */,
-				C00C1D281D9D8D51002D43B7 /* MockServiceSpec.swift */,
-				C04CFABE1DE4850C001C05CF /* PostDeserializalbeModelSpec.swift */,
+				C00C1D281D9D8D51002D43B7 /* MockDeprecatedServiceSpec.swift */,
 				C0BFD2BE1D90E09900FAB4E0 /* SerializableSpec.swift */,
 				C03BEC7E1D9273CF00420048 /* SerializeOperatorsSpec.swift */,
-				C03FB14F1DE365D900B14A15 /* ServiceQueueSpec.swift */,
-				C02ADF771D8823F800FA5B32 /* ServiceSpec.swift */,
+				C0514FA31EA90300005409E5 /* ServiceSpec.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 				C03281571D7722F40047825C /* TestHelpers */,
 			);
@@ -275,8 +283,6 @@
 		C05EBF701D4B8E3000B950EB /* Faro_Tests */ = {
 			isa = PBXGroup;
 			children = (
-				C0D9E9221E6D7197003972DD /* FaroSecureURLSessionSpec.swift */,
-				C05EBF731D4B8E3000B950EB /* Info.plist */,
 			);
 			path = Faro_Tests;
 			sourceTree = "<group>";
@@ -519,17 +525,19 @@
 			files = (
 				C0C3D4DE1D8EA01F0011E972 /* DeserializationSpec.swift in Sources */,
 				C066958C1D87002400BD3703 /* JSONAdaptorSpec.swift in Sources */,
-				C03BEC851D9292B800420048 /* DeserializeFunctionsSpec.swift in Sources */,
+				C012153D1EA8BB39007403ED /* DeserializeOperatorSimplifiedSpec.swift in Sources */,
+				C03BEC851D9292B800420048 /* DeserializeCreateFunctionsSpec.swift in Sources */,
 				C02ADF801D88243A00FA5B32 /* ConfigurationSpec.swift in Sources */,
 				C03BEC811D9275E100420048 /* DeserializeOperatorsSpec.swift in Sources */,
-				C04CFABF1DE4850C001C05CF /* PostDeserializalbeModelSpec.swift in Sources */,
 				C02ADF811D88243A00FA5B32 /* ErrorSpec.swift in Sources */,
-				C02ADF831D88243A00FA5B32 /* ServiceSpec.swift in Sources */,
-				C00C1D291D9D8D51002D43B7 /* MockServiceSpec.swift in Sources */,
+				C02ADF831D88243A00FA5B32 /* DeprecatedServiceSpec.swift in Sources */,
+				C012153C1EA8BB33007403ED /* DeserializeOperatorTestModels.swift in Sources */,
+				C00C1D291D9D8D51002D43B7 /* MockDeprecatedServiceSpec.swift in Sources */,
+				C0514FA51EA90322005409E5 /* ServiceSpec.swift in Sources */,
 				C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */,
 				C0D9E9231E6D7197003972DD /* FaroSecureURLSessionSpec.swift in Sources */,
-				C03FB1501DE365D900B14A15 /* ServiceQueueSpec.swift in Sources */,
-				B599F5421D9A9EB400C2BCD4 /* FaroServiceSpec.swift in Sources */,
+				C03FB1501DE365D900B14A15 /* DeprecatedServiceQueueSpec.swift in Sources */,
+				B599F5421D9A9EB400C2BCD4 /* FaroDeprecatedSingletonSpec.swift in Sources */,
 				C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */,
 				C03BEC7F1D9273CF00420048 /* SerializeOperatorsSpec.swift in Sources */,
 				C0BFD2C01D90E1D200FAB4E0 /* SerializableSpec.swift in Sources */,

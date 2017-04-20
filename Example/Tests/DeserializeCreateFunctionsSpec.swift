@@ -12,7 +12,7 @@ enum RawString: String {
 	case first, second
 }
 
-class DeserializeFunctionSpec: QuickSpec {
+class DeserializeCreateFunctionSpec: QuickSpec {
 
     override func spec() {
         describe("DeserializeFunctionSpec") {
@@ -24,12 +24,11 @@ class DeserializeFunctionSpec: QuickSpec {
 					it("Any value") {
 						let uuidKey = "uuid"
 						let json = [uuidKey: "some id" as Any]
-						let o1 = DeserializableObject(from: ["": ""])!
 
 						expect {
-							o1.uuid = try parse(uuidKey, from: json)
+							let uuid: String = try create(uuidKey, from: json)
 
-							return expect(o1.uuid) == json["uuid"] as? String
+							return expect(uuid) == json["uuid"] as? String
 						}.toNot(throwError())
 
 					}
@@ -40,14 +39,14 @@ class DeserializeFunctionSpec: QuickSpec {
 
 							it("Int") {
 								expect {
-									let foo: RawInt = try parse("rawInt", from: ["rawInt": 0])
+									let foo: RawInt = try create("rawInt", from: ["rawInt": 0])
 									return expect(foo.rawValue) == RawInt.zero.rawValue
 									}.toNot(throwError())
 							}
 
 							it("String") {
 								expect {
-									let foo: RawString = try parse("rawInt", from: ["rawInt": "first"])
+									let foo: RawString = try create("rawInt", from: ["rawInt": "first"])
 									return expect(foo.rawValue) == RawString.first.rawValue
 									}.toNot(throwError())
 							}
@@ -58,14 +57,14 @@ class DeserializeFunctionSpec: QuickSpec {
 
 							it("Int") {
 								expect {
-									let _: RawInt = try parse("rawInt", from: ["rawInt": 10])
+									let _: RawInt = try create("rawInt", from: ["rawInt": 10])
 									return false
 								}.to(throwError())
 							}
 
 							it("String") {
 								expect {
-									let _: RawString = try parse("rawInt", from: ["rawInt": "unknown"])
+									let _: RawString = try create("rawInt", from: ["rawInt": "unknown"])
 									return false
 								}.to(throwError())
 							}
@@ -81,13 +80,12 @@ class DeserializeFunctionSpec: QuickSpec {
 						let dateKey = "date"
 						let dateTimeInterval: TimeInterval = 12345.0
 						let json = ["date": dateTimeInterval]
-						let o1 = DeserializableObject(from: ["": ""])!
 
 						expect {
-							o1.date = try parse(dateKey, from: json)
+							let result: Date = try create(dateKey, from: json)
 
 							let date = Date(timeIntervalSince1970: json["date"]!)
-							return expect(o1.date) == date
+							return expect(result) == date
 						}.toNot(throwError())
 
 					}
@@ -96,12 +94,11 @@ class DeserializeFunctionSpec: QuickSpec {
 						let dateKey = "date"
 						let dateString = "1994-08-20"
 						let json = [dateKey: dateString as Any]
-						let o1 = DeserializableObject(from: ["": ""])
 
 						expect {
-							o1?.date = try parse(dateKey, from: json, format: "yyyy-MM-dd")
+							let result: Date = try create(dateKey, from: json, format: "yyyy-MM-dd")
 
-							return expect(o1?.date).toNot(beNil())
+							return expect(result).toNot(beNil())
 						}.toNot(throwError())
 					}
 
@@ -114,7 +111,7 @@ class DeserializeFunctionSpec: QuickSpec {
 						let json: [String: Any] = ["node": dict]
 
 						expect {
-							let o1: DeserializableObject = try parse("node", from: json)
+							let o1: DeserializableObject = try create("node", from: json)
 
 							return expect(o1.uuid) == "some id"
 						}.toNot(throwError())
@@ -127,7 +124,7 @@ class DeserializeFunctionSpec: QuickSpec {
 						let json: [String: Any] = ["node": [dict1, dict2]]
 
 						expect {
-							let objectArray: [DeserializableObject] = try parse("node", from: json)
+							let objectArray: [DeserializableObject] = try create("node", from: json)
 
 							expect(objectArray.count) == 2
 							expect(objectArray.first?.uuid) == "id1"

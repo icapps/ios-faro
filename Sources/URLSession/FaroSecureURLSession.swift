@@ -77,7 +77,7 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 		removeFromRetryCount(for: request)
 	}
 
-	func handleRetry(data:Data?, httpResponse: HTTPURLResponse, for request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void, task: @escaping (URLSessionDataTask) -> Void, noRetryNeeded: @escaping (FaroError?) -> Void) {
+	func handleRetry(data: Data?, httpResponse: HTTPURLResponse, for request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void, task: @escaping (URLSessionDataTask) -> Void, noRetryNeeded: @escaping (FaroError?) -> Void) {
 		guard let responseRetryableSelf = self as? HTTPURLResponseRetryable else {
 			print("❓ \(self) can implement '\(Faro.HTTPURLResponseRetryable)' and react to specific responses for any task handeld by \(self).")
 			noRetryNeeded(nil)
@@ -107,6 +107,5 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 			retryCountTuples.remove(at: currentCount.offset)
 		}
 	}
-
 	
 }
