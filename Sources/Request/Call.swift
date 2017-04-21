@@ -122,7 +122,7 @@ open class Call {
 		request.httpBody = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
 	}
     
-    private func insertMultiPartInBody(with multipart: Any, multipartFileType: MultipartFileType, request: inout URLRequest) throws {
+    private func insertMultiPartInBody(with multipart: [String: Any], multipartFileType: MultipartFileType, request: inout URLRequest) throws {
         guard request.httpMethod != HTTPMethod.GET.rawValue else {
             throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
         }
@@ -132,8 +132,8 @@ open class Call {
         }
         
         guard
-            let image = multipart as? UIImage,
-            let jpeg = UIImageJPEGRepresentation(image, 0.7) else {
+            let file = multipart.first?.value as? UIImage,
+            let jpeg = UIImageJPEGRepresentation(file, 0.7) else {
             throw FaroError.parameterNotRecognized(message: "Invalid object for filetype \(multipartFileType)")
         }
         
