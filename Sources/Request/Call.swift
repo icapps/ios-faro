@@ -147,7 +147,7 @@ open class Call {
         let boundaryPrefix = "--\(boundary)\r\n"
         var body = Data()
         body.appendString(boundaryPrefix)
-        body.appendString("Content-Disposition: form-data; name=\"file\"; filename=\"\(fileName)\"\r\n")
+        body.appendString("Content-Disposition: form-data; name=\"image\"; filename=\"\(fileName)\"\r\n")
         body.appendString("Content-Type: \(mimeType)\r\n\r\n")
         body.append(imageData)
         body.appendString("\r\n")
