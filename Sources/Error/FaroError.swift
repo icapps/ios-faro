@@ -25,6 +25,8 @@ public enum FaroError: Error, Equatable {
 	case couldNotCreateInstance(ofType: String, call: Call, error: Error)
 
 	case invalidDeprecatedResult(resultString: String, call: Call)
+    
+    case parameterNotRecognized(message: String)
 }
 
 public func == (lhs: FaroError, rhs: FaroError) -> Bool {

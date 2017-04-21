@@ -49,6 +49,8 @@ public func printFaroError(_ error: Error) {
 		print("📡🔥 \(call) could not update model of type \(type) form json: \(node).")
 	case .couldNotCreateInstance(ofType: let type, call: let call, error: let error):
 		print("📡🔥 \(call) could not create instance of type \(type) \(error).")
+        
+    case .parameterNotRecognized(message: let message):
+        print("📡🔥 message: \(message)")
 	}
-
 }
