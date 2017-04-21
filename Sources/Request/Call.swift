@@ -137,12 +137,13 @@ open class Call {
             throw FaroError.parameterNotRecognized(message: "Invalid object for filetype \(multipartFileType)")
         }
         
-        request.httpBody = createMultipartBody(with: jpeg, mimeType: "image/jpg", fileName: "image.jpg")
+        let boundary = "Boundary-iCapps-Faro"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.httpBody = createMultipartBody(with: jpeg, mimeType: "image/jpg", fileName: "image.jpg", boundary: boundary)
     }
     
-    private func createMultipartBody(with imageData: Data, mimeType: String, fileName: String) -> Data {
+    private func createMultipartBody(with imageData: Data, mimeType: String, fileName: String, boundary: String) -> Data {
         
-        let boundary = "Boundary-iCapps-Faro"
         let boundaryPrefix = "--\(boundary)\r\n"
         var body = Data()
         body.appendString(boundaryPrefix)
