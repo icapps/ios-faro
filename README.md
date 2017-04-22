@@ -165,6 +165,26 @@ class Gail: JSONDeserializable {
 }
 ```
 
+## Multipart Form Support
+
+You can use `Faro` to send a `multipart/form-data` to a server. To use this, you add the multipart file as a parameter to the `Call`.
+
+*Example*
+
+```swift
+// Example image as Data
+guard let jpeg = UIImageJPEGRepresentation(image, 0.7) else {
+    print("👿 not a valid jpeg")
+    return
+}
+
+// Create a multipart object and add it to the call
+let multipart = MultipartFile(parameterName: "image", data: jpeg, mimeType: .jpeg)
+let call = Call(path: "queries",
+                method: .POST,
+                parameter: [.multipart(multipart)])
+```
+
 ## Requirements
 
 - iOS 8 or higher
