@@ -122,13 +122,9 @@ open class Call {
 		request.httpBody = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
 	}
     
-    private func insertMultiPartInBody(with multipart: Any, request: inout URLRequest) throws {
+    private func insertMultiPartInBody(with multipart: MultipartFile, request: inout URLRequest) throws {
         guard request.httpMethod != HTTPMethod.GET.rawValue else {
             throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
-        }
-        
-        guard let multipart = multipart as? MultipartFile else {
-            throw FaroError.parameterNotRecognized(message: "Invalid file type for a multipart/form-data parameter")
         }
         
         let boundary = "Boundary-iCapps-Faro"
