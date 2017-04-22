@@ -76,8 +76,8 @@ open class Call {
 					try insertInBody(with: json, request: &request)
 				case .jsonArray(let jsonArray):
 					try insertInBody(with: jsonArray, request: &request)
-                case .multipart(let multipart, let multipartFileType):
-                    try insertMultiPartInBody(with: multipart, multipartFileType: multipartFileType, request: &request)
+                case .multipart(let multipart):
+                    try insertMultiPartInBody(with: multipart, request: &request)
                 }
 			} catch {
 				printFaroError(error)
@@ -122,34 +122,28 @@ open class Call {
 		request.httpBody = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
 	}
     
-    private func insertMultiPartInBody(with multipart: [String: Any], multipartFileType: MultipartFileType, request: inout URLRequest) throws {
+    private func insertMultiPartInBody(with multipart: Any, request: inout URLRequest) throws {
         guard request.httpMethod != HTTPMethod.GET.rawValue else {
             throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
         }
         
-        guard multipartFileType == .jpeg else {
+        guard let multipart = multipart as? MultipartFile else {
             throw FaroError.parameterNotRecognized(message: "Invalid file type for a multipart/form-data parameter")
-        }
-        
-        guard
-            let file = multipart.first?.value as? UIImage,
-            let jpeg = UIImageJPEGRepresentation(file, 0.7) else {
-            throw FaroError.parameterNotRecognized(message: "Invalid object for filetype \(multipartFileType)")
         }
         
         let boundary = "Boundary-iCapps-Faro"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.httpBody = createMultipartBody(with: jpeg, mimeType: "image/jpg", fileName: "image.jpg", boundary: boundary)
+        request.httpBody = createMultipartBody(with: multipart, boundary: boundary)
     }
     
-    private func createMultipartBody(with imageData: Data, mimeType: String, fileName: String, boundary: String) -> Data {
+    private func createMultipartBody(with multipart: MultipartFile, boundary: String) -> Data {
         
         let boundaryPrefix = "--\(boundary)\r\n"
         var body = Data()
         body.appendString(boundaryPrefix)
-        body.appendString("Content-Disposition: form-data; name=\"image\"; filename=\"\(fileName)\"\r\n")
-        body.appendString("Content-Type: \(mimeType)\r\n\r\n")
-        body.append(imageData)
+        body.appendString("Content-Disposition: form-data; name=\"\(multipart.parameterName)\"; filename=\"\(multipart.parameterName)\"\r\n")
+        body.appendString("Content-Type: \(multipart.mimeType)\r\n\r\n")
+        body.append(multipart.data)
         body.appendString("\r\n")
         body.appendString("\(boundaryPrefix)--\r\n")
         
@@ -163,11 +157,4 @@ extension Call: CustomDebugStringConvertible {
 	public var debugDescription: String { return "Call \(request) rootNode: \(rootNode), parameters: \(parameters)"}
 }
 
-extension Data {
-    mutating func appendString(_ string: String) {
-        guard let data = string.data(using: String.Encoding.utf8, allowLossyConversion: false) else {
-            return
-        }
-        append(data)
-    }
-}
+
