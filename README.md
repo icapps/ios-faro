@@ -6,11 +6,11 @@
 
 ======
 
-For a quick start follow the instructions below. For more in depth information on why and how we build Faro, the [wiki](https://github.com/icapps/ios-faro/wiki) page.
+For a quick start follow the instructions below. For more in depth information on why and how we build Faro, visit the [wiki](https://github.com/icapps/ios-faro/wiki) page.
 
 ## VERSION 2.0
 
-Version 2.0 is compatible with 1.0 but you will have to read the changle log and follow the migration hints.
+Version 2.0 is compatible with 1.0 but you will have to read the changelog and follow the migration hints.
 
 ## Concept
 We build a service request by using a `Service` class as the point where you fire your `Call` and get a `Result`.
@@ -81,6 +81,24 @@ Take a look at the `ServiceSpec`, in short:
 		}
 ```
 
+*Single call*
+```swift
+        let call = Call(path: "queries", method: .POST)
+        let config = Configuration(baseURL: "http://jsonplaceholder.typicode.com"
+        let service = Service<Query>(call: call, deprecatedService: DeprecatedService(configuration: config))
+
+        service.single {
+            DispatchQueue.main.async {
+                do {
+                    let model = try $0()
+                    print("🙏 sucessfully finished call")
+                } catch {
+                    print("👿 something went wrong")
+                }
+            }
+        }
+```
+
 ## JSONSerialize / JSONDeserialize
 
 Deserialization and Serialization can happen automagically. For a more detailed example you can take a look at the ParseableSpec tests.
@@ -95,14 +113,14 @@ You can parse:
 ### Deserializable
 
 ```swift
-class Zoo: Deserializable {
+class Zoo: JSONDeserializable {
     var uuid: String?
     var color: String?
     var animal: Animal?
     var date: Date?
     var animalArray: [Animal]?
 
-    required init(from raw: [Sting: Any]) throws {
+    required init(_ raw: [String: Any]) throws {
         self.uuid |< raw["uuid"]
         self.color |< json["color"]
         self.animal |< json["animal"]
@@ -115,9 +133,8 @@ class Zoo: Deserializable {
 ### Serializable
 
 ```swift
-extension Zoo: Serializable {
-
-    var json: [String : Any?] {
+extension Zoo: JSONSerializable {
+    var json: [String : Any] {
         get {
             var json = [String: Any]()
             json["uuid"] <| self.uuid
@@ -135,20 +152,18 @@ extension Zoo: Serializable {
 
 Because swift requires all properties to be set before we can call `map(from:)` on `self` you will have to do required properties manually.
 
-````swift
+```swift
 class Gail: JSONDeserializable {
     var cellNumber: String
     var foodTicket: String?
 
-    required init(from raw: [String :Any]) throws {
+    required init(_ raw: [String: Any]) throws {
         cellNumber = try create("cellNumber", from: raw)
         self.foodTicket |< json["foodTicket"]
     }
 
 }
-
 ```
-
 
 ## Requirements
 
