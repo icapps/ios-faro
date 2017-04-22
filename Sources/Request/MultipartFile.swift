@@ -1,11 +1,3 @@
-//
-//  MultiPartFile.swift
-//  Pods
-//
-//  Created by Nikki Vergracht on 22/04/2017.
-//
-//
-
 import Foundation
 
 open class MultipartFile {
