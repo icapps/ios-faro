@@ -243,6 +243,17 @@ let multipart = MultipartFile(parameterName: "image", data: jpeg, mimeType: .jpe
 let call = Call(path: "queries",
                 method: .POST,
                 parameter: [.multipart(multipart)])
+
+// This assumes we have setup a singleton
+let service = ServiceNoResponseData(call: call)
+```swift
+    service.send {
+      do {
+        try $0()
+      } catch {
+        // handle error
+      }
+    }
 ```
 
 ## Requirements
