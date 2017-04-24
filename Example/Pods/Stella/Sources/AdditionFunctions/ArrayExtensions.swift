@@ -35,11 +35,11 @@ public extension Array where Element: Hashable {
             //What are the duplicates
             currentSet.subtract(elementSet)
             // remove them from objects
-            let arrayToAppend = elements.filter{!currentSet.contains($0)}
+            let arrayToAppend = elements.filter {!currentSet.contains($0)}
             // append the remaining array
             self.append(contentsOf: arrayToAppend)
         }
-        
+
         return true
     }
 
@@ -98,5 +98,3 @@ public extension Array where Element: Hashable {
         }
     }
 }
-
-

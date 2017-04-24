@@ -137,7 +137,7 @@ func authenticate2(documentHash: String, completionHandler: @escaping ( () throw
 
 // SHORTER 2: IF THIS YOU DO NOT NEED TO GO TO MAIN
 
-func authenticate3(documentHash: String, completionHandler: @escaping ( () throws -> Any )-> Void) {
+func authenticate3(documentHash: String, completionHandler: @escaping ( () throws -> Any ) -> Void) {
 	connectiveQueue.async {
 		completionHandler {
 			let hash = try hash(documentHash)
@@ -169,4 +169,3 @@ authenticate2 (documentHash: "") { result in
 }
 
 authenticate3 (documentHash: "") { print(try? $0()) }
-

@@ -8,9 +8,9 @@
 
 import Foundation
 
-open class ServiceUpdate<T>: Service <T> where T: JSONDeserializable & Deserializable & JSONUpdatable {
+open class ServiceUpdate<T>: Service <T> where T: JSONDeserializable & JSONUpdatable {
 
-	open func updateSingle(_ singleModel: T,complete: @escaping(@escaping () throws -> Void) -> Void) {
+	open func updateSingle(_ singleModel: T, complete: @escaping(@escaping () throws -> Void) -> Void) {
 		let call = self.call
 		deprecatedService.performJsonResult(call, autoStart: autoStart) { [weak self](result: DeprecatedResult<T>) in
 			switch result {
@@ -46,8 +46,7 @@ open class ServiceUpdate<T>: Service <T> where T: JSONDeserializable & Deseriali
 
 }
 
-
-open class ServiceUpdateCollection<T>: Service <T> where T: JSONDeserializable & Deserializable & JSONUpdatable & Linkable & JSONMatchable {
+open class ServiceUpdateCollection<T>: Service <T> where T: JSONDeserializable & JSONUpdatable & Linkable & JSONMatchable {
 
 	/// Updates every object in `collection` paramter with a json node in the response
 	/// When you do not mind that the reponse contains nodes that are not in collection put parameter `allowMissingNodes` to true, default is false.

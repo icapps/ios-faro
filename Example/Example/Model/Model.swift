@@ -1,14 +1,11 @@
 import Faro
 
 /// Example model
-class Model: Deserializable {
+class Model: JSONDeserializable {
     var uuid: String?
 
-    required init?(from raw: Any) {
-        guard  let json = raw as? [String: Any] else {
-            return nil
-        }
-        self.uuid |< json["uuid"]
+    required init(_ raw: [String: Any]) throws {
+        self.uuid |< raw["uuid"]
     }
 
 }

@@ -1,10 +1,8 @@
-
 var foo: String = "foo variable"
 
 func fooFunc() -> String {
 	return "Foo function"
 }
-
 
 func printFoo(_ foo: String) {
 	print(foo)
@@ -41,7 +39,6 @@ foo = "something else"
 
 //printFooWithCheck(fooFunction: fooFunc)
 
-
 // Wat als je nu wil throwen?
 
 enum FooError: Error {
@@ -63,5 +60,3 @@ func printFoo(fooFunction: () throws -> String) {
 }
 
 printFoo(fooFunction: fooThrow)
-
-

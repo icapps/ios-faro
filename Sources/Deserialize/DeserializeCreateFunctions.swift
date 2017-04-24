@@ -79,21 +79,19 @@ public func create(_ named: String, from json: [String: Any], format: String) th
 
 // MARK: - Deserializable Type
 
-public func create<T: Deserializable>(_ named: String, from json: [String: Any]) throws -> T {
+public func create<T: JSONDeserializable>(_ named: String, from json: [String: Any]) throws -> T {
 	guard let jsonForKey = json[named] as? [String: Any] else {
 		throw FaroDeserializableError.emptyCollection(key: named, json: json)
 	}
-	guard let model = T(from: jsonForKey) else {
-		throw FaroDeserializableError.emptyCollection(key: named, json: json)
-	}
-	return model
+	
+	return try T(jsonForKey)
 }
 
 // MARK: - Array
 
-public func create<T: Deserializable>(_ named: String, from json: [String: Any]) throws -> [T] {
+public func create<T: JSONDeserializable>(_ named: String, from json: [String: Any]) throws -> [T] {
 	if let json = json[named]  as? [[String: Any]] {
-		return json.flatMap { T(from: $0) }
+		return try json.flatMap { try T($0) }
 	} else {
 		throw FaroDeserializableError.emptyCollection(key: named, json: json)
 	}
@@ -101,9 +99,9 @@ public func create<T: Deserializable>(_ named: String, from json: [String: Any])
 
 // MARK: - Set
 
-public func create<T: Deserializable>(_ named: String, from json: [String: Any]) throws -> Set<T> {
+public func create<T: JSONDeserializable>(_ named: String, from json: [String: Any]) throws -> Set<T> {
 	if let json = json[named]  as? [[String: Any]] {
-		return Set<T>(json.flatMap { T(from: $0) })
+		return Set<T>(try json.map { try T($0) })
 	} else {
 		throw FaroDeserializableError.emptyCollection(key: named, json: json)
 	}

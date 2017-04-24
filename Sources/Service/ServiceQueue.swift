@@ -18,7 +18,7 @@ open class ServiceQueue {
 
 	// MARK: Requests that expect a JSON response
 
-	open func single<T>(call: Call, autoStart: Bool, complete: @escaping(@escaping () throws -> (T)) -> Void) where T: JSONDeserializable & Deserializable {
+	open func single<T>(call: Call, autoStart: Bool, complete: @escaping(@escaping () throws -> (T)) -> Void) where T: JSONDeserializable {
 		deprecatedServiceQueue.performJsonResult(call, autoStart: autoStart) { [unowned self] (result: DeprecatedResult<T>) in
 			switch result {
 
@@ -52,7 +52,7 @@ open class ServiceQueue {
 	}
 
 	/// Converts every node in the json to T. When one of the nodes has invalid json conversion is stopped and an error is trhown.
-	open func collection<T>(call: Call, autoStart: Bool, complete: @escaping ( @escaping() throws -> [T]) -> Void) where T: JSONDeserializable & Deserializable {
+	open func collection<T>(call: Call, autoStart: Bool, complete: @escaping ( @escaping() throws -> [T]) -> Void) where T: JSONDeserializable {
 		deprecatedServiceQueue.performJsonResult(call, autoStart: autoStart) { [unowned self] (result: DeprecatedResult<T>) in
 			switch result {
 

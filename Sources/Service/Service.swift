@@ -21,7 +21,7 @@ let json = [String: Any]()
 
 /// We will always try to instantiate models using `JSONDeserializable`. 
 /// `Deserializable` is for legacy reasons and will be removed in version 3.0
-open class Service<T> where T: JSONDeserializable & Deserializable {
+open class Service<T> where T: JSONDeserializable {
 
 	let deprecatedService: DeprecatedService
 	let call: Call
@@ -79,7 +79,7 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 	}
 
 	/// Converts every node in the json to T. When one of the nodes has invalid json conversion is stopped and an error is trhown.
-	open func collection(complete: @escaping ( @escaping() throws -> [T]) -> Void)  {
+	open func collection(complete: @escaping ( @escaping() throws -> [T]) -> Void) {
 		let call = self.call
 		deprecatedService.performJsonResult(call, autoStart: autoStart) { [weak self] (result: DeprecatedResult<T>) in
 			switch result {

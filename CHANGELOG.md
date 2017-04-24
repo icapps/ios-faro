@@ -1,4 +1,21 @@
 # Faro
+## Version 2.0.1
+
+* You can now do a multipart post
+* Removed `Deserializable` in favor of `JSONDeserialisable`
+  * it appeared to difficult ot maintain both as in version 2.0
+* Removed `Updateable` in favor of `JSONUpdateable`
+  * it was difficult to maintain both
+
+How to migrate:
+* Comming from 1.0.0
+  * Change all instances that implement `Deserializable` to `JSONDeserialisable`
+  * Rename `init?(from raw: Any)` to `init(_ raw: [String: Any]) throws`
+  * Handle throws instead of nil where you used the previous init
+    * hint: If you do not want to handle the throws in old code that react to nil you can `let model = try? Foo()`
+  * Change all instances that implement `Updateable` to `JSONUpdateable`
+* Comming from 2.0.0
+  * remove all `init?(from raw: Any)` and `Deserializable`
 
 ## Version 2.0.0
 

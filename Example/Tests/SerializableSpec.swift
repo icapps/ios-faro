@@ -30,53 +30,67 @@ class SerializableSpec: QuickSpec {
     override func spec() {
 
         describe("should return valid JSON") {
-            let zoo = Zoo(from: ["": ""])!
-            zoo.uuid = "some id"
-            let serializedZoo = zoo.json
 
             it("should not throw when some of the json data is nil") {
-                expect {try JSONSerialization.data(withJSONObject: serializedZoo, options: .prettyPrinted)}.toNot(throwError())
+
+				expect {
+					let zoo = try Zoo(["": ""])
+					zoo.uuid = "some id"
+					let serializedZoo = zoo.json
+					return expect {try JSONSerialization.data(withJSONObject: serializedZoo, options: .prettyPrinted)}.toNot(throwError())
+				}.toNot(throwError())
+
             }
         }
         describe("Serializable") {
             let uuidKey = "uuid"
             context("No animalArray") {
-                let json = [uuidKey: "id 1", "color": "something"]
-                let zoo = Zoo(from: json)!
-                let serializedZoo = zoo.json
 
                 it("should serilize") {
-                    expect(serializedZoo[uuidKey] as? String).to(equal("id 1"))
-                    expect(serializedZoo["color"] as? String).to(equal("something"))
+					expect {
+						let json = [uuidKey: "id 1", "color": "something"]
+						let zoo = try Zoo(json)
+						let serializedZoo = zoo.json
+
+						expect(serializedZoo[uuidKey] as? String).to(equal("id 1"))
+						return expect(serializedZoo["color"] as? String).to(equal("something"))
+					}.toNot(throwError())
                 }
             }
 
             context("One to one relation - animal") {
-                let json = ["animal": ["uuid": "pet"]] as [String : Any?]
-                let animal = Zoo(from: json)!
-                let animalSerialized = animal.json["animal"] as? [String: Any]
 
                 it("should contain uuid of animal") {
-                    expect(animalSerialized?["uuid"] as? String).to(equal("pet"))
+					expect {
+						let json = ["animal": ["uuid": "pet"]] as [String : Any]
+						let animal = try Zoo(json)
+						let animalSerialized = animal.json["animal"] as? [String: Any]
+						return expect(animalSerialized?["uuid"] as? String).to(equal("pet"))
+					}.toNot(throwError())
                 }
+
             }
 
             context("One to many relation - animal Array") {
-                let animalIDs = ["animal 1", "animal 2"]
-                let animalArray =  [[uuidKey: animalIDs[0]], [uuidKey: animalIDs[1]]]
-                let animalArrayKey = "animalArray"
-                let json = [animalArrayKey: animalArray] as [String: Any]
-                let zoo = Zoo(from: json)!
-
-                let serializedzoo = zoo.json
-                let serializedAnimalArray = serializedzoo["animalArray"] as? [[String: Any]]
-                let animal1 = serializedAnimalArray?.first
-                let animal2 = serializedAnimalArray?.last
 
                 it("should contain the animal ids in the array") {
-                    expect(serializedAnimalArray?.count).to(equal(2))
-                    expect(animal1?[uuidKey] as? String).to(equal(animalIDs[0]))
-                    expect(animal2?[uuidKey] as? String).to(equal(animalIDs[1]))
+					expect {
+						let animalIDs = ["animal 1", "animal 2"]
+						let animalArray =  [[uuidKey: animalIDs[0]], [uuidKey: animalIDs[1]]]
+						let animalArrayKey = "animalArray"
+						let json = [animalArrayKey: animalArray] as [String: Any]
+						let zoo = try Zoo(json)
+
+						let serializedzoo = zoo.json
+						let serializedAnimalArray = serializedzoo["animalArray"] as? [[String: Any]]
+						let animal1 = serializedAnimalArray?.first
+						let animal2 = serializedAnimalArray?.last
+
+						expect(serializedAnimalArray?.count).to(equal(2))
+						expect(animal1?[uuidKey] as? String).to(equal(animalIDs[0]))
+						return expect(animal2?[uuidKey] as? String).to(equal(animalIDs[1]))
+					}.toNot(throwError())
+
                 }
 
             }

@@ -14,33 +14,16 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-class Uuid: Deserializable, JSONDeserializable, JSONUpdatable, Updatable {
+class Uuid: JSONDeserializable, JSONUpdatable {
 	var uuid: String
 
 	required init(_ raw: [String: Any]) throws {
 		self.uuid = try create("uuid", from: raw)
 	}
-	required init?(from raw: Any) {
-		guard let json = raw as? [String: Any] else {
-			return nil
-		}
-		do {
-			self.uuid = try create("uuid", from: json)
-		} catch {
-			return nil
-		}
-	}
 
 }
 
 extension Uuid {
-
-	func update(from raw: Any) throws {
-		guard let json = raw as? [String: Any] else {
-			throw FaroDeserializableError.invalidJSON(model: self, json: raw)
-		}
-		self.uuid = try create("uuid", from: json)
-	}
 
 	func update(_ raw: [String : Any]) throws {
 		self.uuid = try create("uuid", from: raw)

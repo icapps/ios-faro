@@ -4,25 +4,17 @@ import Nimble
 import Faro
 import Stella
 
-class Foo: Deserializable {
+class Foo: JSONDeserializable {
 	var stringLink: DeserializableObject
 	var integerLink = [IntegerLink]()
 
 	convenience init() {
-		self.init(from: ["uuid": 259, "stringLink": ["uuid": "immutable model id"]])!
+		//swiftlint:disable force_try
+		try! self.init(["uuid": 259, "stringLink": ["uuid": "immutable model id"]])
 	}
 
-	required init?(from raw: Any) {
-		stringLink = DeserializableObject()
-		guard let json = raw as? [String: Any] else {
-			return nil
-		}
-
-		do {
-			try stringLink |< json["stringLink"]
-		} catch {
-			printError(error)
-		}
+	required init(_ raw: [String: Any]) throws {
+		stringLink = try create("stringlink", from: raw)
 	}
 
 }

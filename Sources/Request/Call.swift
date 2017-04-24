@@ -152,5 +152,3 @@ open class Call {
 extension Call: CustomDebugStringConvertible {
 	public var debugDescription: String { return "Call \(request) rootNode: \(rootNode), parameters: \(parameters)"}
 }
-
-
