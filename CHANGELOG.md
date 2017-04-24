@@ -1,6 +1,6 @@
 # Faro
 
-## Version 2.0.2
+## Version 2.0.2 & 2.0.3
 Minor fix to Readme file
 
 ## Version 2.0.1
