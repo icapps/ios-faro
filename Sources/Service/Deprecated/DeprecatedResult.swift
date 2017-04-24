@@ -1,4 +1,4 @@
-public enum DeprecatedResult<M: Deserializable> {
+public enum DeprecatedResult<M: JSONDeserializable> {
     case model(M?)
     case models([M]?)
     /// The server returned a valid JSON response.

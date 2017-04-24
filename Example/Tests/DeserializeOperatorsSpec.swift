@@ -19,11 +19,13 @@ class DeserializeOperatorsSpec: QuickSpec {
 						let randomNumber = "randomNumber"
 						let json: [String: Any] = ["cellNumber": randomNumber, "foodTicket": "ticket"]
 
-						var jail = Jail(from: ["": ""])
+						expect {
+							var jail = try Jail(["": ""])
 
-						try? jail |< json
+							try jail |< json
 
-						expect(jail?.cellNumber) == randomNumber
+							return expect(jail.cellNumber) == randomNumber
+						}.toNot(throwError())
 
 					}
 
@@ -175,7 +177,8 @@ class DeserializeOperatorsSpec: QuickSpec {
 					json[.uuid] = "route id"
 					json[.relation] = relation
 
-					parent = Parent(from: json)
+					//swiftlint:disable force_try
+					parent = try! Parent(json)
 				}
 
 				it("updates existing object") {
@@ -188,7 +191,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 					expect(parent?.relation.date).toNot(beNil())
 
 					let initialRelation = parent?.relation
-					try? parent?.update(from: json)
+					try? parent?.update(json)
 
 					expect(parent?.relation) === initialRelation
 				}
@@ -206,7 +209,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 						}
 						json["toMany"] = toMany
 
-						try? parent.update(from: json)
+						try? parent.update(json)
 					}
 
 					it("has toMany relation in JSON") {
@@ -236,7 +239,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 							expect((json["toMany"] as? [[String: Any]])?.map {($0["price"] as? Double) ?? 0}) == [5.0, 5.0, 105.0]
 
-							try? parent.update(from: json)
+							try? parent.update(json)
 
 							expect(parent.toMany[0]) === originalTooMany[0]
 							expect(parent.toMany[1]) === originalTooMany[1]
@@ -291,7 +294,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 							setToMany.append(setRelation)
 							json[.setToMany] = setToMany
 
-							try? parent.update(from: json)
+							try? parent.update(json)
 						}
 
 						it("has set too many") {
@@ -308,7 +311,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 							expect((json[.setToMany] as? [[String: Any]])?.map {($0[.price] as? Double) ?? 0}) == [100]
 							expect((json[.setToMany] as? [[String: Any]])?.map {($0[.uuid] as? String) ?? ""}) == ["set id 1"]
 
-							try? parent.update(from: json)
+							try? parent.update(json)
 
 							expect(parent.setToMany.first) === originalTooMany.first
 

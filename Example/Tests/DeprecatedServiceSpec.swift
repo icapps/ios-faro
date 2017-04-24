@@ -4,22 +4,15 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-class PagingInformation: Deserializable {
+class PagingInformation: JSONDeserializable {
     var pages: Int
     var currentPage: Int
 
-    required init?(from raw: Any) {
-        guard let json = raw as? [String: Any] else {
-            return nil
-        }
-		do {
-			pages = try create("pages", from: json)
-			currentPage = try create("currentPage", from: json)
-		} catch {
-			print(error)
-			return nil
-		}
+	required init(_ raw: [String: Any]) throws {
+		pages = try create("pages", from: raw)
+		currentPage = try create("currentPage", from: raw)
 	}
+
 }
 
 class DeprecatedServiceSpec: QuickSpec {
@@ -66,7 +59,7 @@ class DeprecatedServiceSpec: QuickSpec {
                 it("when respons contains data") {
 					expect {
 						let jsonDict = ["uuid": "mockUUID"]
-						let mockModel = MockModel(from: jsonDict)!
+						let mockModel = try MockModel(jsonDict)
 						let data = try JSONSerialization.data(withJSONObject: jsonDict,
 						                                      options: .prettyPrinted)
 						mockSession.data = data

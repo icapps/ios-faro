@@ -12,7 +12,7 @@ import Stella
 
 // MARK: - Example Models
 
-class IntegerLink: Deserializable, Updatable, Linkable, Hashable, CustomDebugStringConvertible, CustomStringConvertible {
+class IntegerLink: JSONDeserializable, JSONUpdatable, Linkable, Hashable, CustomDebugStringConvertible, CustomStringConvertible {
 	typealias ValueType = Int
 
 	var uuid: Int
@@ -32,26 +32,17 @@ class IntegerLink: Deserializable, Updatable, Linkable, Hashable, CustomDebugStr
 	var link: (key: String, value: Int) { return (key: "uuid", value: uuid) }
 
 	convenience init () {
-		self.init(from: ["uuid": UUID().uuidString.hashValue])!
+		//swiftlint:disable force_try
+		try! self.init(["uuid": UUID().uuidString.hashValue])
 	}
 
-	required init?(from raw: Any) {
+	required init(_ raw: [String: Any]) throws {
 		uuid = UUID().uuidString.hashValue
-		do {
-			try update(from: raw)
-		} catch {
-			print(error)
-			return nil
-		}
-
+		try update(raw)
 	}
 
-	func update(from raw: Any) throws {
-		guard let json = raw as? [String: Any] else {
-			throw FaroDeserializableError.invalidJSON(model: self, json: raw)
-		}
-
-		try self.uuid |< json[.uuid]
+	func update(_ raw: [String: Any]) throws {
+		uuid = try create("uuid", from: raw)
 	}
 
 	// MARK: - Custom String Convertible
@@ -61,7 +52,7 @@ class IntegerLink: Deserializable, Updatable, Linkable, Hashable, CustomDebugStr
 
 }
 
-class Parent: Deserializable, Updatable, Linkable {
+class Parent: JSONDeserializable, JSONUpdatable, Linkable {
 	typealias ValueType = String
 
 	var uuid: String
@@ -73,34 +64,30 @@ class Parent: Deserializable, Updatable, Linkable {
 
 	var link: (key: String, value: String) { return (key: "uuid", value: uuid) }
 
-	required init?(from raw: Any) {
-		// Temp values are required because swift needs initialization
-		uuid = ""
-		relation = DeserializableObject()
-		do {
-			try update(from: raw)
-		} catch {
-			print(error)
-			return nil
-		}
+	required init(_ raw: [String: Any]) throws {
+
+		// Use the create functions before using self.
+
+		uuid = try create("uuid", from: raw)
+		relation = try create("realation", from: raw)
+
+		// Self is now initionalized and you can update the rest.
+		try update(raw)
 	}
 
-	func update(from raw: Any) throws {
-		guard let json = raw as? [String: Any] else {
-			throw FaroDeserializableError.invalidJSON(model: self, json: raw)
-		}
-		try uuid |< json[.uuid]
-		try relation |< json[.relation]
+	func update(_ raw: [String: Any]) throws {
+		try uuid |< raw[.uuid]
+		try relation |< raw[.relation]
 		do {
-			try toMany |< json[.toMany]
-			try setToMany |< json[.setToMany]
+			try toMany |< raw[.toMany]
+			try setToMany |< raw[.setToMany]
 		} catch {
 			printError(error)
 		}
 	}
 
 }
-class DeserializableObject: Deserializable, Updatable, Linkable, Hashable, CustomDebugStringConvertible, CustomStringConvertible {
+class DeserializableObject: JSONDeserializable, JSONUpdatable, Linkable, Hashable, CustomDebugStringConvertible, CustomStringConvertible {
 	typealias ValueType = String
 
 	var uuid: String
@@ -126,31 +113,24 @@ class DeserializableObject: Deserializable, Updatable, Linkable, Hashable, Custo
 	var link: (key: String, value: String) { return (key: "uuid", value: uuid) }
 
 	convenience init () {
-		self.init(from: ["uuid": UUID().uuidString])!
+		//swiftlint:disable force_try
+		try! self.init(["uuid": UUID().uuidString])
 	}
 
-	required init?(from raw: Any) {
-		uuid = UUID().uuidString
-		requiredDate = Date()
-		do {
-			try update(from: raw)
-		} catch {
-			print(error)
-			return nil
-		}
-
+	required init(_ raw: [String: Any]) throws {
+		uuid = try create("uuid", from: raw)
+		requiredDate = try create("date", from: raw, format: "yyyy-MM-dd")
+		try update(raw)
 	}
 
-	func update(from raw: Any) throws {
-		guard let json = raw as? [String: Any] else {
-			throw FaroDeserializableError.invalidJSON(model: self, json: raw)
-		}
+	func update(_ raw: [String: Any]) throws {
+		try self.uuid |< raw[.uuid]
 
-		try self.uuid |< json[.uuid]
-		self.amount |< json[.amount]
-		self.price |< json[.price]
-		self.tapped |< json[.tapped]
-		self.date |< (json[.date], "yyyy-MM-dd")
+		self.date |< (raw[.date], "yyyy-MM-dd")
+
+		self.amount |< raw[.amount]
+		self.price |< raw[.price]
+		self.tapped |< raw[.tapped]
 	}
 
 	// MARK: - Custom String Convertible

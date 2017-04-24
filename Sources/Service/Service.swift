@@ -21,7 +21,7 @@ let json = [String: Any]()
 
 /// We will always try to instantiate models using `JSONDeserializable`. 
 /// `Deserializable` is for legacy reasons and will be removed in version 3.0
-open class Service<T> where T: JSONDeserializable & Deserializable {
+open class Service<T> where T: JSONDeserializable {
 
 	let deprecatedService: DeprecatedService
 	let call: Call

@@ -10,27 +10,27 @@ infix operator |<: AssignmentPrecedence
 // MARK: - Instantiates or Updates
 
 /// Creates or updates a deserializable instance. If `lhs` is nil it creates, if not it updates
-public func |< <P>(lhs: inout P?, rhs: Any?) throws where P: Deserializable & Updatable {
+public func |< <P>(lhs: inout P?, rhs: Any?) throws where P: JSONDeserializable & JSONUpdatable {
 	guard let dict = rhs as? [String: Any] else {
 		lhs = nil
 		return
 	}
 	if let lhs = lhs {
-		try lhs.update(from: dict)
+		try lhs.update(dict)
 	} else {
-		lhs = P(from: dict)
+		lhs = try? P(dict)
 	}
 }
 
 // MARK: - Array relations
 
-/// Creates or updates a deserializable instance. If `lhs` is nil it creates, if not it updates
+/// Creates or updates a deserializable instance. If `lhs` is nil it creates, if not it updates.
 /// In the json the lhs is looked up via the link you provide by implementing `Linkable`
 /// Three cases are supported
 /// 1. If lhs is not nil and not found in rhs it is removed
 /// 2. If lhs is found in rhs it is updated
 /// 3. If rhs countains element not found in lhs it is created.
-public func |< <P>(lhs: inout [P]?, rhs: Any?) throws where P: Deserializable & Updatable & Linkable, P.ValueType: Equatable {
+public func |< <P>(lhs: inout [P]?, rhs: Any?) throws where P: JSONDeserializable & JSONUpdatable & Linkable, P.ValueType: Equatable {
 	guard let rawObjects = rhs as? [[String: Any]] else {
 		lhs = nil
 		return
@@ -38,15 +38,15 @@ public func |< <P>(lhs: inout [P]?, rhs: Any?) throws where P: Deserializable & 
 	if var lhs = lhs, !lhs.isEmpty {
 		try lhs.enumerated().forEach {
 			let element = $0.element
-			let dict = rawObjects.filter {($0[element.link.key] as? P.ValueType)  == element.link.value}
-			if !dict.isEmpty {
-				try element.update(from: dict)
+			let dict = rawObjects.first {($0[element.link.key] as? P.ValueType)  == element.link.value}
+			if let dict = dict, !dict.isEmpty {
+				try element.update(dict)
 			} else {
 				lhs.remove(at: $0.offset)
 			}
 		}
 	} else {
-		lhs = rawObjects.flatMap { P(from: $0) }
+		lhs = try rawObjects.map { try P($0) }
 	}
 }
 
@@ -58,16 +58,16 @@ public func |< <P>(lhs: inout [P]?, rhs: Any?) throws where P: Deserializable & 
 /// 1. If lhs is not nil and not found in rhs it is removed
 /// 2. If lhs is found in rhs it is updated
 /// 3. If rhs countains element not found in lhs it is created.
-public func |< <P>(lhs: inout P, rhs: Any?) throws where P: Deserializable & Updatable {
+public func |< <P>(lhs: inout P, rhs: Any?) throws where P: JSONDeserializable & JSONUpdatable {
 	guard let dict = rhs as? [String: Any] else {
 		throw FaroDeserializableError.deserializableMissing(lhs: lhs, rhs: rhs)
 	}
-	try lhs.update(from: dict)
+	try lhs.update(dict)
 }
 
 /// Removes `Linkable.link.key` elements not found in rhs
 /// ValueType of `Linkable.link.Value` is `Int`
-public func |< <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & Updatable & Linkable & Hashable, P.ValueType: Equatable {
+public func |< <P>(lhs: inout [P], rhs: Any?) throws where P: JSONDeserializable & JSONUpdatable & Linkable & Hashable, P.ValueType: Equatable {
 	guard var nodesToProcess = rhs as? [[String: Any]] else {
 		throw FaroDeserializableError.deserializableMissing(lhs: lhs, rhs: rhs)
 	}
@@ -87,21 +87,19 @@ public func |< <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & U
 				throw FaroDeserializableError.linkNotUniqueInJSON(nodesToProcess, linkValue: "\(element.link.value)")
 			}
 
-			try element.update(from: elementJSON)
+			try element.update(elementJSON)
 			// remove all nodes we processed
 			nodesToProcess.remove(at: index)
 		}
 
 		lhs = lhs.filter {!elementsToRemove.contains($0)}
 		// If we still have nodes to process. Add them.
-		nodesToProcess.forEach {
-			if let model = P(from: $0) {
-				lhs.append(model)
-			}
+		try nodesToProcess.forEach {
+			lhs.append(try P($0))
 		}
 
 	} else {
-		lhs = nodesToProcess.flatMap { P(from: $0) }
+		lhs = try nodesToProcess.map { try P($0) }
 	}
 
 }
@@ -110,7 +108,7 @@ public func |< <P>(lhs: inout [P], rhs: Any?) throws where P: Deserializable & U
 
 /// Removes `Linkable.link.key` elements not found in rhs
 /// ValueType of `Linkable.link.Value` is `Int`
-public func |< <P>(lhs: inout Set<P>, rhs: Any?) throws where P: Deserializable & Updatable & Linkable, P.ValueType: Equatable {
+public func |< <P>(lhs: inout Set<P>, rhs: Any?) throws where P: JSONDeserializable & JSONUpdatable & Linkable, P.ValueType: Equatable {
 	guard var nodesToProcess = rhs as? [[String: Any]] else {
 		throw FaroDeserializableError.deserializableMissing(lhs: lhs, rhs: rhs)
 	}
@@ -129,20 +127,18 @@ public func |< <P>(lhs: inout Set<P>, rhs: Any?) throws where P: Deserializable 
 				throw FaroDeserializableError.linkNotUniqueInJSON(nodesToProcess, linkValue: "\(element.link.value)")
 			}
 
-			try element.update(from: first)
+			try element.update(first)
 			// remove all nodes we processed
 			nodesToProcess.remove(at: index)
 		}
 
 		// If we still have nodes to process. Add them.
-		nodesToProcess.forEach {
-			if let model = P(from: $0) {
-				lhs.insert(model)
-			}
+		try nodesToProcess.forEach {
+			lhs.insert(try P($0))
 		}
 
 	} else {
-		lhs = Set<P>(nodesToProcess.flatMap { P(from: $0) })
+		lhs = Set<P>(try nodesToProcess.map { try P($0) })
 	}
 
 }
