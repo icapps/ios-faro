@@ -156,6 +156,9 @@ class Gail: JSONDeserializable {
 }
 
 ```
+### What if you do not want to create but Update and existing instance?
+
+The model should implement `JSONUpdateable` and you use `ServiceUpdate<T>`.
 
 ## Security
 
