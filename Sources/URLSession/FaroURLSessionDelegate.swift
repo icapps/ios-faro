@@ -39,7 +39,6 @@ open class FaroURLSessionDelegate: NSObject, URLSessionDelegate {
 
 }
 
-
 // MARK: - Example code for Certificate pinning
 //
 //if ([ANVYeloBackend getEnvironment] != ANVYeloEnvironmentPrd || ![challenge.protectionSpace.host containsString:@"yeloplay.be"]) {

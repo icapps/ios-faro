@@ -10,7 +10,7 @@ import Foundation
 
 open class ServiceUpdate<T>: Service <T> where T: JSONDeserializable & JSONUpdatable {
 
-	open func updateSingle(_ singleModel: T,complete: @escaping(@escaping () throws -> Void) -> Void) {
+	open func updateSingle(_ singleModel: T, complete: @escaping(@escaping () throws -> Void) -> Void) {
 		let call = self.call
 		deprecatedService.performJsonResult(call, autoStart: autoStart) { [weak self](result: DeprecatedResult<T>) in
 			switch result {
@@ -45,7 +45,6 @@ open class ServiceUpdate<T>: Service <T> where T: JSONDeserializable & JSONUpdat
 	}
 
 }
-
 
 open class ServiceUpdateCollection<T>: Service <T> where T: JSONDeserializable & JSONUpdatable & Linkable & JSONMatchable {
 

@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 open class ServiceNoResponseData {
 
 	let deprecatedService: DeprecatedService

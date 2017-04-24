@@ -4,7 +4,7 @@ import Foundation
 
 // A Nimble matcher that catches attempts to use beAKindOf with non Objective-C types
 public func beAKindOf(_ expectedClass: Any) -> NonNilMatcherFunc<Any> {
-    return NonNilMatcherFunc {actualExpression, failureMessage in
+    return NonNilMatcherFunc {_, failureMessage in
         failureMessage.stringValue = "beAKindOf only works on Objective-C types since"
             + " the Swift compiler will automatically type check Swift-only types."
             + " This expectation is redundant."

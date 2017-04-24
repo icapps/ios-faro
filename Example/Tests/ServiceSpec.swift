@@ -24,7 +24,7 @@ class Uuid: JSONDeserializable, JSONUpdatable {
 }
 
 extension Uuid {
-	
+
 	func update(_ raw: [String : Any]) throws {
 		self.uuid = try create("uuid", from: raw)
 	}

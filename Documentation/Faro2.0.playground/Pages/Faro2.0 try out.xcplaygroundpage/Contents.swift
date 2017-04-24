@@ -1,7 +1,7 @@
 import Foundation
 
 protocol JSONDeserializable {
-	init(_ raw:[String: Any])
+	init(_ raw: [String: Any])
 }
 
 class Food: JSONDeserializable {
@@ -23,25 +23,25 @@ class Service<T: JSONDeserializable> {
 
 	func singleEnum(complete: @escaping(Result<T>) -> Void) {
 		DispatchQueue(label: "success background").async {
-			complete (.success(T(["":""])))
+			complete (.success(T(["": ""])))
 		}
 	}
 
-	func collectionEnum(complete: @escaping ((Result<[T]>) -> Void))  {
+	func collectionEnum(complete: @escaping ((Result<[T]>) -> Void)) {
 		DispatchQueue(label: "success background").async {
-			complete (.success([T(["":""])]))
+			complete (.success([T(["": ""])]))
 		}
 	}
 
 	func single(complete: @escaping(() throws -> (T)) -> Void) {
 		DispatchQueue(label: "success background").async {
-			complete {T(["":""])}
+			complete {T(["": ""])}
 		}
 	}
 
-	func collection(complete: @escaping (() throws -> [T]) -> Void)  {
+	func collection(complete: @escaping (() throws -> [T]) -> Void) {
 		DispatchQueue(label: "success background").async {
-			complete{[T(["":""])]}
+			complete {[T(["": ""])]}
 		}
 	}
 }
@@ -54,7 +54,7 @@ class FailService<T: JSONDeserializable>: Service<T> {
 		}
 	}
 
-	override func collectionEnum(complete: @escaping ((Result<[T]>) -> Void))  {
+	override func collectionEnum(complete: @escaping ((Result<[T]>) -> Void)) {
 		DispatchQueue(label: "fail background").async {
 			complete (.fail(ServiceError.fail("Collection enum wrong")))
 		}
@@ -66,7 +66,7 @@ class FailService<T: JSONDeserializable>: Service<T> {
 		}
 	}
 
-	override func collection(complete: @escaping(() throws -> [T]) -> Void)  {
+	override func collection(complete: @escaping(() throws -> [T]) -> Void) {
 		DispatchQueue(label: "fail background").async {
 			complete {throw ServiceError.fail("throw collection wrong")}
 		}
@@ -120,7 +120,6 @@ failingService.single {print((try? $0()) ?? "single went wrong")}
 failingService.singleEnum {print($0)}
 failingService.collection {print((try? $0()) ?? "collection went wrong")}
 failingService.collectionEnum {print($0)}
-
 
 failingService.single {
 	do {
