@@ -15,7 +15,7 @@
 		A4D85BC91CC9106A0046AF29 /* exampleBaseModel.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BC81CC9106A0046AF29 /* exampleBaseModel.json */; };
 		A4D85BCB1CCA150F0046AF29 /* exampleBaseModelResultsArray.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */; };
 		A4D85BCD1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json in Resources */ = {isa = PBXBuildFile; fileRef = A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */; };
-		B599F5421D9A9EB400C2BCD4 /* FaroDeprecatedSingletonSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = B599F5401D9A9E8900C2BCD4 /* FaroDeprecatedSingletonSpec.swift */; };
+		B599F5421D9A9EB400C2BCD4 /* FaroSingletonSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = B599F5401D9A9E8900C2BCD4 /* FaroSingletonSpec.swift */; };
 		C00C1D291D9D8D51002D43B7 /* MockDeprecatedServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00C1D281D9D8D51002D43B7 /* MockDeprecatedServiceSpec.swift */; };
 		C012153C1EA8BB33007403ED /* DeserializeOperatorTestModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C012153A1EA8BB0D007403ED /* DeserializeOperatorTestModels.swift */; };
 		C012153D1EA8BB39007403ED /* DeserializeOperatorSimplifiedSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01215381EA8BAB5007403ED /* DeserializeOperatorSimplifiedSpec.swift */; };
@@ -71,7 +71,7 @@
 		A4D85BCA1CCA150F0046AF29 /* exampleBaseModelResultsArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArray.json; sourceTree = "<group>"; };
 		A4D85BCC1CCA28F50046AF29 /* exampleBaseModelResultsArrayCustomRootKey.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exampleBaseModelResultsArrayCustomRootKey.json; sourceTree = "<group>"; };
 		A9820385A9A7E4CFDE5B9F68 /* Pods-Faro_Example-Faro_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Faro_Example-Faro_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Faro_Example-Faro_Tests/Pods-Faro_Example-Faro_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		B599F5401D9A9E8900C2BCD4 /* FaroDeprecatedSingletonSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaroDeprecatedSingletonSpec.swift; sourceTree = "<group>"; };
+		B599F5401D9A9E8900C2BCD4 /* FaroSingletonSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaroSingletonSpec.swift; sourceTree = "<group>"; };
 		C00C1D281D9D8D51002D43B7 /* MockDeprecatedServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockDeprecatedServiceSpec.swift; sourceTree = "<group>"; };
 		C01215381EA8BAB5007403ED /* DeserializeOperatorSimplifiedSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializeOperatorSimplifiedSpec.swift; sourceTree = "<group>"; };
 		C012153A1EA8BB0D007403ED /* DeserializeOperatorTestModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializeOperatorTestModels.swift; sourceTree = "<group>"; };
@@ -189,7 +189,7 @@
 				C03BEC801D9275E100420048 /* DeserializeOperatorsSpec.swift */,
 				C012153A1EA8BB0D007403ED /* DeserializeOperatorTestModels.swift */,
 				C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */,
-				B599F5401D9A9E8900C2BCD4 /* FaroDeprecatedSingletonSpec.swift */,
+				B599F5401D9A9E8900C2BCD4 /* FaroSingletonSpec.swift */,
 				C0D9E9221E6D7197003972DD /* FaroSecureURLSessionSpec.swift */,
 				C05EBF731D4B8E3000B950EB /* Info.plist */,
 				C066958A1D86FFD600BD3703 /* JSONAdaptorSpec.swift */,
@@ -537,7 +537,7 @@
 				C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */,
 				C0D9E9231E6D7197003972DD /* FaroSecureURLSessionSpec.swift in Sources */,
 				C03FB1501DE365D900B14A15 /* DeprecatedServiceQueueSpec.swift in Sources */,
-				B599F5421D9A9EB400C2BCD4 /* FaroDeprecatedSingletonSpec.swift in Sources */,
+				B599F5421D9A9EB400C2BCD4 /* FaroSingletonSpec.swift in Sources */,
 				C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */,
 				C03BEC7F1D9273CF00420048 /* SerializeOperatorsSpec.swift in Sources */,
 				C0BFD2C01D90E1D200FAB4E0 /* SerializableSpec.swift in Sources */,

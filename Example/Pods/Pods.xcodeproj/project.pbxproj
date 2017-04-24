@@ -116,9 +116,10 @@
 		C01215461EA8C81E007403ED /* DeprecatedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01215421EA8C81E007403ED /* DeprecatedResult.swift */; };
 		C01215471EA8C81E007403ED /* DeprecatedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01215431EA8C81E007403ED /* DeprecatedService.swift */; };
 		C01215481EA8C81E007403ED /* DeprecatedServiceQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01215441EA8C81E007403ED /* DeprecatedServiceQueue.swift */; };
-		C01215491EA8C81E007403ED /* FaroDeprecatedSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01215451EA8C81E007403ED /* FaroDeprecatedSingleton.swift */; };
+		C01215491EA8C81E007403ED /* FaroSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01215451EA8C81E007403ED /* FaroSingleton.swift */; };
 		C012154B1EA8E1BD007403ED /* ServiceQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C012154A1EA8E1BD007403ED /* ServiceQueue.swift */; };
 		C012154D1EA8F91F007403ED /* ServiceUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C012154C1EA8F91F007403ED /* ServiceUpdate.swift */; };
+		C0776A191EADDE9100EA37C1 /* ServiceNoResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0776A181EADDE9100EA37C1 /* ServiceNoResponseData.swift */; };
 		C4DD0F6DDC39FFD748BAEEE11CBDA6E0 /* PrintLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADC29C202D96627BDF4F8372B5B5BF0 /* PrintLevel.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C63644EBF7E9CA56E5E680261654DA09 /* BeGreaterThanOrEqualTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DBA5C605D129CF988BF61625331884 /* BeGreaterThanOrEqualTo.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C9E0D2F88DC7811192C678828BBCBE90 /* Nimble.h in Headers */ = {isa = PBXBuildFile; fileRef = 04108D2B0A631CC264743D476849F17B /* Nimble.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -337,10 +338,11 @@
 		C01215421EA8C81E007403ED /* DeprecatedResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedResult.swift; sourceTree = "<group>"; };
 		C01215431EA8C81E007403ED /* DeprecatedService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedService.swift; sourceTree = "<group>"; };
 		C01215441EA8C81E007403ED /* DeprecatedServiceQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedServiceQueue.swift; sourceTree = "<group>"; };
-		C01215451EA8C81E007403ED /* FaroDeprecatedSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaroDeprecatedSingleton.swift; sourceTree = "<group>"; };
+		C01215451EA8C81E007403ED /* FaroSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaroSingleton.swift; sourceTree = "<group>"; };
 		C012154A1EA8E1BD007403ED /* ServiceQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceQueue.swift; sourceTree = "<group>"; };
 		C012154C1EA8F91F007403ED /* ServiceUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceUpdate.swift; sourceTree = "<group>"; };
 		C06CC445CC22D167166EA2D8ABEE521A /* Faro.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Faro.xcconfig; sourceTree = "<group>"; };
+		C0776A181EADDE9100EA37C1 /* ServiceNoResponseData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceNoResponseData.swift; sourceTree = "<group>"; };
 		C1D08252269A158412BD47DBA9B2EFA5 /* PostNotification.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PostNotification.swift; path = Sources/Nimble/Matchers/PostNotification.swift; sourceTree = "<group>"; };
 		C6BA62F7797D42078C080F8A9831CA7F /* Adaptable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Adaptable.swift; sourceTree = "<group>"; };
 		C9EF2E278317B5E320D051B26EF9239E /* BeCloseTo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeCloseTo.swift; path = Sources/Nimble/Matchers/BeCloseTo.swift; sourceTree = "<group>"; };
@@ -617,6 +619,7 @@
 			children = (
 				C01215411EA8C81E007403ED /* Deprecated */,
 				C012153E1EA8C1E3007403ED /* Service.swift */,
+				C0776A181EADDE9100EA37C1 /* ServiceNoResponseData.swift */,
 				C012154A1EA8E1BD007403ED /* ServiceQueue.swift */,
 				C012154C1EA8F91F007403ED /* ServiceUpdate.swift */,
 			);
@@ -763,7 +766,7 @@
 				C01215421EA8C81E007403ED /* DeprecatedResult.swift */,
 				C01215431EA8C81E007403ED /* DeprecatedService.swift */,
 				C01215441EA8C81E007403ED /* DeprecatedServiceQueue.swift */,
-				C01215451EA8C81E007403ED /* FaroDeprecatedSingleton.swift */,
+				C01215451EA8C81E007403ED /* FaroSingleton.swift */,
 			);
 			path = Deprecated;
 			sourceTree = "<group>";
@@ -1083,13 +1086,14 @@
 				EBD067642AFED296E79A2CBB664F5D85 /* Deserializable.swift in Sources */,
 				2DB7C99D885D609CBA7C59A2053BAEB9 /* DeserializeCreateFunctions.swift in Sources */,
 				62AF4898D4D01810525915E9AE252819 /* DeserializeUpdateCreateOperators.swift in Sources */,
+				C0776A191EADDE9100EA37C1 /* ServiceNoResponseData.swift in Sources */,
 				E576158C31DA5EA4E252A3BE6FFAAFEA /* ErrorPrinting.swift in Sources */,
 				C01215461EA8C81E007403ED /* DeprecatedResult.swift in Sources */,
 				8ED885943C4A77FFC1BE5FC9146ECD9F /* Faro-dummy.m in Sources */,
 				9D52B0693CEADE4ECDBCD35F360B783F /* FaroError.swift in Sources */,
 				3EB0EE3C9114729D313B5631F64EA069 /* FaroQueueSessionable.swift in Sources */,
 				C01215471EA8C81E007403ED /* DeprecatedService.swift in Sources */,
-				C01215491EA8C81E007403ED /* FaroDeprecatedSingleton.swift in Sources */,
+				C01215491EA8C81E007403ED /* FaroSingleton.swift in Sources */,
 				C01215481EA8C81E007403ED /* DeprecatedServiceQueue.swift in Sources */,
 				7CB765681C9FB207DA21BBC339F1A585 /* FaroQueueURLSession.swift in Sources */,
 				C012153F1EA8C1E3007403ED /* Service.swift in Sources */,
