@@ -13,7 +13,7 @@ For a quick start follow the instructions below. For more in depth information o
 Version 2.0 is compatible with 1.0 but you will have to read the changelog and follow the migration hints.
 
 ## Concept
-We build a service request by using a `Service` class as the point where you fire your `Call` and get a `Result`.
+We build a service request by using a `Service` class as the point where you fire your `Call` and get a ResultFunction. The function is composed of the code that will be executed after the Server has responded. Use this function to evaluate the response and get the requested model or a thrown error.
 
 ### Features
 
