@@ -35,8 +35,8 @@ class Zoo: JSONDeserializable {
 
 		// Create Deserializable models
 
-		self.animal  = try? create("animal", from: json)
-		self.animalArray = try?  create("animalArray", from: json)
+		self.animal  = try? create("animal", from: raw)
+		self.animalArray = try?  create("animalArray", from: raw)
 	}
 }
 
@@ -92,7 +92,7 @@ class DeserializableSpec: QuickSpec {
 					expect {try Zoo(json).animal}.toNot(throwError())
 				}
 
-				it("should fill properties on relation") {
+				fit("should fill properties on relation") {
 					expect {try Zoo(json).animal?.uuid}.to(equal(relationId))
 				}
 
