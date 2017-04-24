@@ -14,7 +14,7 @@ public protocol JSONDeserializable {
 
 	/// To initialize you can use the `DeserializeCreateFunctions`
 	/// You should return nil if `raw` contain not all required keys to instantiate.
-	init(_ raw: [String : Any]) throws
+	init(_ raw: [String: Any]) throws
 
 }
 public protocol JSONUpdatable: class {

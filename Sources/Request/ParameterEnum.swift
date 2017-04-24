@@ -3,4 +3,5 @@ public enum Parameter {
     case jsonArray([[String: Any]])
     case jsonNode([String: Any])
     case urlComponents([String: String])
+    case multipart(MultipartFile)
 }
