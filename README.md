@@ -66,6 +66,16 @@ let service =  Service<Post>(call, deprecatedService: DeprecatedService(configur
 
 This reads like we would like to make a `call` to baseURL in `config` that will be deserialized into a type `Post`.
 
+Optionally setup a Service Singleton. For example in the appdelegate after startup.
+
+```swift
+  let baseURL = "http://jsonplaceholder.typicode.com"
+
+  // Optionally create your own FaroSession to handle for example security.
+  FaroSingleton.setup(with: baseURL, session: FaroSession())
+
+```
+
 ### Collection of json nodes
 
 *Long version*
