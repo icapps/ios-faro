@@ -1,4 +1,8 @@
 # Faro
+
+## Version 2.0.2
+Minor fix to Readme file
+
 ## Version 2.0.1
 
 * You can now do a multipart post
