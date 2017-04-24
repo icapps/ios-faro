@@ -59,7 +59,7 @@ let call = Call(path: "posts", method: HTTPMethod.GET, rootNode: "rootNode")
 
 In short the repsonse can be:
 
-* a collection of json nodes that need to be deserialized into a `Deserializable` type.
+* a collection of json nodes that need to be deserialized into a `JSONDeserializable` type.
 * a single json node
 * no json in response, http status code is enough.
 * an error
@@ -146,10 +146,10 @@ This is typically for a HTTPMethod `POST`.
 
 ### Error
 
-Because we throw errors and print them by default you should always know where things go wrong. When an error happens two things happen:
+Because we throw errors and print them by default you should always know where things go wrong. When an error occurs two things will happen:
 
 1. In the class `Service` there is a function `handleError` that will get called on any error. By default this function prints the error. You can override this if needed
-2. The error is throw. The error is always of type `FaroError`.
+2. The error is thrown. The error is always of type `FaroError`.
 
 For example if you want to retry a request when you receive `Unauthorized` (401) you can.
 ```swift
@@ -192,19 +192,19 @@ class Zoo: JSONDeserializable {
 
     required init(_ raw: [String: Any]) throws {
         self.uuid |< raw["uuid"]
-        self.color |< json["color"]
-        self.animal |< json["animal"]
-        self.animalArray |< json["animalArray"]
-        self.date |< (json["date"], "yyyy-MM-dd")
+        self.color |< raw["color"]
+        self.animal |< raw["animal"]
+        self.animalArray |< raw["animalArray"]
+        self.date |< (raw["date"], "yyyy-MM-dd")
     }
 }
-
 ```
+
 ### JSONSerializable
 
 ```swift
 extension Zoo: JSONSerializable {
-    var json: [String : Any] {
+    var json: [String: Any] {
         get {
             var json = [String: Any]()
             json["uuid"] <| self.uuid
@@ -258,14 +258,13 @@ let call = Call(path: "queries",
 
 // This assumes we have setup a singleton
 let service = ServiceNoResponseData(call: call)
-```swift
-    service.send {
-      do {
-        try $0()
-      } catch {
-        // handle error
-      }
-    }
+service.send {
+  do {
+    try $0()
+  } catch {
+    // handle error
+  }
+}
 ```
 ## Security
 
