@@ -49,6 +49,8 @@ let call = Call(path: "posts", method: HTTPMethod.GET, rootNode: "rootNode")
 
 Take a look at the `ServiceSpec`, in short:
 
+### Perform any HTTPMethod to get collection of models
+
 *Long version*
 ```swift
         let call = Call(path: "posts")
@@ -58,7 +60,7 @@ Take a look at the `ServiceSpec`, in short:
         service.collection { [weak self] (resultFunction) in
       			DispatchQueue.main.async {
       				do {
-      					let posts = try resultFunction() // Use the function to get the result or the error trown
+      					let posts = try resultFunction() // Use the function to get the result or the error thrown
       					self?.label.text = "Performed call for \(posts)"
       				} catch {
       					// printError(error) // errors are printed by default so you could leave this out
@@ -80,6 +82,8 @@ Take a look at the `ServiceSpec`, in short:
 			  }
 		}
 ```
+
+### Perform any HTTPMethod to get a single of model
 
 *Single call*
 ```swift
@@ -110,7 +114,7 @@ You can parse:
 * enums
 * Arrays/Sets of deserializable objects
 
-### Deserializable
+### JSONDeserializable
 
 ```swift
 class Zoo: JSONDeserializable {
@@ -130,7 +134,7 @@ class Zoo: JSONDeserializable {
 }
 
 ```
-### Serializable
+### JSONSerializable
 
 ```swift
 extension Zoo: JSONSerializable {
@@ -153,13 +157,11 @@ extension Zoo: JSONSerializable {
 Because swift requires all properties to be set before we can call `map(from:)` on `self` you will have to do required properties manually.
 
 ```swift
-class Gail: JSONDeserializable {
+class Jail: JSONDeserializable {
     var cellNumber: String
-    var foodTicket: String?
 
     required init(_ raw: [String: Any]) throws {
         cellNumber = try create("cellNumber", from: raw)
-        self.foodTicket |< json["foodTicket"]
     }
 
 }
