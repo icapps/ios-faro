@@ -47,16 +47,29 @@ let call = Call(path: "posts", method: HTTPMethod.GET, rootNode: "rootNode")
 ```
 ## Perform a Call
 
-Take a look at the `ServiceSpec`, in short:
+> TIP: Take a look at the `ServiceSpec`,
 
-### Perform any HTTPMethod to get collection of models
+In short the repsonse can be:
+
+* a collection of json nodes that need to be deserialized into a `Deserializable` type.
+* a single json node
+* no json in response, http status code is enough.
+* an error
+
+and this for any HTTPMethod but lets presume we have:
+
+```swift
+let call = Call(path: "posts")
+let config = Configuration(baseURL: "http://jsonplaceholder.typicode.com"
+let service =  Service<Post>(call, deprecatedService: DeprecatedService(configuration: config)
+```
+
+This reads like we would like to make a `call` to baseURL in `config` that will be deserialized into a type `Post`.
+
+### Collection of json nodes
 
 *Long version*
 ```swift
-        let call = Call(path: "posts")
-        let config = Configuration(baseURL: "http://jsonplaceholder.typicode.com"
-        let service =  Service<Post>(call, deprecatedService: DeprecatedService(configuration: config)
-
         service.collection { [weak self] (resultFunction) in
       			DispatchQueue.main.async {
       				do {
@@ -71,10 +84,6 @@ Take a look at the `ServiceSpec`, in short:
 
 *Short version*
 ```swift
-        let call = Call(path: "posts")
-        let config = Configuration(baseURL: "http://jsonplaceholder.typicode.com"
-        let service =  Service<Post>(call, deprecatedService: DeprecatedService(configuration: config)
-
         service.collection {
       			DispatchQueue.main.async {
               let posts = try? $0() // Us anonymous closure arguments if you are comfortable with the syntax
@@ -83,25 +92,64 @@ Take a look at the `ServiceSpec`, in short:
 		}
 ```
 
-### Perform any HTTPMethod to get a single of model
+### Single json node
 
-*Single call*
+*Short version*
 ```swift
-        let call = Call(path: "queries", method: .POST)
-        let config = Configuration(baseURL: "http://jsonplaceholder.typicode.com"
-        let service = Service<Query>(call: call, deprecatedService: DeprecatedService(configuration: config))
-
         service.single {
             DispatchQueue.main.async {
                 do {
                     let model = try $0()
                     print("🙏 sucessfully finished call")
                 } catch {
-                    print("👿 something went wrong")
+                    print("👿 something went wrong with \(error)")
                 }
             }
         }
 ```
+
+### No json in response
+
+This is typically for a HTTPMethod `POST`.
+*Short version*
+```swift
+        service.sendWithoutJSONInResponse {
+            DispatchQueue.main.async {
+                do {
+                    try $0()
+                    print("🙏 sucessfully finished call")
+                } catch {
+                    print("👿 something went wrong with \(error)")
+                }
+            }
+        }
+```
+
+
+### Error
+
+Because we throw errors and print them by default you should always know where things go wrong. When an error happens two things happen:
+
+1. In the class `Service` there is a function `handleError` that will get called on any error. By default this function prints the error. You can override this if needed
+2. The error is throw. The error is always of type `FaroError`.
+
+For example if you want to retry a request when you receive `Unauthorized` (401) you can.
+```swift
+        // Do any Service call like above
+
+        do {
+            let _ = try resultFunction()
+        } cacht FaroError.invalidAuthentication(call: let call):
+
+            // Handle this specific error case
+
+         catch {
+           // Handle all other possible errors.
+            print("👿 something went wrong with \(error)")
+        }
+```
+
+
 
 ## JSONSerialize / JSONDeserialize
 
