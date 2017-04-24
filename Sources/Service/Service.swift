@@ -27,7 +27,7 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 	let call: Call
 	let autoStart: Bool
 
-	public init(call: Call, autoStart: Bool = true, deprecatedService: DeprecatedService = FaroDeprecatedSingleton.shared) {
+	public init(call: Call, autoStart: Bool = true, deprecatedService: DeprecatedService = FaroSingleton.shared) {
 		self.deprecatedService = deprecatedService
 		self.call = call
 		self.autoStart = autoStart
@@ -124,24 +124,6 @@ open class Service<T> where T: JSONDeserializable & Deserializable {
 			default:
 				complete { [weak self] in
 					let error = FaroError.invalidDeprecatedResult(resultString: "\(result)", call: call)
-					self?.handleError(error)
-					throw error
-				}
-			}
-		}
-	}
-
-	// MARK: Requests that expect NO JSON in response
-
-	open func sendWithoutJSONInResponse(complete: @escaping(@escaping () throws -> Void) -> Void) {
-		let call = self.call
-
-		deprecatedService.performWrite(call, autoStart: autoStart) {[weak self] (result: WriteResult) in
-			switch result {
-			case .ok:
-				complete {}
-			case .failure(let error):
-				complete { [weak self] in
 					self?.handleError(error)
 					throw error
 				}
