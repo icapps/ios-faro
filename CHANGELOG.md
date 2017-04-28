@@ -1,7 +1,8 @@
 # Faro
 
-## Version 2.0.5
+## Version 2.0.5 & 2.0.6
 * Array's or Set's of `RawRepresentable`'s can be parsed by create functions
+* Array's or Set's of primitive types
 
 ## Version 2.0.4
 * removed redundant prints for `DeprecatedService`
