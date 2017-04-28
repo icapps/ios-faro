@@ -107,7 +107,7 @@ class DeserializeCreateFunctionSpec: QuickSpec {
 				context("Object") {
 
 					it("single") {
-						let dict: [String: Any] = ["uuid": "some id"]
+						let dict: [String: Any] = ["uuid": "some id", "date": "1984-01-14"]
 						let json: [String: Any] = ["node": dict]
 
 						expect {
@@ -119,8 +119,8 @@ class DeserializeCreateFunctionSpec: QuickSpec {
 					}
 
 					it("collection") {
-						let dict1 = ["uuid": "id1"]
-						let dict2 = ["uuid": "id2"]
+						let dict1 = ["uuid": "id1","date": "1984-01-14"]
+						let dict2 = ["uuid": "id2", "date": "1984-01-14"]
 						let json: [String: Any] = ["node": [dict1, dict2]]
 
 						expect {

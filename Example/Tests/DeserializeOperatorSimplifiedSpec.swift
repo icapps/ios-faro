@@ -10,11 +10,11 @@ class Foo: JSONDeserializable {
 
 	convenience init() {
 		//swiftlint:disable force_try
-		try! self.init(["uuid": 259, "stringLink": ["uuid": "immutable model id"]])
+		try! self.init(["uuid": 259, "stringLink": ["uuid": "immutable model id", "date": "1983-01-14"]])
 	}
 
 	required init(_ raw: [String: Any]) throws {
-		stringLink = try create("stringlink", from: raw)
+		stringLink = try create("stringLink", from: raw)
 	}
 
 }

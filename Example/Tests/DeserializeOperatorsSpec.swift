@@ -20,7 +20,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 						let json: [String: Any] = ["cellNumber": randomNumber, "foodTicket": "ticket"]
 
 						expect {
-							var jail = try Jail(["": ""])
+							var jail = try Jail(["cellNumber": "init"])
 
 							try jail |< json
 
@@ -351,7 +351,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 								expect(relations?.map {($0[.uuid] as? String) ?? ""}) == ["set added id", "set id 1"]
 
-								expect(parent.setToMany.map {$0.uuid}) == ["set id 1"]
+								expect(parent.setToMany.map {$0.uuid}) == ["set relation id"]
 
 								try? parent.setToMany |< json[.setToMany]
 
