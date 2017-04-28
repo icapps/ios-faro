@@ -52,19 +52,6 @@ class DeserializeOperatorSimplifiedSpec: QuickSpec {
 			}
 		}
 
-		describe("RawRepresentables") {
-
-			it("Parses Array of Strings - or any other RawRepresentable") {
-				let strings: [StringEnum]? = try? create("strings", from: ["strings": ["first", "second"]])
-				expect(strings) == [.first, .second]
-			}
-
-			it("Parses Set of Strings - or any other RawRepresentable") {
-				let strings: Set<StringEnum>? = try? create("strings", from: ["strings": ["first", "second"]])
-				expect(strings) == [.first, .second]
-			}
-
-		}
 	}
 
 }

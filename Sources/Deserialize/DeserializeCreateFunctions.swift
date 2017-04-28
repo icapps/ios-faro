@@ -111,6 +111,17 @@ public func create<T: RawRepresentable>(_ named: String, from json: [String: Any
 	}
 }
 
+public func create <T>(_ named: String, from json: [String: Any]) throws -> [T] {
+	if !named.isEmpty {
+		guard let value = json[named] as? [T] else {
+			throw FaroDeserializableError.emptyValue(key: named)
+		}
+		return value
+	} else {
+		throw FaroDeserializableError.emptyKey
+	}
+}
+
 // MARK: - Set
 
 public func create<T: JSONDeserializable>(_ named: String, from json: [String: Any]) throws -> Set<T> {
@@ -132,5 +143,16 @@ public func create<T: RawRepresentable>(_ named: String, from json: [String: Any
 		})
 	} else {
 		throw FaroDeserializableError.emptyCollection(key: named, json: json)
+	}
+}
+
+public func create <T>(_ named: String, from json: [String: Any]) throws -> Set<T> {
+	if !named.isEmpty {
+		guard let value = json[named] as? [T] else {
+			throw FaroDeserializableError.emptyValue(key: named)
+		}
+		return Set(value)
+	} else {
+		throw FaroDeserializableError.emptyKey
 	}
 }
