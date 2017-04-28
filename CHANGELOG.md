@@ -1,5 +1,8 @@
 # Faro
 
+## Version 2.0.4
+* removed redundant prints for `DeprecatedService`
+
 ## Version 2.0.2 & 2.0.3
 Minor fix to Readme file
 
