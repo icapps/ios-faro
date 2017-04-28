@@ -67,7 +67,7 @@ class FaroSecureURLSessionSpec: QuickSpec {
 
 			context("has tried once") {
 				beforeEach {
-					session.handleRetry(data: nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in }, task: { (task) in
+					session.handleRetry(data: nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in }, task: { (_) in
 					}, noRetryNeeded: { (_) in
 					})
 
@@ -75,7 +75,7 @@ class FaroSecureURLSessionSpec: QuickSpec {
 				}
 
 				it("count should increase a second time") {
-					session.handleRetry(data: nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in }, task: { (task) in
+					session.handleRetry(data: nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in }, task: { (_) in
 					}, noRetryNeeded: { (_) in
 					})
 
@@ -124,7 +124,7 @@ class FaroSecureURLSessionSpec: QuickSpec {
 			it("still contains other retry counts after one is stopped") {
 				session.retryCountTuples.append((requestIdentifier: "169", count: 10))
 
-				session.handleRetry(data: nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in }, task: { (task) in
+				session.handleRetry(data: nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in }, task: { (_) in
 				}, noRetryNeeded: { (_) in
 				})
 

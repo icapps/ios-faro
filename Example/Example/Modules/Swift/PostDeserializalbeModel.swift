@@ -7,7 +7,9 @@ class Post: JSONDeserializable {
     var title: String?
 
     enum DeprecatedServiceMap: String {
-        case id, title
+		//swiftlint:disable identifier_name
+        case id
+		case title
     }
 
 	required init(_ raw: [String : Any]) throws {
