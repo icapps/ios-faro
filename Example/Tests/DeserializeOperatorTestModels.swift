@@ -126,7 +126,7 @@ class DeserializableObject: JSONDeserializable, JSONUpdatable, Linkable, Hashabl
 	func update(_ raw: [String: Any]) throws {
 		try self.uuid |< raw[.uuid]
 
-		try? self.date |< (raw[.date], "yyyy-MM-dd")
+		self.date |< (raw[.date], "yyyy-MM-dd")
 
 		self.amount |< raw[.amount]
 		self.price |< raw[.price]
