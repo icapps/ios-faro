@@ -189,24 +189,6 @@ open class DeprecatedService {
         }
     }
 
-    // MARK: - Internal
-
-    func print(_ error: FaroError, and fail: (FaroError)->()) {
-        printFaroError(error)
-        fail(error)
-    }
-
-    func handle<ModelType: JSONDeserializable>(_ result: DeprecatedResult<ModelType>, and fail: (FaroError)->()) {
-        switch result {
-        case .failure(let faroError):
-            print(faroError, and: fail)
-        default:
-            let faroError = FaroError.general
-            printFaroError(faroError)
-            fail(faroError)
-        }
-    }
-
     // MARK: - Invalidate session
     /// All functions are forwarded to `FaroSession`
 
@@ -243,26 +225,22 @@ extension DeprecatedService {
     fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest) -> FaroError? {
         guard error == nil else {
             let returnError = FaroError.nonFaroError(error!)
-            printFaroError(returnError)
             return returnError
         }
 
         guard let httpResponse = urlResponse as? HTTPURLResponse else {
             let returnError = FaroError.networkError(0, data: data, request: request)
-            printFaroError(returnError)
             return returnError
         }
 
         let statusCode = httpResponse.statusCode
         guard statusCode < 400 else {
             let returnError = FaroError.networkError(statusCode, data: data, request: request)
-            printFaroError(returnError)
             return returnError
         }
 
         guard 200...204 ~= statusCode else {
             let returnError = FaroError.networkError(statusCode, data: data, request: request)
-            printFaroError(returnError)
             return returnError
         }
 
@@ -272,7 +250,6 @@ extension DeprecatedService {
     fileprivate func handleNodeArray<M: JSONDeserializable>(_ nodes: [Any], on updateModel: M? = nil, call: Call) -> DeprecatedResult<M> {
         if let _ = updateModel {
             let faroError = FaroError.malformed(info: "Could not parse \(nodes) for type \(M.self) into updateModel \(updateModel). We currently only support updating of single objects. An arry of objects was returned")
-            printFaroError(faroError)
             return DeprecatedResult.failure(faroError)
         }
         var models = [M]()
@@ -281,7 +258,6 @@ extension DeprecatedService {
                 models.append(model)
             } else {
                 let faroError = FaroError.malformed(info: "Could not parse \(nodes) for type \(M.self)")
-                printFaroError(faroError)
                 return DeprecatedResult.failure(faroError)
             }
         }
@@ -297,10 +273,6 @@ extension DeprecatedService {
             }
             return DeprecatedResult.model(updateModel as? M)
         } else {
-            if let _ = updateModel {
-                let faroError = FaroError.malformed(info: "An updateModel \(updateModel) was provided. But does not conform to protocol \(JSONUpdatable.self)")
-                printFaroError(faroError)
-            }
             return DeprecatedResult.model(try? M(node))
         }
     }
