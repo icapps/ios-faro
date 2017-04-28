@@ -1,5 +1,8 @@
 # Faro
 
+## Version 2.0.5
+* Array's or Set's of `RawRepresentable`'s can be parsed by create functions
+
 ## Version 2.0.4
 * removed redundant prints for `DeprecatedService`
 
