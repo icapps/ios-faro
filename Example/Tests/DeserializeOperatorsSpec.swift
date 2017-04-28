@@ -290,7 +290,12 @@ class DeserializeOperatorsSpec: QuickSpec {
 						var setRelation = [String: Any]()
 
 						beforeEach {
-							setRelation[.uuid] = "set id 1"
+							setRelation[.uuid] = "set relation id"
+							setRelation[.amount] = 20
+							setRelation[.tapped] = true
+							setRelation[.date] =  "1994-08-20"
+							setRelation[.price] = 5.0
+
 							setToMany.append(setRelation)
 							json[.setToMany] = setToMany
 
@@ -298,7 +303,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 						}
 
 						it("has set too many") {
-							expect(parent.setToMany.map {$0.uuid}) == ["set id 1"]
+							expect(parent.setToMany.map {$0.uuid}) == ["set relation id"]
 						}
 
 						it("updates") {
@@ -309,7 +314,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 							json[.setToMany] = [setRelation]
 
 							expect((json[.setToMany] as? [[String: Any]])?.map {($0[.price] as? Double) ?? 0}) == [100]
-							expect((json[.setToMany] as? [[String: Any]])?.map {($0[.uuid] as? String) ?? ""}) == ["set id 1"]
+							expect((json[.setToMany] as? [[String: Any]])?.map {($0[.uuid] as? String) ?? ""}) == ["set relation id"]
 
 							try? parent.update(json)
 
@@ -323,7 +328,7 @@ class DeserializeOperatorsSpec: QuickSpec {
 						context("relation deserialize operator") {
 
 							it("has element in set") {
-								expect(parent.setToMany.map {$0.uuid}) == ["set id 1"]
+								expect(parent.setToMany.map {$0.uuid}) == ["set relation id"]
 							}
 
 							it("removes id's no longer in JSON") {

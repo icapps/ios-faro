@@ -92,7 +92,7 @@ class DeserializableSpec: QuickSpec {
 					expect {try Zoo(json).animal}.toNot(throwError())
 				}
 
-				fit("should fill properties on relation") {
+				it("should fill properties on relation") {
 					expect {try Zoo(json).animal?.uuid}.to(equal(relationId))
 				}
 

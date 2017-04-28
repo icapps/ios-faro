@@ -69,7 +69,7 @@ class Parent: JSONDeserializable, JSONUpdatable, Linkable {
 		// Use the create functions before using self.
 
 		uuid = try create("uuid", from: raw)
-		relation = try create("realation", from: raw)
+		relation = try create("relation", from: raw)
 
 		// Self is now initionalized and you can update the rest.
 		try update(raw)
@@ -114,7 +114,7 @@ class DeserializableObject: JSONDeserializable, JSONUpdatable, Linkable, Hashabl
 
 	convenience init () {
 		//swiftlint:disable force_try
-		try! self.init(["uuid": UUID().uuidString])
+		try! self.init(["uuid": UUID().uuidString, "date": "1983-01-14"])
 	}
 
 	required init(_ raw: [String: Any]) throws {
@@ -126,7 +126,7 @@ class DeserializableObject: JSONDeserializable, JSONUpdatable, Linkable, Hashabl
 	func update(_ raw: [String: Any]) throws {
 		try self.uuid |< raw[.uuid]
 
-		self.date |< (raw[.date], "yyyy-MM-dd")
+		try? self.date |< (raw[.date], "yyyy-MM-dd")
 
 		self.amount |< raw[.amount]
 		self.price |< raw[.price]
