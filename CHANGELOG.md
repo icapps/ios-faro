@@ -74,6 +74,11 @@ How to migrate:
 
 ---
 
+## Version 1.0.10
+* Added way to Authenticate via `Authenticatable`
+* Added Secure url session to centralize security
+* Minor spelling fixes
+
 ## Version 1.0.9
 * Using URLRequest default timeout instead of 10 seconds
 
