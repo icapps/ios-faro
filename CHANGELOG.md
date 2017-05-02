@@ -1,4 +1,9 @@
-ope# Faro
+# Faro
+## Version 1.0.10
+* Added way to Authenticate via `Authenticatable`
+* Added Secure url session to centralize security
+* Minor spelling fixes
+
 ## Version 1.0.9
 * Using URLRequest default timeout instead of 10 seconds
 
@@ -9,7 +14,7 @@ ope# Faro
 * using to swiftlint
 
 ## Version 1.0.6
-* deprecating convinience functions on `Service`
+* deprecating convenience functions on `Service`
 
 ## Version 1.0.5
 Minor changes.
