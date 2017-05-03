@@ -95,7 +95,7 @@ open class Call {
 
 	private func insertInHeaders(with headers: [String: String], request: inout URLRequest) {
 		for (key, value) in headers {
-			request.addValue(value, forHTTPHeaderField: key)
+			request.setValue(value, forHTTPHeaderField: key)
 		}
 	}
 
