@@ -1,4 +1,8 @@
 # Faro
+
+## Version 1.0.11
+* fixes issue with Header fields not being overwritten
+
 ## Version 1.0.10
 * Added way to Authenticate via `Authenticatable`
 * Added Secure url session to centralize security
