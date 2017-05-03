@@ -1,5 +1,8 @@
 # Faro
 
+## Version 2.0.7
+* integrate fix from 1.0.11
+
 ## Version 2.0.5 & 2.0.6
 * Array's or Set's of `RawRepresentable`'s can be parsed by create functions
 * Array's or Set's of primitive types
@@ -73,6 +76,8 @@ How to migrate:
 * For new projects use FaroSingelton
 
 ---
+## Version 1.0.11
+* fixes issue with Header fields not being overwritten
 
 ## Version 1.0.10
 * Added way to Authenticate via `Authenticatable`
