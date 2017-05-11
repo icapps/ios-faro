@@ -1,5 +1,8 @@
 # Faro
 
+## Version 2.0.8
+* Better errors for JSONAdaptor
+
 ## Version 2.0.7
 * integrate fix from 1.0.11
 
