@@ -1,5 +1,8 @@
 # Faro
 
+## Version 1.0.12
+* crash fix with json that could not be pretty printed.
+
 ## Version 1.0.11
 * fixes issue with Header fields not being overwritten
 
