@@ -52,5 +52,7 @@ public func printFaroError(_ error: Error) {
         
     case .parameterNotRecognized(message: let message):
         print("📡🔥 message: \(message)")
+	case .jsonAdaptor(error: let error):
+		print("📡🔥 \(faroError)")
 	}
 }

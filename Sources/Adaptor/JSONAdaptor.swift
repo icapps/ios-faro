@@ -11,14 +11,8 @@ open class JSONAdaptor: Adaptable {
             let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
             result(.json(json))
         } catch {
-            guard let faroError = error as? FaroError else {
-                print("💣 Unknown error \(error)")
-                result(.failure(FaroError.general))
-                return
-            }
-
-            result(.failure(faroError))
-        }
+           result(.failure(FaroError.jsonAdaptor(error: error, inDataString: String(data: data, encoding: .utf8) ?? "Data not in utf8 format.")))
+		}
     }
 
 }

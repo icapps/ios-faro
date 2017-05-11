@@ -4,6 +4,7 @@ public enum FaroError: Error, Equatable {
 	}
 
 	case general
+	case jsonAdaptor(error: Error, inDataString: String)
 
 	case invalidUrl(String, call: Call)
 	case invalidResponseData(Data?, call: Call)
