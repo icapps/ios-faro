@@ -22,12 +22,17 @@ public func printFaroError(_ error: Error) {
 		print("📡🔥 \(call) no root node in json: \(json) ")
 	case .networkError(let networkError, let data, let request):
 		if let data = data {
-			var string: String!
-			if let jsonObject = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
-				let prettyPrintedData = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted) {
-				string = String(data: prettyPrintedData, encoding: .utf8)
-			} else {
-				string = String(data: data, encoding: .utf8)
+			guard var string = String(data: data, encoding: .utf8), (string.hasPrefix("{") || string.hasPrefix("[")) else {
+				print("📡🔥 HTTP error: \(networkError) in \(request) no message in utf8 format.")
+				return
+			}
+
+			do {
+				let jsonObject = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+				let prettyPrintedData = try JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted)
+				string = String(data: prettyPrintedData, encoding: .utf8) ?? "Invalid json"
+			} catch {
+				// ignore
 			}
 
 			print("📡🔥 HTTP error: \(networkError) in \(request) message: \(string)")
