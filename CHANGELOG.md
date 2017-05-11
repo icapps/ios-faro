@@ -1,5 +1,8 @@
 # Faro
 
+## Version 2.0.9
+* Fixes crash with json that could not be pretty printed.
+
 ## Version 2.0.8
 * Better errors for JSONAdaptor
 
