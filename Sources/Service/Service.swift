@@ -23,9 +23,10 @@ let json = [String: Any]()
 /// `Deserializable` is for legacy reasons and will be removed in version 3.0
 open class Service<T> where T: JSONDeserializable {
 
+	open var call: Call
+	open var autoStart: Bool
+
 	let deprecatedService: DeprecatedService
-	let call: Call
-	let autoStart: Bool
 
 	public init(call: Call, autoStart: Bool = true, deprecatedService: DeprecatedService = FaroSingleton.shared) {
 		self.deprecatedService = deprecatedService
