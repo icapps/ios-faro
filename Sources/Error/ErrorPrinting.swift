@@ -53,10 +53,10 @@ public func printFaroError(_ error: Error) {
 	case .noUpdateModelOf(type: let type, ofJsonNode: let node, call: let call):
 		print("📡🔥 \(call) could not update model of type \(type) form json: \(node).")
 	case .couldNotCreateInstance(ofType: let type, call: let call, error: let error):
-		print("📡🔥 \(call) could not create instance of type \(type) \(error).")
-        
-    case .parameterNotRecognized(message: let message):
-        print("📡🔥 message: \(message)")
+		print("📡🔥 \(call) \n❌ ERROR: Could not create instance of type \(type) \(error).")
+
+	case .parameterNotRecognized(message: let message):
+		print("📡🔥 message: \(message)")
 	case .jsonAdaptor(error: let error):
 		print("📡🔥 \(faroError)")
 	}

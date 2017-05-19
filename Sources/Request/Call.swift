@@ -9,7 +9,7 @@ open class Call {
 	open let path: String
 	open let httpMethod: HTTPMethod
 	open var rootNode: String?
-	open var parameters: [Parameter]?
+	open var parameters = [Parameter]()
 
 	fileprivate var request: URLRequest?
 
@@ -31,7 +31,9 @@ open class Call {
 		self.path = path
 		self.httpMethod = method
 		self.rootNode = rootNode
-		self.parameters = parameter
+		if let parameters = parameter {
+			self.parameters = parameters
+		}
 	}
 
 	/// Makes a request from this call every time. This is done to every service call has its own request and can change time dependend parameters, like authorization.
@@ -65,7 +67,7 @@ open class Call {
 
 	/// Called when creating a request.
 	open func insertParameter(request: inout URLRequest) {
-		parameters?.forEach {
+		parameters.forEach {
 			do {
 				switch $0 {
 				case .httpHeader(let headers):
@@ -76,9 +78,9 @@ open class Call {
 					try insertInBody(with: json, request: &request)
 				case .jsonArray(let jsonArray):
 					try insertInBody(with: jsonArray, request: &request)
-                case .multipart(let multipart):
-                    try insertMultiPartInBody(with: multipart, request: &request)
-                }
+				case .multipart(let multipart):
+					try insertMultiPartInBody(with: multipart, request: &request)
+				}
 			} catch {
 				printFaroError(error)
 			}
@@ -121,34 +123,39 @@ open class Call {
 		}
 		request.httpBody = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
 	}
-    
-    private func insertMultiPartInBody(with multipart: MultipartFile, request: inout URLRequest) throws {
-        guard request.httpMethod != HTTPMethod.GET.rawValue else {
-            throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
-        }
-        
-        let boundary = "Boundary-iCapps-Faro"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.httpBody = createMultipartBody(with: multipart, boundary: boundary)
-    }
-    
-    private func createMultipartBody(with multipart: MultipartFile, boundary: String) -> Data {
-        
-        let boundaryPrefix = "--\(boundary)\r\n"
-        var body = Data()
-        body.appendString(boundaryPrefix)
-        body.appendString("Content-Disposition: form-data; name=\"\(multipart.parameterName)\"; filename=\"\(multipart.parameterName)\"\r\n")
-        body.appendString("Content-Type: \(multipart.mimeType)\r\n\r\n")
-        body.append(multipart.data)
-        body.appendString("\r\n")
-        body.appendString("\(boundaryPrefix)--\r\n")
-        
-        return body
-    }
+
+	private func insertMultiPartInBody(with multipart: MultipartFile, request: inout URLRequest) throws {
+		guard request.httpMethod != HTTPMethod.GET.rawValue else {
+			throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
+		}
+
+		let boundary = "Boundary-iCapps-Faro"
+		request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+		request.httpBody = createMultipartBody(with: multipart, boundary: boundary)
+	}
+
+	private func createMultipartBody(with multipart: MultipartFile, boundary: String) -> Data {
+
+		let boundaryPrefix = "--\(boundary)\r\n"
+		var body = Data()
+		body.appendString(boundaryPrefix)
+		body.appendString("Content-Disposition: form-data; name=\"\(multipart.parameterName)\"; filename=\"\(multipart.parameterName)\"\r\n")
+		body.appendString("Content-Type: \(multipart.mimeType)\r\n\r\n")
+		body.append(multipart.data)
+		body.appendString("\r\n")
+		body.appendString("\(boundaryPrefix)--\r\n")
+
+		return body
+	}
 }
 
 // MARK: - CustomDebugStringConvertible
 
 extension Call: CustomDebugStringConvertible {
-	public var debugDescription: String { return "Call \(request) rootNode: \(rootNode), parameters: \(parameters)"}
+
+	public var debugDescription: String {
+		let parameterString: String = parameters.reduce("Parameters", {"\($0)\n\($1)"})
+		return "Call \(request?.url?.absoluteString ?? "")\n• rootNode: \(rootNode ?? "")\n• \(parameterString)"
+	}
+
 }
