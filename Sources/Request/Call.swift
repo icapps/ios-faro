@@ -11,7 +11,9 @@ open class Call {
 	open let path: String
 	open let httpMethod: HTTPMethod
 	open var rootNode: String?
-	open var parameters: [Parameter]?
+	open var parameters = [Parameter]()
+
+	fileprivate var request: URLRequest?
 
 	/// Initializes Call to retreive object(s) from the server.
 	/// parameter path: the path to point the call too
@@ -31,18 +33,20 @@ open class Call {
 		self.path = path
 		self.httpMethod = method
 		self.rootNode = rootNode
-		self.parameters = parameter
+		if let parameters = parameter {
+			self.parameters = parameters
+		}
 	}
 
 	/// Makes a request from this call every time. This is done to every service call has its own request and can change time dependend parameters, like authorization.
 	/// Optionally implement `Authenticatable` to make it possible to authenticate requests. In this function on self the functions in 'Authenticatable` will be called.
 	open func request(with configuration: Configuration) -> URLRequest? {
-		var request = URLRequest(url: URL(string: "\(configuration.baseURL)/\(path)")!, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData) // uses default timeout
-		request.httpMethod = httpMethod.rawValue
-		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-		insertParameter(request: &request)
+		self.request = URLRequest(url: URL(string: "\(configuration.baseURL)/\(path)")!, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData) // uses default timeout
+		request?.httpMethod = httpMethod.rawValue
+		request?.setValue("application/json", forHTTPHeaderField: "Content-Type")
+		insertParameter(request: &request!)
 		if let authenticatableSelf = self as? Authenticatable {
-			authenticatableSelf.authenticate(&request)
+			authenticatableSelf.authenticate(&request!)
 		}
 		return request
 	}
@@ -64,7 +68,7 @@ open class Call {
 
 	/// Called when creating a request.
 	open func insertParameter(request: inout URLRequest) {
-		parameters?.forEach {
+		parameters.forEach {
 			do {
 				switch $0 {
 				case .httpHeader(let headers):
@@ -117,6 +121,17 @@ open class Call {
 			throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
 		}
 		request.httpBody = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+	}
+
+}
+
+// MARK: - CustomDebugStringConvertible
+
+extension Call: CustomDebugStringConvertible {
+
+	public var debugDescription: String {
+		let parameterString: String = parameters.reduce("Parameters", {"\($0)\n\($1)"})
+		return "Call \(request?.url?.absoluteString ?? "")\n• rootNode: \(rootNode ?? "")\n• \(parameterString)"
 	}
 
 }

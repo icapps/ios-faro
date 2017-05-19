@@ -63,7 +63,7 @@ class ServiceQueueSpec: QuickSpec {
                 context("performWrite") {
 
                     it("should not be done without start") {
-                        let _ = service.performWrite(call, autoStart: false) { _ in }
+                        _ = service.performWrite(call, autoStart: false) { _ in }
                         expect(service.hasOustandingTasks) == true
                     }
                 }

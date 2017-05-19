@@ -19,7 +19,7 @@ public func printFaroError(_ error: Error) {
     case .nonFaroError(let nonFaroError):
         print("📡🔥 Error from service: \(nonFaroError)")
     case .rootNodeNotFound(json: let json):
-        print("📡🔥 Could not find root node in json: \(json)")
+        print("📡🔥 Could not find root node in json:\n \(json)")
     case .networkError(let networkError, let data):
         if let data = data {
 			guard var string = String(data: data, encoding: .utf8), (string.hasPrefix("{") || string.hasPrefix("[")) else {

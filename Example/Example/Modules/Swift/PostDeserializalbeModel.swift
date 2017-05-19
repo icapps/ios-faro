@@ -7,6 +7,7 @@ class Post: Deserializable {
     var title: String?
 
     enum ServiceMap: String {
+		//swiftlint:disable identifier_name
         case id, title
     }
 
