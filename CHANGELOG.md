@@ -1,5 +1,8 @@
 # Faro
 
+## Version 1.0.13
+* error printing with end of lines
+
 ## Version 1.0.12
 * crash fix with json that could not be pretty printed.
 
