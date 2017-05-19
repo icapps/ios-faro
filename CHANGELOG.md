@@ -1,5 +1,8 @@
 # Faro
 
+## Version 2.0.11
+* Errors printed with end of lines
+
 ## Version 2.0.10
 * call public
 
