@@ -1,5 +1,8 @@
 # Faro
 
+## Version 1.0.14
+* Parameter booleans and values added to inspect a Parameters
+
 ## Version 1.0.13
 * error printing with end of lines
 

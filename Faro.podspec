@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Faro'
-  s.version          = '1.0.13'
+  s.version          = '1.0.14'
   s.summary          = 'Faro defines the contract to fetch data from an asynchronous source that can be mapped to any model object.'
 
   s.description      = <<-DESC
