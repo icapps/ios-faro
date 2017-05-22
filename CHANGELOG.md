@@ -1,5 +1,12 @@
 # Faro
 
+## Version 2.1.0
+* added ability to use a body with urlComponents encoding
+
+**WARNING**
+
+Breaks because of rename `Parameter.urlComponents` to `Parameter.urlComponentsInBody`
+
 ## Version 2.0.13
 * fixes bug with force unwrapping in create functions
 
