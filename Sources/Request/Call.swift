@@ -75,11 +75,13 @@ open class Call {
 				case .urlComponentsInURL(let components):
 					insertInUrl(with: components, request: &request)
 				case .jsonNode(let json):
-					try insertInBody(with: json, request: &request)
+					try insertInBodyInJson(with: json, request: &request)
 				case .jsonArray(let jsonArray):
-					try insertInBody(with: jsonArray, request: &request)
+					try insertInBodyInJson(with: jsonArray, request: &request)
 				case .multipart(let multipart):
 					try insertMultiPartInBody(with: multipart, request: &request)
+				case .urlComponentsInBody(let components):
+					try insertInBodyAsURLComponents(with: components, request: &request)
 				}
 			} catch {
 				printFaroError(error)
@@ -117,11 +119,18 @@ open class Call {
 		request.url = components?.url
 	}
 
-	private func insertInBody(with json: Any, request: inout URLRequest) throws {
+	private func insertInBodyInJson(with json: Any, request: inout URLRequest) throws {
 		if request.httpMethod == HTTPMethod.GET.rawValue {
 			throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
 		}
 		request.httpBody = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+	}
+
+	private func insertInBodyAsURLComponents(with dict: [String: String], request: inout URLRequest) throws {
+		if request.httpMethod == HTTPMethod.GET.rawValue {
+			throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
+		}
+		request.httpBody = dict.queryParameters.data(using: .utf8)
 	}
 
 	private func insertMultiPartInBody(with multipart: MultipartFile, request: inout URLRequest) throws {

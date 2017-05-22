@@ -1,9 +1,23 @@
 public enum Parameter: CustomDebugStringConvertible {
+
+	// MARK: - Header
 	case httpHeader([String: String])
+
+	// MARK: - To be inserted in Body
+
 	case jsonArray([[String: Any]])
 	case jsonNode([String: Any])
+	case urlComponentsInBody([String: String])
+
+	// MARK: - To be added to url
+
 	case urlComponentsInURL([String: String])
+
+	// MARK: - File
+
 	case multipart(MultipartFile)
+
+	// MARK: - Debug helper
 
 	public var debugDescription: String {
 		switch self {
@@ -26,7 +40,9 @@ public enum Parameter: CustomDebugStringConvertible {
 				return "•\(error)"
 			}
 		case .urlComponentsInURL(let components):
-			return "\(components.map {(key:$0.key, value: $0.value)}.reduce("• .urlComponents:", {"\($0)\n• \($1)"}))"
+			return "\(components.map {(key:$0.key, value: $0.value)}.reduce("• .urlComponentsInUrl:", {"\($0)\n• \($1)"}))"
+		case .urlComponentsInBody(let components):
+			return "\(components.map {(key:$0.key, value: $0.value)}.reduce("• .urlComponentsInBody:", {"\($0)\n• \($1)"}))"
 		case .multipart(_):
 			return ".multipart"
 		}
@@ -70,6 +86,15 @@ public enum Parameter: CustomDebugStringConvertible {
 		}
 	}
 
+	public var isUrlComponentsInBody: Bool {
+		switch self {
+		case .urlComponentsInBody(_):
+			return true
+		default:
+			return false
+		}
+	}
+
 	// MARK: - Values
 
 	public var httpHeaderValue: [String: String]? {
@@ -102,6 +127,15 @@ public enum Parameter: CustomDebugStringConvertible {
 	public var urlComponentsInURLValue: [String: String]? {
 		switch self {
 		case .urlComponentsInURL(let components):
+			return components
+		default:
+			return nil
+		}
+	}
+
+	public var urlComponentsInBodyValue: [String: String]? {
+		switch self {
+		case .urlComponentsInBody(let components):
 			return components
 		default:
 			return nil

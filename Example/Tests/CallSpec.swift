@@ -163,6 +163,16 @@ class CallSpec: QuickSpec {
 
             context("should add JSON into httpBody for") {
 
+				it("PUT or POST with urlComponents Body") {
+					if let data = body(.urlComponentsInBody(["key": "value with spaces"]), method: .PUT) {
+						let dataString = String(data: data, encoding: .utf8)
+
+						expect(dataString) == "key=value%20with%20spaces"
+					} else {
+						XCTFail()
+					}
+				}
+
                 it("PUT") {
 					expect {
 						if let data = body(.jsonNode(bodyJson), method: .PUT) {
