@@ -72,7 +72,7 @@ open class Call {
 				switch $0 {
 				case .httpHeader(let headers):
 					insertInHeaders(with: headers, request: &request)
-				case .urlComponents(let components):
+				case .urlComponentsInURL(let components):
 					insertInUrl(with: components, request: &request)
 				case .jsonNode(let json):
 					try insertInBody(with: json, request: &request)

@@ -2,7 +2,7 @@ public enum Parameter: CustomDebugStringConvertible {
 	case httpHeader([String: String])
 	case jsonArray([[String: Any]])
 	case jsonNode([String: Any])
-	case urlComponents([String: String])
+	case urlComponentsInURL([String: String])
 	case multipart(MultipartFile)
 
 	public var debugDescription: String {
@@ -25,7 +25,7 @@ public enum Parameter: CustomDebugStringConvertible {
 			} catch {
 				return "•\(error)"
 			}
-		case .urlComponents(let components):
+		case .urlComponentsInURL(let components):
 			return "\(components.map {(key:$0.key, value: $0.value)}.reduce("• .urlComponents:", {"\($0)\n• \($1)"}))"
 		case .multipart(_):
 			return ".multipart"
@@ -61,9 +61,9 @@ public enum Parameter: CustomDebugStringConvertible {
 		}
 	}
 
-	public var isUrlComponents: Bool {
+	public var isUrlComponentsInURL: Bool {
 		switch self {
-		case .urlComponents(_):
+		case .urlComponentsInURL(_):
 			return true
 		default:
 			return false
@@ -99,9 +99,9 @@ public enum Parameter: CustomDebugStringConvertible {
 		}
 	}
 
-	public var urlComponentsValue: [String: String]? {
+	public var urlComponentsInURLValue: [String: String]? {
 		switch self {
-		case .urlComponents(let components):
+		case .urlComponentsInURL(let components):
 			return components
 		default:
 			return nil

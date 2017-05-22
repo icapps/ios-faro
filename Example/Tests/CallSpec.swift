@@ -146,14 +146,14 @@ class CallSpec: QuickSpec {
                 expect(headers.values).to(contain("utf-8"))
             }
 
-            context("\(Parameter.urlComponents(["": ""]))") {
+            context("\(Parameter.urlComponentsInURL(["": ""]))") {
                 it("insert") {
-                    let string = componentString(.urlComponents(["some query item": "aa🗿🤔aej"]))
+                    let string = componentString(.urlComponentsInURL(["some query item": "aa🗿🤔aej"]))
                     expect(string).to(contain("some%20query%20item=aa%F0%9F%97%BF%F0%9F%A4%94aej"))
                 }
 
                 it("insert sorted") {
-                    let string = componentString(.urlComponents(["X": "X", "B": "B", "A": "A"]))
+                    let string = componentString(.urlComponentsInURL(["X": "X", "B": "B", "A": "A"]))
                     expect(string).to(contain("?A=A&B=B&X=X"))
                 }
             }
@@ -212,19 +212,19 @@ class CallSpec: QuickSpec {
 
             it("should not produce invalid URL's when given empty parameters") {
                 let parameters = [String: String]()
-                let callString: String = componentString(.urlComponents(parameters))
+                let callString: String = componentString(.urlComponentsInURL(parameters))
                 expect(callString.characters.last) != "?"
             }
 
             it("should not produce invalid URL's when given parameters with missing keys") {
                 let parameters = ["": "aValue"]
-                let callString: String = componentString(.urlComponents(parameters))
+                let callString: String = componentString(.urlComponentsInURL(parameters))
                 expect(callString.characters.last) != "?"
             }
 
             it("should not produce invalid URL's when given parameters with missing values") {
                 let parameters = ["aKey": ""]
-                let callString: String = componentString(.urlComponents(parameters))
+                let callString: String = componentString(.urlComponentsInURL(parameters))
                 expect(callString.characters.last) != "?"
             }
         }

@@ -22,10 +22,10 @@ class ParameterSpec: QuickSpec {
 			let dict = ["bla": "foo"]
 
 			it("isUrlcomponent = true") {
-				let parameter: Parameter = .urlComponents(dict)
+				let parameter: Parameter = .urlComponentsInURL(dict)
 
-				expect(parameter.isUrlComponents) == true
-				expect(parameter.urlComponentsValue?["bla"]) == dict["bla"]
+				expect(parameter.isUrlComponentsInURL) == true
+				expect(parameter.urlComponentsInURLValue?["bla"]) == dict["bla"]
 			}
 
 			it("isHeader = true") {
