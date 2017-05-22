@@ -44,7 +44,11 @@ public func create <T>(_ named: String, from json: [String: Any]) throws -> T! {
 	if !named.isEmpty {
 		guard let value = json[named] as? T else {
 			do {
-				return try create(named, from: json, format: "") as! T
+				if let value = try create(named, from: json, format: "") as? T {
+					return value
+				} else {
+					throw FaroDeserializableError.emptyValue(key: named)
+				}
 			} catch {
 				throw FaroDeserializableError.emptyValue(key: named)
 			}
@@ -67,8 +71,8 @@ public func create(_ named: String, from json: [String: Any], format: String) th
 	if !named.isEmpty {
 		if let value = json[named] as? TimeInterval {
 			return Date(timeIntervalSince1970: value)
-		} else if json[named] is String && DateParser.shared.dateFormat.characters.count > 0 {
-			return DateParser.shared.dateFormatter.date(from: json[named] as! String)
+		} else if let dateString = json[named] as? String, DateParser.shared.dateFormat.characters.count > 0 {
+			return DateParser.shared.dateFormatter.date(from: dateString)
 		} else {
 			throw FaroDeserializableError.dateMissingWithKey(key: named, json: json)
 		}

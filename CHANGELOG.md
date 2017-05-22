@@ -1,5 +1,8 @@
 # Faro
 
+## Version 2.0.13
+* fixes bug with force unwrapping in create functions
+
 ## Version 2.0.12
 * Parameter booleans and values added to inspect a Parameters
 
