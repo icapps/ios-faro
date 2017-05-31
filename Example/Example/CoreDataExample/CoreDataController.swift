@@ -16,7 +16,7 @@ class CoreDataController {
 
 	static let sharedInstance = CoreDataController()
 	var storeType = NSSQLiteStoreType
-	
+
 	lazy var applicationDocumentsDirectory: URL = {
 
 		let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)

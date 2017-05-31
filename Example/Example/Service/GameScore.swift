@@ -16,25 +16,25 @@ In this example GameScore has to inherit from NSObject to be usable in Objective
 class GameScore: NSObject, Rivetable {
 
     // MARK: - Game variables
-    
+
 	var score: Int?
 	var cheatMode: Bool?
 	var playerName: String?
-    
+
     // MARK: - UniqueAble
 
 	var uniqueValue: String?
-    
+
     // MARK: - Init
 
 	required init(json: Any, managedObjectContext: NSManagedObjectContext? = GameScore.managedObjectContext()) throws {
 		super.init()
 		try self.map(json)
 	}
-    
+
     // MARK: - Parsable
 
-	func toDictionary()-> NSDictionary? {
+	func toDictionary() -> NSDictionary? {
 		return [
 			"score": score!,
 			"cheatMode": cheatMode!,
@@ -57,7 +57,7 @@ class GameScore: NSObject, Rivetable {
 			if let playerName = json["playerName"] as? String {
 				self.playerName = playerName
 			}
-		}else {
+		} else {
 			throw ResponseError.invalidDictionary(dictionary: json)
 		}
 	}
@@ -71,7 +71,7 @@ class GameScore: NSObject, Rivetable {
 	}
 
 	// MARK: - Mitigatable
-	
+
 	class func responseMitigator() -> ResponseMitigatable & Mitigator {
 		return MitigatorDefault()
 	}
@@ -81,12 +81,12 @@ class GameScore: NSObject, Rivetable {
 	}
 
 	// MARK: - EnvironmentConfigurable
-    
+
 	class func contextPath() -> String {
 		return "GameScore"
 	}
 
-	class func environment()-> Environment & Mockable {
+	class func environment() -> Environment & Mockable {
 		return EnvironmentParse<GameScore>()
 	}
 
@@ -94,7 +94,7 @@ class GameScore: NSObject, Rivetable {
 		return "results"
 	}
 
-	//MARK: - Transfromable
+	// MARK: - Transfromable
 	class func transform() -> TransformJSON {
 		return TransformJSON()
 	}

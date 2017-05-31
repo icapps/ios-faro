@@ -17,7 +17,7 @@ import AirRivet
 class CoreDataEntitySpec: QuickSpec {
 
 	static let context = StoreUnitTests().managedObjectContext
-	class Mock : MockCoreDataEntity {
+	class Mock: MockCoreDataEntity {
 		class  override func managedObjectContext() -> NSManagedObjectContext? {
 			return CoreDataEntitySpec.context
 		}
@@ -27,7 +27,7 @@ class CoreDataEntitySpec: QuickSpec {
 		describe("CoreDataEntity") {
 
 			let context  = CoreDataEntitySpec.context
-			beforeEach{
+			beforeEach {
 				context.reset()
 			}
 
@@ -37,7 +37,7 @@ class CoreDataEntitySpec: QuickSpec {
 			}
 
 			it("should fetch an existing object") {
-				let json = ["uniqueValue":"unique id", "username": "Fons"]
+				let json = ["uniqueValue": "unique id", "username": "Fons"]
 
 				let entity = try! CoreDataEntity(json: json, managedObjectContext: context)
 
@@ -52,18 +52,18 @@ class CoreDataEntitySpec: QuickSpec {
 			}
 
 			it("should not throw when no instance is found", closure: {
-				let json = ["uniqueValue":"unique id", "username": "Fons"]
+				let json = ["uniqueValue": "unique id", "username": "Fons"]
 
 				let entity = try! CoreDataEntity.lookupExistingObjectFromJSON(json, managedObjectContext: context)
 				expect(entity).to(beNil())
 			})
 
 			it("should throw when more then one instance is found", closure: {
-				let json = ["uniqueValue":"1"]
-				let _ = try! CoreDataEntity(json:json , managedObjectContext: context)
-				let _ = try! CoreDataEntity(json: json, managedObjectContext: context)
+				let json = ["uniqueValue": "1"]
+				_ = try! CoreDataEntity(json:json, managedObjectContext: context)
+				_ = try! CoreDataEntity(json: json, managedObjectContext: context)
 
-				expect(expression: { try CoreDataEntity.lookupExistingObjectFromJSON(json, managedObjectContext: context)}).to(throwError{ (error) in
+				expect(expression: { try CoreDataEntity.lookupExistingObjectFromJSON(json, managedObjectContext: context)}).to(throwError { (error) in
 					switch error {
 					case MapError.enityShouldBeUniqueForJSON(json: _, typeName: _):
 						break
@@ -74,7 +74,7 @@ class CoreDataEntitySpec: QuickSpec {
 			})
 
 			it("should throw when json does not contain unqique value") {
-				expect(expression: { try CoreDataEntity.lookupExistingObjectFromJSON(["rubbish json":"something"], managedObjectContext: context)}).to(throwError{ (error) in
+				expect(expression: { try CoreDataEntity.lookupExistingObjectFromJSON(["rubbish json": "something"], managedObjectContext: context)}).to(throwError { (error) in
 					switch error {
 					case MapError.jsonHasNoUniqueValue(json: _):
 						break

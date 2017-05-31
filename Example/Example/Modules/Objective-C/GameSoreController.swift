@@ -15,22 +15,22 @@ This class is used to bridge to swift generic classes to fetch and save GameScor
 class GameScoreController: NSObject {
 
     // MARK: - Variables
-    
+
 	let generalErrorDomain = "com.icapps.generalError"
 	let generalErrorCode = 50000
-	let gameScore : GameScore?
-    
+	let gameScore: GameScore?
+
     // MARK: - Init
 
 	override init() {
 		self.gameScore = nil
-        
+
 		super.init()
 	}
-    
+
     // MARK: - Fetching
-	
-	func retrieve(_ completion:@escaping (_ response: [GameScore])->(), failure:((_ error: Error)->())? = nil) {
+
+	func retrieve(_ completion:@escaping (_ response: [GameScore])->Void, failure:((_ error: Error)->Void)? = nil) {
 		do {
 			try Air.fetch(succeed: { (response: [GameScore]) in
 					completion(response)
@@ -39,16 +39,16 @@ class GameScoreController: NSObject {
 						self.transferResponseErrorToNSErrorForError(requestError, failure: failure)
 					}
 			})
-		}catch {
+		} catch {
 			if let failure = failure {
 				self.transferResponseErrorToNSErrorForError(error, failure: failure)
 			}
 		}
 	}
-    
+
     // MARK: - Error handling
 
-	fileprivate func transferResponseErrorToNSErrorForError(_ error: Error, failure:((Error) ->())){
+	fileprivate func transferResponseErrorToNSErrorForError(_ error: Error, failure: ((Error) ->Void)) {
 		//TODO: Split and unit test this better and complete
 		guard let error = error as? RequestError else {
 			failure(generalError())

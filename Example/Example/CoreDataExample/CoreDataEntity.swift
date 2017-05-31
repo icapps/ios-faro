@@ -30,7 +30,7 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 
 	// MARK: - Parsable
 
-	func toDictionary()-> NSDictionary? {
+	func toDictionary() -> NSDictionary? {
 		return ["uniqueValue": uniqueValue!, "username": username!]
 	}
 
@@ -68,7 +68,7 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 			throw ResponseError.generalWithResponseJSON(statuscode: 1000, responseJSON: json)
 		}
 
-		guard let managedObjectContext = managedObjectContext else  {
+		guard let managedObjectContext = managedObjectContext else {
 			return nil
 		}
 
@@ -85,9 +85,8 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 		return MitigatorDefault()
 	}
 
-	//MARK: - Transfromable
+	// MARK: - Transfromable
 	class func transform() -> TransformJSON {
 		return TransformCoreData()
 	}
 }
-

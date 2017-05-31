@@ -39,7 +39,7 @@ class SwiftViewController: UIViewController {
 		}
 	}
 
-	func doCoreDataExample()  {
+	func doCoreDataExample() {
 		do {
 			let coreDataEntity = try CoreDataEntity(json: ["uniqueValue": "something fun"])
 			coreDataEntity.username = "Fons"
@@ -53,23 +53,22 @@ class SwiftViewController: UIViewController {
 			try Air.fetch(succeed: { (response: [CoreDataEntity]) in
 				print("🎉 fetched CoreDataEntities: \(response)")
 			})
-		}catch {
+		} catch {
 			print("💣 \(error)")
 		}
 	}
 
-	func doStoreJSONExample (){
+	func doStoreJSONExample () {
 		do {
-			try Air.fetch(succeed: { (response: [GameScoreStore]) in
+			try Air.fetch(succeed: { (_: [GameScoreStore]) in
 				print("🎉 fetched 'GameScoreStore' objects")
 				print("Go take a look at the JSON file")
 				print("1. Go to appliction bundle")
 				print("2. Go to documents folder")
 			})
-		}catch {
+		} catch {
 			print("💣 [doStoreJSONExample] error: \(error)")
 		}
 	}
-	
-}
 
+}
