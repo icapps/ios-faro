@@ -33,7 +33,7 @@ open class MitigatorDefault: Mitigator, ResponseMitigatable, RequestMitigatable 
 		}catch ResponseError.invalidResponseData(let data){
 			try invalidResponseData(data)
 		}catch ResponseError.invalidDictionary(dictionary: let dict) {
-			try invalidDictionary(dict)
+			_ = try invalidDictionary(dict)
 		} catch ResponseError.responseError(error: let error) {
 			try responseError(error)
 		}catch ResponseError.general(statuscode: let code) {
@@ -81,7 +81,7 @@ open class MitigatorDefault: Mitigator, ResponseMitigatable, RequestMitigatable 
 	}
 
 	open func responseError(_ error: Error?) throws {
-		print("💣 Request failed with error \(error)")
+		print("💣 Request failed with error \(error ?? ResponseError.general(statuscode: 1000))")
 		throw ResponseError.responseError(error: error)
 	}
 

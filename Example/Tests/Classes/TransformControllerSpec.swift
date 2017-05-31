@@ -28,7 +28,7 @@ class MockModel: UniqueAble, Mitigatable, Parsable {
             let identifier = json["identifier"] as? String {
             self.uniqueValue = identifier
 		} else {
-			throw ResponseError.InvalidDictionary(dictionary: json)
+			throw ResponseError.invalidDictionary(dictionary: json)
 		}
     }
     
@@ -126,7 +126,7 @@ class TransformJSONSpec: QuickSpec {
                     XCTFail("Should not complete") 
                 })}.to(throwError(closure: { (error) in
                     let error = error as Error
-                    expect(error.code).to(equal(3840))
+                    expect(error._code).to(equal(3840))
                 }))
             }
 
@@ -146,7 +146,7 @@ class TransformJSONSpec: QuickSpec {
                     XCTFail("Should not complete") 
                 })}.to(throwError(closure: { (error) in
 					switch error {
-					case ResponseError.InvalidDictionary(dictionary: _):
+					case ResponseError.invalidDictionary(dictionary: _):
 						break
 					default :
 						XCTFail("Should not be error of type \(error)")
@@ -170,7 +170,7 @@ class TransformJSONSpec: QuickSpec {
                                         XCTFail("Should not complete")
                 })}.to(throwError(closure: { (error) in
                     let error = error as Error
-                    expect(error.code).to(equal(3840))
+                    expect(error._code).to(equal(3840))
                 }))
             }
 

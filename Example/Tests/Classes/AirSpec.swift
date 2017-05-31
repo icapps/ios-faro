@@ -27,7 +27,7 @@ class AirSpec: QuickSpec {
 					})
 				}.to(throwError { (error) in
 					switch error {
-						case ResponseError.InvalidResponseData(_):
+						case ResponseError.invalidResponseData(_):
 							break
 						default:
 							XCTFail("Should not throw \(error)")

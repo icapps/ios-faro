@@ -44,8 +44,8 @@ open class TransformAndStoreCoreData<Rivet: EnvironmentConfigurable>: TransformC
 
 private func toFile(_ data: Data, contextPath: String) throws {
 	let file = getDocumentsDirectory().appendingPathComponent("\(contextPath).json")
-	let jsonString = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as! String
-	try jsonString.write(toFile: file, atomically: false, encoding: String.Encoding.utf8)
+	let jsonString = String(data: data, encoding: .utf8)
+	try jsonString?.write(toFile: file, atomically: false, encoding: String.Encoding.utf8)
 }
 
 private func getDocumentsDirectory() -> NSString {

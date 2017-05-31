@@ -26,18 +26,18 @@ class MitigatorDefaultSpec: QuickSpec {
 			it("should rethrow request errors") {
 				expect {
                     try mitigator.mitigate {
-                        throw RequestError.InvalidBody
+                        throw RequestError.invalidBody
                     }
                 }.to(throwError(closure: { (error) in
-					expect(error).to(matchError(RequestError.InvalidBody))
+					expect(error).to(matchError(RequestError.invalidBody))
 				}))
 
 				expect {
                     try mitigator.mitigate {
-                        throw RequestError.General
+                        throw RequestError.general
                     }
                 }.to(throwError(closure: { (error) in
-					expect(error).to(matchError(RequestError.General))
+					expect(error).to(matchError(RequestError.general))
 				}))
 			}
 
@@ -46,11 +46,11 @@ class MitigatorDefaultSpec: QuickSpec {
                 it("should throw invalid response data error") {
                     expect {
                         try mitigator.mitigate {
-                            throw ResponseError.InvalidResponseData(data: nil)
+                            throw ResponseError.invalidResponseData(data: nil)
                         }
                     }.to(throwError(closure: { (error) in
                         switch error {
-                        case ResponseError.InvalidResponseData(_):
+                        case ResponseError.invalidResponseData(_):
                             break
                         default:
                             XCTFail("Should not throw \(error)")
@@ -61,11 +61,11 @@ class MitigatorDefaultSpec: QuickSpec {
                 it("should throw invalid dictionary error") {
                     expect {
                         try mitigator.mitigate {
-                            throw ResponseError.InvalidDictionary(dictionary: ["bla": "bla"])
+                            throw ResponseError.invalidDictionary(dictionary: ["bla": "bla"])
                         }
                     }.to(throwError(closure: { (error) in
                         switch error {
-                        case ResponseError.InvalidDictionary(dictionary: _):
+                        case ResponseError.invalidDictionary(dictionary: _):
                             break
                         default:
                             XCTFail("Should not throw \(error)")
@@ -76,11 +76,11 @@ class MitigatorDefaultSpec: QuickSpec {
                 it("should throw invalid response error") {
                     expect {
                         try mitigator.mitigate {
-                            throw ResponseError.ResponseError(error: nil)
+                            throw ResponseError.responseError(error: nil)
                         }
                     }.to(throwError(closure: { (error) in
                         switch error {
-                        case ResponseError.ResponseError(error: _):
+                        case ResponseError.responseError(error: _):
                             break
                         default:
                             XCTFail("Should not throw \(error)")
@@ -91,11 +91,11 @@ class MitigatorDefaultSpec: QuickSpec {
 				it("should throw general error with code and json") {
 					expect {
 						try mitigator.mitigate {
-							throw ResponseError.GeneralWithResponseJSON(statuscode: 0, responseJSON: ["":""])
+							throw ResponseError.generalWithResponseJSON(statuscode: 0, responseJSON: ["":""])
 						}
 						}.to(throwError(closure: { (error) in
 							switch error {
-							case ResponseError.GeneralWithResponseJSON(statuscode: _ , responseJSON: _):
+							case ResponseError.generalWithResponseJSON(statuscode: _ , responseJSON: _):
 								break
 							default:
 								XCTFail("Did throw wrong error \(error)")
@@ -106,11 +106,11 @@ class MitigatorDefaultSpec: QuickSpec {
 				it("should throw invalid response error") {
 					expect {
 						try mitigator.mitigate {
-							throw ResponseError.General(statuscode: 0)
+							throw ResponseError.general(statuscode: 0)
 						}
 						}.to(throwError(closure: { (error) in
 							switch error {
-							case ResponseError.General(statuscode: _):
+							case ResponseError.general(statuscode: _):
 								break
 							default:
 								XCTFail("Should not throw \(error)")
@@ -124,11 +124,11 @@ class MitigatorDefaultSpec: QuickSpec {
 				it("should throw EnityShouldBeUniqueForJSON") {
 					expect {
 						try mitigator.mitigate {
-							throw MapError.EnityShouldBeUniqueForJSON(json: ["":""], typeName: "Type")
+							throw MapError.enityShouldBeUniqueForJSON(json: ["":""], typeName: "Type")
 						}
 						}.to(throwError(closure: { (error) in
 							switch error {
-							case MapError.EnityShouldBeUniqueForJSON(json: _ , typeName: _):
+							case MapError.enityShouldBeUniqueForJSON(json: _ , typeName: _):
 								break
 							default:
 								XCTFail("Should not throw \(error)")
@@ -139,11 +139,11 @@ class MitigatorDefaultSpec: QuickSpec {
 				it("should throw invalid response data error") {
 					expect {
 						try mitigator.mitigate {
-							throw MapError.JSONHasNoUniqueValue(json: ["":""])
+							throw MapError.jsonHasNoUniqueValue(json: ["":""])
 						}
 						}.to(throwError(closure: { (error) in
 							switch error {
-							case MapError.JSONHasNoUniqueValue(json: _):
+							case MapError.jsonHasNoUniqueValue(json: _):
 								break
 							default:
 								XCTFail("Should not throw \(error)")
@@ -158,7 +158,7 @@ class MitigatorDefaultSpec: QuickSpec {
 				}
 				expect {
                     try mitigator.mitigate {
-                        throw RandomError.Random
+                        throw RandomError.random
                     }
                 }.to(throwError())
 			})

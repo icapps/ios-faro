@@ -32,7 +32,7 @@ class SwiftViewController: UIViewController {
 			})
 
 			try Air.fetchWithUniqueId("pyqCt2ZHWT", succeed: { (response: GameScore) in
-				print("🎉 successfully fetched one object \(response.uniqueValue)")
+				print("🎉 successfully fetched one object \(response.uniqueValue ?? "")")
 			})
 		} catch {
 			print("💣 Error with request \(error)")

@@ -22,8 +22,8 @@ class MockEntityWithErrorMitigator: GameScore {
     }
     
     override func map(_ json: Any) throws  {
-        if let _ = json["wrong"] {
-            throw ResponseError.InvalidDictionary(dictionary: json as! [String : Any])
+		if let json = json as? [String: Any], json["wrong"] != nil {
+            throw ResponseError.invalidDictionary(dictionary: json)
         }else {
 			return try super.map(json)
         }
@@ -36,8 +36,11 @@ class MockEntityWithErrorMitigator: GameScore {
 }
 
 class MockMitigator: MitigatorNoPrinting {
-    override func invalidDictionary(_ dictionary: Any) throws -> Any?{
-        return dictionary["writeNode"]
+    override func invalidDictionary(_ dictionary: Any) throws -> Any? {
+		guard let jsonDict = dictionary as? [String: Any] else {
+			throw ResponseError.generalWithResponseJSON(statuscode: 1000, responseJSON: dictionary)
+		}
+        return jsonDict["writeNode"]
     }
 }
 
@@ -56,7 +59,7 @@ class ResponseSpec: QuickSpec {
 					XCTFail()
                 }, fail: { (error) in
                     switch error {
-                    case ResponseError.InvalidDictionary(dictionary: _):
+                    case ResponseError.invalidDictionary(dictionary: _):
                         break
                     default:
                         XCTFail("Wrong type of error \(error)")

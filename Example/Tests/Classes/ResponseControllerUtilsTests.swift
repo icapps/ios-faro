@@ -16,15 +16,15 @@ import XCTest
 class DummyMitigator: MitigatorDefault {
     
 	override func invalidResponseData(_ data: Data?) throws {
-		throw ResponseError.InvalidResponseData(data: data)
+		throw ResponseError.invalidResponseData(data: data)
     }
     
     override func invalidAuthenticationError() throws {
-        throw ResponseError.InvalidAuthentication
+        throw ResponseError.invalidAuthentication
     }
     
     override func generalError() throws {
-        throw RequestError.General
+        throw RequestError.general
     }
     
 }
@@ -38,7 +38,7 @@ class ResponseUtilsTests: XCTestCase {
 
     func testNoResponseNoError() {
         do {
-            try ResponseUtils.checkStatusCodeAndData( mitigator: errorController)
+            _ = try ResponseUtils.checkStatusCodeAndData( mitigator: errorController)
         }  catch {
             XCTFail("We should not fail when an empty urlResponse is given")
         }
@@ -48,9 +48,9 @@ class ResponseUtilsTests: XCTestCase {
         let url = URL(string: "https://some.url")
         let response = HTTPURLResponse(url:url!, statusCode: 404, httpVersion: nil, headerFields: nil)
         do {
-            try ResponseUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
+            _ = try ResponseUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
             XCTFail("call should fail")
-        } catch ResponseError.InvalidAuthentication {
+        } catch ResponseError.invalidAuthentication {
             XCTAssertTrue(true)
         } catch {
             XCTFail("wrong error type")
@@ -61,9 +61,9 @@ class ResponseUtilsTests: XCTestCase {
         let url = URL(string: "https://some.url")
         let response = HTTPURLResponse(url:url!, statusCode: 310, httpVersion: nil, headerFields: nil)
         do {
-            try ResponseUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
+            _ = try ResponseUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
             XCTFail("call should fail")
-        } catch ResponseError.General(_) {
+        } catch ResponseError.general(_) {
             XCTAssertTrue(true)
         } catch {
             XCTFail("wrong error type \(error)")
@@ -74,9 +74,9 @@ class ResponseUtilsTests: XCTestCase {
         let url = URL(string: "https://some.url")
         let response = HTTPURLResponse(url:url!, statusCode: 200, httpVersion: nil, headerFields: nil)
         do {
-            try ResponseUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
+            _ = try ResponseUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
             XCTFail("call should fail")
-        } catch ResponseError.InvalidResponseData {
+        } catch ResponseError.invalidResponseData {
             XCTAssertTrue(true)
         } catch {
             XCTFail("wrong error type")
@@ -85,12 +85,11 @@ class ResponseUtilsTests: XCTestCase {
     
     func testValidResponse200WithData() {
         let url = URL(string: "https://some.url")
-        var random = NSInteger(arc4random_uniform(99) + 1)
-        let data = Data(bytes: UnsafePointer<UInt8>(&random), count: 3)
-        
+		let data = "dfa".data(using: .utf8)
+
         let response = HTTPURLResponse(url:url!, statusCode: 200, httpVersion: nil, headerFields: nil)
         do {
-            try ResponseUtils.checkStatusCodeAndData(data, urlResponse:response, mitigator: errorController)
+            _ = try ResponseUtils.checkStatusCodeAndData(data, urlResponse:response, mitigator: errorController)
             XCTAssertTrue(true)
         } catch {
             XCTFail("call should not fail")
@@ -99,12 +98,11 @@ class ResponseUtilsTests: XCTestCase {
     
     func testValidResponse201WithData() {
         let url = URL(string: "https://some.url")
-        var random = NSInteger(arc4random_uniform(99) + 1)
-        let data = Data(bytes: UnsafePointer<UInt8>(&random), count: 3)
-        
+		let data = "dfa".data(using: .utf8)
+
         let response = HTTPURLResponse(url:url!, statusCode: 201, httpVersion: nil, headerFields: nil)
         do {
-            try ResponseUtils.checkStatusCodeAndData(data, urlResponse:response, mitigator: errorController)
+            _ = try ResponseUtils.checkStatusCodeAndData(data, urlResponse:response, mitigator: errorController)
             XCTAssertTrue(true)
         } catch {
             XCTFail("call should not fail")

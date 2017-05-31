@@ -46,7 +46,7 @@ class CoreDataEntitySpec: QuickSpec {
 				expect(entity.objectID).to(equal(sameEntity!.objectID))
 
 				let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "CoreDataEntity")
-				let allEntities = try! context.executeFetchRequest(fetch) as! [CoreDataEntity]
+				let allEntities = try! context.fetch(fetch) as! [CoreDataEntity]
 
 				expect(allEntities).to(haveCount(1))
 			}
@@ -65,7 +65,7 @@ class CoreDataEntitySpec: QuickSpec {
 
 				expect(expression: { try CoreDataEntity.lookupExistingObjectFromJSON(json, managedObjectContext: context)}).to(throwError{ (error) in
 					switch error {
-					case MapError.EnityShouldBeUniqueForJSON(json: _, typeName: _):
+					case MapError.enityShouldBeUniqueForJSON(json: _, typeName: _):
 						break
 					default:
 						XCTFail("Should not throw \(error)")
@@ -76,7 +76,7 @@ class CoreDataEntitySpec: QuickSpec {
 			it("should throw when json does not contain unqique value") {
 				expect(expression: { try CoreDataEntity.lookupExistingObjectFromJSON(["rubbish json":"something"], managedObjectContext: context)}).to(throwError{ (error) in
 					switch error {
-					case MapError.JSONHasNoUniqueValue(json: _):
+					case MapError.jsonHasNoUniqueValue(json: _):
 						break
 					default:
 						XCTFail("Should not throw \(error)")

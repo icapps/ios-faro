@@ -28,7 +28,7 @@ class MockEntity: GameScore {
 		guard let
 			dict = json as? [String: Any],
 			let _ = dict["playername"] else  {
-				throw ResponseError.InvalidDictionary(dictionary: json as! [String : Any])
+				throw ResponseError.invalidDictionary(dictionary: json as! [String : Any])
 		}
 	}
 
