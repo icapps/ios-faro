@@ -131,13 +131,13 @@ open class Air {
 	fileprivate class func mockOrPerform <Rivet: Rivetable> (_ mockUrl: String, request: URLRequest,
 	                                  environment: Environment & Mockable,
 	                                  responseController: Response, session: URLSession,
-	                                  succeed:(_ response: Rivet)->(), fail: ((ResponseError)-> Void)?) throws {
+	                                  succeed:@escaping (_ response: Rivet)->(), fail: ((ResponseError)-> Void)?) throws {
 		guard !environment.shouldMock() else {
-//			try mockDataFromUrl(mockUrl, transformController: Rivet.transform(), responseController: responseController, succeed: succeed, fail: fail)
+			try mockDataFromUrl(mockUrl, transformController: Rivet.transform(), responseController: responseController, succeed: succeed, fail: fail)
 			return
 		}
 
-//		performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
+		performAsychonousRequest(request, session: session, responseController: responseController, succeed: succeed, fail: fail)
 	}
 
 	fileprivate class func mockDataFromUrl <Rivet: Rivetable> (_ url: String, transformController: TransformJSON, responseController: Response,
@@ -156,7 +156,7 @@ open class Air {
 		}
 	}
 	
-	fileprivate class func performAsychonousRequest<Rivet: Rivetable> (_ request: URLRequest,
+	fileprivate class func performAsychonousRequest <Rivet: Rivetable> (_ request: URLRequest,
 	                                            session: URLSession, responseController: Response,
 	                                            succeed:@escaping (_ response: Rivet)->(), fail:((ResponseError)->())? = nil ) {
 		let task = session.dataTask(with: request, completionHandler: { (data, response, error) -> Void in
