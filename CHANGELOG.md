@@ -1,5 +1,8 @@
 # AirRivet
 
+## Version 0.6.2
+* swift 3.0 from version 0.5.14. See version changes in that version.
+
 ## Version 0.6.1
 * minor fix
 
@@ -9,6 +12,12 @@
 Breaking changes
 
 * CoreDataFromPopulatedSqlite works with version string to solve problems with update
+
+## Version 0.5.14
+
+* swift 3.0
+
+This may break if but not because of api changes not related to swift 3.0
 
 ## Version 0.5.13
 * CoreDataPopulatedSqlite now throws when you forget to add a sqlite file to the application bundle
