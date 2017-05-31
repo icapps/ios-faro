@@ -22,11 +22,10 @@ enum CoreDataFromPopulatedSQLiteError: Error {
 
 open class CoreDataFromPopulatedSQLite: NSObject {
 
-	var storeType = NSSQLiteStoreType
-	let modelName: String
-	let options = [NSMigratePersistentStoresAutomaticallyOption: true,
-	               NSInferMappingModelAutomaticallyOption: true]
-    let version: String
+	public let modelName: String
+	public let options = [NSMigratePersistentStoresAutomaticallyOption: true,
+	                      NSInferMappingModelAutomaticallyOption: true]
+    public let version: String
     
     /**
      Initialazes a convinience class for dealing with CoreData.

@@ -18,19 +18,13 @@ class CoreDataSQLitePopulatorSpec: QuickSpec {
     
     class MockPopulatorWithSQLite : CoreDataFromPopulatedSQLite {
         override func allModelNameSQLiteFilesInDocumentsFolder() -> [URL]? {
-			guard let url = URL(string: "file:bla/Test.sqlite") else {
-				return nil
-			}
-			return [url]
+			return [URL(fileURLWithPath: "file:bla/\(version)_\(modelName).sqlite")]
         }
     }
     
     class MockPopulatorWithNO_versionPrefix_SQLite : CoreDataFromPopulatedSQLite {
         override func allModelNameSQLiteFilesInDocumentsFolder() -> [URL]? {
-			guard let url = URL(string: "file:bla/Test.sqlite") else {
-				return nil
-			}
-            return [url]
+            return [URL(fileURLWithPath: "file:bla/\(version)_\(modelName).sqlite")]
         }
     }
     
@@ -55,7 +49,7 @@ class CoreDataSQLitePopulatorSpec: QuickSpec {
     override func spec() {
         describe("CoreDataSQLitePopulatorSpec") {
             
-            it("should reuse sqlite of the same version", closure: {
+            fit("should reuse sqlite of the same version", closure: {
                 let populator = MockPopulatorWithSQLite(modelName: "Test", version: "1")
                 
                 expect(populator.reuseSQLite()).to(beTrue())
