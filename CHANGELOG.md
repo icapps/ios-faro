@@ -1,5 +1,11 @@
 # AirRivet
 
+## Version 0.5.14
+
+* swift 3.0
+
+This may break if but not because of api changes not related to swift 3.0
+
 ## Version 0.5.13
 * CoreDataPopulatedSqlite now throws when you forget to add a sqlite file to the application bundle
 *
