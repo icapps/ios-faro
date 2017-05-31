@@ -17,29 +17,37 @@ import AirRivet
 class CoreDataSQLitePopulatorSpec: QuickSpec {
     
     class MockPopulatorWithSQLite : CoreDataFromPopulatedSQLite {
-        override func allModelNameSQLiteFilesInDocumentsFolder() -> [NSURL]? {
-            return [NSURL.fileURLWithPath("file:bla/1_Test.sqlite")]
+        override func allModelNameSQLiteFilesInDocumentsFolder() -> [URL]? {
+			guard let url = URL(string: "file:bla/Test.sqlite") else {
+				return nil
+			}
+			return [url]
         }
     }
     
     class MockPopulatorWithNO_versionPrefix_SQLite : CoreDataFromPopulatedSQLite {
-        override func allModelNameSQLiteFilesInDocumentsFolder() -> [NSURL]? {
-            return [NSURL.fileURLWithPath("file:bla/Test.sqlite")]
+        override func allModelNameSQLiteFilesInDocumentsFolder() -> [URL]? {
+			guard let url = URL(string: "file:bla/Test.sqlite") else {
+				return nil
+			}
+            return [url]
         }
     }
     
     class MockPopulatorNO_SQLiteFiles : CoreDataFromPopulatedSQLite {
-        override func allModelNameSQLiteFilesInDocumentsFolder() -> [NSURL]? {
+        override func allModelNameSQLiteFilesInDocumentsFolder() -> [URL]? {
             return nil
         }
     }
     
     class MockPopulatorWithMultipleSQLiteFiles : CoreDataFromPopulatedSQLite {
-        override func allModelNameSQLiteFilesInDocumentsFolder() -> [NSURL]? {
-            let u1 = NSURL.fileURLWithPath("file:bla/1_Test.sqlite")
-            let u2 = NSURL.fileURLWithPath("file:bla/2_Test.sqlite")
-            let u3 = NSURL.fileURLWithPath("file:bla/3_Test.sqlite")
-            
+        override func allModelNameSQLiteFilesInDocumentsFolder() -> [URL]? {
+            guard let u1 = URL(string: "file:bla/1_Test.sqlite"),
+				  let u2 = URL(string: "file:bla/2_Test.sqlite"),
+				  let u3 = URL(string: "file:bla/3_Test.sqlite") else {
+					return nil
+			}
+
             return [u1, u2, u3]
         }
     }
@@ -82,7 +90,7 @@ class CoreDataSQLitePopulatorSpec: QuickSpec {
             it("should retreive allFiles with modelName") {
                 let files = ["1_modelName.sqlite", "modelName.sqlite", "bla.sqlite"]
                 let modelFiles = files.filter({ (element) -> Bool in
-                    return element.containsString("modelName")
+                    return element.contains("modelName")
                 })
                 
                 expect(modelFiles.count).to(equal(2))

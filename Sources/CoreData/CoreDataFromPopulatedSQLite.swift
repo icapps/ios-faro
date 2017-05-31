@@ -36,9 +36,9 @@ open class CoreDataFromPopulatedSQLite: NSObject {
         
         self.modelName = modelName
         self.version = version
-        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = urls.last!
-        self.sqliteURL = documentsDirectory.URLByAppendingPathComponent("\(version)_\(modelName).sqlite")
+        self.sqliteURL = documentsDirectory.appendingPathComponent("\(version)_\(modelName).sqlite")
         super.init()
 	}
 
@@ -50,8 +50,8 @@ open class CoreDataFromPopulatedSQLite: NSObject {
 	}()
     
     private lazy var managedObjectModel: NSManagedObjectModel = { [unowned self] in
-        let modelURL = NSBundle.mainBundle().URLForResource(self.modelName, withExtension: "momd")!
-        return NSManagedObjectModel(contentsOfURL: modelURL)!
+        let modelURL = Bundle.main.url(forResource: self.modelName, withExtension: "momd")!
+        return NSManagedObjectModel(contentsOf: modelURL)!
         }()
     
     /**
@@ -65,14 +65,14 @@ open class CoreDataFromPopulatedSQLite: NSObject {
         do {
             
             let sqliteURL = try self.usePrefilledSQLLiteFromApplicationBundle()
-            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: sqliteURL, options: self.options)
+            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: sqliteURL as URL, options: self.options)
             
         } catch {
             
-            var dict = [String: AnyObject]()
+            var dict = [String: Any]()
             dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
-            
+
 			dict[NSUnderlyingErrorKey] = error as Error
 			print("Unresolved error")
 			abort()
@@ -82,29 +82,25 @@ open class CoreDataFromPopulatedSQLite: NSObject {
 		return coordinator
 		}()
 
-    private let sqliteURL: NSURL
-    private let fileManager = NSFileManager.defaultManager()
+    private let sqliteURL: URL
+    private let fileManager = FileManager.default
     
     /**
      - returns: Yes of we can reuse the sqlite file in the documents folder.
      */
     
-    public func allModelNameSQLiteFilesInDocumentsFolder () -> [NSURL]? {
+    open func allModelNameSQLiteFilesInDocumentsFolder () -> [URL]? {
         
-        if fileManager.fileExistsAtPath(sqliteURL.path!) {
+        if fileManager.fileExists(atPath: sqliteURL.path) {
             return [sqliteURL]
         } else {
-            let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+            let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
             let documentsDirectory = urls.last!
             do {
-                if let filesNameInDocumentsDirectory: [NSURL] = try fileManager.contentsOfDirectoryAtURL(documentsDirectory, includingPropertiesForKeys: nil, options: .SkipsHiddenFiles) {
+                if let filesNameInDocumentsDirectory: [URL] = try fileManager.contentsOfDirectory(at: documentsDirectory, includingPropertiesForKeys: nil, options: .skipsHiddenFiles) {
                     let files = filesNameInDocumentsDirectory.map{$0}
                     let modelFiles = files.filter({ (element) -> Bool in
-                        if let fileName = element.lastPathComponent{
-                            return fileName.containsString(modelName)
-                        }else {
-                            return false
-                        }
+                        return element.lastPathComponent.contains(modelName)
                     })
                     return modelFiles
                 }
@@ -117,7 +113,7 @@ open class CoreDataFromPopulatedSQLite: NSObject {
         }
     }
     
-    public func reuseSQLite() -> Bool {
+    open func reuseSQLite() -> Bool {
         if let allModelNameSQLiteFiles = allModelNameSQLiteFilesInDocumentsFolder() {
             if allModelNameSQLiteFiles.count == 1 {
                 let filename = allModelNameSQLiteFiles.first?.lastPathComponent
@@ -131,7 +127,7 @@ open class CoreDataFromPopulatedSQLite: NSObject {
                 //Delete all files
                 do {
                     for url in allModelNameSQLiteFiles {
-                        try fileManager.removeItemAtURL(url)
+                        try fileManager.removeItem(at: url)
                         print("😀 delete succeeded")
                     }
                 }catch {
@@ -145,7 +141,7 @@ open class CoreDataFromPopulatedSQLite: NSObject {
         }
     }
     
-	private func usePrefilledSQLLiteFromApplicationBundle() throws -> NSURL  {
+	private func usePrefilledSQLLiteFromApplicationBundle() throws -> URL  {
 		
 		if !reuseSQLite(){
 			print("🗼 moving sqlite database into place for reuse.")
@@ -168,35 +164,6 @@ open class CoreDataFromPopulatedSQLite: NSObject {
 	}
 
 	// MARK: - Core Data Saving support
-
-	open func saveContext () {
-		if managedObjectContext.hasChanges {
-			do {
-				try managedObjectContext.save()
-			} catch {
-    private func usePrefilledSQLLiteFromApplicationBundle() throws -> NSURL  {
-        
-        if !reuseSQLite(){
-            print("🗼 moving sqlite database into place for reuse.")
-            guard let bundleUrl = NSBundle.mainBundle().URLForResource(modelName, withExtension: ".sqlite") else {
-                print("💣 we could not find \(modelName).sqlite in your application bundle. Make sure it is added to the target and in your project.")
-                throw CoreDataFromPopulatedSQLiteError.MissingSQLiteFile(fileName: "\(modelName).sqlite")
-            }
-            
-            do {
-                try fileManager.copyItemAtURL(bundleUrl, toURL: sqliteURL)
-                
-            }catch {
-                print("💣 failed to preload database. Using database without data.")
-                print("💣 error \(error)")
-            }
-        }else {
-            print("🚀We are reusing previous sqlite data")
-        }
-        return sqliteURL
-    }
-    
-    // MARK: - Core Data Saving support
     
     public func saveContext () {
         if managedObjectContext.hasChanges {
