@@ -15,7 +15,7 @@ A mitigator tries to make a problem less servere. This is a default implementati
 - `ResponseMitigatable` -> Try to handle response errors. By default errors are printed and rethrown.
 - `RequestMitigatable` -> Try to handle request errors.  By default errors are printed and rethrown.
 */
-public class MitigatorDefault: Mitigator, ResponseMitigatable, RequestMitigatable {
+open class MitigatorDefault: Mitigator, ResponseMitigatable, RequestMitigatable {
 
 	public init () {
 		
@@ -23,26 +23,26 @@ public class MitigatorDefault: Mitigator, ResponseMitigatable, RequestMitigatabl
 
 	// MARK: Mitigator
     
-	public func mitigate(thrower: ()throws -> ()) throws  {
+	open func mitigate(_ thrower: ()throws -> ()) throws  {
 		do {
 			try thrower()
-		}catch RequestError.InvalidBody{
+		}catch RequestError.invalidBody{
 			try invalidBodyError()
-		}catch RequestError.General{
+		}catch RequestError.general{
 			try generalError()
-		}catch ResponseError.InvalidResponseData(let data){
+		}catch ResponseError.invalidResponseData(let data){
 			try invalidResponseData(data)
-		}catch ResponseError.InvalidDictionary(dictionary: let dict) {
+		}catch ResponseError.invalidDictionary(dictionary: let dict) {
 			try invalidDictionary(dict)
-		} catch ResponseError.ResponseError(error: let error) {
+		} catch ResponseError.responseError(error: let error) {
 			try responseError(error)
-		}catch ResponseError.General(statuscode: let code) {
+		}catch ResponseError.general(statuscode: let code) {
 			try generalError(code)
-		}catch ResponseError.GeneralWithResponseJSON(statuscode: let code, responseJSON: let json) {
+		}catch ResponseError.generalWithResponseJSON(statuscode: let code, responseJSON: let json) {
 			try generalError(code, responseJSON: json)
-		}catch MapError.EnityShouldBeUniqueForJSON(json: let json, typeName: let typeName) {
+		}catch MapError.enityShouldBeUniqueForJSON(json: let json, typeName: let typeName) {
 			try enityShouldBeUniqueForJSON(json, typeName: typeName)
-		}catch MapError.JSONHasNoUniqueValue(json: let json) {
+		}catch MapError.jsonHasNoUniqueValue(json: let json) {
 			try jsonHasNoUniqueValue(json)
 		}catch {
 			throw error
@@ -51,59 +51,59 @@ public class MitigatorDefault: Mitigator, ResponseMitigatable, RequestMitigatabl
 
     // MARK: RequestMitigatable
     
-	public func invalidBodyError() throws -> () {
+	open func invalidBodyError() throws -> () {
 		print("-----------Error building up body-----")
-		throw RequestError.InvalidBody
+		throw RequestError.invalidBody
 	}
 
-	public func generalError() throws {
+	open func generalError() throws {
 		print("💣 General request error")
-		throw RequestError.General
+		throw RequestError.general
 	}
 
     
     // MARK: ResponseMitigatable
     
-	public func invalidAuthenticationError() throws {
+	open func invalidAuthenticationError() throws {
 		print("🙃 Authentication error")
-		throw ResponseError.InvalidAuthentication
+		throw ResponseError.invalidAuthentication
 	}
 
-	public func invalidResponseData(data: NSData?) throws {
+	open func invalidResponseData(_ data: Data?) throws {
         print("🤔 Invalid response data")
-        throw ResponseError.InvalidResponseData(data: data)
+        throw ResponseError.invalidResponseData(data: data)
     }
     
 
-	public func invalidDictionary(dictionary: AnyObject) throws -> AnyObject? {
+	open func invalidDictionary(_ dictionary: Any) throws -> Any? {
 		print("🤔 Received invalid dictionary \(dictionary)")
-		throw ResponseError.InvalidDictionary(dictionary: dictionary)
+		throw ResponseError.invalidDictionary(dictionary: dictionary)
 	}
 
-	public func responseError(error: NSError?) throws {
+	open func responseError(_ error: Error?) throws {
 		print("💣 Request failed with error \(error)")
-		throw ResponseError.ResponseError(error: error)
+		throw ResponseError.responseError(error: error)
 	}
 
 
-	public func generalError(statusCode: Int) throws -> (){
+	open func generalError(_ statusCode: Int) throws -> (){
 		print("💣 General response error with statusCode: \(statusCode)")
-		throw ResponseError.General(statuscode: statusCode)
+		throw ResponseError.general(statuscode: statusCode)
 	}
 
 
-	public func generalError(statusCode: Int , responseJSON: AnyObject) throws -> () {
+	open func generalError(_ statusCode: Int , responseJSON: Any) throws -> () {
 		print("💣 General response error with statusCode: \(statusCode) and responseJSON: \(responseJSON)")
-		throw ResponseError.GeneralWithResponseJSON(statuscode: statusCode, responseJSON: responseJSON)
+		throw ResponseError.generalWithResponseJSON(statuscode: statusCode, responseJSON: responseJSON)
 	}
 
-	public func enityShouldBeUniqueForJSON(json: AnyObject, typeName: String) throws {
+	open func enityShouldBeUniqueForJSON(_ json: Any, typeName: String) throws {
 		print("🤔 We should have a unique entity in database for type: \(typeName) and responseJSON: \(json)")
-		throw MapError.EnityShouldBeUniqueForJSON(json: json, typeName: typeName)
+		throw MapError.enityShouldBeUniqueForJSON(json: json, typeName: typeName)
 	}
 
-	public func jsonHasNoUniqueValue(json: AnyObject) throws {
+	open func jsonHasNoUniqueValue(_ json: Any) throws {
 		print("🤔 json should contain a unique value. Received json: \(json)")
-		throw MapError.JSONHasNoUniqueValue(json: json)
+		throw MapError.jsonHasNoUniqueValue(json: json)
 	}
 }

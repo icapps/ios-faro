@@ -15,7 +15,7 @@ import XCTest
 
 class DummyMitigator: MitigatorDefault {
     
-	override func invalidResponseData(data: NSData?) throws {
+	override func invalidResponseData(_ data: Data?) throws {
 		throw ResponseError.InvalidResponseData(data: data)
     }
     
@@ -45,8 +45,8 @@ class ResponseUtilsTests: XCTestCase {
     }
     
     func testAuthenticationError() {
-        let url = NSURL(string: "https://some.url")
-        let response = NSHTTPURLResponse(URL:url!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+        let url = URL(string: "https://some.url")
+        let response = HTTPURLResponse(url:url!, statusCode: 404, httpVersion: nil, headerFields: nil)
         do {
             try ResponseUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
             XCTFail("call should fail")
@@ -58,8 +58,8 @@ class ResponseUtilsTests: XCTestCase {
     }
     
     func testGeneralError() {
-        let url = NSURL(string: "https://some.url")
-        let response = NSHTTPURLResponse(URL:url!, statusCode: 310, HTTPVersion: nil, headerFields: nil)
+        let url = URL(string: "https://some.url")
+        let response = HTTPURLResponse(url:url!, statusCode: 310, httpVersion: nil, headerFields: nil)
         do {
             try ResponseUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
             XCTFail("call should fail")
@@ -71,8 +71,8 @@ class ResponseUtilsTests: XCTestCase {
     }
     
     func testValidResponseNoData() {
-        let url = NSURL(string: "https://some.url")
-        let response = NSHTTPURLResponse(URL:url!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+        let url = URL(string: "https://some.url")
+        let response = HTTPURLResponse(url:url!, statusCode: 200, httpVersion: nil, headerFields: nil)
         do {
             try ResponseUtils.checkStatusCodeAndData(urlResponse:response, mitigator: errorController)
             XCTFail("call should fail")
@@ -84,11 +84,11 @@ class ResponseUtilsTests: XCTestCase {
     }
     
     func testValidResponse200WithData() {
-        let url = NSURL(string: "https://some.url")
+        let url = URL(string: "https://some.url")
         var random = NSInteger(arc4random_uniform(99) + 1)
-        let data = NSData(bytes: &random, length: 3)
+        let data = Data(bytes: UnsafePointer<UInt8>(&random), count: 3)
         
-        let response = NSHTTPURLResponse(URL:url!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+        let response = HTTPURLResponse(url:url!, statusCode: 200, httpVersion: nil, headerFields: nil)
         do {
             try ResponseUtils.checkStatusCodeAndData(data, urlResponse:response, mitigator: errorController)
             XCTAssertTrue(true)
@@ -98,11 +98,11 @@ class ResponseUtilsTests: XCTestCase {
     }
     
     func testValidResponse201WithData() {
-        let url = NSURL(string: "https://some.url")
+        let url = URL(string: "https://some.url")
         var random = NSInteger(arc4random_uniform(99) + 1)
-        let data = NSData(bytes: &random, length: 3)
+        let data = Data(bytes: UnsafePointer<UInt8>(&random), count: 3)
         
-        let response = NSHTTPURLResponse(URL:url!, statusCode: 201, HTTPVersion: nil, headerFields: nil)
+        let response = HTTPURLResponse(url:url!, statusCode: 201, httpVersion: nil, headerFields: nil)
         do {
             try ResponseUtils.checkStatusCodeAndData(data, urlResponse:response, mitigator: errorController)
             XCTAssertTrue(true)

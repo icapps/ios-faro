@@ -30,10 +30,10 @@ class GameScoreController: NSObject {
     
     // MARK: - Fetching
 	
-	func retrieve(completion:(response: [GameScore])->(), failure:((error: NSError)->())? = nil) {
+	func retrieve(_ completion:@escaping (_ response: [GameScore])->(), failure:((_ error: Error)->())? = nil) {
 		do {
 			try Air.fetch(succeed: { (response: [GameScore]) in
-					completion(response: response)
+					completion(response)
 				}, fail: { (requestError) in
 					if let failure = failure {
 						self.transferResponseErrorToNSErrorForError(requestError, failure: failure)
@@ -48,7 +48,7 @@ class GameScoreController: NSObject {
     
     // MARK: - Error handling
 
-	private func transferResponseErrorToNSErrorForError(error: ErrorType, failure:((NSError) ->())){
+	fileprivate func transferResponseErrorToNSErrorForError(_ error: Error, failure:((Error) ->())){
 		//TODO: Split and unit test this better and complete
 		guard let error = error as? RequestError else {
 			failure(generalError())
@@ -56,14 +56,14 @@ class GameScoreController: NSObject {
 		}
 
 		switch error {
-		case .General :
+		case .general :
 			failure(generalError())
 		default:
 			failure(generalError())
 		}
 	}
 
-	private func generalError() -> NSError {
-		return NSError(domain: "\(generalErrorDomain)" , code: generalErrorCode, userInfo: ["message": "general error"])
+	fileprivate func generalError() -> Error {
+		return RequestError.general
 	}
 }

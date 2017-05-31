@@ -32,17 +32,17 @@ class MockGameScore: GameScore {
 		return "gameScoreArray"
 	}
 
-	override class func environment() -> protocol<Environment, Mockable> {
+	override class func environment() -> Environment & Mockable {
 		return Mock()
 	}
 
 	// MARK: - Mitigatable
 
-	class override func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+	class override func responseMitigator() -> ResponseMitigatable & Mitigator {
 		return MitigatorNoPrinting()
 	}
 
-	class override func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
+	class override func requestMitigator() -> RequestMitigatable & Mitigator {
 		return MitigatorNoPrinting()
 	}
 }

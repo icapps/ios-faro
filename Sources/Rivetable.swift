@@ -19,12 +19,12 @@ public protocol Mitigatable: class {
 	By returning an error controller you can handle parsing errors.
 	- returns: By default an implementation of `MitigatorDefault` is returned via a protocol extension
 	*/
-	static func responseMitigator() -> protocol<ResponseMitigatable, Mitigator>
+	static func responseMitigator() -> ResponseMitigatable & Mitigator
 	/**
 	If an error happens while constructing an entity this error controller could handle the error if needed.
 	 - returns: By default an implementation of `MitigatorDefault` is returned via a protocol extension
 	*/
-	static func requestMitigator()-> protocol<RequestMitigatable, Mitigator>
+	static func requestMitigator()-> RequestMitigatable & Mitigator
 }
 
 /**
@@ -42,13 +42,13 @@ public protocol Parsable {
 	- throws: errors when managedObjectContext of json are not usable to initialize a `Parsable` instance
 	*/
 
-	init(json: AnyObject, managedObjectContext: NSManagedObjectContext?) throws
+	init(json: Any, managedObjectContext: NSManagedObjectContext?) throws
 
 	/**
 	Set all properties from the data
-	- throws : `ResponseError.InvalidDictionary(dictionary: AnyObject)`
+	- throws : `ResponseError.InvalidDictionary(dictionary: Any)`
 	*/
-	func map(json: AnyObject) throws
+	func map(_ json: Any) throws
 
 	/**
 	From a dictionary containing properties of the object
@@ -73,7 +73,7 @@ public protocol Parsable {
 	*/
 	static func managedObjectContext() -> NSManagedObjectContext?
 
-	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) throws -> Self?
+	static func lookupExistingObjectFromJSON(_ json: Any, managedObjectContext: NSManagedObjectContext?) throws -> Self?
 }
 
 /**
@@ -91,7 +91,7 @@ public protocol Transformable {
 
 public protocol EnvironmentConfigurable {
 
-	static func environment() ->  protocol<Environment, Mockable>
+	static func environment() ->  Environment & Mockable
 
 	/**
 	* An url is formed from <ServiceParameter.serverURL+BaseModel.contextPath>.
@@ -109,4 +109,4 @@ public protocol UniqueAble {
 /**
 An `Air` should be able to build up a request when your model object complies to the protocols below.
 */
-public typealias Rivetable = protocol<UniqueAble, EnvironmentConfigurable, Parsable, Mitigatable, Transformable>
+public typealias Rivetable = UniqueAble & EnvironmentConfigurable & Parsable & Mitigatable & Transformable

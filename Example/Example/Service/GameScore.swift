@@ -27,7 +27,7 @@ class GameScore: NSObject, Rivetable {
     
     // MARK: - Init
 
-	required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = GameScore.managedObjectContext()) throws {
+	required init(json: Any, managedObjectContext: NSManagedObjectContext? = GameScore.managedObjectContext()) throws {
 		super.init()
 		try self.map(json)
 	}
@@ -42,8 +42,8 @@ class GameScore: NSObject, Rivetable {
 		]
 	}
 
-	func map(json: AnyObject) throws {
-		if let json = json as? [String: AnyObject] {
+	func map(_ json: Any) throws {
+		if let json = json as? [String: Any] {
 			if let uniqueValue = json["objectId"] as? String {
 				self.uniqueValue = uniqueValue
 			}
@@ -58,7 +58,7 @@ class GameScore: NSObject, Rivetable {
 				self.playerName = playerName
 			}
 		}else {
-			throw ResponseError.InvalidDictionary(dictionary: json)
+			throw ResponseError.invalidDictionary(dictionary: json)
 		}
 	}
 
@@ -66,17 +66,17 @@ class GameScore: NSObject, Rivetable {
 		return nil
 	}
 
-	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) -> Self? {
+	static func lookupExistingObjectFromJSON(_ json: Any, managedObjectContext: NSManagedObjectContext?) -> Self? {
 		return nil
 	}
 
 	// MARK: - Mitigatable
 	
-	class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+	class func responseMitigator() -> ResponseMitigatable & Mitigator {
 		return MitigatorDefault()
 	}
 
-	class func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
+	class func requestMitigator() -> RequestMitigatable & Mitigator {
 		return MitigatorDefault()
 	}
 
@@ -86,7 +86,7 @@ class GameScore: NSObject, Rivetable {
 		return "GameScore"
 	}
 
-	class func environment()-> protocol<Environment, Mockable> {
+	class func environment()-> Environment & Mockable {
 		return EnvironmentParse<GameScore>()
 	}
 

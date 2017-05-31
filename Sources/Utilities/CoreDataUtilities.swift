@@ -18,22 +18,21 @@ Fetch a unique entity in core data or nil if no entity can be found. We look for
 - parameter uniqueValueKey: key to use to validate uniqueness.
 */
 
-public func fetchInCoreDataFromJSON<T: NSManagedObject>(json: AnyObject, managedObjectContext: NSManagedObjectContext, entityName: String, uniqueValueKey: String) throws -> T? {
+public func fetchInCoreDataFromJSON<T: NSManagedObject>(_ json: [String: Any], managedObjectContext: NSManagedObjectContext, entityName: String, uniqueValueKey: String) throws -> T? {
 
 	guard let value = json[uniqueValueKey] as? String else {
-		throw MapError.JSONHasNoUniqueValue(json: json)
+		throw MapError.jsonHasNoUniqueValue(json: json)
 	}
 
-	let fetchrequest = NSFetchRequest(entityName: entityName)
+	let fetchrequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
 	let predicate = NSPredicate(format: "uniqueValue == %@", value)
 	fetchrequest.predicate = predicate
 
-	if let entities = try managedObjectContext.executeFetchRequest(fetchrequest) as? [T] {
-		if !entities.isEmpty && entities.count == 1 {
-			return autocast(entities.first)
+	if let entities = try managedObjectContext.fetch(fetchrequest) as? [T] {
+		if !entities.isEmpty && entities.count == 1, let firstEntity = entities.first {
+			return firstEntity
 		}else if entities.count > 1  {
-			let name =  typeName(T)
-			throw MapError.EnityShouldBeUniqueForJSON(json: json, typeName: name)
+			throw MapError.enityShouldBeUniqueForJSON(json: json, typeName: "\(T.self)")
 		}else {
 			return nil
 		}

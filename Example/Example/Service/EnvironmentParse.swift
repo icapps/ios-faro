@@ -11,14 +11,14 @@ import AirRivet
 /**
 This is an example implementation of the protocol `Environment`. 
 */
-public class EnvironmentParse <Rivet: EnvironmentConfigurable>: Environment, Mockable {
+open class EnvironmentParse <Rivet: EnvironmentConfigurable>: Environment, Mockable {
     
     // MARK: - Environment
     
-	public var serverUrl = "https://api.parse.com/1/classes/"
-	public var request: NSMutableURLRequest {
-		let URL = NSURL(string: "\(serverUrl)\(Rivet.contextPath())")
-		let request = NSMutableURLRequest(URL: URL!)
+	open var serverUrl = "https://api.parse.com/1/classes/"
+	open var request: NSMutableURLRequest {
+		let url = URL(string: "\(serverUrl)\(Rivet.contextPath())")
+		let request = NSMutableURLRequest(url: url!)
 
 		// Set the custom authorization headers.
 		request.addValue("oze24xbiOCeIdsM11C6MXK2RMLunOmoAWQ5VB6XZ", forHTTPHeaderField: "X-Parse-REST-API-Key")
@@ -30,7 +30,7 @@ public class EnvironmentParse <Rivet: EnvironmentConfigurable>: Environment, Moc
     
     // MARK: - Mockable
 
-	public func shouldMock() -> Bool {
+	open func shouldMock() -> Bool {
 		return false
 	}
 }

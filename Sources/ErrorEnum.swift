@@ -9,22 +9,22 @@
 import Foundation
 
 
-public enum RequestError: ErrorType {
-	case InvalidBody
-	case InvalidUrl
-	case General
+public enum RequestError: Error {
+	case invalidBody
+	case invalidUrl
+	case general
 }
 
-public enum ResponseError:ErrorType {
-	case InvalidResponseData(data: NSData?)
-	case InvalidDictionary(dictionary: AnyObject)
-	case ResponseError(error: NSError?)
-	case InvalidAuthentication
-	case General(statuscode: Int)
-	case GeneralWithResponseJSON(statuscode: Int, responseJSON: AnyObject)
+public enum ResponseError:Error {
+	case invalidResponseData(data: Data?)
+	case invalidDictionary(dictionary: Any)
+	case responseError(error: Error?)
+	case invalidAuthentication
+	case general(statuscode: Int)
+	case generalWithResponseJSON(statuscode: Int, responseJSON: Any)
 }
 
-public enum MapError: ErrorType {
-	case EnityShouldBeUniqueForJSON(json: AnyObject, typeName: String)
-	case JSONHasNoUniqueValue(json: AnyObject)
+public enum MapError: Error {
+	case enityShouldBeUniqueForJSON(json: Any, typeName: String)
+	case jsonHasNoUniqueValue(json: Any)
 }

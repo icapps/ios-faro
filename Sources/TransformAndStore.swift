@@ -13,13 +13,13 @@ import Foundation
 Used to transform data and store the JSON in a JSON file in the documents folder
 */
 
-public class TransformAndStore<Rivet: EnvironmentConfigurable>: TransformJSON {
+open class TransformAndStore<Rivet: EnvironmentConfigurable>: TransformJSON {
 
 	public override init() {
 		super.init()
 	}
 
-	override public func foundationObjectFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject  {
+	override open func foundationObjectFromData(_ data: Data, rootKey: String?, mitigator: ResponseMitigatable) throws -> Any  {
 		try toFile(data, contextPath: Rivet.contextPath())
 		return try super.foundationObjectFromData(data, rootKey: rootKey, mitigator: mitigator)
 	}
@@ -29,27 +29,27 @@ public class TransformAndStore<Rivet: EnvironmentConfigurable>: TransformJSON {
 Simular as `TransformAndStore` but for use with CoreData objects.
 */
 
-public class TransformAndStoreCoreData<Rivet: EnvironmentConfigurable>: TransformCoreData {
+open class TransformAndStoreCoreData<Rivet: EnvironmentConfigurable>: TransformCoreData {
 
 	public override init() {
 		super.init()
 	}
 	
-	override public func foundationObjectFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject  {
+	override open func foundationObjectFromData(_ data: Data, rootKey: String?, mitigator: ResponseMitigatable) throws -> Any  {
 		try toFile(data, contextPath: Rivet.contextPath())
 		return try super.foundationObjectFromData(data, rootKey: rootKey, mitigator: mitigator)
 	}
 
 }
 
-private func toFile(data: NSData, contextPath: String) throws {
-	let file = getDocumentsDirectory().stringByAppendingPathComponent("\(contextPath).json")
-	let jsonString = NSString(data: data, encoding: NSUTF8StringEncoding) as! String
-	try jsonString.writeToFile(file, atomically: false, encoding: NSUTF8StringEncoding)
+private func toFile(_ data: Data, contextPath: String) throws {
+	let file = getDocumentsDirectory().appendingPathComponent("\(contextPath).json")
+	let jsonString = NSString(data: data, encoding: String.Encoding.utf8.rawValue) as! String
+	try jsonString.write(toFile: file, atomically: false, encoding: String.Encoding.utf8)
 }
 
 private func getDocumentsDirectory() -> NSString {
-	let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+	let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
 	let documentsDirectory = paths[0]
-	return documentsDirectory
+	return documentsDirectory as NSString
 }

@@ -9,35 +9,35 @@ import Foundation
 /**
 Use class functions to easily change queue's.
 */
-public class dispatch {
+open class dispatch {
     
-    public class async {
-        public class func bg(block: dispatch_block_t) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), block)
+    open class async {
+        open class func bg(_ block: @escaping ()->()) {
+            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async(execute: block)
         }
         
-        public class func main(block: dispatch_block_t) {
-            dispatch_async(dispatch_get_main_queue(), block)
+        open class func main(_ block: @escaping ()->()) {
+            DispatchQueue.main.async(execute: block)
         }
     }
     
-	public class sync {
-		public class func bg(block: dispatch_block_t) {
-            dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), block)
+	open class sync {
+		open class func bg(_ block: ()->()) {
+            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).sync(execute: block)
         }
         
-        public class func main(block: dispatch_block_t) {
-            if NSThread.isMainThread() {
+        open class func main(_ block: ()->()) {
+            if Thread.isMainThread {
                 block()
             }
             else {
-                dispatch_sync(dispatch_get_main_queue(), block)
+                DispatchQueue.main.sync(execute: block)
             }
         }
     }
     
-    public class func after(seconds: Float,_ block: dispatch_block_t) {
+    open class func after(_ seconds: Float,_ block: @escaping ()->()) {
         let dispatchTime = Int64(seconds * Float(NSEC_PER_SEC))
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, dispatchTime), dispatch_get_main_queue(), block)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(dispatchTime) / Double(NSEC_PER_SEC), execute: block)
     }    
 }

@@ -26,9 +26,9 @@ class StoreUnitTests: CoreDataUnitTest {
 ```
 */
 
-public class CoreDataUnitTest: NSObject {
+open class CoreDataUnitTest: NSObject {
 
-	private let  storeType = NSInMemoryStoreType
+	fileprivate let  storeType = NSInMemoryStoreType
 
 	let modelName: String
 
@@ -36,41 +36,40 @@ public class CoreDataUnitTest: NSObject {
 		self.modelName = modelName
 	}
 
-	public lazy var managedObjectContext: NSManagedObjectContext = {
+	open lazy var managedObjectContext: NSManagedObjectContext = {
 		let coordinator = self.persistentStoreCoordinator
-		var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+		var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 		managedObjectContext.persistentStoreCoordinator = coordinator
 		return managedObjectContext
 	}()
 
-	private lazy var applicationDocumentsDirectory: NSURL = {
-		let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+	fileprivate lazy var applicationDocumentsDirectory: URL = {
+		let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 		return urls.last!
 	}()
 
-	private lazy var managedObjectModel: NSManagedObjectModel = { [unowned self] in
-		let modelURL = NSBundle.mainBundle().URLForResource(self.modelName, withExtension: "momd")!
-		return NSManagedObjectModel(contentsOfURL: modelURL)!
+	fileprivate lazy var managedObjectModel: NSManagedObjectModel = { [unowned self] in
+		let modelURL = Bundle.main.url(forResource: self.modelName, withExtension: "momd")!
+		return NSManagedObjectModel(contentsOf: modelURL)!
 	}()
 
 	/**
 	- returns: persistentStoreCoordinator that does not use caching. This is needed if we want the data to be
 	*/
-	private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {[unowned self] in
+	fileprivate lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {[unowned self] in
 		let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-		let sqliteURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent("\(self.modelName).sqlite")
+		let sqliteURL = self.applicationDocumentsDirectory.appendingPathComponent("\(self.modelName).sqlite")
 		var failureReason = "There was an error creating or loading the application's saved data."
 		do {
 
-			try coordinator.addPersistentStoreWithType(self.storeType, configuration: nil, URL: sqliteURL, options: nil)
+			try coordinator.addPersistentStore(ofType: self.storeType, configurationName: nil, at: sqliteURL, options: nil)
 		} catch {
-			var dict = [String: AnyObject]()
-			dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-			dict[NSLocalizedFailureReasonErrorKey] = failureReason
+			var dict = [String: Any]()
+			dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data" as Any
+			dict[NSLocalizedFailureReasonErrorKey] = failureReason as Any
 
-			dict[NSUnderlyingErrorKey] = error as NSError
-			let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
-			NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
+			dict[NSUnderlyingErrorKey] = error
+			print("Unresolved error \(error)")
 			abort()
 		}
 

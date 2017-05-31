@@ -12,6 +12,10 @@ public enum TransformType: String {
 	case JSON = "json"
 }
 
+public enum TransformJSONError: Error {
+	case general
+}
+
 /**
 Transformations of data to an initialized object(s). This implementation expects data to be valid JSON.
 Any Type using these functions should be :
@@ -25,7 +29,7 @@ Any Type using these functions should be :
 
 */
 
-public class TransformJSON {
+open class TransformJSON {
 
 	public init() {
 	}
@@ -34,7 +38,7 @@ public class TransformJSON {
 	- returns: A type of transformer. By default we tranform JSON. But you could provide another to transform any `NSData`.
 	*/
 
-	public func type () -> TransformType {
+	open func type () -> TransformType {
 		return .JSON
 	}
 
@@ -50,7 +54,7 @@ public class TransformJSON {
 	- throws: JSON errors that are not `Mitigatable`
 	*/
 
-	public func transform<Rivet: protocol<Parsable, Mitigatable>>(data: NSData, succeed:(Rivet)->()) throws {
+	open func transform<Rivet: Parsable & Mitigatable>(_ data: Data, succeed: @escaping (Rivet)->()) throws {
 
 		let mitigator = Rivet.responseMitigator()
 
@@ -65,11 +69,11 @@ public class TransformJSON {
 				}
 			}
 
-		}catch ResponseError.InvalidDictionary(dictionary: let dict) {
+		}catch ResponseError.invalidDictionary(dictionary: let dict) {
 			if let correctedDictionary = try mitigator.invalidDictionary(dict) {
 				succeed(try Rivet(json:correctedDictionary, managedObjectContext:  Rivet.managedObjectContext()))
 			}else {
-				throw ResponseError.InvalidDictionary(dictionary: dict)
+				throw ResponseError.invalidDictionary(dictionary: dict)
 			}
 		}catch {
 			throw error
@@ -85,25 +89,25 @@ public class TransformJSON {
 	- throws: JSON errors that are not `Mitigatable`
 	*/
 
-    public func transform<Rivet: protocol<Parsable, Mitigatable>>(data: NSData, succeed:([Rivet])->()) throws{
+    open func transform<Rivet: Parsable & Mitigatable>(_ data: Data, succeed: @escaping ([Rivet])->()) throws{
 
 		let mitigator = Rivet.responseMitigator()
 		try mitigator.mitigate {
 			let json = try self.foundationObjectFromData(data, rootKey: Rivet.rootKey(), mitigator: mitigator)
 
-			if let array = json as? [[String:AnyObject]] {
+			if let array = json as? [[String:Any]] {
 				succeed(try self.dictToArray(array))
-			}else if let json = json as? [String:AnyObject] {
+			}else if let json = json as? [String:Any] {
 				if let entity = try Rivet.lookupExistingObjectFromJSON(json, managedObjectContext: Rivet.managedObjectContext()) {
 					succeed([entity])
 				}else {
-					succeed([try Rivet(json:json, managedObjectContext: Rivet.managedObjectContext())])
+					succeed([try Rivet(json:json as Any, managedObjectContext: Rivet.managedObjectContext())])
 				}
-			}else if let array = json as? [[String:AnyObject]] {
+			}else if let array = json as? [[String:Any]] {
 				succeed(try self.dictToArray(array))
 			}
 			else {
-				throw ResponseError.InvalidDictionary(dictionary: json)
+				throw ResponseError.invalidDictionary(dictionary: json)
 			}
 		}
 	}
@@ -115,37 +119,27 @@ public class TransformJSON {
 	- returns: A Foundation object that can be used while parsing
 	*/
 
-	public func foundationObjectFromData(data: NSData, rootKey: String?, mitigator: ResponseMitigatable) throws -> AnyObject {
+	open func foundationObjectFromData(_ data: Data, rootKey: String?, mitigator: ResponseMitigatable) throws -> Any {
+		let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
 
-		var json: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+		if let rootKey = rootKey,
+		   let json = json as? [String: Any],
+		   let jsonWithoutRoot = json[rootKey] {
 
-		if let
-			rootKey = rootKey,
-			jsonWithoutRoot = json[rootKey]{
-
-			if jsonWithoutRoot == nil {
-				if let correctedJson = try mitigator.invalidDictionary(json) {
-					json = correctedJson
-				}else {
-					throw ResponseError.InvalidDictionary(dictionary: json)
-				}
-
-			}else {
-				json = jsonWithoutRoot!
-			}
+			return jsonWithoutRoot
 		}
 
 		return json
 	}
 
-	private func dictToArray<Rivet: Parsable>(array: [[String:AnyObject]]) throws -> [Rivet] {
+	fileprivate func dictToArray<Rivet: Parsable>(_ array: [[String:Any]]) throws -> [Rivet] {
 		var concreteObjectArray = [Rivet]()
 		for json in array {
 
-			if let entity = try Rivet.lookupExistingObjectFromJSON(json, managedObjectContext: Rivet.managedObjectContext()) {
+			if let entity = try Rivet.lookupExistingObjectFromJSON(json as Any, managedObjectContext: Rivet.managedObjectContext()) {
 				concreteObjectArray.append(entity)
 			}else {
-				concreteObjectArray.append(try Rivet(json:json, managedObjectContext: Rivet.managedObjectContext()))
+				concreteObjectArray.append(try Rivet(json:json as Any, managedObjectContext: Rivet.managedObjectContext()))
 			}
 		}
 		return concreteObjectArray

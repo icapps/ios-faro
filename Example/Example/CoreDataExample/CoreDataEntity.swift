@@ -16,15 +16,15 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 	/**
 	You should override this method. Swift does not inherit the initializers from its superclass.
 	*/
-	override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-		super.init(entity: entity, insertIntoManagedObjectContext: context)
+	override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+		super.init(entity: entity, insertInto: context)
 	}
 
 	// MARK: - Init
 
-	required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = CoreDataEntity.managedObjectContext()) throws {
-		let entity = NSEntityDescription.entityForName("CoreDataEntity", inManagedObjectContext: managedObjectContext!)
-		super.init(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+	required init(json: Any, managedObjectContext: NSManagedObjectContext? = CoreDataEntity.managedObjectContext()) throws {
+		let entity = NSEntityDescription.entity(forEntityName: "CoreDataEntity", in: managedObjectContext!)
+		super.init(entity: entity!, insertInto: managedObjectContext)
 		try self.map(json)
 	}
 
@@ -34,12 +34,15 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 		return ["uniqueValue": uniqueValue!, "username": username!]
 	}
 
-	func map(json: AnyObject) throws {
-		if let uniqueValue = json["uniqueValue"] as? String {
+	func map(_ json: Any) throws {
+		guard let jsonDict = json as? [String: Any] else {
+			throw ResponseError.generalWithResponseJSON(statuscode: 1000, responseJSON: json)
+		}
+		if let uniqueValue = jsonDict["uniqueValue"] as? String {
 			self.uniqueValue = uniqueValue
 		}
 
-		if let username = json["username"] as? String {
+		if let username = jsonDict["username"] as? String {
 			self.username = username
 		}
 	}
@@ -52,7 +55,7 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 		return CoreDataController.sharedInstance.managedObjectContext
 	}
 
-	class func environment() -> protocol<Environment, Mockable> {
+	class func environment() -> Environment & Mockable {
 		return EnvironmentParse<CoreDataEntity>()
 	}
 
@@ -60,22 +63,25 @@ class CoreDataEntity: NSManagedObject, EnvironmentConfigurable, Parsable, Mitiga
 		return "CoreDataEntity"
 	}
 
-	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) throws -> Self? {
+	static func lookupExistingObjectFromJSON(_ json: Any, managedObjectContext: NSManagedObjectContext?) throws -> Self? {
+		guard let jsonDict = json as? [String: Any] else {
+			throw ResponseError.generalWithResponseJSON(statuscode: 1000, responseJSON: json)
+		}
 
 		guard let managedObjectContext = managedObjectContext else  {
 			return nil
 		}
 
-		return autocast(try fetchInCoreDataFromJSON(json, managedObjectContext: managedObjectContext, entityName: "CoreDataEntity", uniqueValueKey: "uniqueValue"))
+		return try fetchInCoreDataFromJSON(jsonDict, managedObjectContext: managedObjectContext, entityName: "CoreDataEntity", uniqueValueKey: "uniqueValue")
 	}
 
 	// MARK: - Mitigatable
 
-	class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+	class func responseMitigator() -> ResponseMitigatable & Mitigator {
 		return MitigatorDefault()
 	}
 
-	class func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
+	class func requestMitigator() -> RequestMitigatable & Mitigator {
 		return MitigatorDefault()
 	}
 

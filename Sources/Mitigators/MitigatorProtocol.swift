@@ -19,7 +19,7 @@ public protocol Mitigator {
 	
 	- parameter thrower: A function used as a wrapper around throwing functions in `Air`, `Response` and `TransformJSON`.
 	*/
-	func mitigate(thrower: ()throws -> ()) throws
+	func mitigate(_ thrower: ()throws -> ()) throws
 }
 
 /**
@@ -35,20 +35,20 @@ Try to handle errors gracefully or rethrow them. The `MitigatorDefault` implemen
 */
 public protocol ResponseMitigatable {
 
-	func invalidResponseData(data: NSData?) throws -> ()
+	func invalidResponseData(_ data: Data?) throws -> ()
 	func invalidAuthenticationError() throws -> ()
-	func responseError(error: NSError?) throws -> ()
-	func generalError(statusCode: Int) throws -> ()
-	func generalError(statusCode: Int , responseJSON: AnyObject) throws -> ()
+	func responseError(_ error: Error?) throws -> ()
+	func generalError(_ statusCode: Int) throws -> ()
+	func generalError(_ statusCode: Int , responseJSON: Any) throws -> ()
 
 	/**
 	Your chance to intercept dictionary data that cannot is irregular. You can fix it and don't trow.
 	- returns : a valid dictionary that can be transformed
 	- throws: When you cannot interpret the dictionary throw an error
 	*/
-	func invalidDictionary(dictionary: AnyObject) throws -> AnyObject?
+	func invalidDictionary(_ dictionary: Any) throws -> Any?
 
-	func enityShouldBeUniqueForJSON(json: AnyObject, typeName: String) throws
+	func enityShouldBeUniqueForJSON(_ json: Any, typeName: String) throws
 }
 
 

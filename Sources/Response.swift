@@ -18,7 +18,7 @@ Errors cause an throw
 ## Pass response to the `TransformJSON`
 Responses are interpretted in the `TransFormController`
 */
-public class Response {
+open class Response {
 
 
 	public init() {
@@ -32,8 +32,8 @@ public class Response {
 	- parameter succeed: Closure called on success
 	- parameter fail: Closure called on failure
 	*/
-	public func respond<Rivet: Rivetable>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil,
-	             succeed: (Rivet)->(), fail:((ResponseError)->())?) {
+	open func respond<Rivet: Rivetable>(_ data: Data?, urlResponse: URLResponse? = nil, error: Error? = nil,
+	             succeed: @escaping (Rivet)->(), fail: ((ResponseError)->())?) {
 
 		do {
 			let mitigator = Rivet.responseMitigator()
@@ -57,8 +57,8 @@ public class Response {
 	- parameter succeed: Closure called on success
 	- parameter fail: Closure called on failure
 	*/
-	public func respond<Rivet: Rivetable>(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, entity: Rivet? = nil,
-	             succeed: ([Rivet])->(),  fail:((ResponseError)->())?){
+	open func respond<Rivet: Rivetable>(_ data: Data?, urlResponse: URLResponse? = nil, error: Error? = nil, entity: Rivet? = nil,
+	             succeed: @escaping ([Rivet])->(),  fail:((ResponseError)->())?){
 
 		do {
 			let mitigator = Rivet.responseMitigator()
@@ -74,7 +74,7 @@ public class Response {
 	}
 
 	//MARK: Private
-	private func checkErrorAndReturnValidData(data: NSData?, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponseMitigatable, fail:((ResponseError)->())?) throws -> NSData?{
+	fileprivate func checkErrorAndReturnValidData(_ data: Data?, urlResponse: URLResponse? = nil, error: Error? = nil, mitigator: ResponseMitigatable, fail:((ResponseError)->())?) throws -> Data?{
 
 		guard  error == nil else {
 			respondWithfail(error!, fail: fail, mitigator: mitigator)
@@ -86,27 +86,27 @@ public class Response {
 		return data
 	}
 
-	private func respondWithfail(error: ErrorType ,fail:((ResponseError) ->())?) {
+	fileprivate func respondWithfail(_ error: Error ,fail:((ResponseError) ->())?) {
 		if let responseError = error as? ResponseError {
 			fail?(responseError)
 		}else {
 			print("💣 failed response with error: \(error)")
-			fail?(ResponseError.General(statuscode: 0))
+			fail?(ResponseError.general(statuscode: 0))
 		}
 	}
-	private func respondWithfail(taskError: NSError ,fail:((ResponseError) ->())?, mitigator: ResponseMitigatable) {
+	fileprivate func respondWithfail(_ taskError: Error ,fail:((ResponseError) ->())?, mitigator: ResponseMitigatable) {
 		print("---Error request failed with error: \(taskError)----")
 		do {
 			try mitigator.responseError(taskError)
 		}catch {
-			fail?(ResponseError.ResponseError(error: taskError))
+			fail?(ResponseError.responseError(error: taskError))
 		}
 	}
 }
 
 internal class ResponseUtils {
-	class func checkStatusCodeAndData(data: NSData? = nil, urlResponse: NSURLResponse? = nil, error: NSError? = nil, mitigator: ResponseMitigatable) throws -> NSData? {
-        if let httpResponse = urlResponse as? NSHTTPURLResponse {
+	class func checkStatusCodeAndData(_ data: Data? = nil, urlResponse: URLResponse? = nil, error: Error? = nil, mitigator: ResponseMitigatable) throws -> Data? {
+        if let httpResponse = urlResponse as? HTTPURLResponse {
             
             let statusCode = httpResponse.statusCode
 
@@ -118,7 +118,7 @@ internal class ResponseUtils {
             guard 200...201 ~= statusCode else {
 				if let data = data{
 					do {
-						let json = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+						let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
 						try mitigator.generalError(statusCode, responseJSON: json)
 					}catch {
 						print("🤔 Received some response data for error but it is no JSON.")

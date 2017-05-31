@@ -13,53 +13,53 @@ Use this for instance in tests to disable printing. This is a subclass from `Mit
 It has the same throwing behaviour but does not print.
 */
 
-public class MitigatorNoPrinting: MitigatorDefault {
+open class MitigatorNoPrinting: MitigatorDefault {
 
 	// MARK: RequestMitigatable
 
-	public override func invalidBodyError() throws -> () {
-		throw RequestError.InvalidBody
+	open override func invalidBodyError() throws -> () {
+		throw RequestError.invalidBody
 	}
 
-	public override func generalError() throws {
-		throw RequestError.General
+	open override func generalError() throws {
+		throw RequestError.general
 	}
 
 
 	// MARK: ResponseMitigatable
 
-	public override func invalidAuthenticationError() throws {
-		throw ResponseError.InvalidAuthentication
+	open override func invalidAuthenticationError() throws {
+		throw ResponseError.invalidAuthentication
 	}
 
-	public override func invalidResponseData(data: NSData?) throws {
-		throw ResponseError.InvalidResponseData(data: data)
-	}
-
-
-	public override func invalidDictionary(dictionary: AnyObject) throws -> AnyObject? {
-		throw ResponseError.InvalidDictionary(dictionary: dictionary)
-	}
-
-	public override func responseError(error: NSError?) throws {
-		throw ResponseError.ResponseError(error: error)
+	open override func invalidResponseData(_ data: Data?) throws {
+		throw ResponseError.invalidResponseData(data: data)
 	}
 
 
-	public override func generalError(statusCode: Int) throws -> (){
-		throw ResponseError.General(statuscode: statusCode)
+	open override func invalidDictionary(_ dictionary: Any) throws -> Any? {
+		throw ResponseError.invalidDictionary(dictionary: dictionary)
+	}
+
+	open override func responseError(_ error: Error?) throws {
+		throw ResponseError.responseError(error: error)
 	}
 
 
-	public override func generalError(statusCode: Int , responseJSON: AnyObject) throws -> () {
-		throw ResponseError.GeneralWithResponseJSON(statuscode: statusCode, responseJSON: responseJSON)
+	open override func generalError(_ statusCode: Int) throws -> (){
+		throw ResponseError.general(statuscode: statusCode)
 	}
 
-	public override func enityShouldBeUniqueForJSON(json: AnyObject, typeName: String) throws {
-		throw MapError.EnityShouldBeUniqueForJSON(json: json, typeName: typeName)
+
+	open override func generalError(_ statusCode: Int , responseJSON: Any) throws -> () {
+		throw ResponseError.generalWithResponseJSON(statuscode: statusCode, responseJSON: responseJSON)
 	}
 
-	public override func jsonHasNoUniqueValue(json: AnyObject) throws {
-		throw MapError.JSONHasNoUniqueValue(json: json)
+	open override func enityShouldBeUniqueForJSON(_ json: Any, typeName: String) throws {
+		throw MapError.enityShouldBeUniqueForJSON(json: json, typeName: typeName)
+	}
+
+	open override func jsonHasNoUniqueValue(_ json: Any) throws {
+		throw MapError.jsonHasNoUniqueValue(json: json)
 	}
 }

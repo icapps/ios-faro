@@ -5,15 +5,15 @@
 /**
 Use this to print the type name
 */
-public func typeName(some: Any) -> String {
-	return (some is Any.Type) ? "\(some)" : "\(some.dynamicType)"
+public func typeName(_ some: Any) -> String {
+	return (some is Any.Type) ? "\(some)" : "\(type(of: (some) as Any))"
 }
 
 /**
 Cast the argument to the infered function return type.
 
 */
-public func autocast<T>(x: Any) -> T {
+public func autocast<T>(_ x: Any) -> T {
 	return x as! T
 }
 

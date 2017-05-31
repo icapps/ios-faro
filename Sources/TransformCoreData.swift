@@ -14,11 +14,11 @@ Because Core Data is not thread safe we have to provide a class that can handle 
 You could provide a class that performs operations on the background queue here. For now we only dispatch to the main queue.
 */
 
-public class TransformCoreData: TransformJSON {
+open class TransformCoreData: TransformJSON {
 
 
-	public override func transform<Rivet: protocol<Parsable, Mitigatable>>(data: NSData, succeed:(Rivet)->()) throws {
-		dispatch.async.main { 
+	open override func transform<Rivet: Parsable & Mitigatable>(_ data: Data, succeed: @escaping (Rivet)->()) throws {
+		dispatch.async.main {
 			do {
 				try super.transform(data, succeed: succeed)
 			}catch {
@@ -27,7 +27,7 @@ public class TransformCoreData: TransformJSON {
 		}
 	}
 
-	public override func transform<Rivet : protocol<Parsable, Mitigatable>>(data: NSData, succeed: ([Rivet]) -> ()) throws {
+	open override func transform<Rivet: Parsable & Mitigatable>(_ data: Data, succeed: @escaping ([Rivet])->()) throws {
 		dispatch.async.main {
 			do {
 				try super.transform(data, succeed: succeed)

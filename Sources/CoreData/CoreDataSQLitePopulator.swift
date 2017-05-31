@@ -15,7 +15,7 @@ import CoreData
 Creates a sqlite store named `modelName.sqlite` that can be found in the application bundle documents folder.
 */
 
-public class CoreDataSQLitePopulator: NSObject {
+open class CoreDataSQLitePopulator: NSObject {
 
 	var storeType = NSSQLiteStoreType
 	let modelName: String
@@ -30,45 +30,44 @@ public class CoreDataSQLitePopulator: NSObject {
 		super.init()
 	}
 
-	public lazy var managedObjectContext: NSManagedObjectContext = {
+	open lazy var managedObjectContext: NSManagedObjectContext = {
 		let coordinator = self.persistentStoreCoordinator
-		var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+		var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 		managedObjectContext.persistentStoreCoordinator = coordinator
 		return managedObjectContext
 	}()
 
-	private lazy var applicationDocumentsDirectory: NSURL = {
+	fileprivate lazy var applicationDocumentsDirectory: URL = {
 
-		let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+		let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 		return urls[urls.count-1]
 	}()
 
-	private lazy var managedObjectModel: NSManagedObjectModel = { [unowned self] in
-		let modelURL = NSBundle.mainBundle().URLForResource(self.modelName, withExtension: "momd")!
-		return NSManagedObjectModel(contentsOfURL: modelURL)!
+	fileprivate lazy var managedObjectModel: NSManagedObjectModel = { [unowned self] in
+		let modelURL = Bundle.main.url(forResource: self.modelName, withExtension: "momd")!
+		return NSManagedObjectModel(contentsOf: modelURL)!
 	}()
 
 	/**
 	- returns: persistentStoreCoordinator that does not use caching. This is needed if we want the data to be
 	*/
-	private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {[unowned self] in
+	fileprivate lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {[unowned self] in
 		let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-		let sqliteURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent("\(self.modelName).sqlite")
+		let sqliteURL = self.applicationDocumentsDirectory.appendingPathComponent("\(self.modelName).sqlite")
 		var failureReason = "There was an error creating or loading the application's saved data."
 		do {
 
 			let options = [NSMigratePersistentStoresAutomaticallyOption: true,
 			               NSInferMappingModelAutomaticallyOption: true,
-			               NSSQLitePragmasOption:["journal_mode": "DELETE"] ] //NSSQLitePragmasOption to disable core data caching
-			try coordinator.addPersistentStoreWithType(self.storeType, configuration: nil, URL: sqliteURL, options: options)
+			               NSSQLitePragmasOption:["journal_mode": "DELETE"] ] as [String : Any] //NSSQLitePragmasOption to disable core data caching
+			try coordinator.addPersistentStore(ofType: self.storeType, configurationName: nil, at: sqliteURL, options: options)
 		} catch {
-			var dict = [String: AnyObject]()
-			dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-			dict[NSLocalizedFailureReasonErrorKey] = failureReason
+			var dict = [String: Any]()
+			dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data" as Any
+			dict[NSLocalizedFailureReasonErrorKey] = failureReason as Any
 
-			dict[NSUnderlyingErrorKey] = error as NSError
-			let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
-			NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
+			dict[NSUnderlyingErrorKey] = error as Error
+			print("Unresolved error")
 			abort()
 		}
 
@@ -79,13 +78,12 @@ public class CoreDataSQLitePopulator: NSObject {
 
 	// MARK: - Core Data Saving support
 
-	public func saveContext () {
+	open func saveContext () {
 		if managedObjectContext.hasChanges {
 			do {
 				try managedObjectContext.save()
 			} catch {
-				let nserror = error as NSError
-				NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+				NSLog("Unresolved error \(error)")
 				abort()
 			}
 		}

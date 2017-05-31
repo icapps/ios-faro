@@ -20,23 +20,23 @@ class MockEntity: GameScore {
 		return "non existing"
 	}
 
-	override class func environment() -> protocol<Environment, Mockable> {
+	override class func environment() -> Environment & Mockable {
 		return Mock ()
 	}
 
-	override func map(json: AnyObject) throws {
+	override func map(_ json: Any) throws {
 		guard let
-			dict = json as? [String: AnyObject],
-			_ = dict["playername"] else  {
-				throw ResponseError.InvalidDictionary(dictionary: json as! [String : AnyObject])
+			dict = json as? [String: Any],
+			let _ = dict["playername"] else  {
+				throw ResponseError.InvalidDictionary(dictionary: json as! [String : Any])
 		}
 	}
 
-	class override func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+	class override func responseMitigator() -> ResponseMitigatable & Mitigator {
 		return MitigatorNoPrinting()
 	}
 
-	class override func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
+	class override func requestMitigator() -> RequestMitigatable & Mitigator {
 		return MitigatorNoPrinting()
 	}
 }
@@ -47,15 +47,15 @@ CoreData entity mock. You should provide a managedObjectContext in your Spec
 
 class MockCoreDataEntity: CoreDataEntity {
 
-	override class func environment() -> protocol<Environment, Mockable> {
+	override class func environment() -> Environment & Mockable {
 		return Mock()
 	}
 
-	class override func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+	class override func responseMitigator() -> ResponseMitigatable & Mitigator {
 		return MitigatorNoPrinting()
 	}
 
-	class override func requestMitigator() -> protocol<RequestMitigatable, Mitigator> {
+	class override func requestMitigator() -> RequestMitigatable & Mitigator {
 		return MitigatorNoPrinting()
 	}
 

@@ -18,14 +18,14 @@ class MockModel: UniqueAble, Mitigatable, Parsable {
     
     var uniqueValue: String?
 
-	required init(json: AnyObject, managedObjectContext: NSManagedObjectContext? = MockModel.managedObjectContext()) throws {
+	required init(json: Any, managedObjectContext: NSManagedObjectContext? = MockModel.managedObjectContext()) throws {
 		try self.map(json)
 	}
 	
-    func map(json: AnyObject) throws {
+    func map(_ json: Any) throws {
         if let
             json = json as? NSDictionary,
-            identifier = json["identifier"] as? String {
+            let identifier = json["identifier"] as? String {
             self.uniqueValue = identifier
 		} else {
 			throw ResponseError.InvalidDictionary(dictionary: json)
@@ -42,7 +42,7 @@ class MockModel: UniqueAble, Mitigatable, Parsable {
 		return nil
 	}
 
-	static func lookupExistingObjectFromJSON(json: AnyObject, managedObjectContext: NSManagedObjectContext?) -> Self? {
+	static func lookupExistingObjectFromJSON(_ json: Any, managedObjectContext: NSManagedObjectContext?) -> Self? {
 		return nil
 	}
 
@@ -51,11 +51,11 @@ class MockModel: UniqueAble, Mitigatable, Parsable {
 		return "results"
 	}
 
-	class func responseMitigator() -> protocol<ResponseMitigatable, Mitigator> {
+	class func responseMitigator() -> ResponseMitigatable & Mitigator {
 		return MitigatorNoPrinting()
 	}
 
-	class func requestMitigator()-> protocol<RequestMitigatable, Mitigator> {
+	class func requestMitigator()-> RequestMitigatable & Mitigator {
 		return MitigatorNoPrinting()
 	}
 }
@@ -66,7 +66,7 @@ extension MockModel: EnvironmentConfigurable {
 		return "something"
 	}
 	
-	class func environment() -> protocol<Environment, Mockable> {
+	class func environment() -> Environment & Mockable {
 		return Mock()
 	}
     
@@ -76,10 +76,10 @@ extension MockModel: EnvironmentConfigurable {
 
 class TransformJSONSpec: QuickSpec {
     
-	private func loadDataFromUrl(url: String) throws -> NSData? {
+	fileprivate func loadDataFromUrl(_ url: String) throws -> Data? {
 		guard
-			let path = NSBundle.mainBundle().pathForResource(url, ofType: "json"),
-			let data = NSData(contentsOfFile: path) else {
+			let path = Bundle.main.path(forResource: url, ofType: "json"),
+			let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else {
 				XCTFail("problem loading json")
 				return nil
 		}
@@ -90,7 +90,7 @@ class TransformJSONSpec: QuickSpec {
     
     override func spec() {
         let transformController = TransformJSON()
-        var data = NSData()
+        var data = Data()
         
         describe("TransformJSON") {
 
@@ -120,12 +120,12 @@ class TransformJSONSpec: QuickSpec {
 
             it("should throw error at transform with wrong data") {
                 var random = NSInteger(arc4random_uniform(99) + 1)
-                data = NSData(bytes: &random, length: 3)
+                data = NSData(bytes: &random, length: 3) as Data
                 
                 expect { try transformController.transform(data, succeed: { (model : MockModel) in
                     XCTFail("Should not complete") 
                 })}.to(throwError(closure: { (error) in
-                    let error = error as NSError
+                    let error = error as Error
                     expect(error.code).to(equal(3840))
                 }))
             }
@@ -164,12 +164,12 @@ class TransformJSONSpec: QuickSpec {
             
             it("should throw error at transform an array with wrong data") {
                 var random = NSInteger(arc4random_uniform(99) + 1)
-                data = NSData(bytes: &random, length: 3)
+                data = NSData(bytes: &random, length: 3) as Data
                 
                 expect { try transformController.transform(data, succeed: { (model : [MockModel]) in
                                         XCTFail("Should not complete")
                 })}.to(throwError(closure: { (error) in
-                    let error = error as NSError
+                    let error = error as Error
                     expect(error.code).to(equal(3840))
                 }))
             }
@@ -181,7 +181,7 @@ class TransformJSONSpec: QuickSpec {
 
 					let dict = [key: value]
 
-					let jsonData = try! NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+					let jsonData = try! JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
 
 					let json = try! transformController.foundationObjectFromData(jsonData, rootKey: nil, mitigator: MitigatorDefault()) as! [String:String]
 

@@ -16,11 +16,11 @@ Use the `CoreDataPopulator` to create the _sqlite_ file with `modelName`.
 
 */
 
-enum CoreDataFromPopulatedSQLiteError: ErrorType {
-	case MissingSQLiteFile(fileName: String)
+enum CoreDataFromPopulatedSQLiteError: Error {
+	case missingSQLiteFile(fileName: String)
 }
 
-public class CoreDataFromPopulatedSQLite: NSObject {
+open class CoreDataFromPopulatedSQLite: NSObject {
 
 	var storeType = NSSQLiteStoreType
 	let modelName: String
@@ -36,29 +36,29 @@ public class CoreDataFromPopulatedSQLite: NSObject {
 		super.init()
 	}
 
-	public lazy var managedObjectContext: NSManagedObjectContext = {
+	open lazy var managedObjectContext: NSManagedObjectContext = {
 		let coordinator = self.persistentStoreCoordinator
-		var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+		var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 		managedObjectContext.persistentStoreCoordinator = coordinator
 		return managedObjectContext
 	}()
 
 
-	private lazy var applicationDocumentsDirectory: NSURL = {
+	fileprivate lazy var applicationDocumentsDirectory: URL = {
 
-		let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+		let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 		return urls.last!
 	}()
 
-	private lazy var managedObjectModel: NSManagedObjectModel = { [unowned self] in
-		let modelURL = NSBundle.mainBundle().URLForResource(self.modelName, withExtension: "momd")!
-		return NSManagedObjectModel(contentsOfURL: modelURL)!
+	fileprivate lazy var managedObjectModel: NSManagedObjectModel = { [unowned self] in
+		let modelURL = Bundle.main.url(forResource: self.modelName, withExtension: "momd")!
+		return NSManagedObjectModel(contentsOf: modelURL)!
 		}()
 
 	/**
 	- returns: persistentStoreCoordinator with pre filled sqlite.
 	*/
-	private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = { [unowned self] in
+	fileprivate lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = { [unowned self] in
 		let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
 
 		var failureReason = "There was an error creating or loading the application's saved data."
@@ -66,17 +66,16 @@ public class CoreDataFromPopulatedSQLite: NSObject {
 		do {
 
 			let sqliteURL = try self.usePrefilledSQLLiteFromApplicationBundle()
-			try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: sqliteURL, options: self.options)
+			try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: sqliteURL, options: self.options)
 
 		} catch {
 
-			var dict = [String: AnyObject]()
-			dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-			dict[NSLocalizedFailureReasonErrorKey] = failureReason
+			var dict = [String: Any]()
+			dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data" as Any
+			dict[NSLocalizedFailureReasonErrorKey] = failureReason as Any
 
-			dict[NSUnderlyingErrorKey] = error as NSError
-			let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
-			NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
+			dict[NSUnderlyingErrorKey] = error as Error
+			print("Unresolved error")
 			abort()
 
 		}
@@ -84,19 +83,19 @@ public class CoreDataFromPopulatedSQLite: NSObject {
 		return coordinator
 		}()
 
-	private func usePrefilledSQLLiteFromApplicationBundle() throws -> NSURL  {
-		let sqliteURL = self.applicationDocumentsDirectory.URLByAppendingPathComponent("\(modelName).sqlite")
+	fileprivate func usePrefilledSQLLiteFromApplicationBundle() throws -> URL  {
+		let sqliteURL = self.applicationDocumentsDirectory.appendingPathComponent("\(modelName).sqlite")
 
-		let fileManager = NSFileManager.defaultManager()
-		if !fileManager.fileExistsAtPath(sqliteURL.path!){
+		let fileManager = FileManager.default
+		if !fileManager.fileExists(atPath: sqliteURL.path){
 			print("🗼 moving sqlite database into place for reuse.")
-			guard let bundleUrl = NSBundle.mainBundle().URLForResource(modelName, withExtension: ".sqlite") else {
+			guard let bundleUrl = Bundle.main.url(forResource: modelName, withExtension: ".sqlite") else {
 				print("💣 we could not find \(modelName).sqlite in your application bundle. Make sure it is added to the target and in your project.")
-				throw CoreDataFromPopulatedSQLiteError.MissingSQLiteFile(fileName: "\(modelName).sqlite")
+				throw CoreDataFromPopulatedSQLiteError.missingSQLiteFile(fileName: "\(modelName).sqlite")
 			}
 
 			do {
-				try fileManager.copyItemAtURL(bundleUrl, toURL: sqliteURL)
+				try fileManager.copyItem(at: bundleUrl, to: sqliteURL)
 
 			}catch {
 				print("💣 failed to preload database. Using database without data.")
@@ -110,13 +109,12 @@ public class CoreDataFromPopulatedSQLite: NSObject {
 
 	// MARK: - Core Data Saving support
 
-	public func saveContext () {
+	open func saveContext () {
 		if managedObjectContext.hasChanges {
 			do {
 				try managedObjectContext.save()
 			} catch {
-				let nserror = error as NSError
-				NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+				print("Unresolved error \(error)")
 				abort()
 			}
 		}

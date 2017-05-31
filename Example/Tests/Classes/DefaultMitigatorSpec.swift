@@ -153,8 +153,8 @@ class MitigatorDefaultSpec: QuickSpec {
 			})
 
 			it("should throw any other errror", closure: {
-				enum RandomError: ErrorType {
-					case Random
+				enum RandomError: Error {
+					case random
 				}
 				expect {
                     try mitigator.mitigate {

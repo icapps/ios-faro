@@ -45,7 +45,7 @@ class CoreDataEntitySpec: QuickSpec {
 
 				expect(entity.objectID).to(equal(sameEntity!.objectID))
 
-				let fetch = NSFetchRequest(entityName: "CoreDataEntity")
+				let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "CoreDataEntity")
 				let allEntities = try! context.executeFetchRequest(fetch) as! [CoreDataEntity]
 
 				expect(allEntities).to(haveCount(1))
