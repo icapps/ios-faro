@@ -18,10 +18,13 @@ class PostViewController: UIViewController {
                     self.label.text = "Performed call for posts"
                     printBreadcrumb("\(models!.map {"\($0.uuid): \(String(describing: $0.title))"})")
                 default:
-                    printError("Could not perform call for posts")
+                    printError("Could not perform call for posts with error:\n \(result)")
                 }
             }
         }
+
+        let error = FaroError.invalidAuthentication(statusCode: 401, data: "{\"message\":\"Example error print.\"}".data(using: .utf8), call: call)
+        printError(error)
 
         let serviceQueue = ExampleServiceQueue { _ in
             printBreadcrumb("🎉 queued call finished")

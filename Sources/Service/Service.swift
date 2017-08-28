@@ -100,7 +100,7 @@ open class Service {
         }
 
         let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
-            let dataResult = self.handle(data: data, urlResponse: response, error: error) as Result<M>
+            let dataResult = self.handle(call: call, data: data, urlResponse: response, error: error) as Result<M>
             switch dataResult {
             case .data(let data):
                 self.configuration.adaptor.serialize(from: data) { (serializedResult: Result<M>) in
@@ -140,7 +140,7 @@ open class Service {
         }
 
         let task = faroSession.dataTask(with: request, completionHandler: { (data, response, error) in
-            writeResult(self.handleWrite(data: data, urlResponse: response, error: error))
+            writeResult(self.handleWrite(call: writeCall, data: data, urlResponse: response, error: error))
         })
 
         guard autoStart else {
@@ -153,17 +153,17 @@ open class Service {
 
     // MARK: - Handles
 
-    open func handleWrite(data: Data?, urlResponse: URLResponse?, error: Error?) -> WriteResult {
-        if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error) {
+    open func handleWrite(call: Call, data: Data?, urlResponse: URLResponse?, error: Error?) -> WriteResult {
+        if let faroError = raisesFaroError(call: call, data: data, urlResponse: urlResponse, error: error) {
             return .failure(faroError)
         }
 
         return .ok
     }
 
-    open func handle<M: Deserializable>(data: Data?, urlResponse: URLResponse?, error: Error?) -> Result<M> {
+    open func handle<M: Deserializable>(call: Call, data: Data?, urlResponse: URLResponse?, error: Error?) -> Result<M> {
 
-        if let faroError = raisesFaroError(data: data, urlResponse: urlResponse, error: error) {
+        if let faroError = raisesFaroError(call: call, data: data, urlResponse: urlResponse, error: error) {
             return .failure(faroError)
         }
 
@@ -240,7 +240,7 @@ open class Service {
 
 extension Service {
 
-    fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?)-> FaroError? {
+    fileprivate func raisesFaroError(call: Call, data: Data?, urlResponse: URLResponse?, error: Error?)-> FaroError? {
         guard error == nil else {
             let returnError = FaroError.nonFaroError(error!)
             printFaroError(returnError)
@@ -248,20 +248,20 @@ extension Service {
         }
 
         guard let httpResponse = urlResponse as? HTTPURLResponse else {
-            let returnError = FaroError.networkError(0, data: data)
+            let returnError = FaroError.networkError(statusCode: 0, data: data, call: call)
             printFaroError(returnError)
             return returnError
         }
 
         let statusCode = httpResponse.statusCode
         guard statusCode < 400 else {
-            let returnError = FaroError.networkError(statusCode, data: data)
+            let returnError = FaroError.networkError(statusCode: statusCode, data: data, call: call)
             printFaroError(returnError)
             return returnError
         }
 
         guard 200...204 ~= statusCode else {
-            let returnError = FaroError.networkError(statusCode, data: data)
+            let returnError = FaroError.networkError(statusCode: statusCode, data: data, call: call)
             printFaroError(returnError)
             return returnError
         }

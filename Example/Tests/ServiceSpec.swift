@@ -156,11 +156,11 @@ class ServiceSpec: QuickSpec {
             context("error cases") {
                 it("HttpError when statuscode > 400") {
                     let response =  HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: 404, httpVersion: nil, headerFields: nil)
-                    let result = service.handle(data: nil, urlResponse: response, error: nil) as Result<MockModel>
+                    let result = service.handle(call: Call(path: ""), data: nil, urlResponse: response, error: nil) as Result<MockModel>
                     switch result {
                     case .failure(let faroError):
                         switch faroError {
-                        case .networkError(let statuscode, data: _ ):
+                        case .networkError(statusCode: let statuscode, data: _, call: _):
                             expect(statuscode) == 404
                             break
                         default:
@@ -175,7 +175,7 @@ class ServiceSpec: QuickSpec {
 
                 it("Fail for NSError") {
                     let nsError = NSError(domain: "tests", code: 101, userInfo: nil)
-                    let result = service.handle(data: nil, urlResponse: nil, error: nsError) as Result<MockModel>
+                    let result = service.handle(call: Call(path: ""), data: nil, urlResponse: nil, error: nsError) as Result<MockModel>
                     switch result {
                     case .failure(let faroError):
                         switch faroError {
@@ -248,7 +248,7 @@ class ServiceSpec: QuickSpec {
 class ExpectResponse {
     static func statusCode(_ statusCode: Int, data: Data? = nil, service: Service) {
         let response = HTTPURLResponse(url: URL(string: "http://www.test.com")!, statusCode: statusCode, httpVersion: nil, headerFields: nil)
-        let result = service.handle(data: data, urlResponse: response, error: nil) as Result<MockModel>
+        let result = service.handle(call: Call(path: ""), data: data, urlResponse: response, error: nil) as Result<MockModel>
         if let data = data {
             switch result {
             case .data(_):
