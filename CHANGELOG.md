@@ -1,5 +1,10 @@
 # Faro
 
+## Version 1.1
+!! Warning !! small breaking change in FaroError
+* All FaroErrors return data ans statuscode
+* More printable FaroErrors
+ 
 ## Version 1.0.14
 * Parameter booleans and values added to inspect a Parameters
 
