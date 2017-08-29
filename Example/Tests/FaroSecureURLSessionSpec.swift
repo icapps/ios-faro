@@ -8,9 +8,9 @@ import Nimble
 
 class RetryFaroSecureURLSession: FaroSecureURLSession, HTTPURLResponseRetryable {
 
-	func shouldRetry(_ response: HTTPURLResponse) -> Bool {
-		return true
-	}
+    func shouldRetry(data: Data?, response: HTTPURLResponse, error: Error?) -> Bool {
+        return true
+    }
 
 	func makeRequestValidforRetry(failedRequest: URLRequest,
 	                              after httpResponse: HTTPURLResponse,
@@ -56,7 +56,7 @@ class FaroSecureURLSessionSpec: QuickSpec {
 
 			it("should retry and count") {
 
-				expect(session.shouldRetry(httpResponse)) == true
+                expect(session.shouldRetry(data: nil, response: httpResponse, error: nil)) == true
 				expect(session.retryCountTuples.map {$0.count}) == []
 
 				session.handleRetry(data: nil, httpResponse: httpResponse, for: testRequest, completionHandler: {(_, _, _) in }, task: { (_) in
