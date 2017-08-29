@@ -168,7 +168,7 @@ class CallSpec: QuickSpec {
 						if let data = body(.jsonNode(bodyJson), method: .PUT) {
 							let jsonDict = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
 
-							expect(jsonDict?.keys.flatMap {$0}) == ["a string", "a number"]
+                            expect(jsonDict?.keys.flatMap {$0}.sorted(by: >)) == ["a string", "a number"]
 						} else {
 							XCTFail()
 						}
@@ -181,7 +181,7 @@ class CallSpec: QuickSpec {
 						if let data = body(.jsonNode(bodyJson), method: .POST) {
 							let jsonDict = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
 
-							expect(jsonDict?.keys.flatMap {$0}) == ["a string", "a number"]
+							expect(jsonDict?.keys.flatMap {$0}.sorted(by: >)) == ["a string", "a number"]
 						} else {
 							XCTFail()
 						}

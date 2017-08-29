@@ -10,7 +10,7 @@ import Foundation
 
 public protocol HTTPURLResponseRetryable {
 
-	func shouldRetry(_ response: HTTPURLResponse) -> Bool
+    func shouldRetry(data: Data?, response: HTTPURLResponse, error: Error?) -> Bool
 
 	/// Make the request valid again based on the response
 	/// If it is not possible you can throw any error and it will be printed.
