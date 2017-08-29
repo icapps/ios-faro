@@ -39,7 +39,7 @@ class DeserializeCreateFunctionSpec: QuickSpec {
 				expect {
 					let set: Set<String> = try create("key", from: ["key": ["String", "String 2"]])
 					let array = Array(set)
-					expect(array) == ["String 2", "String"]
+					expect(array.sorted(by: >)) == ["String 2", "String"]
 					return true
 				}.toNot(throwError())
 			}
