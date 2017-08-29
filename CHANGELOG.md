@@ -1,5 +1,10 @@
 # Faro
 
+## Version 2.2
+!! Warning minor breaking change !!
+
+* If you use `HTTPURLResponseRetryable` you should implement the protocol again. Data and error are added as parameters.
+
 ## Version 2.1.0
 * added ability to use a body with urlComponents encoding
 
