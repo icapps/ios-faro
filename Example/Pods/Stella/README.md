@@ -119,6 +119,24 @@ printError("This is an error.")
 printQuestion("This is a question")
 // The debug console will print `❓ This is an question.`
 ```
+#### Throws to print
+
+You can pass functions as paramters. We use this to give an arbitrary function to a print function. This function can throw inside the function but not outside. If the function you provide throws an error a print happens like in the example above.
+Important is that you change the `()` to `{}` to indicate that you are passing a function. *(Also called thrailing closure)*.
+
+```swift
+// Example error
+
+enum PrintError: Error {
+  case serious(message: String)
+}
+```
+```swift
+printThrowAsError { throw PrintError.serious(message: "Something went horribly wrong!")}
+// The debug console will print `🔥 PrintError.serious(message: Something went horribly wrong!).`
+```
+Rest of the prints works like the 'normal' prints that use `()`.
+
 #### Print Levels
 
 You can simply specify print levels like:
