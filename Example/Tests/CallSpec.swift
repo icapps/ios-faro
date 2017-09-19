@@ -142,8 +142,11 @@ class CallSpec: QuickSpec {
 
                 let headers = allHTTPHeaderFields(.httpHeader(["Accept-Language": "en-US",
                                                                                   "Accept-Charset": "utf-8"]))
-                expect(headers.keys).to(contain("Accept-Language"))
-                expect(headers.values).to(contain("utf-8"))
+                let keys = Array(headers.keys)
+                let values = Array(headers.values)
+
+                expect(keys).to(contain("Accept-Language"))
+                expect(values).to(contain("utf-8"))
             }
 
             context("\(Parameter.urlComponentsInURL(["": ""]))") {
