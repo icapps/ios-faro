@@ -10,14 +10,18 @@ target 'Faro_Example' do
 
   target 'Faro_Tests' do
 	  pod 'Quick',   '~> 1.1.0'
-	  pod 'Nimble', '~> 5.0.0'
+	  pod 'Nimble', '~> 7.0.0'
   end
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['SWIFT_VERSION'] = '4.0'
+        if target.name == 'Faro'
+            config.build_settings['SWIFT_VERSION'] = '4.0'
+        else
+            config.build_settings['SWIFT_VERSION'] = '3.2'
+        end
     end
   end
 end

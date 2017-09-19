@@ -27,7 +27,7 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 			}
 
 			guard let responseRetryableSelf = self as? HTTPURLResponseRetryable else {
-				print("❓ \(self) can implement '\(Faro.HTTPURLResponseRetryable)' and react to specific responses for any task handeld by \(self).")
+				print("❓ \(self) can implement '\(Faro.HTTPURLResponseRetryable.self)' and react to specific responses for any task handeld by \(self).")
 				completionHandler(data, response, error)
 				return
 			}
@@ -79,7 +79,7 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 
 	func handleRetry(data: Data?, httpResponse: HTTPURLResponse, for request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void, task: @escaping (URLSessionDataTask) -> Void, noRetryNeeded: @escaping (FaroError?) -> Void) {
 		guard let responseRetryableSelf = self as? HTTPURLResponseRetryable else {
-			print("❓ \(self) can implement '\(Faro.HTTPURLResponseRetryable)' and react to specific responses for any task handeld by \(self).")
+			print("❓ \(self) can implement '\(Faro.HTTPURLResponseRetryable.self)' and react to specific responses for any task handeld by \(self).")
 			noRetryNeeded(nil)
 			return
 		}
