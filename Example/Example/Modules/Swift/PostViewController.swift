@@ -8,8 +8,9 @@ class PostViewController: UIViewController {
 
 	/// !! It is important to retain the service until you have a result.
 
-	let failingService = Service<Post>(call: Call(path: "bullshit"), deprecatedService:ExampleDeprecatedService())
-	let service = Service<Post>(call: Call(path: "posts"), deprecatedService:ExampleDeprecatedService())
+    let configuration = Configuration(baseURL: "http://jsonplaceholder.typicode.com")
+    let failingService = Service(call: Call(path: "bullshit"), configuration: configuration)
+	let service = Service(call: Call(path: "posts"), configuration: configuration)
 
     override func viewDidLoad() {
         super.viewDidLoad()
