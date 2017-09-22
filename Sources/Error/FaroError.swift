@@ -6,7 +6,7 @@ public enum FaroError: Error, Equatable, CustomDebugStringConvertible {
 
 	case general
 
-    case decodingError(Error, inData: Data, call: Call)
+    case decodingError(DecodingError, inData: Data, call: Call)
 	case invalidUrl(String, call: Call)
 	case invalidResponseData(Data?, call: Call)
 	case invalidAuthentication(call: Call)

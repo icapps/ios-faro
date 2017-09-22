@@ -48,6 +48,18 @@ class Uuid: Decodable, Hashable, Updatable {
     }
 }
 
+extension DecodingError {
+
+    var notFoundKey: String? {
+        switch self {
+        case .keyNotFound(let key, _):
+            return key.stringValue
+        default:
+            return nil
+        }
+    }
+}
+
 class ServiceSpec: QuickSpec {
 
 	override func spec() {
@@ -83,22 +95,23 @@ class ServiceSpec: QuickSpec {
 
 		describe("Error") {
 
-			it("single model for invalid json") {
+			it("single model with invalid json") {
                 let data = """
                     {"bullshit": "mock ok"}
                 """.data(using: .utf8)!
-                let mock = MockSession(data: data, urlResponse: nil, error: nil)
-                let service = Service(call: Call(path: ""), configuration: Configuration(baseURL:""), faroSession: mock)
+
+                let httpResponse =  HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)!
+                let mock = MockSession(data: data, urlResponse: httpResponse, error: nil)
+                let configuration = Configuration(baseURL:"")
+
+                let service = Service(call: Call(path: ""), configuration: configuration, faroSession: mock)
 
 				service.perform(Uuid.self) { resultFunction in
 					expect {try resultFunction()}.to(throwError(closure: { (error) in
 						if let faroError = error as? FaroError {
 							switch faroError {
-                            case .decodingError(let error, inData: let data, call: _):
-                                //TODO
-                                break
-//                                expect(type) == "Uuid"
-//                                expect( (error as? FaroDeserializableError)?.emptyValueKey) == "uuid"
+                            case .decodingError(let error, inData: _, call: _):
+                                expect(error.notFoundKey) == "uuid"
 							default:
 								XCTFail("\(faroError)")
 							}
@@ -123,10 +136,7 @@ class ServiceSpec: QuickSpec {
                         if let faroError = error as? FaroError {
                             switch faroError {
                             case .decodingError(let error, inData: let data, call: _):
-                                //TODO
-                                break
-                                //                                expect(type) == "Uuid"
-                            //                                expect( (error as? FaroDeserializableError)?.emptyValueKey) == "uuid"
+                                expect(error.notFoundKey) == "uuid"
                             default:
                                 XCTFail("\(faroError)")
                             }

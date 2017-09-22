@@ -86,7 +86,7 @@ extension Service {
             complete {
                 do {
                     return  try self.configuration.decoder.decode(M.self, from: returnData)
-                } catch {
+                } catch let error as DecodingError {
                     let error = FaroError.decodingError(error, inData: returnData, call: call)
                     self.handleError(error)
                     throw error

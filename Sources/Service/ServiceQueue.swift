@@ -95,7 +95,7 @@ open class ServiceQueue {
                     strongSelf.cleanupQueue(for: task)
                     strongSelf.shouldCallFinal()
                     return result
-                } catch {
+                } catch let error as DecodingError {
                     let error = FaroError.decodingError(error, inData: returnData, call: call)
                     strongSelf.handleError(error)
                     strongSelf.cleanupQueue(for: task, didFail: true)
