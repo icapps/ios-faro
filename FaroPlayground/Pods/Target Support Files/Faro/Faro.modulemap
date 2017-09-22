@@ -1,6 +1,0 @@
-framework module Faro {
-  umbrella header "Faro-umbrella.h"
-
-  export *
-  module * { export * }
-}

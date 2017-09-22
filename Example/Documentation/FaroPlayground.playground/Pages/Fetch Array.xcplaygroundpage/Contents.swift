@@ -1,4 +1,5 @@
-//: Playground - noun: a place where people can play
+//: [Previous](@previous)
+
 
 import UIKit
 import Faro
@@ -61,7 +62,7 @@ let service = Service(call: call, autoStart: true, configuration: configuration,
 //: > 2. Before any function returns a value something can go wrong. To report back to the caller of the function that something went wrong you have 2 options:
 
 //:     * `return nil` this is ok and very commen. But it does not explaine to the caller what the problem was.
-//:	        ** In our case we do not know for example that nil is returened because the json was missing a required key. In a product request this would be the case when we would delete `name` in the `jsonArray` data. Go ahead and try that out and see what is printed!
+//:            ** In our case we do not know for example that nil is returened because the json was missing a required key. In a product request this would be the case when we would delete `name` in the `jsonArray` data. Go ahead and try that out and see what is printed!
 //:     * `throw` before the function can return `() throw -> Product`. A throw can be a descriptive error.
 //:         * In the example below you can see this in action. A `DecodingError` is thrown with the case `keyMessing` and you can read which one. This is valuable and time saving debugging information.
 
@@ -79,3 +80,6 @@ service.perform([Product].self) { (resultFuntion) in
 }
 //: > !Try to remove the name or points form `jsonArray` an see the error described.
 //:> !! Faro also prints the errors so you should not do this in code !!!
+
+
+//: [Next](@next)
