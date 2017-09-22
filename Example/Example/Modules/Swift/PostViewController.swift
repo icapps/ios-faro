@@ -8,9 +8,10 @@ class PostViewController: UIViewController {
 
 	/// !! It is important to retain the service until you have a result.
 
-    let configuration = Configuration(baseURL: "http://jsonplaceholder.typicode.com")
-    let failingService = Service(call: Call(path: "bullshit"), configuration: configuration)
-	let service = Service(call: Call(path: "posts"), configuration: configuration)
+    let failingService = Service(call: Call(path: "bullshit"),
+                                 configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com"))
+	let service = Service(call: Call(path: "posts"),
+                          configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com"))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,37 +30,33 @@ class PostViewController: UIViewController {
 
 		// Test service queue
 
-        let serviceQueue = ServiceQueue(deprecatedServiceQueue: ExampleDeprecatedServiceQueue { (failedTaks) in
-			printAction("🎉 queued call finished with failedTasks \(String(describing: failedTaks)))")
-        })
+        let serviceQueue = ServiceQueue(Configuration(baseURL: "http://jsonplaceholder.typicode.com")) {
+			printAction("🎉 queued call finished with failedTasks \(String(describing: $0)))")
+        }
 
 		let call = Call(path: "posts")
-		serviceQueue.collection(call: call, autoStart: true) { (resultFunction: () throws -> [Post]) in
-			let posts = try? resultFunction()
-			printAction("ServiceQueue Task 1 finished  \(posts?.count ?? -1)")
-		}
+        serviceQueue.perform([Post].self, call: call, complete: { (resultFunction) in
+            let posts = try? resultFunction()
+            printAction("ServiceQueue Task 1 finished  \(posts?.count ?? -1)")
+        })
 
-		serviceQueue.collection(call: call, autoStart: true) { (resultFunction: () throws -> [Post]) in
-			let posts = try? resultFunction()
-			printAction("ServiceQueue Task 2 finished  \(posts?.count ?? -1)")
-		}
+        serviceQueue.perform([Post].self, call: call, complete: { (resultFunction) in
+            let posts = try? resultFunction()
+            printAction("ServiceQueue Task 2 finished  \(posts?.count ?? -1)")
+        })
 
-		serviceQueue.collection(call: call, autoStart: true) { (resultFunction: () throws -> [Post]) in
-			let posts = try? resultFunction()
-			printAction("ServiceQueue Task 3 finished  \(posts?.count ?? -1)")
-		}
+        serviceQueue.perform([Post].self, call: call, complete: { (resultFunction) in
+            let posts = try? resultFunction()
+            printAction("ServiceQueue Task 3 finished  \(posts?.count ?? -1)")
+        })
 
         serviceQueue.resumeAll()
 
 		// Test failure
 
-		failingService.single {  _ in
-			// should have printed failure
-		}
-
-		failingService.collection {  _ in
-			// should have printed failure
-		}
+        failingService.perform(Post.self) {  _ in
+            // should have printed failure
+        }
     }
 
 }
