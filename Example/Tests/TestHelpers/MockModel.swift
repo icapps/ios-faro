@@ -27,9 +27,8 @@ extension MockModel: Updatable {
         return uuid?.hashValue ?? 0
     }
 
-    static func ==(lhs: MockModel, rhs: MockModel) -> Bool {
+    static func == (lhs: MockModel, rhs: MockModel) -> Bool {
         return lhs.hashValue == rhs.hashValue
     }
-
 
 }

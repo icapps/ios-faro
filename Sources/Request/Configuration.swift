@@ -7,10 +7,12 @@ enum ConfigurationError: Error {
 open class Configuration {
 
     open let decoder: JSONDecoder
-    open var baseURL: String
-
+    open var baseURLString: String
+    open var baseURL: URL? {
+         return URL(string: baseURLString)
+    }
     public init(baseURL: String, decoder: JSONDecoder = JSONDecoder()) {
-        self.baseURL = baseURL
+        self.baseURLString = baseURL
         self.decoder = decoder
     }
     

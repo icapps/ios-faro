@@ -48,18 +48,6 @@ class Uuid: Decodable, Hashable, Updatable {
     }
 }
 
-extension DecodingError {
-
-    var notFoundKey: String? {
-        switch self {
-        case .keyNotFound(let key, _):
-            return key.stringValue
-        default:
-            return nil
-        }
-    }
-}
-
 class ServiceSpec: QuickSpec {
 
 	override func spec() {
@@ -107,19 +95,9 @@ class ServiceSpec: QuickSpec {
                 let service = Service(call: Call(path: ""), configuration: configuration, faroSession: mock)
 
 				service.perform(Uuid.self) { resultFunction in
-					expect {try resultFunction()}.to(throwError(closure: { (error) in
-						if let faroError = error as? FaroError {
-							switch faroError {
-                            case .decodingError(let error, inData: _, call: _):
-                                expect(error.notFoundKey) == "uuid"
-							default:
-								XCTFail("\(faroError)")
-							}
-						} else {
-							XCTFail("\(error)")
-						}
-
-					}))
+					expect {try resultFunction()}.to(throwError {
+                        expect(($0 as? FaroError)?.decodingErrorMissingKey) == "uuid"
+					})
 				}
 			}
 
@@ -132,19 +110,9 @@ class ServiceSpec: QuickSpec {
                 let service = Service(call: Call(path: ""), configuration: configuration, faroSession: mock)
 
 				service.perform([Uuid].self) { resultFunction in
-					expect {try resultFunction()}.to(throwError(closure: { (error) in
-                        if let faroError = error as? FaroError {
-                            switch faroError {
-                            case .decodingError(let error, inData: _, call: _):
-                                expect(error.notFoundKey) == "uuid"
-                            default:
-                                XCTFail("\(faroError)")
-                            }
-                        } else {
-                            XCTFail("\(error)")
-                        }
-
-					}))
+                    expect {try resultFunction()}.to(throwError {
+                        expect(($0 as? FaroError)?.decodingErrorMissingKey) == "uuid"
+					})
 				}
 			}
 

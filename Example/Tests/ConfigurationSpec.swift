@@ -12,7 +12,7 @@ class ConfigurationSpec: QuickSpec {
 
             context("initialisation") {
                 it("should have a baseURL") {
-                    expect(configuration.baseURL).to(equal(expected))
+                    expect(configuration.baseURLString).to(equal(expected))
                 }
             }
         }

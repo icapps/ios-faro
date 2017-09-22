@@ -80,6 +80,19 @@ public enum FaroError: Error, Equatable, CustomDebugStringConvertible {
         }
 
     }
+
+    // MARK - Helpers
+
+    // Returns non nil when the error is a decoding error. The returned value is the missing key.
+    public var decodingErrorMissingKey: String? {
+        switch self {
+        case .decodingError(let error, inData: _, call: _):
+            return error.keyNotFound
+        default:
+            return nil
+        }
+    }
+
 }
 
 public func == (lhs: FaroError, rhs: FaroError) -> Bool {
@@ -97,4 +110,18 @@ public func == (lhs: FaroError, rhs: FaroError) -> Bool {
 	default:
 		return false
 	}
+}
+
+// MARK: - Handy extionsions to Foundation errors
+
+extension DecodingError {
+
+    public var keyNotFound: String? {
+        switch self {
+        case .keyNotFound(let key, _):
+            return key.stringValue
+        default:
+            return nil
+        }
+    }
 }
