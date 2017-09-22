@@ -63,6 +63,8 @@ extension DecodingError {
 class ServiceSpec: QuickSpec {
 
 	override func spec() {
+        let httpResponse =  HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)!
+        let configuration = Configuration(baseURL:"")
 
 		describe("Succes") {
 
@@ -70,8 +72,8 @@ class ServiceSpec: QuickSpec {
                 let data = """
                     {"uuid": "mock ok"}
                 """.data(using: .utf8)!
-				let mock = MockSession(data: data, urlResponse: nil, error: nil)
-                let service = Service(call: Call(path: ""), configuration: Configuration(baseURL:""), faroSession: mock)
+				let mock = MockSession(data: data, urlResponse: httpResponse, error: nil)
+                let service = Service(call: Call(path: ""), configuration: configuration, faroSession: mock)
 
 				service.perform (Uuid.self) { resultFunction in
 					expect {try resultFunction().uuid} == "mock ok"
@@ -83,8 +85,8 @@ class ServiceSpec: QuickSpec {
                     [{"uuid": "mock ok 1"},
                      {"uuid": "mock ok 2"}]
                 """.data(using: .utf8)!
-                let mock = MockSession(data: data, urlResponse: nil, error: nil)
-                let service = Service(call: Call(path: ""), configuration: Configuration(baseURL:""), faroSession: mock)
+                let mock = MockSession(data: data, urlResponse: httpResponse, error: nil)
+                let service = Service(call: Call(path: ""), configuration: configuration, faroSession: mock)
 
 				service.perform ([Uuid].self) { resultFunction in
 					expect {try resultFunction().flatMap {$0.uuid}} == ["mock ok 1", "mock ok 2"]
@@ -100,9 +102,7 @@ class ServiceSpec: QuickSpec {
                     {"bullshit": "mock ok"}
                 """.data(using: .utf8)!
 
-                let httpResponse =  HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)!
                 let mock = MockSession(data: data, urlResponse: httpResponse, error: nil)
-                let configuration = Configuration(baseURL:"")
 
                 let service = Service(call: Call(path: ""), configuration: configuration, faroSession: mock)
 
@@ -128,14 +128,14 @@ class ServiceSpec: QuickSpec {
                     [{"bullshit": "mock ok 1"},
                      {"uuid": "mock ok 2"}]
                 """.data(using: .utf8)!
-                let mock = MockSession(data: data, urlResponse: nil, error: nil)
-                let service = Service(call: Call(path: ""), configuration: Configuration(baseURL:""), faroSession: mock)
+                let mock = MockSession(data: data, urlResponse: httpResponse, error: nil)
+                let service = Service(call: Call(path: ""), configuration: configuration, faroSession: mock)
 
 				service.perform([Uuid].self) { resultFunction in
 					expect {try resultFunction()}.to(throwError(closure: { (error) in
                         if let faroError = error as? FaroError {
                             switch faroError {
-                            case .decodingError(let error, inData: let data, call: _):
+                            case .decodingError(let error, inData: _, call: _):
                                 expect(error.notFoundKey) == "uuid"
                             default:
                                 XCTFail("\(faroError)")
