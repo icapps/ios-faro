@@ -1,6 +1,6 @@
 import Faro
 
-class MockModel: JSONDeserializable {
+class MockModel: Decodable {
     var uuid: String?
 
 	required init(_ raw: [String: Any]) throws {

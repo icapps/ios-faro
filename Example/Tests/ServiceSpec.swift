@@ -14,20 +14,23 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-class Uuid: JSONDeserializable, JSONUpdatable {
+class Uuid: Decodable, Hashable, Updatable {
+
+    typealias M = Uuid
+
 	var uuid: String
 
-	required init(_ raw: [String: Any]) throws {
-		self.uuid = try create("uuid", from: raw)
-	}
+    // MARK: - Hashable
+    var hashValue: Int {return uuid.hashValue}
+    static func == (lhs: Uuid, rhs: Uuid) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
+    
+    func update(_ model: Uuid) throws {
+        uuid = model.uuid
 
-}
+    }
 
-extension Uuid {
-
-	func update(_ raw: [String : Any]) throws {
-		self.uuid = try create("uuid", from: raw)
-	}
 
 }
 
