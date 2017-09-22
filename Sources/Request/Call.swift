@@ -55,7 +55,7 @@ open class Call {
 					try insertMultiPartInBody(with: multipart, request: &request)
 				case .urlComponentsInBody(let components):
 					try insertInBodyAsURLComponents(with: components, request: &request)
-                case .bodyData(let data):
+                case .encodedData(let data):
                     try insertInBody(data: data, request: &request)
 				}
 			} catch {

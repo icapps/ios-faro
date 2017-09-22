@@ -161,7 +161,7 @@ class CallSpec: QuickSpec {
                     //: Change call to include your post
                     let product = Product(name: "Melon", points: 100)
                     if let data = try? JSONEncoder().encode(product),
-                        let httpBody = body(.bodyData(data), method: .POST) {
+                        let httpBody = body(.encodedData(data), method: .POST) {
                         expect(String(data: httpBody, encoding: .utf8)) == "{\"name\":\"Melon\",\"points\":100}"
                     } else {
                         XCTFail()

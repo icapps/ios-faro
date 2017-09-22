@@ -45,11 +45,9 @@ extension Service {
         let call = self.call
 
         guard let request = call.request(with: configuration) else {
-            complete {
-                let error = FaroError.invalidUrl("\(self.configuration.baseURL)/\(call.path)", call: call)
-                self.handleError(error)
-                throw error
-            }
+            let error = FaroError.invalidUrl("\(self.configuration.baseURL)/\(call.path)", call: call)
+            self.handleError(error)
+            complete { throw error }
             return nil
         }
 
@@ -57,10 +55,8 @@ extension Service {
             let error = raisesFaroError(data: data, urlResponse: response, error: error, for: request)
 
             guard error == nil else {
-                complete {
-                    self.handleError(error!)
-                    throw error!
-                }
+                self.handleError(error!)
+                complete { throw error! }
                 return
             }
 
@@ -75,11 +71,9 @@ extension Service {
                 return
             }
             guard let returnData = data else {
-                complete {
-                    let error = FaroError.invalidResponseData(data, call: call)
-                    self.handleError(error)
-                    throw error
-                }
+                let error = FaroError.invalidResponseData(data, call: call)
+                self.handleError(error)
+                complete { throw error }
                 return
             }
 

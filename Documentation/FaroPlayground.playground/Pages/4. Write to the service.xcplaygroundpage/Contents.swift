@@ -9,18 +9,36 @@ import Faro
 struct Product: Encodable {
     let name: String
     let points: Int
+    var encodedData: Data? {
+        let encoder = JSONEncoder()
+        return try? encoder.encode(self)
+    }
+    var jsonDict: [String: Any]? {
+        guard let data = encodedData else {
+            return nil
+        }
+        return try! JSONSerialization.jsonObject(with: data) as? [String: Any]
+    }
 }
-
+//: Service mocking via session
 let configuration = Configuration(baseURL: "http://www.yourServer.com")
-let response = HTTPURLResponse(url: configuration.baseURL!, statusCode: 200, httpVersion: nil, headerFields: nil)
+//: > *Tip:* Try changing the statusCode to see failure handling
+let statusCode = 300
+let response = HTTPURLResponse(url: configuration.baseURL!, statusCode: statusCode, httpVersion: nil, headerFields: nil)
 let session = MockSession(data: nil, urlResponse: response, error: nil)
-//: What you write to the service will be in the body. In this case send with httpMethod 'POST' but 'PUT' or any other httpMethod is similar.
-//: Change call to include your post
+//: Product encoding
 let product = Product(name: "Melon", points: 100)
-let data = try! JSONEncoder().encode(product)
-let call = Call(path: "products/\(product.name)", method: .POST, parameter:[.bodyData(data)])
+let parameters = [Parameter.jsonNode(product.jsonDict!)]
+let call = Call(path: "products", method: .POST, parameter: parameters)
 let service = Service(call: call, configuration: configuration, faroSession: session)
-
-
+//: Use `Service.NoResponseData.self` as the type of the response. This is to allow no response data.
+service.perform(Service.NoResponseData.self) { postSuccess in
+    do {
+        _ = try postSuccess()
+        // Anyting after this will be executed on success
+        print("🐦 message received!")
+    } catch {}
+}
 //: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
+
 

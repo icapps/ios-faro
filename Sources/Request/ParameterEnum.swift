@@ -8,7 +8,7 @@ public enum Parameter: CustomDebugStringConvertible {
 	case jsonArray([[String: Any]])
 	case jsonNode([String: Any])
 	case urlComponentsInBody([String: String])
-    case bodyData(Data)
+    case encodedData(Data)
 
 	// MARK: - To be added to url
 
@@ -46,7 +46,7 @@ public enum Parameter: CustomDebugStringConvertible {
 			return "\(components.map {(key:$0.key, value: $0.value)}.reduce("• .urlComponentsInBody:", {"\($0)\n• \($1)"}))"
 		case .multipart(_):
 			return ".multipart"
-        case .bodyData(let data):
+        case .encodedData(let data):
             do {
                 let json = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
                 let string = String(data: json, encoding: .utf8)
@@ -54,6 +54,7 @@ public enum Parameter: CustomDebugStringConvertible {
             } catch {
                 return "• .bodyData:\n\(String(data: data, encoding: .utf8) ?? "no data")"
             }
+            return "• .bodyData:\n\(String(data: data, encoding: .utf8) ?? "no data")"
 		}
 	}
 

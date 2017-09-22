@@ -51,9 +51,9 @@ public enum FaroError: Error, Equatable, CustomDebugStringConvertible {
                     // ignore
                 }
 
-                return "📡🔥 HTTP error: \(networkError) in \(request) message: \(string)"
+                return "📡🔥 HTTP error: \(networkError)  method: \(request.httpMethod ?? "") in \(request)\ndata: \(string)"
             } else {
-                return "📡🔥 HTTP error: \(networkError) in \(request)"
+                return "📡🔥 HTTP error: \(networkError) method: \(request.httpMethod ?? "") in \(request)"
             }
         case .malformed(let info):
             return "📡🔥 \(info)"
