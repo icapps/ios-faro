@@ -55,7 +55,7 @@ service.perform(ProductService.self) { print((try! $0()).products) }
 /*:
 > **Can we ignore the error** The error can be ignored because it is printed anyway. So if an error from the server does not result in a change in program flow you can just write this and ignore the error.
  */
-//: ### Different naming in the keys used in received JSON
+//: ### Different naming in received JSON
 
 let jsonNestedRenamed = """
 {

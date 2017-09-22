@@ -66,7 +66,7 @@ service.perform([Product].self) { (resultFuntion) in
         let products = try resultFuntion()
         products.forEach { print("🚀 We have \($0)")}
 
-    } catch let error as FaroError where error.decodingErrorMissingKey != nil {
+    } catch let error as ServiceError where error.decodingErrorMissingKey != nil {
         print("Error with missing key \\\(error.decodingErrorMissingKey!)")
     } catch {
         // Any other error might be general

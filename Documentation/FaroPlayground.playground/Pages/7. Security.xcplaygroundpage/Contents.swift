@@ -1,4 +1,4 @@
-//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
+//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous)
 import Faro
 //: # Security
 /*:
@@ -35,4 +35,4 @@ class FaroPlayGroundService: Service {
 
 //: > You can try to make a service on your own that  always uses a secure session like in setupFaroWithSecurity. You can do this with a singleton or without.
 
-//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
+//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous)
