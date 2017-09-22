@@ -16,22 +16,34 @@ import Faro
 
 class Uuid: Decodable, Hashable, Updatable {
 
-    typealias M = Uuid
-
 	var uuid: String
 
+    enum UuidError: Error {
+        case updateError
+    }
     // MARK: - Hashable
     var hashValue: Int {return uuid.hashValue}
     static func == (lhs: Uuid, rhs: Uuid) -> Bool {
         return lhs.uuid == rhs.uuid
     }
-    
-    func update(_ model: Uuid) throws {
-        uuid = model.uuid
 
+    func update(_ model: AnyObject) throws {
+        guard let model = model as? Uuid else {
+            throw Uuid.UuidError.updateError
+        }
+        uuid = model.uuid
     }
 
-
+    func update(array: [AnyObject]) throws {
+        guard let array = array as? [Uuid],
+            let set = Set(array) else {
+            throw Uuid.UuidError.updateError
+        }
+        guard let updateModel = (set.first {$0 == self}) else {
+            return
+        }
+        uuid = updateModel.uuid
+    }
 }
 
 class ServiceSpec: QuickSpec {

@@ -120,7 +120,7 @@ extension Service {
             complete {
                 var serviceModels = Set(try resultFunction())
                 try modelArray.forEach { element in
-                    try element.update(array: serviceModels)
+                    try element.update(array: Array(serviceModels))
                     serviceModels.remove(element)
                 }
                 return

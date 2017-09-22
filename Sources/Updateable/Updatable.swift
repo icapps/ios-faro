@@ -1,9 +1,8 @@
 import Foundation
 
 public protocol Updatable: class, Hashable {
-    associatedtype M: Decodable
 
-	func update<M>(_ model: M) throws
-    func update<M>(array: M) throws
+	func update(_ model: AnyObject) throws
+    func update(array: [AnyObject]) throws
 
 }
