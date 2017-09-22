@@ -27,7 +27,7 @@ open class Service {
 
 	/// Prints the error and throws it
 	/// Possible to override this to have custom behaviour for your app.
-	open func handleError(_ error: FaroError) {
+	open func handleError(_ error: Error) {
 		print(error)
 	}
 
@@ -133,10 +133,9 @@ extension Service {
 
 // MARK: - Global error functions
 
-func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest) -> FaroError? {
+func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest) -> Error? {
     guard error == nil else {
-        let returnError = FaroError.nonFaroError(error!)
-        return returnError
+        return error
     }
 
     guard let httpResponse = urlResponse as? HTTPURLResponse else {

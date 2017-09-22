@@ -145,7 +145,7 @@ open class ServiceQueue {
 
 	/// Prints the error and throws it
 	/// Possible to override this to have custom behaviour for your app.
-	open func handleError(_ error: FaroError) {
+	open func handleError(_ error: Error) {
 		print(error)
 	}
 
@@ -172,7 +172,6 @@ open class ServiceQueue {
 
     private func add(_ task: URLSessionDataTask?) {
         guard let createdTask = task else {
-            print(FaroError.couldNotCreateTask)
             return
         }
         taskQueue.insert(createdTask)

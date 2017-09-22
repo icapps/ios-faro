@@ -18,7 +18,6 @@
 		C012EA4D1CCA5E2700B298D7 /* GET_gameScoreArray.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */; };
 		C012EA501CCA8A5B00B298D7 /* GET_gameScoreArray_1275.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */; };
 		C02ADF801D88243A00FA5B32 /* ConfigurationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */; };
-		C02ADF811D88243A00FA5B32 /* ErrorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */; };
 		C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF781D8823F800FA5B32 /* CallSpec.swift */; };
 		C03281451D76EB590047825C /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* PostViewController.swift */; };
 		C032815F1D77319B0047825C /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815E1D77319B0047825C /* Model.swift */; };
@@ -62,7 +61,6 @@
 		C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray.json; sourceTree = "<group>"; };
 		C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray_1275.json; sourceTree = "<group>"; };
 		C02ADF781D8823F800FA5B32 /* CallSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallSpec.swift; sourceTree = "<group>"; };
-		C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorSpec.swift; sourceTree = "<group>"; };
 		C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationSpec.swift; sourceTree = "<group>"; };
 		C02E5B361F75756E00C8858D /* FaroPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = FaroPlayground.playground; path = ../Documentation/FaroPlayground.playground; sourceTree = "<group>"; };
 		C032815E1D77319B0047825C /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.swift; path = Model/Model.swift; sourceTree = "<group>"; };
@@ -158,7 +156,6 @@
 			children = (
 				C02ADF781D8823F800FA5B32 /* CallSpec.swift */,
 				C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */,
-				C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */,
 				C0D9E9221E6D7197003972DD /* FaroSecureURLSessionSpec.swift */,
 				C05EBF731D4B8E3000B950EB /* Info.plist */,
 				C0514FA31EA90300005409E5 /* ServiceSpec.swift */,
@@ -495,7 +492,6 @@
 			files = (
 				C02ADF801D88243A00FA5B32 /* ConfigurationSpec.swift in Sources */,
 				C0C7E18E1ED2E63200025CEA /* ParameterSpec.swift in Sources */,
-				C02ADF811D88243A00FA5B32 /* ErrorSpec.swift in Sources */,
 				C0514FA51EA90322005409E5 /* ServiceSpec.swift in Sources */,
 				C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */,
 				C0D9E9231E6D7197003972DD /* FaroSecureURLSessionSpec.swift in Sources */,

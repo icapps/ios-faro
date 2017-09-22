@@ -151,7 +151,7 @@ class CallSpec: QuickSpec {
 
                 }
 
-                fit("add from data") {
+                it("add from data") {
                     struct Product: Encodable {
                         let name: String
                         let points: Int
