@@ -46,7 +46,7 @@ class CallSpec: QuickSpec {
 
                 it("should configuration should make up request") {
                     let request = call.request(with: configuration)!
-                    expect(request.url!.absoluteString).to(equal("http://someURL/path"))
+                    expect(request.url?.absoluteString) == "http://someURL/path"
                 }
             }
 
