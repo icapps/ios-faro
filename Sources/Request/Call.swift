@@ -55,6 +55,8 @@ open class Call {
 					try insertMultiPartInBody(with: multipart, request: &request)
 				case .urlComponentsInBody(let components):
 					try insertInBodyAsURLComponents(with: components, request: &request)
+                case .bodyData(let data):
+                    try insertInBody(data: data, request: &request)
 				}
 			} catch {
 				print(error)
@@ -90,6 +92,13 @@ open class Call {
 		}
 		request.httpBody = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
 	}
+
+    private func insertInBody(data: Data, request: inout URLRequest) throws {
+        if request.httpMethod == HTTPMethod.GET.rawValue {
+            throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
+        }
+        request.httpBody = data
+    }
 
 	private func insertInBodyAsURLComponents(with dict: [String: String], request: inout URLRequest) throws {
 		if request.httpMethod == HTTPMethod.GET.rawValue {

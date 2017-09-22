@@ -1,12 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<playground version='6.0' target-platform='ios' display-mode='raw'>
-    <pages>
-        <page name='0. Table of Contents'/>
-        <page name='1. Fetch Data from Array'/>
-        <page name='2. Fetch Data from Single object'/>
-        <page name='3. Handle different JSON formats'/>
-        <page name='4. Update existing object'/>
-        <page name='5. Multi Part Post'/>
-        <page name='6. Security'/>
-    </pages>
-</playground>
+<playground version='6.0' target-platform='ios' display-mode='raw'/>

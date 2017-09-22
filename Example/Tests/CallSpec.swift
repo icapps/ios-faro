@@ -151,6 +151,23 @@ class CallSpec: QuickSpec {
 
                 }
 
+                fit("add from data") {
+                    struct Product: Encodable {
+                        let name: String
+                        let points: Int
+                    }
+
+                    //: What you write to the service will be in the body. In this case send with httpMethod 'POST' but 'PUT' or any other httpMethod is similar.
+                    //: Change call to include your post
+                    let product = Product(name: "Melon", points: 100)
+                    if let data = try? JSONEncoder().encode(product),
+                        let httpBody = body(.bodyData(data), method: .POST) {
+                        expect(String(data: httpBody, encoding: .utf8)) == "{\"name\":\"Melon\",\"points\":100}"
+                    } else {
+                        XCTFail()
+                    }
+                }
+
             }
 
             it("should fail to add JSON into a GET") {

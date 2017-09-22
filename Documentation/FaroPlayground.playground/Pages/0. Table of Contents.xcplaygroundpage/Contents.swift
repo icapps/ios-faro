@@ -8,6 +8,7 @@
  - [Fetch Data from Arrays](1.%20Fetch%20Data%20from%20Array)
  - [Fetch Data from Single object](2.%20Fetch%20Data%20from%20Single%20object)
  - [Handle different JSON formats](3.%20Handle%20different%20JSON%20formats)
+ - [Write to the Service](4.%20Write%20to%20the%20service)
  - [Update existing objects](4.%20Update%20existing%20object)
  - [Multi Part Post](5.%20Multi%20Part%20Post)
  - [Security](6.%20Security)
