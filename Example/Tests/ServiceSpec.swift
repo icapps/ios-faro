@@ -61,7 +61,7 @@ class ServiceSpec: QuickSpec {
 				let mock = MockSession(data: data, urlResponse: nil, error: nil)
                 let service = Service(call: Call(path: ""), configuration: Configuration(baseURL:""), faroSession: mock)
 
-				service.single { resultFunction in
+				service.perform (Uuid.self) { resultFunction in
 					expect {try resultFunction().uuid} == "mock ok"
 				}
 			}
@@ -74,7 +74,7 @@ class ServiceSpec: QuickSpec {
                 let mock = MockSession(data: data, urlResponse: nil, error: nil)
                 let service = Service(call: Call(path: ""), configuration: Configuration(baseURL:""), faroSession: mock)
 
-				service.collection { resultFunction in
+				service.perform ([Uuid].self) { resultFunction in
 					expect {try resultFunction().flatMap {$0.uuid}} == ["mock ok 1", "mock ok 2"]
 				}
 			}
