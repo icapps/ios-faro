@@ -1,4 +1,4 @@
-//: [Table of Contents](Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
+//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
 import Faro
 /*:
  As we did most of the work before this this page will be short. You just have to change the type parameter!
@@ -35,4 +35,5 @@ service.perform(Product.self) {
     }
 }
 
-//: [Table of Contents](Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
+//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
+

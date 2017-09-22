@@ -6,10 +6,11 @@
  We will walk you threw fetching from data from a server.
 
  - [Fetch Data from Arrays](1.%20Fetch%20Data%20from%20Array)
- - [Fetch Data from Single object](2.%20Fetch%20Data%20Single%20Object)
- - [Access Nested Data](Access%20Nested%20Data)
- - [Merging Data from Different Depths](Merge%20Data%20from%20Different%20Depths)
- - [LICENSE](LICENSE)
+ - [Fetch Data from Single object](2.%20Fetch%20Data%20from%20Single%20object)
+ - [Handle different JSON formats](3.%20Handle%20different%20JSON%20formats)
+ - [Update existing objects](4.%20Update%20existing%20object)
+ - [Multi Part Post](5.%20Multi%20Part%20Post)
+ - [Security](6.%20Security)
 
  ****
  [Next](@next)

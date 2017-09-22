@@ -1,4 +1,4 @@
-//: [Table of Contents](Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
+//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
 import UIKit
 import Faro
 //: # Fetch Data from Array
@@ -77,4 +77,4 @@ service.perform([Product].self) { (resultFuntion) in
 //:> !! Faro also prints the errors so you should not do this in code !!!
 
 
-//: [Next](@next)
+//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
