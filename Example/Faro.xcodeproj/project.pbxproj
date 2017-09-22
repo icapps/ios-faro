@@ -64,7 +64,7 @@
 		C02ADF781D8823F800FA5B32 /* CallSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallSpec.swift; sourceTree = "<group>"; };
 		C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorSpec.swift; sourceTree = "<group>"; };
 		C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationSpec.swift; sourceTree = "<group>"; };
-		C02E5B351F75745E00C8858D /* FaroPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = FaroPlayground.playground; path = Documentation/FaroPlayground.playground; sourceTree = "<group>"; };
+		C02E5B361F75756E00C8858D /* FaroPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = FaroPlayground.playground; path = ../Documentation/FaroPlayground.playground; sourceTree = "<group>"; };
 		C032815E1D77319B0047825C /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.swift; path = Model/Model.swift; sourceTree = "<group>"; };
 		C04CFABC1DE48486001C05CF /* PostCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCodable.swift; sourceTree = "<group>"; };
 		C0514FA31EA90300005409E5 /* ServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceSpec.swift; sourceTree = "<group>"; };
@@ -113,7 +113,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
-				C02E5B351F75745E00C8858D /* FaroPlayground.playground */,
+				C02E5B361F75756E00C8858D /* FaroPlayground.playground */,
 				607FACD21AFB9204008FA782 /* Example */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD11AFB9204008FA782 /* Products */,

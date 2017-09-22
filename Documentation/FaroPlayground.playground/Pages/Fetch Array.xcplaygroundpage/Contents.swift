@@ -1,6 +1,4 @@
 //: [Previous](@previous)
-
-
 import UIKit
 import Faro
 
