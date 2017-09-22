@@ -8,8 +8,6 @@ public enum HTTPMethod: String {
 open class Call {
 	open let path: String
 	open let httpMethod: HTTPMethod
-    @available(*, deprecated: 3.0, message: "Since we use native Codable protocol this is no longer needed. Use a Service object like `PostService` in `PostViewController`")
-	open var rootNode: String?
 	open var parameters = [Parameter]()
 
 	fileprivate var request: URLRequest?
@@ -17,21 +15,10 @@ open class Call {
 	/// Initializes Call to retreive object(s) from the server.
 	/// parameter path: the path to point the call too
 	/// parameter method: the method to use for the urlRequest
-	/// parameter rootNode: used to extract JSON in method `rootNode(from:)`.
-	/// parameter serializableModel: the model is put into the body of the request as json.
-	public convenience init<T: Serializable> (path: String, method: HTTPMethod = .POST, rootNode: String? = nil, serializableModel: T) {
-		self.init(path: path, method: method, rootNode: rootNode, parameter: [.jsonNode(serializableModel.json)])
-	}
-
-	/// Initializes Call to retreive object(s) from the server.
-	/// parameter path: the path to point the call too
-	/// parameter method: the method to use for the urlRequest
-	/// parameter rootNode: used to extract JSON in method `rootNode(from:)`.
 	/// parameter parameter: array of parameters to be added to the request when created.
-	public init(path: String, method: HTTPMethod = .GET, rootNode: String? = nil, parameter: [Parameter]? = nil) {
+	public init(path: String, method: HTTPMethod = .GET, parameter: [Parameter]? = nil) {
 		self.path = path
 		self.httpMethod = method
-		self.rootNode = rootNode
 		if let parameters = parameter {
 			self.parameters = parameters
 		}
@@ -49,21 +36,6 @@ open class Call {
 			authenticatableSelf.authenticate(&request)
 		}
 		return request
-	}
-
-	/// Used to begin parsing at the correct `rootnode`.
-	/// Override if you want different behaviour then:
-	/// `{"rootNode": <Any Node>}` `<Any Node> is returned when `rootNode` is set.
-	open func rootNode(from json: Any) -> JsonNode {
-		let json = extractNodeIfNeeded(from: json)
-
-		if let jsonArray = json as? [Any] {
-			return .nodeArray(jsonArray)
-		} else if let json = json as? [String: Any] {
-			return .nodeObject(json)
-		} else {
-			return .nodeNotFound(json: json ?? "")
-		}
 	}
 
 	/// Called when creating a request.
@@ -88,14 +60,6 @@ open class Call {
 				print(error)
 			}
 		}
-	}
-
-	private func extractNodeIfNeeded(from json: Any?) -> Any? {
-		guard  let rootNode = rootNode, let rootedJson = json as? [String: Any] else {
-			return json
-		}
-
-		return rootedJson[rootNode]
 	}
 
 	private func insertInHeaders(with headers: [String: String], request: inout URLRequest) {
@@ -165,7 +129,7 @@ extension Call: CustomDebugStringConvertible {
 
 	public var debugDescription: String {
 		let parameterString: String = parameters.reduce("Parameters", {"\($0)\n\($1)"})
-		return "Call \(request?.url?.absoluteString ?? "")\n• rootNode: \(rootNode ?? "")\n• \(parameterString)"
+		return "Call \(request?.url?.absoluteString ?? "")\n• parameters: \(parameterString)"
 	}
 
 }
