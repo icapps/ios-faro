@@ -4,14 +4,6 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-class Car: Serializable {
-    var uuid: String!
-    var json: [String : Any] {
-        return ["uuid": uuid]
-    }
-
-}
-
 private class AuthorizableCall: Call, Authenticatable {
 	static let fakeHeader = ["Authorization": "super secret stuff"]
 
@@ -24,24 +16,6 @@ private class AuthorizableCall: Call, Authenticatable {
 class CallSpec: QuickSpec {
 
     override func spec() {
-
-        describe("Call .POST with serialize") {
-            let expected = "path"
-            let o1 = Car()
-            o1.uuid = "123"
-            let call = Call(path: expected, method: .POST, serializableModel: o1)
-            let configuration = Faro.Configuration(baseURL: "http://someURL")
-
-            it("should use POST method") {
-                let request = call.request(with: configuration)
-                expect(request!.httpMethod).to(equal("POST"))
-            }
-
-            it("should use Serialize object as parameter in call") {
-                let request = call.request(with:configuration)
-                expect(request?.httpBody).toNot(beNil())
-            }
-        }
 
         describe("Call .POST with parameters") {
             let expected = "path"
