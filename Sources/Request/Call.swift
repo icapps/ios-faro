@@ -2,6 +2,20 @@ public enum HTTPMethod: String {
 	case GET, POST, PUT, DELETE, PATCH
 }
 
+public enum CallError: Error, CustomDebugStringConvertible {
+    case invalidUrl(String, call: Call)
+    case malformed(info: String)
+
+    public var debugDescription: String {
+        switch self {
+        case .invalidUrl(let url):
+            return "📡🔥invalid url: \(url)"
+        case .malformed(let info):
+            return "📡🔥 \(info)"
+        }
+    }
+}
+
 /// Defines a request that will be called in the DeprecatedService
 /// You can add `[Parameter]` to the request and optionally authenticate the request when needed.
 /// Optionally implement `Authenticatable` to make it possible to authenticate requests
@@ -88,28 +102,28 @@ open class Call {
 
 	private func insertInBodyInJson(with json: Any, request: inout URLRequest) throws {
 		if request.httpMethod == HTTPMethod.GET.rawValue {
-			throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
+			throw CallError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
 		}
 		request.httpBody = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
 	}
 
     private func insertInBody(data: Data, request: inout URLRequest) throws {
         if request.httpMethod == HTTPMethod.GET.rawValue {
-            throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
+            throw CallError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
         }
         request.httpBody = data
     }
 
 	private func insertInBodyAsURLComponents(with dict: [String: String], request: inout URLRequest) throws {
 		if request.httpMethod == HTTPMethod.GET.rawValue {
-			throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
+			throw CallError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
 		}
 		request.httpBody = dict.queryParameters.data(using: .utf8)
 	}
 
 	private func insertMultiPartInBody(with multipart: MultipartFile, request: inout URLRequest) throws {
 		guard request.httpMethod != HTTPMethod.GET.rawValue else {
-			throw FaroError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
+			throw CallError.malformed(info: "HTTP " + request.httpMethod! + " request can't have a body")
 		}
 
 		let boundary = "Boundary-iCapps-Faro"

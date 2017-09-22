@@ -5,19 +5,16 @@ public enum FaroError: Error, Equatable, CustomDebugStringConvertible {
 	}
     case decodingError(DecodingError, inData: Data, call: Call)
 
-    case invalidUrl(String, call: Call)
-	case invalidResponseData(Data?, call: Call)
+    case invalidResponseData(Data?, call: Call)
 	case invalidAuthentication(call: Call)
     case networkError(Int, data: Data?, request: URLRequest)
 
-    case malformed(info: String)
 	case invalidSession(message: String, request: URLRequest)
 
     public var debugDescription: String {
 
         switch self {
-        case .invalidUrl(let url):
-            return "📡🔥invalid url: \(url)"
+
         case .invalidResponseData(let data, call: let call):
             let dataString = String(data: data ?? Data(), encoding: .utf8)
             return "📡🔥 Invalid response data: \(dataString))\nin \(call)"
@@ -41,8 +38,7 @@ public enum FaroError: Error, Equatable, CustomDebugStringConvertible {
             } else {
                 return "📡🔥 HTTP error: \(networkError) method: \(request.httpMethod ?? "") in \(request)"
             }
-        case .malformed(let info):
-            return "📡🔥 \(info)"
+        
         case .invalidSession(message: let message, request: let request):
             return "📡🔥 you tried to perform a \(request) on a session that is invalid\nmessage: \(message)"
         case .decodingError(let error, inData: let data, call: let call):
@@ -81,8 +77,6 @@ public func == (lhs: FaroError, rhs: FaroError) -> Bool {
 	switch (lhs, rhs) {
 	case (.invalidAuthentication, .invalidAuthentication):
 		return true
-	case (.invalidUrl(let url_lhs, call: _), .invalidUrl(let url_rhs, call: _)): // tailor:disable
-		return url_lhs == url_rhs
 	case (.invalidResponseData (_), .invalidResponseData (_)):
 		return true
 	case (.networkError(let lStatusCode, _, _ ), .networkError(let rStatusCode, _, _)):

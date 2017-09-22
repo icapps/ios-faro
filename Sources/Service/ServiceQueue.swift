@@ -38,7 +38,7 @@ open class ServiceQueue {
     open func perform<M>(_ type: M.Type, call: Call, autoStart: Bool = false, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionDataTask?  where M: Decodable {
         guard let request = call.request(with: configuration) else {
             complete {
-                let error = FaroError.invalidUrl("\(self.configuration.baseURL)/\(call.path)", call: call)
+                let error = CallError.invalidUrl("\(self.configuration.baseURL)/\(call.path)", call: call)
                 self.handleError(error)
                 throw error
             }

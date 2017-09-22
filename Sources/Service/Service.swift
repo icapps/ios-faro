@@ -45,7 +45,7 @@ extension Service {
         let call = self.call
 
         guard let request = call.request(with: configuration) else {
-            let error = FaroError.invalidUrl("\(self.configuration.baseURL)/\(call.path)", call: call)
+            let error = CallError.invalidUrl("\(self.configuration.baseURL)/\(call.path)", call: call)
             self.handleError(error)
             complete { throw error }
             return nil
