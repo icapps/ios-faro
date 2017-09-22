@@ -23,7 +23,7 @@ struct Product: Encodable {
 //: Service mocking via session
 let configuration = Configuration(baseURL: "http://www.yourServer.com")
 //: > *Tip:* Try changing the statusCode to see failure handling
-let statusCode = 300
+let statusCode = 200
 let response = HTTPURLResponse(url: configuration.baseURL!, statusCode: statusCode, httpVersion: nil, headerFields: nil)
 let session = MockSession(data: nil, urlResponse: response, error: nil)
 //: Product encoding
