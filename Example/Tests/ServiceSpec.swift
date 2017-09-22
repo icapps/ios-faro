@@ -96,7 +96,7 @@ class ServiceSpec: QuickSpec {
 
 				service.perform(Uuid.self) { resultFunction in
 					expect {try resultFunction()}.to(throwError {
-                        expect(($0 as? FaroError)?.decodingErrorMissingKey) == "uuid"
+                        expect(($0 as? ServiceError)?.decodingErrorMissingKey) == "uuid"
 					})
 				}
 			}
@@ -111,7 +111,7 @@ class ServiceSpec: QuickSpec {
 
 				service.perform([Uuid].self) { resultFunction in
                     expect {try resultFunction()}.to(throwError {
-                        expect(($0 as? FaroError)?.decodingErrorMissingKey) == "uuid"
+                        expect(($0 as? ServiceError)?.decodingErrorMissingKey) == "uuid"
 					})
 				}
 			}

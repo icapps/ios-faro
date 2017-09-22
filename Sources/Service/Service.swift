@@ -52,7 +52,7 @@ extension Service {
         }
 
         let task = faroSession.dataTask(with: request, completionHandler: {(data, response, error) in
-            let error = raisesFaroError(data: data, urlResponse: response, error: error, for: request)
+            let error = raisesServiceError(data: data, urlResponse: response, error: error, for: request)
 
             guard error == nil else {
                 self.handleError(error!)
@@ -71,7 +71,7 @@ extension Service {
                 return
             }
             guard let returnData = data else {
-                let error = FaroError.invalidResponseData(data, call: call)
+                let error = ServiceError.invalidResponseData(data, call: call)
                 self.handleError(error)
                 complete { throw error }
                 return
@@ -81,7 +81,7 @@ extension Service {
                 do {
                     return  try self.configuration.decoder.decode(M.self, from: returnData)
                 } catch let error as DecodingError {
-                    let error = FaroError.decodingError(error, inData: returnData, call: call)
+                    let error = ServiceError.decodingError(error, inData: returnData, call: call)
                     self.handleError(error)
                     throw error
                 }
@@ -133,24 +133,24 @@ extension Service {
 
 // MARK: - Global error functions
 
-func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest) -> Error? {
+func raisesServiceError(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest) -> Error? {
     guard error == nil else {
         return error
     }
 
     guard let httpResponse = urlResponse as? HTTPURLResponse else {
-        let returnError = FaroError.networkError(0, data: data, request: request)
+        let returnError = ServiceError.networkError(0, data: data, request: request)
         return returnError
     }
 
     let statusCode = httpResponse.statusCode
     guard statusCode < 400 else {
-        let returnError = FaroError.networkError(statusCode, data: data, request: request)
+        let returnError = ServiceError.networkError(statusCode, data: data, request: request)
         return returnError
     }
 
     guard 200...204 ~= statusCode else {
-        let returnError = FaroError.networkError(statusCode, data: data, request: request)
+        let returnError = ServiceError.networkError(statusCode, data: data, request: request)
         return returnError
     }
 

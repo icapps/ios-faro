@@ -86,7 +86,7 @@
 		7C41BBAF746B3905067057F1D93E07B2 /* AssertionRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6BA1C3458E298450B29C0F7A6ED4351 /* AssertionRecorder.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		7D2081A763BA29B3C1E273EF4016D929 /* ExampleHooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9747CE36B0CF956235B74AD125C92A7C /* ExampleHooks.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		810C3A3819D5AAF6BA290F1B674788A7 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC977BF1AC11385DEBAA340DC3D5087 /* Defaults.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		81151729A96F629A12EECA11FDE61F30 /* FaroError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEAED62E8B8A369F2D84708776E1D15 /* FaroError.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		81151729A96F629A12EECA11FDE61F30 /* ServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEAED62E8B8A369F2D84708776E1D15 /* ServiceError.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		82A8CF86C54998C21A2838B9C7791D04 /* ToSucceed.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A293E20DD375265C5D1E36A3FC282C /* ToSucceed.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		8645217D664695DC279B20E02093ADE4 /* CwlDarwinDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D898407CD51E933AC517D2BACB5961BD /* CwlDarwinDefinitions.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		8B293115670A9C71C45B1869D816CCA9 /* DSL.m in Sources */ = {isa = PBXBuildFile; fileRef = B29AAADBBFCFBD84C8429B9280E84098 /* DSL.m */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble -w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -237,7 +237,7 @@
 		2DE240D2343BEC59BA7A9D32029B8706 /* NMBStringify.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NMBStringify.m; path = Sources/NimbleObjectiveC/NMBStringify.m; sourceTree = "<group>"; };
 		2E14BF4662B26F6C636B461055231A16 /* Pods-Faro_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Faro_Example.release.xcconfig"; sourceTree = "<group>"; };
 		2FB266EB89D48398B133C7EC7C0D86E2 /* QuickConfiguration.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QuickConfiguration.m; path = Sources/QuickObjectiveC/Configuration/QuickConfiguration.m; sourceTree = "<group>"; };
-		2FEAED62E8B8A369F2D84708776E1D15 /* FaroError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FaroError.swift; sourceTree = "<group>"; };
+		2FEAED62E8B8A369F2D84708776E1D15 /* ServiceError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ServiceError.swift; sourceTree = "<group>"; };
 		33557C16AD696055CCC381748750EB8A /* Pods-Faro_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Faro_Example-dummy.m"; sourceTree = "<group>"; };
 		392790ACE3C7D92F4F08A8D46B3C1A9D /* QuickSpec.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = QuickSpec.h; path = Sources/QuickObjectiveC/QuickSpec.h; sourceTree = "<group>"; };
 		3B78054DE61A5C4A2C3D55660AEF0EDA /* ErrorUtility.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ErrorUtility.swift; path = Sources/Quick/ErrorUtility.swift; sourceTree = "<group>"; };
@@ -547,7 +547,7 @@
 		4A6D6A653DB66C51B0392F348801D04D /* Error */ = {
 			isa = PBXGroup;
 			children = (
-				2FEAED62E8B8A369F2D84708776E1D15 /* FaroError.swift */,
+				2FEAED62E8B8A369F2D84708776E1D15 /* ServiceError.swift */,
 			);
 			name = Error;
 			path = Sources/Error;
@@ -1064,7 +1064,7 @@
 				E6A849AEA1C8B26B9D569C77F292B211 /* Data+AppendString.swift in Sources */,
 				B6D3373CAABAF7B08741D32BFA81760F /* Updatable.swift in Sources */,
 				276D11130BBC134EC7CCC7D335A31472 /* Faro-dummy.m in Sources */,
-				81151729A96F629A12EECA11FDE61F30 /* FaroError.swift in Sources */,
+				81151729A96F629A12EECA11FDE61F30 /* ServiceError.swift in Sources */,
 				6A3B16DE4F9A28786A572FDC53DC0DAD /* FaroQueueSessionable.swift in Sources */,
 				0F327D6499D9469CFB03C08398DBD5E7 /* FaroQueueURLSession.swift in Sources */,
 				A095FACC6375A2BC3A59C6144B019A39 /* FaroSecureURLSession.swift in Sources */,

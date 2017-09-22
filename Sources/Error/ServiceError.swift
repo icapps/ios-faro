@@ -1,15 +1,12 @@
-public enum FaroError: Error, Equatable, CustomDebugStringConvertible {
+public enum ServiceError: Error, Equatable, CustomDebugStringConvertible {
 
-	public init(_ error: FaroError) {
+	public init(_ error: ServiceError) {
 		self = error
 	}
     case decodingError(DecodingError, inData: Data, call: Call)
-
     case invalidResponseData(Data?, call: Call)
 	case invalidAuthentication(call: Call)
     case networkError(Int, data: Data?, request: URLRequest)
-
-	case invalidSession(message: String, request: URLRequest)
 
     public var debugDescription: String {
 
@@ -23,7 +20,7 @@ public enum FaroError: Error, Equatable, CustomDebugStringConvertible {
         case .networkError(let networkError, let data, let request):
             if let data = data {
                 guard var string = String(data: data, encoding: .utf8), (string.hasPrefix("{") || string.hasPrefix("[")) else {
-                    return "📡🔥 HTTP error: \(networkError) in \(request) no message in utf8 format."
+                    return "📡🔥 HTTP error: \(networkError) method: \(request.httpMethod ?? "") in \(request) no message in utf8 format."
                 }
 
                 do {
@@ -38,9 +35,6 @@ public enum FaroError: Error, Equatable, CustomDebugStringConvertible {
             } else {
                 return "📡🔥 HTTP error: \(networkError) method: \(request.httpMethod ?? "") in \(request)"
             }
-        
-        case .invalidSession(message: let message, request: let request):
-            return "📡🔥 you tried to perform a \(request) on a session that is invalid\nmessage: \(message)"
         case .decodingError(let error, inData: let data, call: let call):
             guard var string = String(data: data, encoding: .utf8), (string.hasPrefix("{") || string.hasPrefix("[")) else {
                 return "📡🔥 HTTP error: \(error) in \(call) no data in utf8 format."
@@ -73,7 +67,7 @@ public enum FaroError: Error, Equatable, CustomDebugStringConvertible {
 
 }
 
-public func == (lhs: FaroError, rhs: FaroError) -> Bool {
+public func == (lhs: ServiceError, rhs: ServiceError) -> Bool {
 	switch (lhs, rhs) {
 	case (.invalidAuthentication, .invalidAuthentication):
 		return true

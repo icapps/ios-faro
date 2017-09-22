@@ -19,7 +19,7 @@ public protocol HTTPURLResponseRetryable {
 	/// - parameter request: the request to make valid again. Faro extends 'URLRequest' with 'URLRequestRetryable'. If this is not enough for your request use URLRequest's with your own implementation of 'URLRequestRetryable'
 	/// - parameter httpResponse: the received response
 	/// - parameter retryCount: the amount of times we asked the implementer of HTTPURLResponseRetryable to retry the request. If this is to high throw any error to stop.
-	func makeRequestValidforRetry(failedRequest: URLRequest, after httpResponse: HTTPURLResponse, retryCount: Int, requestForRetry: @escaping (URLRequest) -> Void, noRetryNeeded: @escaping (FaroError?) -> Void)
+	func makeRequestValidforRetry(failedRequest: URLRequest, after httpResponse: HTTPURLResponse, retryCount: Int, requestForRetry: @escaping (URLRequest) -> Void, noRetryNeeded: @escaping (ServiceError?) -> Void)
 
 }
 

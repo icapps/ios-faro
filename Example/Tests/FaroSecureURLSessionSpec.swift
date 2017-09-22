@@ -16,7 +16,7 @@ class RetryFaroSecureURLSession: FaroSecureURLSession, HTTPURLResponseRetryable 
 	                              after httpResponse: HTTPURLResponse,
 	                              retryCount: Int,
 	                              requestForRetry: @escaping (URLRequest) -> Void,
-	                              noRetryNeeded: @escaping (FaroError?) -> Void) {
+	                              noRetryNeeded: @escaping (ServiceError?) -> Void) {
 		requestForRetry(failedRequest)
 	}
 
@@ -32,7 +32,7 @@ class RetryStoppedFaroSecureURLSession: RetryFaroSecureURLSession {
 	                                       after httpResponse: HTTPURLResponse,
 	                                       retryCount: Int,
 	                                       requestForRetry: @escaping (URLRequest) -> Void,
-	                                       noRetryNeeded: @escaping (FaroError?) -> Void) {
+	                                       noRetryNeeded: @escaping (ServiceError?) -> Void) {
 		noRetryNeeded(nil)
 	}
 

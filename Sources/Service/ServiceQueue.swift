@@ -8,6 +8,17 @@
 
 import Foundation
 
+enum ServiceQueueError: Error, CustomDebugStringConvertible {
+    case invalidSession(message: String, request: URLRequest)
+
+    var debugDescription: String {
+        switch self {
+        case .invalidSession(message: let message, request: let request):
+            return "📡🔥 you tried to perform a \(request) on a session that is invalid\nmessage: \(message)"
+        }
+    }
+}
+
 open class ServiceQueue {
 
     var taskQueue: Set<URLSessionDataTask>
@@ -48,14 +59,14 @@ open class ServiceQueue {
         var task: URLSessionDataTask?
         task = faroSession.dataTask(with: request, completionHandler: {[weak self] (data, response, error) in
             guard let task = task else {
-                let error = FaroError.invalidSession(message: "Task should never be nil!", request: request)
+                let error = ServiceQueueError.invalidSession(message: "Task should never be nil!", request: request)
                 self?.handleError(error)
                 self?.invalidateAndCancel()
                 complete {throw error}
                 return
             }
 
-            let error = raisesFaroError(data: data, urlResponse: response, error: error, for: request)
+            let error = raisesServiceError(data: data, urlResponse: response, error: error, for: request)
             guard error == nil, let strongSelf = self else {
                 complete {
                     self?.handleError(error!)
@@ -81,7 +92,7 @@ open class ServiceQueue {
 
             guard let returnData = data else {
                 complete {
-                    let error = FaroError.invalidResponseData(data, call: call)
+                    let error = ServiceError.invalidResponseData(data, call: call)
                     strongSelf.handleError(error)
                     strongSelf.cleanupQueue(for: task, didFail: true)
                     strongSelf.shouldCallFinal()
@@ -96,7 +107,7 @@ open class ServiceQueue {
                     strongSelf.shouldCallFinal()
                     return result
                 } catch let error as DecodingError {
-                    let error = FaroError.decodingError(error, inData: returnData, call: call)
+                    let error = ServiceError.decodingError(error, inData: returnData, call: call)
                     strongSelf.handleError(error)
                     strongSelf.cleanupQueue(for: task, didFail: true)
                     strongSelf.shouldCallFinal()
