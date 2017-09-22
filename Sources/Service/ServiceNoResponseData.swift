@@ -43,6 +43,6 @@ open class ServiceNoResponseData {
 	/// Prints the error and throws it
 	/// Possible to override this to have custom behaviour for your app.
 	open func handleError(_ error: FaroError) {
-		printFaroError(error)
+		print(error)
 	}
 }

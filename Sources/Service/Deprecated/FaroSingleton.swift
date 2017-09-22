@@ -14,9 +14,9 @@ open class FaroSingleton {
     public static var shared: DeprecatedService {
         guard let sharedDeprecatedService = FaroSingleton.sharedDeprecatedService else {
             var message = " You should run FaroDeprecatedService.setup(with:) in the AppDelegate after startup to have a service pointing to a server."
-            printFaroError(FaroError.malformed(info: message))
+            print(FaroError.malformed(info: message))
             message = "🍞 Falling back on using the MockDeprecatedService."
-            printFaroError(FaroError.malformed(info: message))
+            print(FaroError.malformed(info: message))
             FaroSingleton.sharedDeprecatedService = MockDeprecatedService()
             return FaroSingleton.sharedDeprecatedService!
         }

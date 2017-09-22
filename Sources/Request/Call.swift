@@ -8,6 +8,7 @@ public enum HTTPMethod: String {
 open class Call {
 	open let path: String
 	open let httpMethod: HTTPMethod
+    @available(*, deprecated: 3.0, message: "Since we use native Codable protocol this is no longer needed. Use a Service object like `PostService` in `PostViewController`")
 	open var rootNode: String?
 	open var parameters = [Parameter]()
 
@@ -84,7 +85,7 @@ open class Call {
 					try insertInBodyAsURLComponents(with: components, request: &request)
 				}
 			} catch {
-				printFaroError(error)
+				print(error)
 			}
 		}
 	}

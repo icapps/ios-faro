@@ -22,14 +22,14 @@ open class MockDeprecatedService: DeprecatedService {
 
         guard let url = url(from: call) else {
             let faroError = FaroError.malformed(info: "No valid url")
-            printFaroError(faroError)
+            print(faroError)
             jsonResult(.failure(faroError))
             return MockURLSessionTask()
         }
 
         guard let mockJSON = JSONReader.parseFile(named: url, for: bundle!) else {
             let faroError = FaroError.malformed(info: "Could not find dummy file at \(url)")
-            printFaroError(faroError)
+            print(faroError)
             jsonResult(.failure(faroError))
             return MockURLSessionTask()
         }

@@ -55,7 +55,7 @@ class JSONReader: NSObject {
             #endif
 
         } catch {
-            printFaroError(FaroError.nonFaroError(error))
+            print(FaroError.nonFaroError(error))
             return nil
         }
     }

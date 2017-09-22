@@ -12,7 +12,7 @@ open class ServiceUpdate<T>: Service <T> where T: JSONDeserializable & JSONUpdat
 
 	open func updateSingle(_ singleModel: T, complete: @escaping(@escaping () throws -> Void) -> Void) {
 		let call = self.call
-		deprecatedService.performJsonResult(call, autoStart: autoStart) { [weak self](result: DeprecatedResult<T>) in
+		deprecatedService?.performJsonResult(call, autoStart: autoStart) { [weak self](result: DeprecatedResult<T>) in
 			switch result {
 
 			case .json(let json):
@@ -52,7 +52,7 @@ open class ServiceUpdateCollection<T>: Service <T> where T: JSONDeserializable &
 	/// When you do not mind that the reponse contains nodes that are not in collection put parameter `allowMissingNodes` to true, default is false.
 	open func updateCollection(_ collection: [T], allowMissingNodes: Bool = false, complete: @escaping(@escaping () throws -> Void) -> Void) {
 		let call = self.call
-		deprecatedService.performJsonResult(call, autoStart: autoStart) { [weak self](result: DeprecatedResult<T>) in
+		deprecatedService?.performJsonResult(call, autoStart: autoStart) { [weak self](result: DeprecatedResult<T>) in
 			switch result {
 
 			case .json(let json):

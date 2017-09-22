@@ -105,7 +105,7 @@ open class DeprecatedService {
 			let dataResult = self.handle(data: data, urlResponse: response, error: error, for: request) as DeprecatedResult<M>
             switch dataResult {
             case .data(let data):
-                self.configuration.adaptor.serialize(from: data) { (serializedResult: DeprecatedResult<M>) in
+                self.configuration.adaptor.serialize(from: data, call: call) { (serializedResult: DeprecatedResult<M>) in
                     switch serializedResult {
                     case .json(json: let json):
                         jsonResult(.json(json))
@@ -221,31 +221,6 @@ open class DeprecatedService {
 // MARK: - Privates
 
 extension DeprecatedService {
-
-    fileprivate func raisesFaroError(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest) -> FaroError? {
-        guard error == nil else {
-            let returnError = FaroError.nonFaroError(error!)
-            return returnError
-        }
-
-        guard let httpResponse = urlResponse as? HTTPURLResponse else {
-            let returnError = FaroError.networkError(0, data: data, request: request)
-            return returnError
-        }
-
-        let statusCode = httpResponse.statusCode
-        guard statusCode < 400 else {
-            let returnError = FaroError.networkError(statusCode, data: data, request: request)
-            return returnError
-        }
-
-        guard 200...204 ~= statusCode else {
-            let returnError = FaroError.networkError(statusCode, data: data, request: request)
-            return returnError
-        }
-
-        return nil
-    }
 
     fileprivate func handleNodeArray<M: JSONDeserializable>(_ nodes: [Any], on updateModel: M? = nil, call: Call) -> DeprecatedResult<M> {
         if let _ = updateModel {

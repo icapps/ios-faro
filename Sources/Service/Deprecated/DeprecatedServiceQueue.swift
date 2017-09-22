@@ -92,7 +92,7 @@ open class DeprecatedServiceQueue: DeprecatedService {
 
     private func add(_ task: URLSessionDataTask?) {
         guard let createdTask = task else {
-            printFaroError(FaroError.couldNotCreateTask)
+            print(FaroError.couldNotCreateTask)
             return
         }
         taskQueue.insert(createdTask)

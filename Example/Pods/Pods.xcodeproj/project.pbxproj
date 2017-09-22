@@ -145,7 +145,6 @@
 		DA4241E4EF904CFA326AF1EB02BF47B6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5D8173434FE00016739EAFDEFEA9313 /* Foundation.framework */; };
 		DB134922E98444426F38244CE2DC3764 /* MultipartFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534A7F27AAEA23E2FF74FCB85CF58A2E /* MultipartFile.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		DC18C7D8F109EA8D6508A0C21459D2FF /* CwlMachBadInstructionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 42681166708F40965AF4EC92F5FBBFDE /* CwlMachBadInstructionHandler.m */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		DE58F1213FD2EC06094EC3CF4C6F9CF8 /* ErrorPrinting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A93B2D9900F979B9897302988650BC /* ErrorPrinting.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		DE59F908CFFBE219DF7F3BEB0256FCEF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5D8173434FE00016739EAFDEFEA9313 /* Foundation.framework */; };
 		E43CF62581C102FF25ACD9524238F306 /* World+DSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3BECDAC8E52451DF054DA1B1637A61 /* World+DSL.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		E68C26C8B0127C32A3CEAE1C5EDEEB2B /* QuickSpec.h in Headers */ = {isa = PBXBuildFile; fileRef = 392790ACE3C7D92F4F08A8D46B3C1A9D /* QuickSpec.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -276,7 +275,6 @@
 		4C3A76FA8ECD1455A9B7AF89771FA7CC /* FailureMessage.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FailureMessage.swift; path = Sources/Nimble/FailureMessage.swift; sourceTree = "<group>"; };
 		4ED627B614F075662EE22066BE39B02C /* ExampleMetadata.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExampleMetadata.swift; path = Sources/Quick/ExampleMetadata.swift; sourceTree = "<group>"; };
 		4FE21B6723A11F15681F1E72594CCB88 /* CwlCatchException.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = CwlCatchException.m; path = Sources/Lib/CwlPreconditionTesting/CwlCatchExceptionSupport/CwlCatchException.m; sourceTree = "<group>"; };
-		50A93B2D9900F979B9897302988650BC /* ErrorPrinting.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ErrorPrinting.swift; sourceTree = "<group>"; };
 		51CBFE1432070505CD3B23833C7FD24E /* CwlCatchBadInstruction.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CwlCatchBadInstruction.swift; path = Sources/Lib/CwlPreconditionTesting/CwlPreconditionTesting/CwlCatchBadInstruction.swift; sourceTree = "<group>"; };
 		534A7F27AAEA23E2FF74FCB85CF58A2E /* MultipartFile.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MultipartFile.swift; sourceTree = "<group>"; };
 		53BC7A2516B6C630EF840EB19D4A0D1A /* World+DSL.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "World+DSL.h"; path = "Sources/QuickObjectiveC/DSL/World+DSL.h"; sourceTree = "<group>"; };
@@ -615,7 +613,6 @@
 		4A6D6A653DB66C51B0392F348801D04D /* Error */ = {
 			isa = PBXGroup;
 			children = (
-				50A93B2D9900F979B9897302988650BC /* ErrorPrinting.swift */,
 				2FEAED62E8B8A369F2D84708776E1D15 /* FaroError.swift */,
 			);
 			name = Error;
@@ -1156,7 +1153,6 @@
 				B6D3373CAABAF7B08741D32BFA81760F /* Deserializable.swift in Sources */,
 				D343C80B6E5E239B927D00748A2BCE22 /* DeserializeCreateFunctions.swift in Sources */,
 				95609BD08603E258DA11512DE90B277A /* DeserializeUpdateCreateOperators.swift in Sources */,
-				DE58F1213FD2EC06094EC3CF4C6F9CF8 /* ErrorPrinting.swift in Sources */,
 				276D11130BBC134EC7CCC7D335A31472 /* Faro-dummy.m in Sources */,
 				B23850356031A2C8E22CEB079023A879 /* FaroDeserializableError.swift in Sources */,
 				81151729A96F629A12EECA11FDE61F30 /* FaroError.swift in Sources */,

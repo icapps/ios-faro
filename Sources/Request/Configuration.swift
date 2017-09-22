@@ -7,7 +7,9 @@ enum ConfigurationError: Error {
 open class Configuration {
 
     /// For now we only support JSON. Can be Changed in the future
+    @available(*, deprecated: 3.0, message: "Use JSONDecoder")
     open let adaptor: Adaptable
+    open let decoder = JSONDecoder()
     open var baseURL: String
 
     public init(baseURL: String, adaptor: Adaptable = JSONAdaptor()) {

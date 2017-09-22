@@ -2,7 +2,11 @@ import Foundation
 import Faro
 import Stella
 
-class Post: JSONDeserializable {
+class PostService: Decodable {
+    let posts: [Post]
+}
+
+class Post: JSONDeserializable, Decodable {
     let uuid: Int
     var title: String?
 

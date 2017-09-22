@@ -1,6 +1,7 @@
 import UIKit
 import Faro
 import Stella
+import Foundation
 
 class PostViewController: UIViewController {
     @IBOutlet var label: UILabel!
@@ -13,17 +14,17 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-		service.collection { [weak self] (resultFunction) in
-			DispatchQueue.main.async {
-				do {
-					let posts = try resultFunction()
-					self?.label.text = "Performed call for posts"
-					printAction("Service \(posts.map {"\($0.uuid): \($0.title ?? "")"}.reduce("") {"\($0)\n\($1)"})")
-				} catch {
-					printError(error)
-				}
-			}
-		}
+        service.perform([Post].self) {[weak self] (resultFunction) in
+            DispatchQueue.main.async {
+                do {
+                    let posts = try resultFunction()
+                    self?.label.text = "Performed call for posts"
+                    printAction("Service \(posts.map {"\($0.uuid): \($0.title ?? "")"}.reduce("") {"\($0)\n\($1)"})")
+                } catch {
+                    printError(error)
+                }
+            }
+        }
 
 		// Test service queue
 
