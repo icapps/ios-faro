@@ -23,7 +23,7 @@ open class ServiceQueue {
     /// - parameter configuration: Faro service configuration
     /// - parameter faroSession: You can provide a custom `URLSession` via `FaroQueueSession`.
     /// - parameter final: closure is callen when all requests are performed.
-	public init (configuration: Configuration, faroSession: FaroQueueSessionable = FaroQueueSession(), final: @escaping(_ failedTasks: Set<URLSessionTask>?)->()) {
+	public init (_ configuration: Configuration, faroSession: FaroQueueSessionable = FaroQueueSession(), final: @escaping(_ failedTasks: Set<URLSessionTask>?)->()) {
 
         taskQueue = Set<URLSessionDataTask>()
         self.final = final
@@ -51,7 +51,8 @@ open class ServiceQueue {
                 let error = FaroError.invalidSession(message: "Task should never be nil!", request: request)
                 self?.handleError(error)
                 self?.invalidateAndCancel()
-                complete { throw error }
+                complete {throw error}
+                return
             }
 
             let error = raisesFaroError(data: data, urlResponse: response, error: error, for: request)
@@ -60,7 +61,7 @@ open class ServiceQueue {
                     self?.handleError(error!)
                     self?.cleanupQueue(for: task, didFail: true)
                     self?.shouldCallFinal()
-                    complete {throw error!}
+                    throw error!
                 }
                 return
             }
@@ -84,7 +85,7 @@ open class ServiceQueue {
                     strongSelf.handleError(error)
                     strongSelf.cleanupQueue(for: task, didFail: true)
                     strongSelf.shouldCallFinal()
-                    complete {throw error}
+                    throw error
                 }
                 return
             }
@@ -93,12 +94,13 @@ open class ServiceQueue {
                     let result =  try strongSelf.configuration.decoder.decode(M.self, from: returnData)
                     strongSelf.cleanupQueue(for: task)
                     strongSelf.shouldCallFinal()
+                    return result
                 } catch {
                     let error = FaroError.decodingError(error, inData: returnData, call: call)
                     strongSelf.handleError(error)
                     strongSelf.cleanupQueue(for: task, didFail: true)
                     strongSelf.shouldCallFinal()
-                    complete { throw error }
+                    throw error
                 }
             }
         })
