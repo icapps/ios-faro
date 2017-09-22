@@ -98,7 +98,7 @@ extension Service {
 
     // MARK: - Update model instead of create
 
-    open func performUpdate<M>(on model: M, complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionDataTask?  where M: Decodable & Updatable {
+    open func performUpdate<M>(model: M, complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionDataTask?  where M: Decodable & Updatable {
         let task = perform(M.self) { (resultFunction) in
             complete {
                 let serviceModel = try resultFunction()
@@ -109,11 +109,11 @@ extension Service {
         return task
     }
 
-    open func performUpdate<M>(on modelArray: [M], complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionDataTask?  where M: Decodable & Updatable {
+    open func performUpdate<M>(array: [M], complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionDataTask?  where M: Decodable & Updatable {
         let task = perform([M].self) { (resultFunction) in
             complete {
                 var serviceModels = Set(try resultFunction())
-                try modelArray.forEach { element in
+                try array.forEach { element in
                     try element.update(array: Array(serviceModels))
                     serviceModels.remove(element)
                 }
