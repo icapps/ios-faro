@@ -1,10 +1,7 @@
-//: [Previous](@previous)
+//: [Table of Contents](Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
 import UIKit
 import Faro
-
-//swiftlint:disable line_length
-
-//: # Fetching Array from Service
+//: # Fetch Data from Array
 //:
 //: Faro has switched to use the native `Decoder` and `Encoder` in Swift 4. We use the playground Apple provide in [WWDC2017 session: Whats new in Foundation](https://developer.apple.com/videos/play/wwdc2017/212/)
 //:
