@@ -198,19 +198,11 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
-		62AF6B0D1CE47E3800339275 /* Swift */ = {
+		62AF6B0E1CE47E3D00339275 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				607FACD71AFB9204008FA782 /* PostViewController.swift */,
 				C04CFABC1DE48486001C05CF /* PostCodable.swift */,
-			);
-			path = Swift;
-			sourceTree = "<group>";
-		};
-		62AF6B0E1CE47E3D00339275 /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				62AF6B0D1CE47E3800339275 /* Swift */,
 			);
 			name = ViewControllers;
 			path = Modules;
