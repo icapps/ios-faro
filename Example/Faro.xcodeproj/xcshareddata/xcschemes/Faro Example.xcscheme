@@ -34,20 +34,6 @@
                ReferencedContainer = "container:Faro.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C05EBF6E1D4B8E3000B950EB"
-               BuildableName = "Faro_Tests.xctest"
-               BlueprintName = "Faro_Tests"
-               ReferencedContainer = "container:Faro.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -58,16 +44,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       codeCoverageEnabled = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C05EBF6E1D4B8E3000B950EB"
-               BuildableName = "Faro_Tests.xctest"
-               BlueprintName = "Faro_Tests"
-               ReferencedContainer = "container:Faro.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

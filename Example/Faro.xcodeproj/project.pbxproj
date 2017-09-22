@@ -21,7 +21,6 @@
 		C012153D1EA8BB39007403ED /* DeserializeOperatorSimplifiedSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01215381EA8BAB5007403ED /* DeserializeOperatorSimplifiedSpec.swift */; };
 		C012EA4D1CCA5E2700B298D7 /* GET_gameScoreArray.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */; };
 		C012EA501CCA8A5B00B298D7 /* GET_gameScoreArray_1275.json in Resources */ = {isa = PBXBuildFile; fileRef = C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */; };
-		C015C7E51D81801700E30408 /* ExampleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015C7E41D81801700E30408 /* ExampleService.swift */; };
 		C02ADF801D88243A00FA5B32 /* ConfigurationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */; };
 		C02ADF811D88243A00FA5B32 /* ErrorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */; };
 		C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF781D8823F800FA5B32 /* CallSpec.swift */; };
@@ -78,7 +77,6 @@
 		C012153A1EA8BB0D007403ED /* DeserializeOperatorTestModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeserializeOperatorTestModels.swift; sourceTree = "<group>"; };
 		C012EA4C1CCA5E2700B298D7 /* GET_gameScoreArray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray.json; sourceTree = "<group>"; };
 		C012EA4E1CCA77CF00B298D7 /* GET_gameScoreArray_1275.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GET_gameScoreArray_1275.json; sourceTree = "<group>"; };
-		C015C7E41D81801700E30408 /* ExampleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleService.swift; sourceTree = "<group>"; };
 		C02ADF771D8823F800FA5B32 /* DeprecatedServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeprecatedServiceSpec.swift; sourceTree = "<group>"; };
 		C02ADF781D8823F800FA5B32 /* CallSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallSpec.swift; sourceTree = "<group>"; };
 		C02ADF791D8823F800FA5B32 /* ErrorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorSpec.swift; sourceTree = "<group>"; };
@@ -239,7 +237,6 @@
 			isa = PBXGroup;
 			children = (
 				607FACD71AFB9204008FA782 /* PostViewController.swift */,
-				C015C7E41D81801700E30408 /* ExampleService.swift */,
 				C04CFABC1DE48486001C05CF /* PostCodable.swift */,
 			);
 			path = Swift;
@@ -535,7 +532,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C015C7E51D81801700E30408 /* ExampleService.swift in Sources */,
 				C032815F1D77319B0047825C /* Model.swift in Sources */,
 				C03281451D76EB590047825C /* PostViewController.swift in Sources */,
 				C04CFABD1DE48486001C05CF /* PostCodable.swift in Sources */,
