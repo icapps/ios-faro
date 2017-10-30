@@ -8,7 +8,7 @@ open class ServiceQueue: Service {
     
     var taskQueue: Set<URLSessionDataTask>
     var failedTasks: Set<URLSessionTask>?
-    lazy var errors: [FaroError]? = [FaroError]()
+    lazy var errors: [FaroError] = [FaroError]()
     
     private let final: (_ failedTasks: Set<URLSessionTask>?, _ errors:[FaroError]?)->()
     
@@ -143,7 +143,7 @@ open class ServiceQueue: Service {
                 guard let error = error else {
                     return
                 }
-                errors?.append(error)
+                errors.append(error)
             }
         }
     }
