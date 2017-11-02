@@ -1,5 +1,4 @@
-//: [Previous](@previous)
-
+//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
 //: ## 3. Single Complete Handler or multiple Closure Parameters
 //: setup instances
 import Faro
@@ -35,7 +34,6 @@ struct Product: Decodable {
  In previous examples we have not yet discussed option 2. Lets dive in now!
 */
 //: ### Service handlers
-
 let service = ServiceHandler<Product>(call: call, autoStart: true, configuration: configuration, faroSession: session) { (resultFunction) in
     do {
         let result = try resultFunction()
@@ -45,9 +43,6 @@ let service = ServiceHandler<Product>(call: call, autoStart: true, configuration
         // We can ignore the error as we are only printing it.
     }
 }
-
 //: From anywhere in your code and as many times as you want you can now ask the service to perform the request. The same completion handler will always be called.
-
 service.perform()
-
-//: [Next](@next)
+//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
