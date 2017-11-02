@@ -4,7 +4,7 @@
         <page name='0. Table of Contents'/>
         <page name='1. Fetch Data from Array'/>
         <page name='2. Fetch Data from Single object'/>
-        <page name='3. Handlers or Closure Parameters'/>
+        <page name='3. Single Complete Handler or multiple Closure Parameters'/>
         <page name='4. Handle different JSON formats'/>
         <page name='5. Write to the service'/>
         <page name='6. Update existing object'/>

@@ -16,6 +16,16 @@ open class Service {
     open let configuration: Configuration
     let faroSession: FaroSessionable
 
+
+    /**
+     Init a servcie instance to perform calls
+
+     - Parameters:
+        - call: points to the request you want to perform
+        - autoStart: from the call a task is made. This task is returned by the perform function. The task is started automatically unless you set autoStart to no.
+        - configuration: describes the base url to from a request with from the provided call.
+        - faroSession: is a session that is derived from `URLSession`. By default this becomes an instance of `FaroSession`
+    */
     public init(call: Call, autoStart: Bool = true, configuration: Configuration, faroSession: FaroSessionable = FaroSession()) {
         self.configuration = configuration
         self.faroSession = faroSession
