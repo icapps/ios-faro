@@ -178,19 +178,19 @@ class CallSpec: QuickSpec {
             it("should not produce invalid URL's when given empty parameters") {
                 let parameters = [String: String]()
                 let callString: String = componentString(.urlComponentsInURL(parameters))
-                expect(callString.characters.last) != "?"
+                expect(callString.last) != "?"
             }
 
             it("should not produce invalid URL's when given parameters with missing keys") {
                 let parameters = ["": "aValue"]
                 let callString: String = componentString(.urlComponentsInURL(parameters))
-                expect(callString.characters.last) != "?"
+                expect(callString.last) != "?"
             }
 
             it("should not produce invalid URL's when given parameters with missing values") {
                 let parameters = ["aKey": ""]
                 let callString: String = componentString(.urlComponentsInURL(parameters))
-                expect(callString.characters.last) != "?"
+                expect(callString.last) != "?"
             }
         }
 
