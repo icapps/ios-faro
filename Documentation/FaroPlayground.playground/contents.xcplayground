@@ -10,5 +10,6 @@
         <page name='6. Update existing object'/>
         <page name='7. Multi Part Post'/>
         <page name='8. Security'/>
+        <page name='9. Retry'/>
     </pages>
 </playground>

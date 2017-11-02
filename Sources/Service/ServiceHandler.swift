@@ -10,7 +10,7 @@ import Foundation
 public class ServiceHandler<M: Decodable>: Service {
 
     private let complete: (() throws -> (M)) -> Void
-
+    private let completeArray: (() throws -> ([M])) -> Void
     /**
     Has the same parameters as super init plus complete handler.
 
@@ -21,9 +21,13 @@ public class ServiceHandler<M: Decodable>: Service {
      - faroSession: is a session that is derived from `URLSession`. By default this becomes an instance of `FaroSession`
      - complete: closure parameter that is stored on an instance. It is called everytime a session is called
      */
-    public init(call: Call, autoStart: Bool = true, configuration: Configuration,
-                faroSession: FaroSessionable = FaroSession(), complete: @escaping (() throws -> (M)) -> Void) {
+    public init(call: Call, autoStart: Bool = true,
+                configuration: Configuration,
+                faroSession: FaroSessionable = FaroSession(),
+                complete: @escaping (() throws -> (M)) -> Void,
+                completeArray: @escaping (() throws -> ([M])) -> Void) {
         self.complete = complete
+        self.completeArray = completeArray
         super.init(call: call, autoStart: autoStart, configuration: configuration, faroSession: faroSession)
     }
 
@@ -34,6 +38,13 @@ public class ServiceHandler<M: Decodable>: Service {
      public func perform() -> URLSessionDataTask? {
         return super.perform(M.self) {[weak self] (resultFunction) in
             self?.complete(resultFunction)
+        }
+    }
+
+    @discardableResult
+    public func performArray() -> URLSessionDataTask? {
+        return super.perform([M].self) {[weak self] (resultFunction) in
+            self?.completeArray(resultFunction)
         }
     }
 

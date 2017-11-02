@@ -6,4 +6,6 @@ public protocol FaroSessionable {
 	func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTask
 
 	func resume(_ task: URLSessionDataTask)
+    func getAllTasks(completionHandler: @escaping ([URLSessionTask]) -> Void)
+    
 }

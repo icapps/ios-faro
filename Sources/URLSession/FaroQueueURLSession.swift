@@ -4,6 +4,8 @@ import Foundation
 /// This class does not use a singled `URLSession.shared`. This means once you cancel the session this class becomes invalid,
 /// any following task will fail.
 open class FaroQueueSession: FaroQueueSessionable {
+
+
 	public let session: URLSession
 
 	/// Instantiates with a default `URLSessionConfiguration`
@@ -22,5 +24,9 @@ open class FaroQueueSession: FaroQueueSessionable {
 	open func resume(_ task: URLSessionDataTask) {
 		task.resume()
 	}
+
+    public func getAllTasks(completionHandler: @escaping ([URLSessionTask]) -> Void) {
+        session.getAllTasks(completionHandler: completionHandler)
+    }
 
 }

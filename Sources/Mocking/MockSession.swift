@@ -20,6 +20,8 @@ open class MockSession: FaroQueueSessionable {
 
     var completionHandlers = [Int: ((Data?, URLResponse?, Error?) -> ())]()
 
+    private var tasks = [MockURLSessionTask]()
+
     public init(data: Data? = nil, urlResponse: URLResponse? = nil, error: Error? = nil) {
         self.data = data
         self.urlResponse = urlResponse
@@ -29,13 +31,20 @@ open class MockSession: FaroQueueSessionable {
 
     open func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> ()) -> URLSessionDataTask {
         let task = MockURLSessionTask()
+        tasks.append(task)
         completionHandlers[task.taskIdentifier] = completionHandler
         return task
     }
 
     open func resume(_ task: URLSessionDataTask) {
         let completionHandler = completionHandlers[task.taskIdentifier]
+        tasks = tasks.filter {$0.taskIdentifier == task.taskIdentifier}
         completionHandler?(data, urlResponse, error)
+
+    }
+
+    public func getAllTasks(completionHandler: @escaping ([URLSessionTask]) -> Void) {
+        completionHandler(tasks)
     }
 
 }

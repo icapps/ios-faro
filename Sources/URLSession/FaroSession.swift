@@ -16,7 +16,10 @@ open class FaroSession: FaroSessionable {
     open func resume(_ task: URLSessionDataTask) {
         task.resume()
     }
-    
+
+    public func getAllTasks(completionHandler: @escaping ([URLSessionTask]) -> Void) {
+        session.getAllTasks(completionHandler: completionHandler)
+    }
 }
 
 // MARK: - Invalidate session 

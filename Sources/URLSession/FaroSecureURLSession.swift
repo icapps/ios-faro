@@ -63,6 +63,10 @@ open class FaroSecureURLSession: NSObject, FaroSessionable {
 		task.resume()
 	}
 
+    public func getAllTasks(completionHandler: @escaping ([URLSessionTask]) -> Void) {
+        session.getAllTasks(completionHandler: completionHandler)
+    }
+
 	// MARK: - Retry count
 
 	public func retryCount(for request: URLRequest) -> Int {
