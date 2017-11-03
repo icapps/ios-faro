@@ -67,9 +67,12 @@ class ServiceSpec: QuickSpec {
                 let data = """
                     {"uuid": "mock ok"}
                 """.data(using: .utf8)!
-				"/single".stub(statusCode: 200, body: data)
 
-                let service = Service(call: Call(path: "single"), session: session)
+                let call = Call(path: "single")
+
+                call.path.stub(statusCode: 200, body: data)
+
+                let service = Service(call: call, session: session)
 
                 waitUntil(action: { (done) in
                     service.perform (Uuid.self) { resultFunction in
@@ -85,9 +88,10 @@ class ServiceSpec: QuickSpec {
                      {"uuid": "mock ok 2"}]
                 """.data(using: .utf8)!
 
-                "/collection".stub(statusCode: 200, body: data)
+                let call = Call(path: "collection")
+                call.path.stub(statusCode: 200, body: data)
                 
-                let service = Service(call: Call(path: "collection"), session: session)
+                let service = Service(call: call, session: session)
 
                 waitUntil(action: { (done) in
                     service.perform ([Uuid].self) { resultFunction in
@@ -107,9 +111,11 @@ class ServiceSpec: QuickSpec {
                 """.data(using: .utf8)!
 
                 // Stub with bullshit data
-                "/singleError".stub(statusCode: 200, body: data)
+                let call = Call(path: "singleError")
 
-                let service = Service(call: Call(path: "singleError"), session: session)
+                call.path.stub(statusCode: 200, body: data)
+
+                let service = Service(call: call, session: session)
 
                 waitUntil { done in
                     service.perform(Uuid.self) { resultFunction in
@@ -128,9 +134,10 @@ class ServiceSpec: QuickSpec {
                      {"uuid": "mock ok 2"}]
                 """.data(using: .utf8)!
 
-                "/collectionError".stub(statusCode: 200, body: data)
+                let call = Call(path: "collectionError")
+                call.path.stub(statusCode: 200, body: data)
 
-                let service = Service(call: Call(path: "collectionError"), session: session)
+                let service = Service(call: call, session: session)
 
                 waitUntil { done in
                     service.perform([Uuid].self) { resultFunction in

@@ -12,7 +12,9 @@ import Foundation
 public class StubbedURLProtocol: URLProtocol {
     
     override open class func canInit(with request: URLRequest) -> Bool {
-        print("🌧 CHECK STUBBED PATH", request.url?.path as Any)
+        var path = request.url?.path
+        path?.removeFirst()
+        print("🌧 CHECK STUBBED PATH", path ?? "!! NO PATH!!")
         // Check if stubbed requests are found for the given path.
         return RequestStub.shared[request.url?.path] != nil
     }
