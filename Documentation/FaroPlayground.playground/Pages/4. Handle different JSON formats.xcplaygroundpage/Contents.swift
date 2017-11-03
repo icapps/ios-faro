@@ -1,5 +1,8 @@
 //: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
 import Faro
+import PlaygroundSupport
+
+PlaygroundPage.current.needsIndefiniteExecution = true
 /*:
  Depending on the data provider different json can be provided. Most of the cases are covered in Apples playground(see [Table of Contents](0.%20Table%20of%20Contents)).
  Here we disuss 2 common cases:

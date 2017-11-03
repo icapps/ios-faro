@@ -1,6 +1,9 @@
 //: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
 
 import Faro
+import PlaygroundSupport
+
+PlaygroundPage.current.needsIndefiniteExecution = true
 //: # Write to the service
 /*:
  It would be lame if we could not change some remote data. Depending on the data provider you choose they can respond with data or without data.

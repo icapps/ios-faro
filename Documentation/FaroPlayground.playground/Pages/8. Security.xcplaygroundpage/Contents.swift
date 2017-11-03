@@ -1,5 +1,8 @@
 //: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous)
 import Faro
+import PlaygroundSupport
+
+PlaygroundPage.current.needsIndefiniteExecution = true
 //: # Security
 /*:
 Security is handeled by a FaroSecureURLSession. Every `DeprecatedService` has a session that is by default `FaroURLSession`.

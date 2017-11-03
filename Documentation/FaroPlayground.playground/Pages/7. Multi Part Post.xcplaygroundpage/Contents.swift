@@ -1,6 +1,9 @@
 //: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
 import Faro
 import UIKit
+import PlaygroundSupport
+
+PlaygroundPage.current.needsIndefiniteExecution = true
 //: # Multi Part Post
 //: You can use `Faro` to send a `multipart/form-data` to a server. To use this, you add the multipart file as a parameter to the `Call`.=
 //: *Example*

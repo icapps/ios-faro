@@ -1,5 +1,8 @@
 //: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
 import Faro
+import PlaygroundSupport
+
+PlaygroundPage.current.needsIndefiniteExecution = true
 //: # Update an existing object
 /*:
  Sometimes you want to update an existing object rather then create another instance in memory. Maybe you have property listeners that change the UI.

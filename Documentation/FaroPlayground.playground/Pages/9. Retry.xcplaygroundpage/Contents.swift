@@ -1,6 +1,9 @@
 //: [Previous](@previous)
 //: # Retry
 import Faro
+import PlaygroundSupport
+
+PlaygroundPage.current.needsIndefiniteExecution = true
 
 //:  *Real response:*
 

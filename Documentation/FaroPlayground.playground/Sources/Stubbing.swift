@@ -26,3 +26,13 @@ public class StubService: Service {
         super.init(call: call, autoStart: true, session: StubbedFaroURLSession())
     }
 }
+
+public class StubServiceHandler<M: Decodable>: ServiceHandler<M> {
+
+    public init(call: Call,
+                complete: @escaping (() throws -> (M)) -> Void,
+                completeArray: @escaping (() throws -> ([M])) -> Void) {
+
+        super.init(call: call, autoStart: true,session: StubbedFaroURLSession(), complete: complete, completeArray: completeArray)
+    }
+}
