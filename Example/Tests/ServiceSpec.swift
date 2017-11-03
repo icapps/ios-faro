@@ -90,7 +90,7 @@ class ServiceSpec: QuickSpec {
 
                 let call = Call(path: "collection")
                 call.path.stub(statusCode: 200, body: data)
-                
+
                 let service = Service(call: call, session: session)
 
                 waitUntil(action: { (done) in

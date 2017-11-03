@@ -1,11 +1,3 @@
-
-//
-//  File.swift
-//  
-//
-//  Created by Stijn Willems on 03/11/2017.
-//
-
 import Foundation
 
 open class FaroURLSession {

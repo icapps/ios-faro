@@ -1,6 +1,10 @@
 //: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
 import UIKit
 import Faro
+import PlaygroundSupport
+
+PlaygroundPage.current.needsIndefiniteExecution = true
+
 //: # Fetch Data from Array
 //:
 //: Faro has switched to use the native `Decoder` and `Encoder` in Swift 4. We use the playground Apple provide in [WWDC2017 session: Whats new in Foundation](https://developer.apple.com/videos/play/wwdc2017/212/)
@@ -27,28 +31,15 @@ let jsonArray = """
     }
 ]
 """.data(using: .utf8)!
-
-struct Product: Decodable {
-    let name: String
-    let points: Int
-    let description: String?
-}
-
-//: A service that will fetch product data needs a configuration to know the baseURL and a Session to be able to perform network requests.
-//: * Session is derived from native `URLSession`
-//: * Configuration is a simple object with some customizable baseURL's. You use it to switch between production or development service.
+//: > For more information about how we stub the session to return the data from 'jsonArray' you should take a look at Stubbing.swift file in sources folder.
 //: * Every service object is also linked to a specific *endpoint* example: `<baseURL>/products`. To define an endpoint we use an object called `Call`.
-//: **Side note** we do not really do the a network request. We fetch the json from above. This can be done by using a `MockedSession`.
-//: * *Data*: that is normaly returned from the service. Just change `MockedSession` -> `FaroSession` and this will work from any server.
-//: * *Response*: A fake response is made that can have any statusCode. In this case we return with statusCode = 200 (this means OK in HTTP response code language).
-let response = HTTPURLResponse(url: configuration.baseURL!, statusCode: 200, httpVersion: nil, headerFields: nil)
-//: Create a session with a response OK (= 200) that returns the data of `jsonArray` above.
-let session = URLSession.shared
-session.configuration = StubBackendConfiguration(baseURL: "http://www.yourServer.com")
-//: Now all we still need is a call that points to our endpoint. For example we take `/products`
 let call = Call(path: "products")
-let service = Service(call: call, autoStart: true, configuration: configuration, faroSession: session)
-//: **AutoStart??** meand that whenever you use the function `perform` the request is imidiattaly fired. If you want to create multiple service instances and fire the request later put **autoStart** to false.
+//: StubService is a subclass of Service created for this playground. In your own code you can create one to to subclass all services from to do some general setup. Take a look at file Stubbing.swift.
+let service = StubService(call: call)
+
+//: Now we will stub the call with the data from above
+call.stub(statusCode: 200, body: jsonArray)
+
 //*: The function `perform` can decode any type of model that implements `Decodable`. Luckaly in most cases to implement decodable you do **noting**!
 //: The first parameter is the type. In Swift of any type you can pass the type itself as a parameter by using *Type.self*.
 //: ## Getting the result via a throwing function
@@ -66,11 +57,12 @@ service.perform([Product].self) { (resultFuntion) in
         let products = try resultFuntion()
         products.forEach { print("🚀 We have \($0)")}
 
-    } catch let error as ServiceError where error.decodingErrorMissingKey != nil {
+    }
+        //: Generic way to catch the error and inspect what is going wrong
+    catch let error as ServiceError where error.decodingErrorMissingKey != nil {
         print("Error with missing key \\\(error.decodingErrorMissingKey!)")
     } catch {
-        // Any other error might be general
-        print(error)
+        // ignore error
     }
 }
 //: > !Try to remove the name or points form `jsonArray` an see the error described.

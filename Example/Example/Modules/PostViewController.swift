@@ -42,9 +42,9 @@ class PostViewController: UIViewController {
                 }
         })
 
-        let task1 = serviceHandler?.performArray()
-        let task2 = serviceHandler?.performArray()
-        let task3 = serviceHandler?.performArray()
+//        let task1 = serviceHandler?.performArray()
+//        let task2 = serviceHandler?.performArray()
+//        let task3 = serviceHandler?.performArray()
 
 //        task1?.resume()
         serviceHandler?.session.session.getAllTasks {
