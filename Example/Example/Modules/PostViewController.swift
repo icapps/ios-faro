@@ -7,22 +7,16 @@ class PostViewController: UIViewController {
     @IBOutlet var label: UILabel!
 
 	/// !! It is important to retain the service until you have a result.
+	let service = PostService()
 
-    let failingService = Service(call: Call(path: "bullshit"),
-                                 configuration: BackendConfiguration(baseURL: "http://bullshit.com"))
-	let service = Service(call: Call(path: "posts"),
-                          configuration: BackendConfiguration(baseURL: "http://jsonplaceholder.typicode.com"))
-
-    var serviceHandler: ServiceHandler<Post>?
+    var serviceHandler: PostServiceHandler?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Example using a service handler
 
-        let session = FaroSession()
-        serviceHandler = ServiceHandler<Post>(call: Call(path:"posts"), autoStart: false,
-                                              configuration: BackendConfiguration(baseURL: "http://jsonplaceholder.typicode.com"), faroSession: session,
+        serviceHandler = PostServiceHandler(
             complete: {[weak self] (resultFunction) in
                     do {
                         let post = try resultFunction()
@@ -37,7 +31,7 @@ class PostViewController: UIViewController {
                 do {
                     let posts = try resultFunction()
                     printAction("Service Handler \(posts.map {"\($0.uuid): \($0.title ?? "")"}.reduce("") {"\($0)\n\($1)"})")
-                    session.getAllTasks {
+                    self?.serviceHandler?.session.session.getAllTasks {
                         print("After perform complete number of tasks \($0)")
                     }
                 } catch {
@@ -52,15 +46,14 @@ class PostViewController: UIViewController {
         let task2 = serviceHandler?.performArray()
         let task3 = serviceHandler?.performArray()
 
-        session.resume(task1!)
-
-        session.getAllTasks {
+        task1?.resume()
+        serviceHandler?.session.session.getAllTasks {
             print("Before perform complete number of tasks \($0)")
         }
 
         task1?.suspend()
 
-        session.resume(task1!)
+        task1?.resume()
 
         // Example using the more generic approach with a closure parameter
 

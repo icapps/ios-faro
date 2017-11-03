@@ -41,10 +41,10 @@ struct Product: Decodable {
 //: **Side note** we do not really do the a network request. We fetch the json from above. This can be done by using a `MockedSession`.
 //: * *Data*: that is normaly returned from the service. Just change `MockedSession` -> `FaroSession` and this will work from any server.
 //: * *Response*: A fake response is made that can have any statusCode. In this case we return with statusCode = 200 (this means OK in HTTP response code language).
-let configuration = Configuration(baseURL: "http://www.yourServer.com")
 let response = HTTPURLResponse(url: configuration.baseURL!, statusCode: 200, httpVersion: nil, headerFields: nil)
 //: Create a session with a response OK (= 200) that returns the data of `jsonArray` above.
-let session = MockSession(data: jsonArray, urlResponse: response, error: nil)
+let session = URLSession.shared
+session.configuration = StubBackendConfiguration(baseURL: "http://www.yourServer.com")
 //: Now all we still need is a call that points to our endpoint. For example we take `/products`
 let call = Call(path: "products")
 let service = Service(call: call, autoStart: true, configuration: configuration, faroSession: session)

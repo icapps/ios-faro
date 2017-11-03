@@ -11,9 +11,18 @@ open class BackendConfiguration {
     open var baseURL: URL? {
          return URL(string: baseURLString)
     }
+
     public init(baseURL: String, decoder: JSONDecoder = JSONDecoder()) {
         self.baseURLString = baseURL
         self.decoder = decoder
     }
+    
+}
+
+open class StubBackendConfiguration: BackendConfiguration {
+//
+//    open override var protocolClasses: [AnyClass]? {
+//        return [StubbedURLProtocol.self]
+//    }
     
 }

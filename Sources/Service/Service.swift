@@ -13,9 +13,7 @@ open class Service {
 	open var call: Call
 	open var autoStart: Bool
 
-    open let configuration: BackendConfiguration
-    let faroSession: FaroSessionable
-
+    public let session: FaroURLSession
 
     /**
      Init a servcie instance to perform calls
@@ -26,9 +24,8 @@ open class Service {
         - configuration: describes the base url to from a request with from the provided call.
         - faroSession: is a session that is derived from `URLSession`. By default this becomes an instance of `FaroSession`
     */
-    public init(call: Call, autoStart: Bool = true, configuration: BackendConfiguration, faroSession: FaroSessionable = FaroSession()) {
-        self.configuration = configuration
-        self.faroSession = faroSession
+    public init(call: Call, autoStart: Bool = true, session: FaroURLSession) {
+        self.session = session
         self.autoStart = autoStart
         self.call = call
     }
@@ -53,15 +50,16 @@ extension Service {
     @discardableResult
     open func perform<M>(_ type: M.Type, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionDataTask?  where M: Decodable {
         let call = self.call
+        let config = self.session.backendConfiguration
 
-        guard let request = call.request(with: configuration) else {
-            let error = CallError.invalidUrl("\(self.configuration.baseURL)/\(call.path)", call: call)
+        guard let request = call.request(with: config) else {
+            let error = CallError.invalidUrl("\(config.baseURL)/\(call.path)", call: call)
             self.handleError(error)
             complete { throw error }
             return nil
         }
 
-        let task = faroSession.dataTask(with: request, completionHandler: {(data, response, error) in
+        let task = session.session.dataTask(with: request, completionHandler: {(data, response, error) in
             let error = raisesServiceError(data: data, urlResponse: response, error: error, for: request)
 
             guard error == nil else {
@@ -76,7 +74,7 @@ extension Service {
                     let data = """
                     {}
                     """.data(using: .utf8)!
-                    return try self.configuration.decoder.decode(M.self, from: data)
+                    return try config.decoder.decode(M.self, from: data)
                 }
                 return
             }
@@ -89,7 +87,7 @@ extension Service {
 
             complete {
                 do {
-                    return  try self.configuration.decoder.decode(M.self, from: returnData)
+                    return  try config.decoder.decode(M.self, from: returnData)
                 } catch let error as DecodingError {
                     let error = ServiceError.decodingError(error, inData: returnData, call: call)
                     self.handleError(error)
@@ -102,7 +100,7 @@ extension Service {
             return task
         }
 
-        faroSession.resume(task)
+        task.resume()
         return task
     }
 

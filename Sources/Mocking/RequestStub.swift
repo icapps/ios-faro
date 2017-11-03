@@ -49,13 +49,27 @@ public class RequestStub {
     ///   - path: The path of the request, should be prefixid with "/"
     ///   - statusCode: The stubbed status code
     ///   - body: The stubbed JSON body code
-    internal func append(path: String, statusCode: Int, body: Any?) {
+    internal func append(path: String, statusCode: Int, body: [String: Any]?) {
         var data: Data?
         if let body = body {
             data = try? JSONSerialization.data(withJSONObject: body, options: .prettyPrinted)
         }
         
         let response = StubbedResponse(data: data, statusCode: statusCode)
+        var stubbedReponses = responses[path] ?? [StubbedResponse]()
+        stubbedReponses.append(response)
+        responses[path] = stubbedReponses
+    }
+
+    /// Append a body with status code to a given path. When calling this method multiple times for the same path
+    /// these stubbed requests will be triggered sequentially.
+    ///
+    /// - Parameters:
+    ///   - path: The path of the request, should be prefixid with "/"
+    ///   - statusCode: The stubbed status code
+    ///   - body: The stubbed JSON body code
+    internal func append(path: String, statusCode: Int, body: Data?) {
+        let response = StubbedResponse(data: body, statusCode: statusCode)
         var stubbedReponses = responses[path] ?? [StubbedResponse]()
         stubbedReponses.append(response)
         responses[path] = stubbedReponses

@@ -51,21 +51,28 @@ class Uuid: Decodable, Hashable, Updatable {
 class ServiceSpec: QuickSpec {
 
 	override func spec() {
-        let httpResponse =  HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)!
-        let configuration = BackendConfiguration(baseURL:"")
+        var session: FaroURLSession!
+
 
 		describe("Succes") {
+            beforeEach {
+                let config = BackendConfiguration(baseURL:"")
+                session = FaroURLSession(backendConfiguration: config)
+            }
 
 			it("return valid single model for valid json") {
                 let data = """
                     {"uuid": "mock ok"}
                 """.data(using: .utf8)!
-				let mock = MockSession(data: data, urlResponse: httpResponse, error: nil)
-                let service = Service(call: Call(path: ""), configuration: configuration, faroSession: mock)
+				"".stub(statusCode: 200, body: data)
+                let service = Service(call: Call(path: ""), session: session)
 
-				service.perform (Uuid.self) { resultFunction in
-					expect {try resultFunction().uuid} == "mock ok"
-				}
+                waitUntil(action: { (done) in
+                    service.perform (Uuid.self) { resultFunction in
+                        expect {try resultFunction().uuid} == "mock ok"
+                    }
+                    done()
+                })
 			}
 
 			it("return valid collection model for valid json") {
@@ -73,12 +80,15 @@ class ServiceSpec: QuickSpec {
                     [{"uuid": "mock ok 1"},
                      {"uuid": "mock ok 2"}]
                 """.data(using: .utf8)!
-                let mock = MockSession(data: data, urlResponse: httpResponse, error: nil)
-                let service = Service(call: Call(path: ""), configuration: configuration, faroSession: mock)
+                "".stub(statusCode: 200, body: data)
+                let service = Service(call: Call(path: ""), session: session)
 
-				service.perform ([Uuid].self) { resultFunction in
-					expect {try resultFunction().flatMap {$0.uuid}} == ["mock ok 1", "mock ok 2"]
-				}
+                waitUntil(action: { (done) in
+                    service.perform ([Uuid].self) { resultFunction in
+                        expect {try resultFunction().flatMap {$0.uuid}} == ["mock ok 1", "mock ok 2"]
+                        done()
+                    }
+                })
 			}
 
 		}
@@ -90,15 +100,20 @@ class ServiceSpec: QuickSpec {
                     {"bullshit": "mock ok"}
                 """.data(using: .utf8)!
 
-                let mock = MockSession(data: data, urlResponse: httpResponse, error: nil)
+                // Stub with bullshit data
+                "".stub(statusCode: 200, body: data)
 
-                let service = Service(call: Call(path: ""), configuration: configuration, faroSession: mock)
+                let service = Service(call: Call(path: ""), session: session)
 
-				service.perform(Uuid.self) { resultFunction in
-					expect {try resultFunction()}.to(throwError {
-                        expect(($0 as? ServiceError)?.decodingErrorMissingKey) == "uuid"
-					})
-				}
+                waitUntil { done in
+                    service.perform(Uuid.self) { resultFunction in
+                        expect {try resultFunction()}.to(throwError {
+                            expect(($0 as? ServiceError)?.decodingErrorMissingKey) == "uuid"
+                            done()
+                        })
+                    }
+                }
+
 			}
 
 			it("collection model for invalid json") {
@@ -106,14 +121,20 @@ class ServiceSpec: QuickSpec {
                     [{"bullshit": "mock ok 1"},
                      {"uuid": "mock ok 2"}]
                 """.data(using: .utf8)!
-                let mock = MockSession(data: data, urlResponse: httpResponse, error: nil)
-                let service = Service(call: Call(path: ""), configuration: configuration, faroSession: mock)
 
-				service.perform([Uuid].self) { resultFunction in
-                    expect {try resultFunction()}.to(throwError {
-                        expect(($0 as? ServiceError)?.decodingErrorMissingKey) == "uuid"
-					})
-				}
+                "".stub(statusCode: 200, body: data)
+
+                let service = Service(call: Call(path: ""), session: session)
+
+                waitUntil { done in
+                    service.perform([Uuid].self) { resultFunction in
+                        expect {try resultFunction()}.to(throwError {
+                            expect(($0 as? ServiceError)?.decodingErrorMissingKey) == "uuid"
+                            done()
+                        })
+                    }
+                }
+
 			}
 
 		}

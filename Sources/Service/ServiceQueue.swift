@@ -24,22 +24,19 @@ open class ServiceQueue {
     var taskQueue: Set<URLSessionDataTask>
     var failedTasks: Set<URLSessionTask>?
 
-    let configuration: BackendConfiguration
-    let faroSession: FaroQueueSessionable
+    let session: FaroURLSession
 
     private let final: (_ failedTasks: Set<URLSessionTask>?)->()
 
     /// Creates a queue that lasts until final is called. When all request in the queue are finished the session becomes invalid.
     /// For future queued request you have to create a new DeprecatedServiceQueue instance.
     /// - parameter configuration: Faro service configuration
-    /// - parameter faroSession: You can provide a custom `URLSession` via `FaroQueueSession`.
+    /// - parameter session: a session must have a backendConfiguration set.
     /// - parameter final: closure is callen when all requests are performed.
-	public init (_ configuration: BackendConfiguration, faroSession: FaroQueueSessionable = FaroQueueSession(), final: @escaping(_ failedTasks: Set<URLSessionTask>?)->()) {
-
+	public init (_ configuration: BackendConfiguration, session: FaroURLSession, final: @escaping(_ failedTasks: Set<URLSessionTask>?)->()) {
         taskQueue = Set<URLSessionDataTask>()
         self.final = final
-		self.configuration = configuration
-        self.faroSession = faroSession
+        self.session = session
 	}
 
     /// Gets a model(s) from the service and decodes it using native `Decodable` protocol.
@@ -47,9 +44,11 @@ open class ServiceQueue {
     /// - parameter type: Generic type to decode the returend data to. If service returns no response data use type `Service.NoResponseData`
     @discardableResult
     open func perform<M>(_ type: M.Type, call: Call, autoStart: Bool = false, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionDataTask?  where M: Decodable {
-        guard let request = call.request(with: configuration) else {
+        let config = session.backendConfiguration
+
+        guard let request = call.request(with: config) else {
             complete {
-                let error = CallError.invalidUrl("\(self.configuration.baseURL)/\(call.path)", call: call)
+                let error = CallError.invalidUrl("\(config.baseURL)/\(call.path)", call: call)
                 self.handleError(error)
                 throw error
             }
@@ -57,7 +56,7 @@ open class ServiceQueue {
         }
 
         var task: URLSessionDataTask?
-        task = faroSession.dataTask(with: request, completionHandler: {[weak self] (data, response, error) in
+        task = session.session.dataTask(with: request, completionHandler: {[weak self] (data, response, error) in
             guard let task = task else {
                 let error = ServiceQueueError.invalidSession(message: "Task should never be nil!", request: request)
                 self?.handleError(error)
@@ -83,7 +82,7 @@ open class ServiceQueue {
                     let data = """
                     {}
                     """.data(using: .utf8)!
-                    return try strongSelf.configuration.decoder.decode(M.self, from: data)
+                    return try config.decoder.decode(M.self, from: data)
                 }
                 strongSelf.cleanupQueue(for: task, didFail: true)
                 strongSelf.shouldCallFinal()
@@ -102,7 +101,7 @@ open class ServiceQueue {
             }
             complete {
                 do {
-                    let result =  try strongSelf.configuration.decoder.decode(M.self, from: returnData)
+                    let result =  try config.decoder.decode(M.self, from: returnData)
                     strongSelf.cleanupQueue(for: task)
                     strongSelf.shouldCallFinal()
                     return result
@@ -121,7 +120,7 @@ open class ServiceQueue {
         }
 
         // At this point we always have a task, force unwrap is then allowed.
-        faroSession.resume(task!)
+        task?.resume()
         return task
     }
 
@@ -168,15 +167,8 @@ open class ServiceQueue {
         }
     }
 
-    open func resume(_ task: URLSessionDataTask) {
-        faroSession.resume(task)
-    }
-
     open func resumeAll() {
-        let notStartedTasks = taskQueue.filter { $0.state != .running || $0.state != .completed}
-        notStartedTasks.forEach { (task) in
-            faroSession.resume(task)
-        }
+        taskQueue.filter { $0.state != .running || $0.state != .completed}.forEach { $0.resume()}
     }
 
     // MARK: - Private
@@ -203,7 +195,7 @@ open class ServiceQueue {
     private func shouldCallFinal() {
         if !hasOustandingTasks {
             final(failedTasks)
-            faroSession.finishTasksAndInvalidate()
+            session.session.finishTasksAndInvalidate()
         }
     }
 
@@ -212,11 +204,11 @@ open class ServiceQueue {
     open func invalidateAndCancel() {
         taskQueue.removeAll()
         failedTasks?.removeAll()
-        faroSession.invalidateAndCancel()
+        session.session.invalidateAndCancel()
     }
 
     deinit {
-        faroSession.finishTasksAndInvalidate()
+        session.session.finishTasksAndInvalidate()
     }
 
 }
