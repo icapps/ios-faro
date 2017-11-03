@@ -67,30 +67,21 @@ let jsonSingle = """
   "description": "Very orange and fruity!"
 }
 """.data(using: .utf8)!
-var product = Product(name: "", points: -10)
-//: Again provide a fake response:
-let configuration = Configuration(baseURL: "http://www.yourServer.com")
-let response = HTTPURLResponse(url: configuration.baseURL!, statusCode: 200, httpVersion: nil, headerFields: nil)
-let session = MockSession(data: jsonSingle, urlResponse: response, error: nil)
-//: *`/products` -> `/<name>`
+
+var product = Product(name: "Melon", points: -10)
+
 let call = Call(path: "products/\(product.name)")
-let service = Service(call: call, configuration: configuration, faroSession: session)
+let path = call.path
+call.stub(statusCode: 200, body:jsonSingle)
+let service = StubService(call: call)
 
 print("--- Single Update Before ---")
-withUnsafePointer(to: &product) {
-    print("\(product) has address: \($0)")
-}
+print("\(product)")
+
 service.performUpdate(model: product) { update in
-    do {
-        try update()
-        print("--- Single Update After ---")
-        withUnsafePointer(to: &product) {
-            print("\(product) has address: \($0)")
-        }
-    } catch {
-        print(error)
-        print("Product did not change \(product)")
-    }
+    try? update()
+    print("--- Single Update After ---")
+    print("\(product)")
 }
 
 //: ## Array update
@@ -112,32 +103,22 @@ let jsonArray =  """
 ]
 """.data(using: .utf8)!
 
-let mockArraySession = MockSession(data: jsonArray, urlResponse: response, error: nil)
-let arrayService = Service(call: call, configuration: configuration, faroSession: mockArraySession)
+let productsCall = Call(path: "products")
+let arrayService = StubService(call: productsCall)
+
+productsCall.stub(statusCode: 200, body: jsonArray)
 
 var firstProduct = productArray[0]
 var secondProduct = productArray[1]
 
 print("--- Array Update Before ---")
-withUnsafePointer(to: &firstProduct) {
-    print("Update Array first \(firstProduct) has address: \($0)")
-}
-withUnsafePointer(to: &secondProduct) {
-    print("Update Array first \(secondProduct) has address: \($0)")
-}
-arrayService.performUpdate(array: productArray) {
-    do {
-        try $0()
-        print("--- Array Update After ---")
-        withUnsafePointer(to: &firstProduct) {
-            print("Update Array first \(firstProduct) has address: \($0)")
-        }
-        withUnsafePointer(to: &secondProduct) {
-            print("Update Array first \(secondProduct) has address: \($0)")
-        }
+print(firstProduct)
+print(secondProduct)
 
-    }catch {
-        print(error)
-    }
+arrayService.performUpdate(array: productArray) {
+    try? $0()
+    print("--- Array Update After ---")
+    print(firstProduct)
+    print(secondProduct)
 }
 //: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)

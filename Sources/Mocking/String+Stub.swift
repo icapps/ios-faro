@@ -17,7 +17,7 @@ extension String {
     /// - Parameters:
     ///   - statusCode: The stubbed status code
     ///   - body: The stubbed JSON body code
-    public func stub(statusCode: Int, body: [String: Any] = [String: Any]()) {
+    public func stub(statusCode: Int, body: [String: Any]? = nil) {
         RequestStub.shared.append(path: self, statusCode: statusCode, body: body)
     }
 
@@ -28,7 +28,7 @@ extension String {
     /// - Parameters:
     ///   - statusCode: The stubbed status code
     ///   - body: The stubbed JSON body data
-    public func stub(statusCode: Int, body: Data) {
+    public func stub(statusCode: Int, body: Data? = nil) {
         RequestStub.shared.append(path: self, statusCode: statusCode, body: body)
     }
     
