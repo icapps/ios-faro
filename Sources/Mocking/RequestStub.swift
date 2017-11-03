@@ -20,7 +20,7 @@ public struct StubbedResponse {
 /// The `RequestStub` handles everything that has to do with stubbing the requests, from swizzling the 
 /// `URLSessionConfiguration` to registering the different stubs.
 public class RequestStub {
-    
+
     // MARK: - Internals
     
     private var responses = [String: [StubbedResponse]]()
@@ -29,7 +29,7 @@ public class RequestStub {
     
     /// You should always use this singleton method to register stubs. This is needed because we need to be able to
     /// fetch the `responses` from within the `StubbedURLProtocol` class.
-    internal static let shared = RequestStub()
+    public static var shared = RequestStub()
     
     private init() {
     }
@@ -37,7 +37,7 @@ public class RequestStub {
     // MARK: - Class
     
     public class func removeAllStubs() {
-        RequestStub.shared.removeAllStubs()
+        shared.removeAllStubs()
     }
     
     // MARK: - Mutating
