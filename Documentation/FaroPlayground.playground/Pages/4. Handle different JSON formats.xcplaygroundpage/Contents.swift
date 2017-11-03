@@ -11,7 +11,7 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
  More special cases can be handled by writing your own `Decoder`. See Apple docs for this.
  */
-//: ## The object in to be decoded is nested in the JSON
+//: ## The object to be decoded is nested in the JSON
 /*:
  Many approaches are possible. We suggest to use a `Type` that mimics the nested json as an *intermediate* object.
  */
@@ -30,27 +30,20 @@ let jsonNested = """
     }
   ]
 }
-""".data(using: .utf8)
+""".data(using: .utf8)!
 
-class Product: Decodable, CustomDebugStringConvertible {
-    let name: String
-    let points: Int
-    let description: String?
-
-    var debugDescription: String {return "\nProduct(name: \(name)\npoints: \(points)\ndescription:\(description ?? "nil")\n"}
-}
 //: **Intermediate object**
 struct ProductService: Decodable {
     let products: [Product]
 }
 
-let configuration = Configuration(baseURL: "http://www.yourServer.com")
-let response = HTTPURLResponse(url: configuration.baseURL!, statusCode: 200, httpVersion: nil, headerFields: nil)
-let session = MockSession(data: jsonNested, urlResponse: response, error: nil)
 let call = Call(path: "products")
-let service = Service(call: call, configuration: configuration, faroSession: session)
 
-service.perform(ProductService.self) { print((try! $0()).products) }
+call.stub(statusCode: 200, body: jsonNested)
+
+let service = StubService(call: call)
+
+service.perform(ProductService.self) { print((try? $0())?.products ?? "No valid initialization of products possible") }
 
 /*:
  > **(try? $0())?** What is this. This is shoret hand notation for closures. The parameter that in the [Array example](1.%20Fetch%20Data%20from%20Array) was called `resultFunction` is now `$0`. The error that could be thrown is converted into `nil` with `try?`.
@@ -62,7 +55,7 @@ service.perform(ProductService.self) { print((try! $0()).products) }
 
 let jsonNestedRenamed = """
 {
-  "products": [
+  "key_products": [
     {
       "key_name": "Banana",
       "key_points": 200,
@@ -74,24 +67,38 @@ let jsonNestedRenamed = """
     }
   ]
 }
-""".data(using: .utf8)
+""".data(using: .utf8)!
 
-class ProductRenamed: Product {
+
+struct ProductRenamed: Decodable  {
+
+    public let name: String
+
+    public let points: Int
+
+    public let description: String?
 
     private enum CodingKeys: String, CodingKey {
         case name = "key_name"
         case points = "key_points"
         case description = "key_description"
     }
+
 }
 
 struct ProductRenamedService: Decodable {
     let products: [ProductRenamed]
+
+    private enum CodingKeys: String, CodingKey {
+        case products = "key_products"
+    }
 }
+
+call.stub(statusCode: 200, body: jsonNestedRenamed)
 
 service.perform(ProductRenamedService.self) {
     print("--- Renamed ---")
-    print(try! $0().products)
+    print((try? $0()) ?? "Renamed products could not be initialized")
 }
 
 //: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)

@@ -40,7 +40,7 @@ public class StubbedURLProtocol: URLProtocol {
                 self.client?.urlProtocol(self, didLoad: data)
             }
         } else {
-            print("⁉️ No STUB for \(url) in \(RequestStub.shared)")
+            print("⁉️ No STUB for \(request.url) in \(RequestStub.shared)")
         }
         
         // Trigger the finish loading on the client.
