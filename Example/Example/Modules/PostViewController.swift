@@ -46,14 +46,14 @@ class PostViewController: UIViewController {
         let task2 = serviceHandler?.performArray()
         let task3 = serviceHandler?.performArray()
 
-        task1?.resume()
+//        task1?.resume()
         serviceHandler?.session.session.getAllTasks {
             print("Before perform complete number of tasks \($0)")
         }
 
-        task1?.suspend()
+//        task1?.suspend()
 
-        task1?.resume()
+//        task1?.resume()
 
         // Example using the more generic approach with a closure parameter
 

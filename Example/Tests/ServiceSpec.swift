@@ -53,25 +53,29 @@ class ServiceSpec: QuickSpec {
 	override func spec() {
         var session: FaroURLSession!
 
-
 		describe("Succes") {
             beforeEach {
-                let config = BackendConfiguration(baseURL:"")
-                session = FaroURLSession(backendConfiguration: config)
+                // Config should have a vaild url
+                let config = BackendConfiguration(baseURL:"http://www.google.com")
+                let urlSessionConfig = URLSessionConfiguration.default
+                urlSessionConfig.protocolClasses = [StubbedURLProtocol.self]
+                session = FaroURLSession(backendConfiguration: config, session: URLSession(configuration:urlSessionConfig))
+                RequestStub.shared = RequestStub()
             }
 
 			it("return valid single model for valid json") {
                 let data = """
                     {"uuid": "mock ok"}
                 """.data(using: .utf8)!
-				"".stub(statusCode: 200, body: data)
-                let service = Service(call: Call(path: ""), session: session)
+				"/single".stub(statusCode: 200, body: data)
+
+                let service = Service(call: Call(path: "single"), session: session)
 
                 waitUntil(action: { (done) in
                     service.perform (Uuid.self) { resultFunction in
                         expect {try resultFunction().uuid} == "mock ok"
+                        done()
                     }
-                    done()
                 })
 			}
 
@@ -80,8 +84,10 @@ class ServiceSpec: QuickSpec {
                     [{"uuid": "mock ok 1"},
                      {"uuid": "mock ok 2"}]
                 """.data(using: .utf8)!
-                "".stub(statusCode: 200, body: data)
-                let service = Service(call: Call(path: ""), session: session)
+
+                "/collection".stub(statusCode: 200, body: data)
+                
+                let service = Service(call: Call(path: "collection"), session: session)
 
                 waitUntil(action: { (done) in
                     service.perform ([Uuid].self) { resultFunction in
@@ -101,9 +107,9 @@ class ServiceSpec: QuickSpec {
                 """.data(using: .utf8)!
 
                 // Stub with bullshit data
-                "".stub(statusCode: 200, body: data)
+                "/singleError".stub(statusCode: 200, body: data)
 
-                let service = Service(call: Call(path: ""), session: session)
+                let service = Service(call: Call(path: "singleError"), session: session)
 
                 waitUntil { done in
                     service.perform(Uuid.self) { resultFunction in
@@ -122,9 +128,9 @@ class ServiceSpec: QuickSpec {
                      {"uuid": "mock ok 2"}]
                 """.data(using: .utf8)!
 
-                "".stub(statusCode: 200, body: data)
+                "/collectionError".stub(statusCode: 200, body: data)
 
-                let service = Service(call: Call(path: ""), session: session)
+                let service = Service(call: Call(path: "collectionError"), session: session)
 
                 waitUntil { done in
                     service.perform([Uuid].self) { resultFunction in

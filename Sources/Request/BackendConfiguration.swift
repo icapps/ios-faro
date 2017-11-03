@@ -1,8 +1,5 @@
 import Foundation
 
-enum ConfigurationError: Error {
-	case noValidBaseUrl(String)
-}
 /// Use for different configurations for the specific environment you want to use for *Call*
 open class BackendConfiguration {
 
@@ -16,13 +13,5 @@ open class BackendConfiguration {
         self.baseURLString = baseURL
         self.decoder = decoder
     }
-    
-}
-
-open class StubBackendConfiguration: BackendConfiguration {
-//
-//    open override var protocolClasses: [AnyClass]? {
-//        return [StubbedURLProtocol.self]
-//    }
     
 }

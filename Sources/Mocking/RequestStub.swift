@@ -31,7 +31,7 @@ public class RequestStub {
     /// fetch the `responses` from within the `StubbedURLProtocol` class.
     public static var shared = RequestStub()
     
-    private init() {
+    public init() {
     }
     
     // MARK: - Class
