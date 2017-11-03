@@ -20,7 +20,9 @@ class PostViewController: UIViewController {
 
         // Example using a service handler
 
-        serviceHandler = ServiceHandler<Post>(call: Call(path:"posts"), configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com"),
+        let session = FaroSession()
+        serviceHandler = ServiceHandler<Post>(call: Call(path:"posts"), autoStart: false,
+                                              configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com"), faroSession: session,
             complete: {[weak self] (resultFunction) in
                     do {
                         let post = try resultFunction()
@@ -35,6 +37,9 @@ class PostViewController: UIViewController {
                 do {
                     let posts = try resultFunction()
                     printAction("Service Handler \(posts.map {"\($0.uuid): \($0.title ?? "")"}.reduce("") {"\($0)\n\($1)"})")
+                    session.getAllTasks {
+                        print("After perform complete number of tasks \($0)")
+                    }
                 } catch {
                     // Ignore errors are printed by default
                 }
@@ -43,7 +48,21 @@ class PostViewController: UIViewController {
                 }
         })
 
-        serviceHandler?.performArray()
+        let task1 = serviceHandler?.performArray()
+        let task2 = serviceHandler?.performArray()
+        let task3 = serviceHandler?.performArray()
+
+        session.resume(task1!)
+
+        session.getAllTasks {
+            print("Before perform complete number of tasks \($0)")
+        }
+
+        task1?.suspend()
+
+        session.resume(task1!)
+
+
 
         // Example using the more generic approach with a closure parameter
 

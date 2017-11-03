@@ -41,20 +41,19 @@ let service = ServiceHandler<Post>(call: call, autoStart: true, configuration: c
     }
 })
 
-service.performArray()
-
-//let task2 = service.perform()
-//let task3 = service.perform()
-//let task4 = service.perform()
+let task1 = service.performArray()
+let task2 = service.performArray()
+let task3 = service.performArray()
+let task4 = service.performArray()
 
 
 //session.invalidateAndCancel()
 
-//session.resume(task1!)
+session.resume(task1!)
 
-//session.getAllTasks {
-//    print($0)
-//}
+session.getAll Tasks {
+    print($0)
+}
 
 
 //: [Next](@next)
