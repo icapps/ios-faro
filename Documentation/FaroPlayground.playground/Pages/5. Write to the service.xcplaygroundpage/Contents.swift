@@ -30,7 +30,7 @@ let parameters = [Parameter.jsonNode(product.jsonDict!)]
 let call = Call(path: "products", method: .POST, parameter: parameters)
 let service = StubService(call: call)
 
-call.stub(statusCode: 200, body: ["":""])
+call.stub(statusCode: 200, data: nil)
 
 //: Use `Service.NoResponseData.self` as the type of the response. This is to allow no response data.
 service.perform(Service.NoResponseData.self) { postSuccess in

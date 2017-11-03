@@ -6,11 +6,11 @@ import PlaygroundSupport
 PlaygroundPage.current.needsIndefiniteExecution = true
 
 //:  *Real response:*
+//: TODO: This is not finished yet. Just a starting point for the future.
 
-
-let configuration = Configuration(baseURL: "http://jsonplaceholder.typicode.com")
+let configuration = BackendConfiguration(baseURL: "http://jsonplaceholder.typicode.com")
 let response = HTTPURLResponse(url: configuration.baseURL!, statusCode: 200, httpVersion: nil, headerFields: nil)
-let session = FaroSession()
+let session = FaroURLSession(backendConfiguration: configuration)
 let call = Call(path: "posts")
 
 class Post: Decodable {
@@ -27,7 +27,7 @@ class Post: Decodable {
 
 //: TODO: Make it possible to perform multiple calls
 
-let service = ServiceHandler<Post>(call: call, autoStart: true, configuration: configuration, faroSession: session,
+let service = ServiceHandler<Post>(call: call, autoStart: true, session: session,
     complete: {
     do {
         let result = try $0()
@@ -38,7 +38,7 @@ let service = ServiceHandler<Post>(call: call, autoStart: true, configuration: c
 }, completeArray: {
     do {
         let result = try $0()
-        print("\(result)")
+        print("\(result.count)")
     } catch {
         // ignore
     }
@@ -52,10 +52,10 @@ let task4 = service.performArray()
 
 //session.invalidateAndCancel()
 
-session.resume(task1!)
+task1?.resume()
 
-session.getAll Tasks {
-    print($0)
+session.session.getAllTasks {
+    print($0.count)
 }
 
 

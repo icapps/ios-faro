@@ -49,9 +49,9 @@ public class RequestStub {
     ///   - path: The path of the request, should be prefixid with "/"
     ///   - statusCode: The stubbed status code
     ///   - body: The stubbed JSON body code
-    internal func append(path: String, statusCode: Int, body: [String: Any]?) {
+    internal func append(path: String, statusCode: Int, dictionary: [String: Any]?) {
         var data: Data?
-        if let body = body {
+        if let body = dictionary {
             data = try? JSONSerialization.data(withJSONObject: body, options: .prettyPrinted)
         }
         
@@ -68,8 +68,8 @@ public class RequestStub {
     ///   - path: The path of the request, should be prefixid with "/"
     ///   - statusCode: The stubbed status code
     ///   - body: The stubbed JSON body code
-    internal func append(path: String, statusCode: Int, body: Data?) {
-        let response = StubbedResponse(data: body, statusCode: statusCode)
+    internal func append(path: String, statusCode: Int, data: Data?) {
+        let response = StubbedResponse(data: data, statusCode: statusCode)
         var stubbedReponses = responses[path] ?? [StubbedResponse]()
         stubbedReponses.append(response)
         responses[path] = stubbedReponses

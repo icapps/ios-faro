@@ -16,8 +16,8 @@ public extension Call {
     /// - Parameters:
     ///   - statusCode: The stubbed status code
     ///   - body: The stubbed JSON body code
-    public func stub(statusCode: Int, body: [String: Any]? = nil) {
-        RequestStub.shared.append(path: self.path, statusCode: statusCode, body: body)
+    public func stub(statusCode: Int, dictionary: [String: Any]? = nil) {
+        RequestStub.shared.append(path: self.path, statusCode: statusCode, dictionary: dictionary)
     }
 
     /// Add a body with status code to a given path. When calling this method multiple times for the same path
@@ -27,7 +27,7 @@ public extension Call {
     /// - Parameters:
     ///   - statusCode: The stubbed status code
     ///   - body: The stubbed JSON body data
-    public func stub(statusCode: Int, body: Data? = nil) {
-        RequestStub.shared.append(path: self.path, statusCode: statusCode, body: body)
+    public func stub(statusCode: Int, data: Data? = nil) {
+        RequestStub.shared.append(path: self.path, statusCode: statusCode, data: data)
     }
 }

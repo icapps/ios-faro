@@ -39,7 +39,7 @@ struct ProductService: Decodable {
 
 let call = Call(path: "products")
 
-call.stub(statusCode: 200, body: jsonNested)
+call.stub(statusCode: 200, data: jsonNested)
 
 let service = StubService(call: call)
 
@@ -94,7 +94,7 @@ struct ProductRenamedService: Decodable {
     }
 }
 
-call.stub(statusCode: 200, body: jsonNestedRenamed)
+call.stub(statusCode: 200, data: jsonNestedRenamed)
 
 service.perform(ProductRenamedService.self) {
     print("--- Renamed ---")

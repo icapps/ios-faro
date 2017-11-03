@@ -70,7 +70,7 @@ class ServiceSpec: QuickSpec {
 
                 let call = Call(path: "single")
 
-                call.path.stub(statusCode: 200, body: data)
+                call.path.stub(statusCode: 200, data: data)
 
                 let service = Service(call: call, session: session)
 
@@ -89,7 +89,7 @@ class ServiceSpec: QuickSpec {
                 """.data(using: .utf8)!
 
                 let call = Call(path: "collection")
-                call.path.stub(statusCode: 200, body: data)
+                call.path.stub(statusCode: 200, data: data)
 
                 let service = Service(call: call, session: session)
 
@@ -113,7 +113,7 @@ class ServiceSpec: QuickSpec {
                 // Stub with bullshit data
                 let call = Call(path: "singleError")
 
-                call.path.stub(statusCode: 200, body: data)
+                call.path.stub(statusCode: 200, data: data)
 
                 let service = Service(call: call, session: session)
 
@@ -135,7 +135,7 @@ class ServiceSpec: QuickSpec {
                 """.data(using: .utf8)!
 
                 let call = Call(path: "collectionError")
-                call.path.stub(statusCode: 200, body: data)
+                call.path.stub(statusCode: 200, data: data)
 
                 let service = Service(call: call, session: session)
 

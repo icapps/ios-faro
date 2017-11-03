@@ -38,7 +38,7 @@ let call = Call(path: "products")
 let service = StubService(call: call)
 
 //: Now we will stub the call with the data from above
-call.stub(statusCode: 200, body: jsonArray)
+call.stub(statusCode: 200, data: jsonArray)
 
 //*: The function `perform` can decode any type of model that implements `Decodable`. Luckaly in most cases to implement decodable you do **noting**!
 //: The first parameter is the type. In Swift of any type you can pass the type itself as a parameter by using *Type.self*.

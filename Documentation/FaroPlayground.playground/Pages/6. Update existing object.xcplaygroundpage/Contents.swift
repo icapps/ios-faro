@@ -72,7 +72,7 @@ var product = Product(name: "Melon", points: -10)
 
 let call = Call(path: "products/\(product.name)")
 let path = call.path
-call.stub(statusCode: 200, body:jsonSingle)
+call.stub(statusCode: 200, data:jsonSingle)
 let service = StubService(call: call)
 
 print("--- Single Update Before ---")
@@ -106,7 +106,7 @@ let jsonArray =  """
 let productsCall = Call(path: "products")
 let arrayService = StubService(call: productsCall)
 
-productsCall.stub(statusCode: 200, body: jsonArray)
+productsCall.stub(statusCode: 200, data: jsonArray)
 
 var firstProduct = productArray[0]
 var secondProduct = productArray[1]

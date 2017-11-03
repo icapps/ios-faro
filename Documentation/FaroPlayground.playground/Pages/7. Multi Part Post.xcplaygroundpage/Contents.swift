@@ -19,12 +19,10 @@ let call = Call(path: "queries",
                 parameter: [.multipart(multipart)])
 
 //: Again provide a fake response:
-let configuration = Configuration(baseURL: "http://www.yourServer.com")
-let response = HTTPURLResponse(url: configuration.baseURL!, statusCode: 200, httpVersion: nil, headerFields: nil)
-let session = MockSession(data: nil, urlResponse: response, error: nil)
 
-let service = Service(call: call, configuration: configuration, faroSession: session)
+let service = StubService(call: call)
 
+call.stub(statusCode: 200, data: nil)
 service.perform(Service.NoResponseData.self){
     do {
         _ = try $0()

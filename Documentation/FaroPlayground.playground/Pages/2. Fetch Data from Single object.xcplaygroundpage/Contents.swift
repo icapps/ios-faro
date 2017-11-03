@@ -20,7 +20,7 @@ let jsonSingle = """
 let call = Call(path: "product")
 let service = StubService(call: call)
 
-call.stub(statusCode: 200, body: jsonSingle)
+call.stub(statusCode: 200, data: jsonSingle)
 
 service.perform(Product.self) {
     let product = try? $0()
