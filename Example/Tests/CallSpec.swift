@@ -21,7 +21,7 @@ class CallSpec: QuickSpec {
             let expected = "path"
             let parameters: Parameter = .jsonNode(["id": "someId"])
             let call = Call(path: expected, method: .POST, parameter: [parameters])
-            let configuration = Faro.Configuration(baseURL: "http://someURL")
+            let configuration = Faro.BackendConfiguration(baseURL: "http://someURL")
 
             it("should use POST method") {
                 let request = call.request(with: configuration)
@@ -32,7 +32,7 @@ class CallSpec: QuickSpec {
         describe("Call .GET") {
             let expected = "path"
             let call = Call(path: expected)
-            let configuration = Faro.Configuration(baseURL: "http://someURL")
+            let configuration = Faro.BackendConfiguration(baseURL: "http://someURL")
 
             context("setup") {
                 it("should have a path") {
@@ -53,7 +53,7 @@ class CallSpec: QuickSpec {
         }
 
         describe("Call with parameters") {
-            let configuration = Faro.Configuration(baseURL: "http://someURL")
+            let configuration = Faro.BackendConfiguration(baseURL: "http://someURL")
 
             func allHTTPHeaderFields(_ parameter: Parameter) -> [String: String] {
                 let call = Call(path: "path", parameter: [parameter])
@@ -203,7 +203,7 @@ class CallSpec: QuickSpec {
 			}
 
 			it("has authorization header") {
-				let request = call.request(with: Configuration(baseURL: ""))
+				let request = call.request(with: BackendConfiguration(baseURL: ""))
 
 				let header = request?.allHTTPHeaderFields?.filter {$0.key == "Authorization"}
 

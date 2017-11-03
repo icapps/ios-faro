@@ -13,7 +13,7 @@ open class Service {
 	open var call: Call
 	open var autoStart: Bool
 
-    open let configuration: Configuration
+    open let configuration: BackendConfiguration
     let faroSession: FaroSessionable
 
 
@@ -26,7 +26,7 @@ open class Service {
         - configuration: describes the base url to from a request with from the provided call.
         - faroSession: is a session that is derived from `URLSession`. By default this becomes an instance of `FaroSession`
     */
-    public init(call: Call, autoStart: Bool = true, configuration: Configuration, faroSession: FaroSessionable = FaroSession()) {
+    public init(call: Call, autoStart: Bool = true, configuration: BackendConfiguration, faroSession: FaroSessionable = FaroSession()) {
         self.configuration = configuration
         self.faroSession = faroSession
         self.autoStart = autoStart

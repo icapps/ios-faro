@@ -22,7 +22,7 @@ public class ServiceHandler<M: Decodable>: Service {
      - complete: closure parameter that is stored on an instance. It is called everytime a session is called
      */
     public init(call: Call, autoStart: Bool = true,
-                configuration: Configuration,
+                configuration: BackendConfiguration,
                 faroSession: FaroSessionable = FaroSession(),
                 complete: @escaping (() throws -> (M)) -> Void,
                 completeArray: @escaping (() throws -> ([M])) -> Void) {

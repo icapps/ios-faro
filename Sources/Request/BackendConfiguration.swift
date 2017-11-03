@@ -4,7 +4,7 @@ enum ConfigurationError: Error {
 	case noValidBaseUrl(String)
 }
 /// Use for different configurations for the specific environment you want to use for *Call*
-open class Configuration {
+open class BackendConfiguration {
 
     open let decoder: JSONDecoder
     open var baseURLString: String

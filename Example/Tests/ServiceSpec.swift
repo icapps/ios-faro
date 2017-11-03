@@ -52,7 +52,7 @@ class ServiceSpec: QuickSpec {
 
 	override func spec() {
         let httpResponse =  HTTPURLResponse(url: URL(string: "http://www.google.com")!, statusCode: 200, httpVersion:nil, headerFields: nil)!
-        let configuration = Configuration(baseURL:"")
+        let configuration = BackendConfiguration(baseURL:"")
 
 		describe("Succes") {
 

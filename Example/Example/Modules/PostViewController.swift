@@ -9,9 +9,9 @@ class PostViewController: UIViewController {
 	/// !! It is important to retain the service until you have a result.
 
     let failingService = Service(call: Call(path: "bullshit"),
-                                 configuration: Configuration(baseURL: "http://bullshit.com"))
+                                 configuration: BackendConfiguration(baseURL: "http://bullshit.com"))
 	let service = Service(call: Call(path: "posts"),
-                          configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com"))
+                          configuration: BackendConfiguration(baseURL: "http://jsonplaceholder.typicode.com"))
 
     var serviceHandler: ServiceHandler<Post>?
 
@@ -22,7 +22,7 @@ class PostViewController: UIViewController {
 
         let session = FaroSession()
         serviceHandler = ServiceHandler<Post>(call: Call(path:"posts"), autoStart: false,
-                                              configuration: Configuration(baseURL: "http://jsonplaceholder.typicode.com"), faroSession: session,
+                                              configuration: BackendConfiguration(baseURL: "http://jsonplaceholder.typicode.com"), faroSession: session,
             complete: {[weak self] (resultFunction) in
                     do {
                         let post = try resultFunction()
@@ -61,8 +61,6 @@ class PostViewController: UIViewController {
         task1?.suspend()
 
         session.resume(task1!)
-
-
 
         // Example using the more generic approach with a closure parameter
 

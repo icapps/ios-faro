@@ -40,7 +40,7 @@ open class Call {
 
 	/// Makes a request from this call every time. This is done to every service call has its own request and can change time dependend parameters, like authorization.
 	/// Optionally implement `Authenticatable` to make it possible to authenticate requests. In this function on self the functions in 'Authenticatable` will be called.
-	open func request(with configuration: Configuration) -> URLRequest? {
+	open func request(with configuration: BackendConfiguration) -> URLRequest? {
 		var request = URLRequest(url: URL(string: "\(configuration.baseURLString)/\(path)")!, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData) // uses default timeout
 		self.request = request
 		request.httpMethod = httpMethod.rawValue

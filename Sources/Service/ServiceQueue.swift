@@ -24,7 +24,7 @@ open class ServiceQueue {
     var taskQueue: Set<URLSessionDataTask>
     var failedTasks: Set<URLSessionTask>?
 
-    let configuration: Configuration
+    let configuration: BackendConfiguration
     let faroSession: FaroQueueSessionable
 
     private let final: (_ failedTasks: Set<URLSessionTask>?)->()
@@ -34,7 +34,7 @@ open class ServiceQueue {
     /// - parameter configuration: Faro service configuration
     /// - parameter faroSession: You can provide a custom `URLSession` via `FaroQueueSession`.
     /// - parameter final: closure is callen when all requests are performed.
-	public init (_ configuration: Configuration, faroSession: FaroQueueSessionable = FaroQueueSession(), final: @escaping(_ failedTasks: Set<URLSessionTask>?)->()) {
+	public init (_ configuration: BackendConfiguration, faroSession: FaroQueueSessionable = FaroQueueSession(), final: @escaping(_ failedTasks: Set<URLSessionTask>?)->()) {
 
         taskQueue = Set<URLSessionDataTask>()
         self.final = final
