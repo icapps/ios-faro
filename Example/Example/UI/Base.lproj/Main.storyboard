@@ -28,21 +28,21 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfo-xD-YvP">
-                                <rect key="frame" x="109" y="612" width="157" height="30"/>
+                                <rect key="frame" x="109" y="587" width="157" height="30"/>
                                 <state key="normal" title="Get Posts with Handler"/>
                                 <connections>
                                     <action selector="getWithHandlers:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="oSe-tA-hAx"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="05T-S4-tBq">
-                                <rect key="frame" x="73" y="562" width="228" height="30"/>
+                                <rect key="frame" x="73" y="537" width="228" height="30"/>
                                 <state key="normal" title="Get Posts with closure parameter"/>
                                 <connections>
                                     <action selector="getPostsWithClosure:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9N5-nd-BuC"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j1D-wl-qKD">
-                                <rect key="frame" x="66" y="512" width="244" height="30"/>
+                                <rect key="frame" x="66" y="487" width="244" height="30"/>
                                 <state key="normal" title="Get Multiple Posts request in queue"/>
                                 <connections>
                                     <action selector="getMultiplePostsRequestInQueue:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="V43-8J-O2G"/>
@@ -51,6 +51,16 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="pE5-ae-gLx">
                                 <rect key="frame" x="178" y="323.5" width="20" height="20"/>
                             </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IoZ-Vd-64E">
+                                <rect key="frame" x="135.5" y="437" width="104" height="30"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Clear all Posts">
+                                    <color key="titleColor" red="0.98039215690000003" green="0.18039215689999999" blue="0.2470588235" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="clearPosts:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="hJ8-LJ-66x"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -58,8 +68,10 @@
                             <constraint firstItem="cfo-xD-YvP" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="A47-1x-iIJ"/>
                             <constraint firstItem="j1D-wl-qKD" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="HZA-c3-SAl"/>
                             <constraint firstItem="pE5-ae-gLx" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="Lqo-O1-CPO"/>
+                            <constraint firstItem="IoZ-Vd-64E" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="OQt-KL-krf"/>
+                            <constraint firstItem="j1D-wl-qKD" firstAttribute="top" secondItem="IoZ-Vd-64E" secondAttribute="bottom" constant="20" id="YEc-NS-Cwa"/>
                             <constraint firstItem="pE5-ae-gLx" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="bJj-Fw-2Gy"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="cfo-xD-YvP" secondAttribute="bottom" constant="25" id="d1f-vR-snF"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="cfo-xD-YvP" secondAttribute="bottom" constant="50" id="d1f-vR-snF"/>
                             <constraint firstItem="05T-S4-tBq" firstAttribute="top" secondItem="j1D-wl-qKD" secondAttribute="bottom" constant="20" id="dpY-vj-IxK"/>
                             <constraint firstItem="005-b6-pqE" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="105" id="hRS-9I-ftZ"/>
                             <constraint firstItem="005-b6-pqE" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="mVa-Ah-B1w"/>
@@ -74,7 +86,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1002" y="1148"/>
+            <point key="canvasLocation" x="1000.8" y="1147.3763118440781"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="h5A-ad-Y7A">

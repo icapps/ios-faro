@@ -65,11 +65,17 @@ open class ServiceQueue {
             }
 
             let error = raisesServiceError(data: data, urlResponse: response, error: error, for: request)
-            guard error == nil, let strongSelf = self else {
+            guard let `self` = self else {
+                print("📡⁉️ \(ServiceQueue.self) was released before all taks completed")
+                complete {throw ServiceError.networkError(-1, data: data, request: request)}
+                return
+            }
+
+            guard error == nil else {
                 complete {
-                    self?.handleError(error!)
-                    self?.cleanupQueue(for: task, didFail: true)
-                    self?.shouldCallFinal()
+                    self.handleError(error)
+                    self.cleanupQueue(for: task, didFail: true)
+                    self.shouldCallFinal()
                     throw error!
                 }
                 return
@@ -83,17 +89,17 @@ open class ServiceQueue {
                     """.data(using: .utf8)!
                     return try config.decoder.decode(M.self, from: data)
                 }
-                strongSelf.cleanupQueue(for: task, didFail: true)
-                strongSelf.shouldCallFinal()
+                self.cleanupQueue(for: task, didFail: true)
+                self.shouldCallFinal()
                 return
             }
 
             guard let returnData = data else {
                 complete {
                     let error = ServiceError.invalidResponseData(data, call: call)
-                    strongSelf.handleError(error)
-                    strongSelf.cleanupQueue(for: task, didFail: true)
-                    strongSelf.shouldCallFinal()
+                    self.handleError(error)
+                    self.cleanupQueue(for: task, didFail: true)
+                    self.shouldCallFinal()
                     throw error
                 }
                 return
@@ -101,18 +107,27 @@ open class ServiceQueue {
             complete {
                 do {
                     let result =  try config.decoder.decode(M.self, from: returnData)
-                    strongSelf.cleanupQueue(for: task)
-                    strongSelf.shouldCallFinal()
+                    self.cleanupQueue(for: task)
+                    self.shouldCallFinal()
                     return result
                 } catch let error as DecodingError {
                     let error = ServiceError.decodingError(error, inData: returnData, call: call)
-                    strongSelf.handleError(error)
-                    strongSelf.cleanupQueue(for: task, didFail: true)
-                    strongSelf.shouldCallFinal()
+                    self.handleError(error)
+                    self.cleanupQueue(for: task, didFail: true)
+                    self.shouldCallFinal()
                     throw error
                 }
             }
         })
+
+        // Add task to queue if it could be created
+
+        guard let taskForQueue = task else {
+            print("📡⁉️ no task created")
+            return nil
+        }
+
+        add(taskForQueue)
 
         guard autoStart else {
             return task
@@ -154,7 +169,7 @@ open class ServiceQueue {
 
 	/// Prints the error and throws it
 	/// Possible to override this to have custom behaviour for your app.
-	open func handleError(_ error: Error) {
+	open func handleError(_ error: Error?) {
 		print(error)
 	}
 

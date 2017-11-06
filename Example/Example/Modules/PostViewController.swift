@@ -8,8 +8,9 @@ class PostViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
 	/// !! It is important to retain the service until you have a result.!!
-	let service = PostService()
-    var serviceHandler: PostServiceHandler?
+	private let service = PostService()
+    private var serviceHandler: PostServiceHandler?
+    private var serviceQueue: ServiceQueue?
 
     private var posts = [Post]()
 
@@ -71,29 +72,37 @@ class PostViewController: UIViewController {
     @IBAction func getMultiplePostsRequestInQueue(_ sender: UIButton) {
         start(#function)
         let session = FaroURLSession(backendConfiguration: BackendConfiguration(baseURL: "http://jsonplaceholder.typicode.com"))
-        let serviceQueue = ServiceQueue(session:session) { [weak self] failedTasks in
+        serviceQueue = ServiceQueue(session:session) { [weak self] failedTasks in
             self?.showError()
             printAction("🎉 queued call finished with failedTasks \(String(describing: failedTasks)))")
         }
 
         let call = Call(path: "posts")
 
-        serviceQueue.perform([Post].self, call: call, complete: { [weak self] (done) in
+        serviceQueue?.perform([Post].self, call: call, complete: { [weak self] (done) in
             self?.show(try? done())
             printAction("ServiceQueue Task 1 finished")
         })
 
-        serviceQueue.perform([Post].self, call: call, complete: { [weak self] (done) in
+        serviceQueue?.perform([Post].self, call: call, complete: { [weak self] (done) in
             self?.show(try? done())
             printAction("ServiceQueue Task 2 finished")
         })
 
-        serviceQueue.perform([Post].self, call: call, complete: { [weak self] (done) in
+        serviceQueue?.perform([Post].self, call: call, complete: { [weak self] (done) in
             self?.show(try? done())
             printAction("ServiceQueue Task 3 finished")
         })
 
-        serviceQueue.resumeAll()
+        serviceQueue?.resumeAll()
+    }
+
+    // MARK: - Clear
+
+
+    @IBAction func clearPosts(_ sender: Any) {
+        print(#function)
+        posts.removeAll()
     }
 
 }
