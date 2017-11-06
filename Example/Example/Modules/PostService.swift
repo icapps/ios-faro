@@ -19,9 +19,8 @@ class PostService: Service {
 
 class PostServiceHandler: ServiceHandler<Post> {
 
-    init(complete: @escaping (() throws -> (Post)) -> Void,
-         completeArray: @escaping (() throws -> ([Post])) -> Void) {
+    init(completeArray: @escaping (() throws -> ([Post])) -> Void) {
         let session = FaroURLSession(backendConfiguration: BackendConfiguration(baseURL:  "http://jsonplaceholder.typicode.com"))
-        super.init(call:  Call(path:"posts"), session: session, complete: complete, completeArray: completeArray)
+        super.init(call:  Call(path:"posts"), session: session, completeArray: completeArray)
     }
 }

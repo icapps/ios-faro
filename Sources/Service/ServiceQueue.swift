@@ -30,10 +30,9 @@ open class ServiceQueue {
 
     /// Creates a queue that lasts until final is called. When all request in the queue are finished the session becomes invalid.
     /// For future queued request you have to create a new DeprecatedServiceQueue instance.
-    /// - parameter configuration: Faro service configuration
     /// - parameter session: a session must have a backendConfiguration set.
     /// - parameter final: closure is callen when all requests are performed.
-	public init (_ configuration: BackendConfiguration, session: FaroURLSession, final: @escaping(_ failedTasks: Set<URLSessionTask>?)->()) {
+	public init (session: FaroURLSession, final: @escaping(_ failedTasks: Set<URLSessionTask>?)->()) {
         taskQueue = Set<URLSessionDataTask>()
         self.final = final
         self.session = session
