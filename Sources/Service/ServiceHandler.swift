@@ -37,15 +37,23 @@ open class ServiceHandler<M: Decodable>: Service {
     */
     @discardableResult
      public func perform() -> URLSessionDataTask? {
-        return super.perform(M.self) {[weak self] (resultFunction) in
-            self?.complete?(resultFunction)
+        return super.perform(M.self) {[weak self] (done) in
+            guard let complete = self?.complete else {
+                print("📡⁉️ \(self) has no complete for \(#function)")
+                return
+            }
+            self?.complete?(done)
         }
     }
 
     @discardableResult
     public func performArray() -> URLSessionDataTask? {
-        return super.perform([M].self) {[weak self] (resultFunction) in
-            self?.completeArray?(resultFunction)
+        return super.perform([M].self) {[weak self] (done) in
+            guard let completeArray = self?.completeArray else {
+                print("📡⁉️ \(self) has no complete for \(#function)")
+                return
+            }
+            self?.completeArray?(done)
         }
     }
 

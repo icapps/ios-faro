@@ -63,7 +63,7 @@ class PostViewController: UIViewController {
     @IBAction func getWithHandlers(_ sender: UIButton) {
         start(#function)
         // You can put this everywhere and it will call the handlers you set in setupHandlers()
-        serviceHandler?.perform()
+        serviceHandler?.performArray()
     }
 
     // MARK: - Queue
