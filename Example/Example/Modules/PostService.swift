@@ -24,3 +24,12 @@ class PostServiceHandler: ServiceHandler<Post> {
         super.init(call:  Call(path:"posts"), session: session, completeArray: completeArray)
     }
 }
+
+class PostServiceQueue: ServiceQueue {
+
+    init(final: @escaping (Set<URLSessionTask>?) -> ()) {
+        let session = FaroURLSession(backendConfiguration: BackendConfiguration(baseURL: "http://jsonplaceholder.typicode.com"))
+        super.init(session: session, final: final)
+    }
+
+}

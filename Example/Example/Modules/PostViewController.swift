@@ -10,7 +10,7 @@ class PostViewController: UIViewController {
 	/// !! It is important to retain the service until you have a result.!!
 	private let service = PostService()
     private var serviceHandler: PostServiceHandler?
-    private var serviceQueue: ServiceQueue?
+    private var serviceQueue: PostServiceQueue?
 
     private var posts = [Post]()
 
@@ -71,8 +71,8 @@ class PostViewController: UIViewController {
 
     @IBAction func getMultiplePostsRequestInQueue(_ sender: UIButton) {
         start(#function)
-        let session = FaroURLSession(backendConfiguration: BackendConfiguration(baseURL: "http://jsonplaceholder.typicode.com"))
-        serviceQueue = ServiceQueue(session:session) { [weak self] failedTasks in
+
+        serviceQueue = PostServiceQueue { [weak self] failedTasks in
             self?.showError()
             printAction("🎉 queued call finished with failedTasks \(String(describing: failedTasks)))")
         }
@@ -98,7 +98,6 @@ class PostViewController: UIViewController {
     }
 
     // MARK: - Clear
-
 
     @IBAction func clearPosts(_ sender: Any) {
         print(#function)
