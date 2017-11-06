@@ -8,20 +8,9 @@
 
 import Foundation
 
-enum ServiceQueueError: Error, CustomDebugStringConvertible {
-    case invalidSession(message: String, request: URLRequest)
-
-    var debugDescription: String {
-        switch self {
-        case .invalidSession(message: let message, request: let request):
-            return "📡🔥 you tried to perform a \(request) on a session that is invalid\nmessage: \(message)"
-        }
-    }
-}
-
 open class ServiceQueue {
 
-    var taskQueue: Set<URLSessionDataTask>
+    var taskQueue: Set<URLSessionTask>
     var failedTasks: Set<URLSessionTask>?
 
     let session: FaroURLSession
@@ -33,7 +22,7 @@ open class ServiceQueue {
     /// - parameter session: a session must have a backendConfiguration set.
     /// - parameter final: closure is callen when all requests are performed.
 	public init (session: FaroURLSession, final: @escaping(_ failedTasks: Set<URLSessionTask>?)->()) {
-        taskQueue = Set<URLSessionDataTask>()
+        taskQueue = Set<URLSessionTask>()
         self.final = final
         self.session = session
 	}
@@ -42,7 +31,7 @@ open class ServiceQueue {
     /// Provide a type, that can be an array, to decode the data received from the service into type 'M'
     /// - parameter type: Generic type to decode the returend data to. If service returns no response data use type `Service.NoResponseData`
     @discardableResult
-    open func perform<M>(_ type: M.Type, call: Call, autoStart: Bool = false, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionDataTask?  where M: Decodable {
+    open func perform<M>(_ type: M.Type, call: Call, autoStart: Bool = false, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionTask?  where M: Decodable {
         let config = session.backendConfiguration
 
         guard let request = call.request(with: config) else {
@@ -54,12 +43,20 @@ open class ServiceQueue {
             return nil
         }
 
-        var task: URLSessionDataTask?
-        task = FaroURLSession.urlSession?.dataTask(with: request, completionHandler: {[weak self] (data, response, error) in
+        var task: URLSessionTask!
+
+        if call.httpMethod == .GET  {
+            task = FaroURLSession.urlSession?.downloadTask(with: request)
+        } else if let body = request.httpBody {
+            task = FaroURLSession.urlSession?.uploadTask(with: request, from: body)
+        } else {
+            task = FaroURLSession.urlSession?.dataTask(with:request)
+        }
+
+        session.tasksDone[task] = {[weak self] (data, response, error) in
             guard let task = task else {
-                let error = ServiceQueueError.invalidSession(message: "Task should never be nil!", request: request)
+                let error = ServiceError.networkError(-1, data: data, request: request)
                 self?.handleError(error)
-                self?.invalidateAndCancel()
                 complete {throw error}
                 return
             }
@@ -118,7 +115,7 @@ open class ServiceQueue {
                     throw error
                 }
             }
-        })
+        }
 
         // Add task to queue if it could be created
 
@@ -140,7 +137,7 @@ open class ServiceQueue {
 
     // MARK: - Update model instead of create
 
-    open func performUpdate<M>(on model: M, call: Call, autoStart: Bool = false, complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionDataTask?  where M: Decodable & Updatable {
+    open func performUpdate<M>(on model: M, call: Call, autoStart: Bool = false, complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionTask?  where M: Decodable & Updatable {
         let task = perform(M.self, call: call, autoStart: autoStart) { (resultFunction) in
             complete {
                 let serviceModel = try resultFunction()
@@ -151,7 +148,7 @@ open class ServiceQueue {
         return task
     }
 
-    open func performUpdate<M>(on modelArray: [M],call: Call, autoStart: Bool = false, complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionDataTask?  where M: Decodable & Updatable {
+    open func performUpdate<M>(on modelArray: [M],call: Call, autoStart: Bool = false, complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionTask?  where M: Decodable & Updatable {
         let task = perform([M].self, call: call, autoStart: autoStart) { (resultFunction) in
             complete {
                 var serviceModels = Set(try resultFunction())
@@ -187,14 +184,14 @@ open class ServiceQueue {
 
     // MARK: - Private
 
-    private func add(_ task: URLSessionDataTask?) {
+    private func add(_ task: URLSessionTask?) {
         guard let createdTask = task else {
             return
         }
         taskQueue.insert(createdTask)
     }
 
-    private func cleanupQueue(for task: URLSessionDataTask?, didFail: Bool = false) {
+    private func cleanupQueue(for task: URLSessionTask?, didFail: Bool = false) {
         if let task = task {
             let _ = taskQueue.remove(task)
             if(didFail) {
@@ -209,20 +206,7 @@ open class ServiceQueue {
     private func shouldCallFinal() {
         if !hasOustandingTasks {
             final(failedTasks)
-            FaroURLSession.urlSession?.finishTasksAndInvalidate()
         }
-    }
-
-    // MARK: - Invalidate session overrides
-
-    open func invalidateAndCancel() {
-        taskQueue.removeAll()
-        failedTasks?.removeAll()
-        FaroURLSession.urlSession?.invalidateAndCancel()
-    }
-
-    deinit {
-        FaroURLSession.urlSession?.finishTasksAndInvalidate()
     }
 
 }
