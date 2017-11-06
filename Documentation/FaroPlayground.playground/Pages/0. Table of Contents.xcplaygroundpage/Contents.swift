@@ -12,7 +12,12 @@
  - [Write to the Service](5.%20Write%20to%20the%20service)
  - [Update existing objects](6.%20Update%20existing%20object)
  - [Multi Part Post](7.%20Multi%20Part%20Post)
- - [Security](8.%20Security)
+ - [Retry](9.%20Retry)
+
+ ## WARNING
+
+ Sometimes playground does not compile the Stubbing.swift file in sources folder. This is because the import of Faro does not work. As a workaround comment `import Faro` build and uncomment and build.
+ 
  ****
  */
 //: [Next](@next)
