@@ -59,6 +59,11 @@ class PostViewController: UIViewController {
         serviceHandler = PostServiceHandler(completeArray : {[weak self] (done) in
                self?.show(try? done())
         })
+
+        serviceHandler?.session.enableRetry(with: { (_, _, _) -> Bool in
+            print("done")
+            return true
+        }, urlSessionConfiguration: URLSessionConfiguration.default)
     }
 
     @IBAction func getWithHandlers(_ sender: UIButton) {

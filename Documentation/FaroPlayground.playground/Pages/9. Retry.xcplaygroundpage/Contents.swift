@@ -6,12 +6,48 @@ import PlaygroundSupport
 PlaygroundPage.current.needsIndefiniteExecution = true
 
 //:  *Real response:*
-//: TODO: This is not finished yet. Just a starting point for the future.
 
-let configuration = BackendConfiguration(baseURL: "http://jsonplaceholder.typicode.com")
-let response = HTTPURLResponse(url: configuration.baseURL!, statusCode: 200, httpVersion: nil, headerFields: nil)
-let session = FaroURLSession(backendConfiguration: configuration)
 let call = Call(path: "posts")
+
+let post_1 = """
+[
+  {
+    "id": 1,
+    "title": "Post 1"
+  },
+  {
+    "id": 2,
+    "title": "Post 2"
+  },
+  {
+    "id": 3,
+    "title": "Post 3"
+  }
+]
+""".data(using: .utf8)!
+
+let post_2 = """
+[
+  {
+    "id": 10,
+    "title": "Post 10"
+  }
+]
+""".data(using: .utf8)!
+
+let errorData = """
+[
+  {
+    "message": "Token invalid"
+  }
+]
+""".data(using: .utf8)!
+
+//: The stubbing we use allows you to write multiple repsonses for every time a request is performed.
+
+call.stub(statusCode: 200, data:post_1)
+call.stub(statusCode: 401, data: errorData)
+call.stub(statusCode: 200, data: post_2)
 
 class Post: Decodable {
     let uuid: Int
@@ -24,39 +60,36 @@ class Post: Decodable {
 }
 
 //: Session with multiple tasks not autostarted
+//: If you put autoStart to false the task that is returned after a perform is not started. This is what we want in this case where we start multiple requests with different repsonses.
+let service = StubServiceHandler<Post>(call: call, autoStart: false) {
+    let posts = try? $0()
+    print(posts?.count ?? -1)
+}
 
-//: TODO: Make it possible to perform multiple calls
+let config = URLSessionConfiguration.default
+//: Because of the following line the URLSession will behave stubbed for paths that we stub. More below
+config.protocolClasses = [StubbedURLProtocol.self]
 
-let service = ServiceHandler<Post>(call: call, autoStart: true, session: session,
-    complete: {
-    do {
-        let result = try $0()
-        print("\(result)")
-    } catch {
-        // ignore
-    }
-}, completeArray: {
-    do {
-        let result = try $0()
-        print("\(result.count)")
-    } catch {
-        // ignore
-    }
-})
+service.session.enableRetry(with: { (data, response, error) -> Bool in
+    print("\(data), \(response), \(error)")
+    return true
+}, urlSessionConfiguration: config)
 
 let task1 = service.performArray()
+let authenticationFailedTask = service.performArray()
 let task2 = service.performArray()
-let task3 = service.performArray()
-let task4 = service.performArray()
-
-
-//session.invalidateAndCancel()
 
 task1?.resume()
+authenticationFailedTask?.resume()
+task2?.resume()
 
-session.session.getAllTasks {
-    print($0.count)
-}
+/*:
+ 1. Suspend all tasks when you get a 401
+ 2. Make it possible to define any failure based on the reponse
+ 3. Start a refresh request token request
+ 4. Make every task valid again
+ 5. Resume all suspended and fixed tasks
+*/
 
 
 //: [Next](@next)

@@ -36,7 +36,7 @@ open class ServiceHandler<M: Decodable>: Service {
      Will call the complete handler provided by the initializer.
     */
     @discardableResult
-     public func perform() -> URLSessionDataTask? {
+     public func perform() -> URLSessionTask? {
         return super.perform(M.self) {[weak self] (done) in
             guard let complete = self?.complete else {
                 print("📡⁉️ \(self) has no complete for \(#function)")
@@ -47,7 +47,7 @@ open class ServiceHandler<M: Decodable>: Service {
     }
 
     @discardableResult
-    public func performArray() -> URLSessionDataTask? {
+    public func performArray() -> URLSessionTask? {
         return super.perform([M].self) {[weak self] (done) in
             guard let completeArray = self?.completeArray else {
                 print("📡⁉️ \(self) has no complete for \(#function)")

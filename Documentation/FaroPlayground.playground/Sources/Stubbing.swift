@@ -29,10 +29,10 @@ public class StubService: Service {
 
 public class StubServiceHandler<M: Decodable>: ServiceHandler<M> {
 
-    public init(call: Call,
-                complete: @escaping (() throws -> (M)) -> Void,
-                completeArray: @escaping (() throws -> ([M])) -> Void) {
+    public init(call: Call, autoStart: Bool = true,
+                complete: ((() throws -> (M)) -> Void)? = nil,
+                completeArray: ((() throws -> ([M])) -> Void)? = nil) {
 
-        super.init(call: call, autoStart: true,session: StubbedFaroURLSession(), complete: complete, completeArray: completeArray)
+        super.init(call: call, autoStart: autoStart, session: StubbedFaroURLSession(), complete: complete, completeArray: completeArray)
     }
 }

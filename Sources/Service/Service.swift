@@ -48,7 +48,7 @@ extension Service {
     /// Provide a type, that can be an array, to decode the data received from the service into type 'M'
     /// - parameter type: Generic type to decode the returend data to. If service returns no response data use type `Service.NoResponseData`
     @discardableResult
-    open func perform<M>(_ type: M.Type, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionDataTask?  where M: Decodable {
+    open func perform<M>(_ type: M.Type, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionTask?  where M: Decodable {
         let call = self.call
         let config = self.session.backendConfiguration
 
@@ -59,7 +59,12 @@ extension Service {
             return nil
         }
 
-        let task = session.session.dataTask(with: request, completionHandler: {(data, response, error) in
+
+        // TODO: Handle upload
+        var task = call.httpMethod == .GET  ?  session.session.downloadTask(with: request): session.session.dataTask(with: request) // Will call on delegate of session
+        session.tasksDone[task] = { [weak self] (data, response, error) in
+            guard let `self` = self else {return}
+            print("\(data), \(response), \(error)")
             let error = raisesServiceError(data: data, urlResponse: response, error: error, for: request)
 
             guard error == nil else {
@@ -94,8 +99,7 @@ extension Service {
                     throw error
                 }
             }
-        })
-
+        }
         guard autoStart else {
             return task
         }
@@ -106,7 +110,7 @@ extension Service {
 
     // MARK: - Update model instead of create
 
-    open func performUpdate<M>(model: M, complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionDataTask?  where M: Decodable & Updatable {
+    open func performUpdate<M>(model: M, complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionTask?  where M: Decodable & Updatable {
         let task = perform(M.self) { (resultFunction) in
             complete {
                 let serviceModel = try resultFunction()
@@ -117,7 +121,7 @@ extension Service {
         return task
     }
 
-    open func performUpdate<M>(array: [M], complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionDataTask?  where M: Decodable & Updatable {
+    open func performUpdate<M>(array: [M], complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionTask?  where M: Decodable & Updatable {
         let task = perform([M].self) { (resultFunction) in
             complete {
                 var serviceModels = Set(try resultFunction())

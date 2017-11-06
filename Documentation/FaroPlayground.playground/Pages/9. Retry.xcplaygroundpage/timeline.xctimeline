@@ -3,7 +3,12 @@
    version = "3.0">
    <TimelineItems>
       <LoggerValueHistoryTimelineItem
-         documentLocation = "file:///Users/stijnwillems/Development/iCapps/ios-faro/Documentation/FaroPlayground.playground/Pages/9.%20Retry.xcplaygroundpage#CharacterRangeLen=41&amp;CharacterRangeLoc=1237&amp;EndingColumnNumber=0&amp;EndingLineNumber=51&amp;StartingColumnNumber=30&amp;StartingLineNumber=48&amp;Timestamp=531412760.056191"
+         documentLocation = "file:///Users/stijnwillems/Development/iCapps/ios-faro/Documentation/FaroPlayground.playground/Pages/9.%20Retry.xcplaygroundpage#CharacterRangeLen=0&amp;CharacterRangeLoc=1727&amp;EndingColumnNumber=20&amp;EndingLineNumber=78&amp;StartingColumnNumber=20&amp;StartingLineNumber=78&amp;Timestamp=531658728.639366"
+         selectedRepresentationIndex = "0"
+         shouldTrackSuperviewWidth = "NO">
+      </LoggerValueHistoryTimelineItem>
+      <LoggerValueHistoryTimelineItem
+         documentLocation = "file:///Users/stijnwillems/Development/iCapps/ios-faro/Documentation/FaroPlayground.playground/Pages/9.%20Retry.xcplaygroundpage#CharacterRangeLen=71&amp;CharacterRangeLoc=1197&amp;EndingColumnNumber=24&amp;EndingLineNumber=64&amp;StartingColumnNumber=24&amp;StartingLineNumber=63&amp;Timestamp=531658728.639565"
          selectedRepresentationIndex = "0"
          shouldTrackSuperviewWidth = "NO">
       </LoggerValueHistoryTimelineItem>
