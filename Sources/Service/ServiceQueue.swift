@@ -55,7 +55,7 @@ open class ServiceQueue {
         }
 
         var task: URLSessionDataTask?
-        task = session.session.dataTask(with: request, completionHandler: {[weak self] (data, response, error) in
+        task = FaroURLSession.urlSession?.dataTask(with: request, completionHandler: {[weak self] (data, response, error) in
             guard let task = task else {
                 let error = ServiceQueueError.invalidSession(message: "Task should never be nil!", request: request)
                 self?.handleError(error)
@@ -209,7 +209,7 @@ open class ServiceQueue {
     private func shouldCallFinal() {
         if !hasOustandingTasks {
             final(failedTasks)
-            session.session.finishTasksAndInvalidate()
+            FaroURLSession.urlSession?.finishTasksAndInvalidate()
         }
     }
 
@@ -218,11 +218,11 @@ open class ServiceQueue {
     open func invalidateAndCancel() {
         taskQueue.removeAll()
         failedTasks?.removeAll()
-        session.session.invalidateAndCancel()
+        FaroURLSession.urlSession?.invalidateAndCancel()
     }
 
     deinit {
-        session.session.finishTasksAndInvalidate()
+        FaroURLSession.urlSession?.finishTasksAndInvalidate()
     }
 
 }

@@ -51,7 +51,6 @@ class Uuid: Decodable, Hashable, Updatable {
 class ServiceSpec: QuickSpec {
 
 	override func spec() {
-        var session: FaroURLSession!
 
 		describe("Succes") {
             beforeEach {
@@ -59,7 +58,7 @@ class ServiceSpec: QuickSpec {
                 let config = BackendConfiguration(baseURL:"http://www.google.com")
                 let urlSessionConfig = URLSessionConfiguration.default
                 urlSessionConfig.protocolClasses = [StubbedURLProtocol.self]
-                session = FaroURLSession(backendConfiguration: config, session: URLSession(configuration:urlSessionConfig))
+                FaroURLSession.setup(backendConfiguration: config, urlSessionConfiguration: urlSessionConfig)
                 RequestStub.shared = RequestStub()
             }
 
@@ -72,7 +71,7 @@ class ServiceSpec: QuickSpec {
 
                 call.path.stub(statusCode: 200, data: data)
 
-                let service = Service(call: call, session: session)
+                let service = Service(call: call)
 
                 waitUntil(action: { (done) in
                     service.perform (Uuid.self) { resultFunction in
@@ -91,7 +90,7 @@ class ServiceSpec: QuickSpec {
                 let call = Call(path: "collection")
                 call.path.stub(statusCode: 200, data: data)
 
-                let service = Service(call: call, session: session)
+                let service = Service(call: call)
 
                 waitUntil(action: { (done) in
                     service.perform ([Uuid].self) { resultFunction in
@@ -115,7 +114,7 @@ class ServiceSpec: QuickSpec {
 
                 call.path.stub(statusCode: 200, data: data)
 
-                let service = Service(call: call, session: session)
+                let service = Service(call: call)
 
                 waitUntil { done in
                     service.perform(Uuid.self) { resultFunction in
@@ -137,7 +136,7 @@ class ServiceSpec: QuickSpec {
                 let call = Call(path: "collectionError")
                 call.path.stub(statusCode: 200, data: data)
 
-                let service = Service(call: call, session: session)
+                let service = Service(call: call)
 
                 waitUntil { done in
                     service.perform([Uuid].self) { resultFunction in

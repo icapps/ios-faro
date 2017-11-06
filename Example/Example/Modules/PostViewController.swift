@@ -8,7 +8,7 @@ class PostViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
 	/// !! It is important to retain the service until you have a result.!!
-	private let service = PostService()
+    private var service: PostService?
     private var serviceHandler: PostServiceHandler?
     private var serviceQueue: PostServiceQueue?
 
@@ -16,6 +16,7 @@ class PostViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        service = PostService()
         setupHandlers()
     }
     fileprivate func showError() {
@@ -48,7 +49,7 @@ class PostViewController: UIViewController {
 
     @IBAction func getPostsWithClosure(_ sender: UIButton) {
         start(#function)
-        service.perform([Post].self) { [weak self] (done) in
+        service?.perform([Post].self) { [weak self] (done) in
             self?.show(try? done())
         }
     }
@@ -63,7 +64,7 @@ class PostViewController: UIViewController {
         serviceHandler?.session.enableRetry(with: { (_, _, _) -> Bool in
             print("done")
             return true
-        }, urlSessionConfiguration: URLSessionConfiguration.default)
+        })
     }
 
     @IBAction func getWithHandlers(_ sender: UIButton) {

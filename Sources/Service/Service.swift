@@ -8,12 +8,20 @@
 
 import Foundation
 
+/*:
+ Create a service instance to perform all kinds of requests. You can chose to use Service or its subclasses:
+
+    1. ServiceHandler -> can be used for a single type and single handler
+    2. ServicQueue -> can be used when you want to fire requests in paralel but want to know when all are done.
+
+ All subclasses use this class to perform the requests.
+ */
 open class Service {
 
 	open var call: Call
 	open var autoStart: Bool
 
-    public let session: FaroURLSession
+    public let session: FaroURLSession = FaroURLSession.shared()
 
     /**
      Init a servcie instance to perform calls
@@ -22,10 +30,8 @@ open class Service {
         - call: points to the request you want to perform
         - autoStart: from the call a task is made. This task is returned by the perform function. The task is started automatically unless you set autoStart to no.
         - configuration: describes the base url to from a request with from the provided call.
-        - faroSession: is a session that is derived from `URLSession`. By default this becomes an instance of `FaroSession`
     */
-    public init(call: Call, autoStart: Bool = true, session: FaroURLSession) {
-        self.session = session
+    public init(call: Call, autoStart: Bool = true) {
         self.autoStart = autoStart
         self.call = call
     }
@@ -44,9 +50,16 @@ open class Service {
 
 extension Service {
 
-    /// Gets a model(s) from the service and decodes it using native `Decodable` protocol.
-    /// Provide a type, that can be an array, to decode the data received from the service into type 'M'
-    /// - parameter type: Generic type to decode the returend data to. If service returns no response data use type `Service.NoResponseData`
+    /*: Gets a model(s) from the service and decodes it using native `Decodable` protocol. To do this it asks the URLSession to provide a task.
+        This task can be:
+
+         1. DownloadTask for httpMethod GET (will finish in the background)
+         2. UploadTask for httpMethod PUT, POST, PATCH (will finish in the background)
+         3. DataTask for all others (NO finish in the background)
+
+        Provide a type, that can be an array, to decode the data received from the service into type 'M'
+            - parameter type: Generic type to decode the returend data to. If service returns no response data use type `Service.NoResponseData`
+     */
     @discardableResult
     open func perform<M>(_ type: M.Type, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionTask?  where M: Decodable {
         let call = self.call
@@ -60,8 +73,16 @@ extension Service {
         }
 
 
-        // TODO: Handle upload
-        var task = call.httpMethod == .GET  ?  session.session.downloadTask(with: request): session.session.dataTask(with: request) // Will call on delegate of session
+        var task: URLSessionTask!
+
+        if call.httpMethod == .GET  {
+            task = FaroURLSession.urlSession?.downloadTask(with: request)
+        } else if let body = request.httpBody {
+            task = FaroURLSession.urlSession?.uploadTask(with: request, from: body)
+        } else {
+            task = FaroURLSession.urlSession?.dataTask(with:request)
+        }
+
         session.tasksDone[task] = { [weak self] (data, response, error) in
             guard let `self` = self else {return}
             print("\(data), \(response), \(error)")
@@ -100,6 +121,7 @@ extension Service {
                 }
             }
         }
+
         guard autoStart else {
             return task
         }

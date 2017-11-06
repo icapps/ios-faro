@@ -24,12 +24,11 @@ open class ServiceHandler<M: Decodable>: Service {
      - completeArray: Optional closure parameter to be used when you expect an Array of objects returned by the service
      */
     public init(call: Call, autoStart: Bool = true,
-                session: FaroURLSession,
                 complete: ((() throws -> (M)) -> Void)? = nil,
                 completeArray: ((() throws -> ([M])) -> Void)? = nil) {
         self.complete = complete
         self.completeArray = completeArray
-        super.init(call: call, autoStart: autoStart, session: session)
+        super.init(call: call, autoStart: autoStart)
     }
 
     /**
