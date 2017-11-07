@@ -21,16 +21,21 @@ class FaroSecureURLSessionSpec: QuickSpec {
                 FaroURLSession.setup(backendConfiguration: backendConfiguration, urlSessionConfiguration: urlConfiguration)
             }
 
-            fit("implement retry tests") {
+            fit("on 200 slow and fast task both succeed") {
                 let call = Call(path: "tests")
-                let mockData = """
+                let mockData1 = """
                 {
-                    "uuid" = "test mock"
+                    "uuid": "test mock"
                 }   
                 """.data(using: .utf8)!
+                let mockData2 = """
+                {
+                    "uuid": "test mock 2"
+                }
+                """.data(using: .utf8)!
 
-                call.stub(statusCode: 200, data: nil, waitingTime: 0.1)
-                call.stub(statusCode: 200, data: mockData, waitingTime: 2)
+                call.stub(statusCode: 200, data: mockData1, waitingTime: 0.1)
+                call.stub(statusCode: 200, data: mockData2, waitingTime: 2.0)
 
                 FaroURLSession.shared().enableRetry(with: { (_, response, _) -> Bool in
                     return (response as? HTTPURLResponse)?.statusCode == 401
@@ -45,25 +50,18 @@ class FaroSecureURLSessionSpec: QuickSpec {
                 var task1Done = false
                 var task2Done = false
 
-                waitUntil(timeout: 2.0, action: { (done) in
-                    task1 = service.perform(MockModel.self) { result in
-                        expect {try result()}.to(throwError())
-                        task1Done = true
-                        done()
-                    }
-                    task1.resume()
-
-                    return
-                })
-
+                task1 = service.perform(MockModel.self) { _ in
+                    task1Done = true
+                }
                 task2 = service.perform(MockModel.self) { _ in
                     task2Done = true
                 }
 
+                task1.resume()
                 task2.resume()
 
                 expect(task1Done).toEventually(equal(true), timeout: 2.0)
-                expect(task2Done).toNotEventually(equal(true), timeout:5.0)
+                expect(task2Done).toEventually(equal(true), timeout:5.0)
 
             }
         }

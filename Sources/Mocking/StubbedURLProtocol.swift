@@ -39,6 +39,8 @@ public class StubbedURLProtocol: URLProtocol {
             if let data = stubbedResponse.data {
                 self.client?.urlProtocol(self, didLoad: data)
             }
+
+            // Wait to call 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + stubbedResponse.waitingTime) {
                 // Trigger the finish loading on the client.
                 self.client?.urlProtocolDidFinishLoading(self)
