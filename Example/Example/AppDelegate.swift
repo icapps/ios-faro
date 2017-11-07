@@ -8,8 +8,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let config = URLSessionConfiguration.default
+        config.protocolClasses = [StubbedURLProtocol.self] // allow stubbing
         FaroURLSession.setup(backendConfiguration: BackendConfiguration(baseURL:  "http://jsonplaceholder.typicode.com"),
-                             urlSessionConfiguration: URLSessionConfiguration.background(withIdentifier: "com.icapps.\(UUID().uuidString)"))
+                             urlSessionConfiguration: config)
         BuddyBuildSDK.setup()
 
         return true

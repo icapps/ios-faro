@@ -18,7 +18,7 @@ open class FaroURLSession: NSObject {
 
     var tasksDone = [URLSessionTask:(Data?, URLResponse?, Error?) -> Void]()
 
-    private var errorCheck: ((Data?, URLResponse?, Error?) -> Bool)?
+    private var errorCheck: ((URLSessionTask, Data?, URLResponse?, Error?) -> Bool)?
 
     /*:
      This will create in internal URLSession that sets this instance as its URLSessionDelegate.
@@ -50,7 +50,7 @@ open class FaroURLSession: NSObject {
         2. In case of an invalid token that needs a retry.
 
      */
-    open func enableRetry( with errorCheck: @escaping (Data?, URLResponse?, Error?) -> Bool) {
+    open func enableRetry( with errorCheck: @escaping (URLSessionTask, Data?, URLResponse?, Error?) -> Bool) {
         self.errorCheck = errorCheck
     }
 
@@ -68,11 +68,15 @@ extension FaroURLSession: URLSessionDelegate {
 extension FaroURLSession: URLSessionTaskDelegate {
 
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        guard let errorCheck = errorCheck, errorCheck(nil, task.response, error) else {
-            // If done closure for the task is not removed from tasksDone by completing in one of the other taskDelegate functions the error is reported to the corresponding closure of the task.
-            tasksDone[task]?(nil, task.response, error)
-            // Remove done closure because we are done with it.
-            tasksDone[task] = nil
+        guard let errorCheck = errorCheck, errorCheck(task, nil, task.response, error) else {
+            // If the task is not suspended an error occured this is reported
+            if task.state != .suspended {
+                // If done closure for the task is not removed from tasksDone by completing in one of the other taskDelegate functions the error is reported to the corresponding closure of the task.
+                tasksDone[task]?(nil, task.response, error)
+                // Remove done closure because we are done with it.
+                tasksDone[task] = nil
+            }
+
             return
         }
 
@@ -83,6 +87,8 @@ extension FaroURLSession: URLSessionTaskDelegate {
 
         tasksDone.map {$0.key}.forEach { $0.suspend()}
         print("📡 \(tasksDone.count) ongoing tasks suspended")
+
+        // 2. 
 
     }
 

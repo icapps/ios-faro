@@ -61,6 +61,13 @@
                                     <action selector="clearPosts:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="hJ8-LJ-66x"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zab-n8-GkQ">
+                                <rect key="frame" x="152" y="399" width="70" height="30"/>
+                                <state key="normal" title="Test Retry"/>
+                                <connections>
+                                    <action selector="testRetry:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="3jT-Mp-hcz"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -72,9 +79,11 @@
                             <constraint firstItem="j1D-wl-qKD" firstAttribute="top" secondItem="IoZ-Vd-64E" secondAttribute="bottom" constant="20" id="YEc-NS-Cwa"/>
                             <constraint firstItem="pE5-ae-gLx" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="bJj-Fw-2Gy"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="cfo-xD-YvP" secondAttribute="bottom" constant="50" id="d1f-vR-snF"/>
+                            <constraint firstItem="Zab-n8-GkQ" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="dJO-8f-5Eh"/>
                             <constraint firstItem="05T-S4-tBq" firstAttribute="top" secondItem="j1D-wl-qKD" secondAttribute="bottom" constant="20" id="dpY-vj-IxK"/>
                             <constraint firstItem="005-b6-pqE" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="105" id="hRS-9I-ftZ"/>
                             <constraint firstItem="005-b6-pqE" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="mVa-Ah-B1w"/>
+                            <constraint firstItem="IoZ-Vd-64E" firstAttribute="top" secondItem="Zab-n8-GkQ" secondAttribute="bottom" constant="8" id="tob-AV-fDb"/>
                             <constraint firstItem="cfo-xD-YvP" firstAttribute="top" secondItem="05T-S4-tBq" secondAttribute="bottom" constant="20" id="uhH-dJ-lcG"/>
                         </constraints>
                     </view>

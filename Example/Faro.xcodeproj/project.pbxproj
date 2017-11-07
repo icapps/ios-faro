@@ -23,6 +23,7 @@
 		C032815F1D77319B0047825C /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815E1D77319B0047825C /* Model.swift */; };
 		C04CFABD1DE48486001C05CF /* PostCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04CFABC1DE48486001C05CF /* PostCodable.swift */; };
 		C0514FA51EA90322005409E5 /* ServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0514FA31EA90300005409E5 /* ServiceSpec.swift */; };
+		C098A9FB1FB20B5200EB4DD3 /* PostResponseJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = C098A9FA1FB20B5200EB4DD3 /* PostResponseJSON.swift */; };
 		C0AA8DA21FAC7B3B00EF6F37 /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AA8DA11FAC7B3B00EF6F37 /* PostService.swift */; };
 		C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ACDE631D79B65100064801 /* MockModel.swift */; };
 		C0C7E18E1ED2E63200025CEA /* ParameterSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C7E18C1ED2E5DB00025CEA /* ParameterSpec.swift */; };
@@ -70,6 +71,7 @@
 		C052960A1CB6629E007E1111 /* Faro_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Faro_Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		C05EBF6F1D4B8E3000B950EB /* Faro_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Faro_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05EBF731D4B8E3000B950EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Faro_Tests/Info.plist; sourceTree = "<group>"; };
+		C098A9FA1FB20B5200EB4DD3 /* PostResponseJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponseJSON.swift; sourceTree = "<group>"; };
 		C0AA8DA11FAC7B3B00EF6F37 /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		C0ACDE631D79B65100064801 /* MockModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockModel.swift; sourceTree = "<group>"; };
 		C0C7E18C1ED2E5DB00025CEA /* ParameterSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterSpec.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				607FACD71AFB9204008FA782 /* PostViewController.swift */,
 				C04CFABC1DE48486001C05CF /* PostCodable.swift */,
 				C0AA8DA11FAC7B3B00EF6F37 /* PostService.swift */,
+				C098A9FA1FB20B5200EB4DD3 /* PostResponseJSON.swift */,
 			);
 			name = ViewControllers;
 			path = Modules;
@@ -484,6 +487,7 @@
 			files = (
 				C0AA8DA21FAC7B3B00EF6F37 /* PostService.swift in Sources */,
 				C032815F1D77319B0047825C /* Model.swift in Sources */,
+				C098A9FB1FB20B5200EB4DD3 /* PostResponseJSON.swift in Sources */,
 				C03281451D76EB590047825C /* PostViewController.swift in Sources */,
 				C04CFABD1DE48486001C05CF /* PostCodable.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
