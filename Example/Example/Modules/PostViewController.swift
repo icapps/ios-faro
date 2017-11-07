@@ -23,29 +23,26 @@ class PostViewController: UIViewController {
     @IBAction func testRetry(_ sender: UIButton) {
         let failingCall = Call(path: "blaBla")
 
-        failingCall.stub(statusCode: 401, data: nil, waitingTime: 1.0)
+        failingCall.stub(statusCode: 401, data: nil, waitingTime: 0.1)
 
         let postCall = Call(path: "posts")
         postCall.stub(statusCode: 200, data: postsData, waitingTime: 3.0)
 
-        FaroURLSession.shared().enableRetry { (task, _, response, _) -> Bool in
+        FaroURLSession.shared().enableRetry { (_, _, response, _) -> Bool in
             guard let response = response as? HTTPURLResponse else {
                 return false
             }
             return response.statusCode == 401
         }
-        
+
         retryService = Service(call: failingCall)
 
         retryService?.perform(Post.self, complete: { (done) in
-            print("⁉️ This should not succeed because of failure of other")
+            print("⁉️ This should not succeed because of failure of other \(String(describing: try? done()))")
         })
-
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-            self.postService?.perform([Post].self, complete: { (done) in
-                print("⁉️ This should not succeed because of failure of other")
-            })
-        }
+        self.postService?.perform([Post].self, complete: { (done) in
+            print("⁉️ This should not succeed because of failure of other \(String(describing: try? done()))")
+        })
 
     }
 
@@ -78,6 +75,10 @@ class PostViewController: UIViewController {
     // MARK: - Closure parameter
 
     @IBAction func getPostsWithClosure(_ sender: UIButton) {
+        let call = Call(path: "post")
+        RequestStub.removeAllStubs()
+        call.stub(statusCode: 200, data: postsData, waitingTime: 0.5)
+
         start(#function)
         postService?.perform([Post].self) { [weak self] (done) in
             self?.show(try? done())
@@ -93,6 +94,10 @@ class PostViewController: UIViewController {
     }
 
     @IBAction func getWithHandlers(_ sender: UIButton) {
+        let call = Call(path: "post")
+        RequestStub.removeAllStubs()
+        call.stub(statusCode: 200, data: postsData, waitingTime: 0.5)
+
         start(#function)
         // You can put this everywhere and it will call the handlers you set in setupHandlers()
         serviceHandler?.performArray()
@@ -101,15 +106,17 @@ class PostViewController: UIViewController {
     // MARK: - Queue
 
     @IBAction func getMultiplePostsRequestInQueue(_ sender: UIButton) {
+        let call = Call(path: "post")
+        RequestStub.removeAllStubs()
+        call.stub(statusCode: 200, data: postsData, waitingTime: 0.5)
+
         start(#function)
 
         serviceQueue = PostServiceQueue { [weak self] failedTasks in
             self?.showError()
             printAction("🎉 queued call finished with failedTasks \(String(describing: failedTasks)))")
         }
-
-        let call = Call(path: "posts")
-
+        
         serviceQueue?.perform([Post].self, call: call, complete: { [weak self] (done) in
             self?.show(try? done())
             printAction("ServiceQueue Task 1 finished")

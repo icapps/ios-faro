@@ -4,6 +4,8 @@ import Foundation
 open class FaroURLSession: NSObject {
     private static var faroUrlSession: FaroURLSession?
 
+    private var isRetrying = false
+
     // Setup by using static fuction setupFaroURLSession
     public static func shared() -> FaroURLSession {
         guard  let shared = FaroURLSession.faroUrlSession else {
@@ -18,7 +20,9 @@ open class FaroURLSession: NSObject {
 
     var tasksDone = [URLSessionTask:(Data?, URLResponse?, Error?) -> Void]()
 
-    private var errorCheck: ((URLSessionTask, Data?, URLResponse?, Error?) -> Bool)?
+    private var retryCheck: ((URLSessionTask, Data?, URLResponse?, Error?) -> Bool)?
+    private var fixCancelledRequests: (([String: URLRequest]) -> [String: URLRequest])?
+    private var performRetry: ((URLRequest, _ done: () -> Void) -> Void)?
 
     /*:
      This will create in internal URLSession that sets this instance as its URLSessionDelegate.
@@ -49,13 +53,23 @@ open class FaroURLSession: NSObject {
         1. If you require to monitor every task completion before going to the result
         2. In case of an invalid token that needs a retry.
 
+     - Parameters:
+         - retryCheck: check if this request indicates you should fire a retry, for example on statusCode == 401
+         - fixCancelledRequests: You should make these requests valid again. For example replace a token.
+         - performRetry: In this asynchronous call you should do your retry task and call done when finished. When you call done we call fixCancelledRequests and fire them again.
      */
-    open func enableRetry( with errorCheck: @escaping (URLSessionTask, Data?, URLResponse?, Error?) -> Bool) {
-        self.errorCheck = errorCheck
+    open func enableRetry(with retryCheck: @escaping (URLSessionTask, Data?, URLResponse?, Error?) -> Bool,
+                          fixCancelledRequests: @escaping ([[String: URLRequest]]) -> [String: URLRequest],
+                          performRetry: @escaping (URLRequest, _ done: () -> Void) -> Void) {
+        self.retryCheck = retryCheck
+        self.fixCancelledRequests = fixCancelledRequests
+        self.performRetry = performRetry
     }
 
     open func disableRety() {
-        self.errorCheck = nil
+        self.retryCheck = nil
+        self.fixCancelledRequests = nil
+        self.performRetry = nil
     }
 }
 
@@ -67,47 +81,57 @@ extension FaroURLSession: URLSessionDelegate {
 
 extension FaroURLSession: URLSessionTaskDelegate {
 
-    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        guard let errorCheck = errorCheck, errorCheck(task, nil, task.response, error) else {
-            // If the task is not suspended an error occured this is reported
-            if task.state != .suspended {
+    // TODO: Why the hell do we need these delegates
+}
+
+extension FaroURLSession: URLSessionDownloadDelegate {
+
+    // TODO: Upload task!
+    public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+
+        guard !isRetrying else {
+            return
+        }
+        print("📡 Received something for \(downloadTask.currentRequest?.url)")
+
+        let data = try? Data(contentsOf: location, options: .alwaysMapped)
+
+        guard let retryCheck = retryCheck, retryCheck(downloadTask, data, downloadTask.response, nil) else {
+            // If the task is not suspended and we have no error we report the result
+            if downloadTask.state != .canceling {
                 // If done closure for the task is not removed from tasksDone by completing in one of the other taskDelegate functions the error is reported to the corresponding closure of the task.
-                tasksDone[task]?(nil, task.response, error)
+                tasksDone[downloadTask]?(data, downloadTask.response, nil)
                 // Remove done closure because we are done with it.
-                tasksDone[task] = nil
+                tasksDone[downloadTask] = nil
             }
 
             return
         }
 
+        isRetrying = true
+        // At this stage you can have an error or a retry
+        // TODO: separate for retry
+
         // Begin retry procedure
-        print("📡 Beginning retry for \(task.originalRequest)")
+        print("📡 Beginning retry for \(downloadTask.currentRequest)")
 
         // 1. Suspend all ongoing tasks
 
-        tasksDone.map {$0.key}.forEach { $0.suspend()}
+        tasksDone.map {$0.key}.forEach { $0.cancel()}
         print("📡 \(tasksDone.count) ongoing tasks suspended")
 
-        // 2. 
+        // 2. Fix the task
 
-    }
+        // TODO: no forced unwrapping
+        performRetry?(downloadTask.currentRequest!) {
 
-}
-
-extension FaroURLSession: URLSessionDownloadDelegate {
-
-    
-    // TODO: Upload task!
-    public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        guard let data = try? Data(contentsOf: location, options: .alwaysMapped) else {
-            // TODO pass thrown error
-            return
+            // 1. Map the requests to the task identifiers
+            // 2. Send this to the request map to the client
+            // 3. Make new tasks from the requests and link them to the current done closures
+            // 4. Fire they all and prey for success
+//            let fixedRequests = fixCancelledRequests(tasksDone.map {[$0.task ]})
+            // link them to the tasks
         }
-        guard let done = tasksDone[downloadTask] else {
-            print("📡⁉️ \(self) \(#function) No done for \(downloadTask)")
-            return
-        }
-        done(data, downloadTask.response, nil)
-        tasksDone[downloadTask] = nil
+
     }
 }

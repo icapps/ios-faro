@@ -10,7 +10,9 @@ import Foundation
 
 /// This class is responsible for returning the correct `HTTPURLResponse` when mocking the requests.
 public class StubbedURLProtocol: URLProtocol {
-    
+
+    var finishLoading: (() -> Void)?
+
     override open class func canInit(with request: URLRequest) -> Bool {
         var path = request.url?.path
         path?.removeFirst()
@@ -40,20 +42,28 @@ public class StubbedURLProtocol: URLProtocol {
                 self.client?.urlProtocol(self, didLoad: data)
             }
 
-            // Wait to call 
+            // Set the finish loading closure. We use a closure to allow cancel
+            finishLoading = { [weak self] in
+                guard let `self` = self else {return}
+                self.client?.urlProtocolDidFinishLoading(self)
+            }
+
+            // Wait to call finish loading
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + stubbedResponse.waitingTime) {
                 // Trigger the finish loading on the client.
-                self.client?.urlProtocolDidFinishLoading(self)
+                self.finishLoading?()
             }
         } else {
             print("⁉️ No STUB for \(request.url) in \(RequestStub.shared)")
+            self.client?.urlProtocolDidFinishLoading(self)
         }
-
 
 
     }
     
     override open func stopLoading() {
+        print("Stub is requested to stop loading")
+        finishLoading = nil
     }
     
 }
