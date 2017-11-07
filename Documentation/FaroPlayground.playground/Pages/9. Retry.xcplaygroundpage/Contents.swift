@@ -47,8 +47,8 @@ let errorData = """
 
 //: The stubbing we use allows you to write multiple repsonses for every time a request is performed.
 
-call.stub(statusCode: 200, data:post_1)
 call.stub(statusCode: 401, data: errorData)
+call.stub(statusCode: 200, data:post_1)
 call.stub(statusCode: 200, data: post_2)
 
 class Post: Decodable {
@@ -65,11 +65,13 @@ class Post: Decodable {
 //: If you put autoStart to false the task that is returned after a perform is not started. This is what we want in this case where we start multiple requests with different repsonses.
 let service = StubServiceHandler<Post>(call: call, autoStart: false) {
     let posts = try? $0()
-    print(posts?.count ?? -1)
 }
 
 service.session.enableRetry { (data, response, error) -> Bool in
-    print("\(data), \(response), \(error)")
+    guard let response = response as? HTTPURLResponse, response.statusCode == 401 else {
+        return false
+    }
+
     return true
 }
 
@@ -77,9 +79,12 @@ let task1 = service.performArray()
 let authenticationFailedTask = service.performArray()
 let task2 = service.performArray()
 
-task1?.resume()
 authenticationFailedTask?.resume()
-task2?.resume()
+DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+    task1?.resume()
+    task2?.resume()
+}
+
 
 /*:
  1. Suspend all tasks when you get a 401

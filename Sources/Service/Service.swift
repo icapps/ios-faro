@@ -85,7 +85,7 @@ extension Service {
 
         session.tasksDone[task] = { [weak self] (data, response, error) in
             guard let `self` = self else {return}
-            print("\(data), \(response), \(error)")
+
             let error = raisesServiceError(data: data, urlResponse: response, error: error, for: request)
 
             guard error == nil else {

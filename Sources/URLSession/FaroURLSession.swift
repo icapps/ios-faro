@@ -68,16 +68,29 @@ extension FaroURLSession: URLSessionDelegate {
 extension FaroURLSession: URLSessionTaskDelegate {
 
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        // If done closure for the task is not removed from tasksDone by completing in one of the other taskDelegate functions the error is reported to the corresponding closure of the task.
-        tasksDone[task]?(nil, task.response, error)
-        // Remove done closure because we are done with it.
-        tasksDone[task] = nil
+        guard let errorCheck = errorCheck, errorCheck(nil, task.response, error) else {
+            // If done closure for the task is not removed from tasksDone by completing in one of the other taskDelegate functions the error is reported to the corresponding closure of the task.
+            tasksDone[task]?(nil, task.response, error)
+            // Remove done closure because we are done with it.
+            tasksDone[task] = nil
+            return
+        }
+
+        // Begin retry procedure
+        print("📡 Beginning retry for \(task.originalRequest)")
+
+        // 1. Suspend all ongoing tasks
+
+        tasksDone.map {$0.key}.forEach { $0.suspend()}
+        print("📡 All ongoing tasks suspended")
+
     }
 
 }
 
 extension FaroURLSession: URLSessionDownloadDelegate {
 
+    // TODO: Upload task!
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         guard let data = try? Data(contentsOf: location, options: .alwaysMapped) else {
             // TODO pass thrown error
