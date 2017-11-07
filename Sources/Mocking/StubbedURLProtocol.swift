@@ -39,12 +39,16 @@ public class StubbedURLProtocol: URLProtocol {
             if let data = stubbedResponse.data {
                 self.client?.urlProtocol(self, didLoad: data)
             }
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + stubbedResponse.waitingTime) {
+                // Trigger the finish loading on the client.
+                self.client?.urlProtocolDidFinishLoading(self)
+            }
         } else {
             print("⁉️ No STUB for \(request.url) in \(RequestStub.shared)")
         }
-        
-        // Trigger the finish loading on the client.
-        self.client?.urlProtocolDidFinishLoading(self)
+
+
+
     }
     
     override open func stopLoading() {

@@ -82,7 +82,7 @@ extension FaroURLSession: URLSessionTaskDelegate {
         // 1. Suspend all ongoing tasks
 
         tasksDone.map {$0.key}.forEach { $0.suspend()}
-        print("📡 All ongoing tasks suspended")
+        print("📡 \(tasksDone.count) ongoing tasks suspended")
 
     }
 
@@ -90,6 +90,7 @@ extension FaroURLSession: URLSessionTaskDelegate {
 
 extension FaroURLSession: URLSessionDownloadDelegate {
 
+    
     // TODO: Upload task!
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         guard let data = try? Data(contentsOf: location, options: .alwaysMapped) else {
