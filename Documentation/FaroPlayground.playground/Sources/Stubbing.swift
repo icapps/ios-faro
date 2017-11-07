@@ -7,14 +7,13 @@ import Faro
 //: Create a session with a response OK (= 200) that returns the data of `jsonArray` above.
 public class StubbedFaroURLSession: FaroURLSession {
 
-    public init() {
-        let config = URLSessionConfiguration.default
+    public static func setup() {
+        let backendConfiguration = BackendConfiguration(baseURL: "http://www.stub.com")
+        let urlConfiguration = URLSessionConfiguration.default
         //: Because of the following line the URLSession will behave stubbed for paths that we stub. More below
-        config.protocolClasses = [StubbedURLProtocol.self]
+        urlConfiguration.protocolClasses = [StubbedURLProtocol.self]
 
-        let stubbedSession = URLSession(configuration: config)
-
-        super.init(backendConfiguration:BackendConfiguration(baseURL: "http://www.google.com"), session: stubbedSession)
+        FaroURLSession.setup(backendConfiguration: backendConfiguration, urlSessionConfiguration: urlConfiguration)
     }
 }
 
@@ -23,16 +22,16 @@ public class StubService: Service {
     //: Convienience init that stubs the service for a specific call.
     public init(call: Call) {
         //: **AutoStart??** meand that whenever you use the function `perform` the request is immediately fired. If you want to create multiple service instances and fire the request later put **autoStart** to false.
-        super.init(call: call, autoStart: true, session: StubbedFaroURLSession())
+        super.init(call: call, autoStart: true)
     }
 }
 
 public class StubServiceHandler<M: Decodable>: ServiceHandler<M> {
 
-    public init(call: Call, autoStart: Bool = true,
+    public override init(call: Call, autoStart: Bool = true,
                 complete: ((() throws -> (M)) -> Void)? = nil,
                 completeArray: ((() throws -> ([M])) -> Void)? = nil) {
 
-        super.init(call: call, autoStart: autoStart, session: StubbedFaroURLSession(), complete: complete, completeArray: completeArray)
+        super.init(call: call, autoStart: autoStart, complete: complete, completeArray: completeArray)
     }
 }

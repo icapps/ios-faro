@@ -7,6 +7,7 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 //: # Multi Part Post
 //: You can use `Faro` to send a `multipart/form-data` to a server. To use this, you add the multipart file as a parameter to the `Call`.=
 //: *Example*
+StubbedFaroURLSession.setup()
 
 let image = UIImage(named: "Tom.jpg")!
 let jpeg = UIImageJPEGRepresentation(image, 0.7)!

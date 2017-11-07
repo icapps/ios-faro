@@ -8,6 +8,8 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 /*:
  It would be lame if we could not change some remote data. Depending on the data provider you choose they can respond with data or without data.
  */
+StubbedFaroURLSession.setup()
+
 //: ## Encode Product
 struct Product: Encodable {
     let name: String

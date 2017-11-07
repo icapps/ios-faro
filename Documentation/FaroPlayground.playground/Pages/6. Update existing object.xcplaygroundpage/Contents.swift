@@ -15,6 +15,7 @@ PlaygroundPage.current.needsIndefiniteExecution = true
  2. Update from an array. It is your job to look for the model in the array and update yourself with its content
  3. Hashable, because we should be able to look an instance up in a set you should implement Hashable.
  */
+StubbedFaroURLSession.setup()
 
 class Product: Decodable, Updatable, CustomDebugStringConvertible {
     var name: String

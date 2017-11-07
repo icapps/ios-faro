@@ -1,11 +1,18 @@
 //: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
-//: ## 3. Single Complete Handler or multiple Closure Parameters
-//: setup instances
+
 import Faro
 import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
+/*: # 3. Single Complete Handler or multiple Closure Parameters
+ Asynchronous code is difficult to write. In general you write it so the user does not perceive the cpu is doing work. The help you choose if you need to use the service with handlers or with closure parameters you can use the following guidelines:
 
+ * You have a single page and some network requests that do not depend on the result of the other. -> Handler
+ * To
+
+ */
+StubbedFaroURLSession.setup()
+//: setup instances
 let jsonSingle = """
 {
   "name": "Melon",

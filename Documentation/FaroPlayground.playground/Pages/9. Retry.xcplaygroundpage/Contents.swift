@@ -5,7 +5,9 @@ import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-//:  *Real response:*
+//: # Retry
+
+StubbedFaroURLSession.setup()
 
 let call = Call(path: "posts")
 
@@ -66,14 +68,10 @@ let service = StubServiceHandler<Post>(call: call, autoStart: false) {
     print(posts?.count ?? -1)
 }
 
-let config = URLSessionConfiguration.default
-//: Because of the following line the URLSession will behave stubbed for paths that we stub. More below
-config.protocolClasses = [StubbedURLProtocol.self]
-
-service.session.enableRetry(with: { (data, response, error) -> Bool in
+service.session.enableRetry { (data, response, error) -> Bool in
     print("\(data), \(response), \(error)")
     return true
-}, urlSessionConfiguration: config)
+}
 
 let task1 = service.performArray()
 let authenticationFailedTask = service.performArray()

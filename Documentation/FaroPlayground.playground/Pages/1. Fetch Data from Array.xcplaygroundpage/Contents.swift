@@ -4,7 +4,32 @@ import Faro
 import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
+//: # Setup your applicationlet mockService = MockService()
+//: Faro operated with a singleton of a `URLSession`. This is because we support background requests and retries, see page 9.
+//: To setup Faro correctly in your Appdelegate you need to configure this singleton. A typical appdelegate looks like this
+/*:
+```
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    var window: UIWindow?
+
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        // I encourage to enable background, but you do not have to.
+        FaroURLSession.setup(backendConfiguration: BackendConfiguration(baseURL:  "http://yourServer.com"),
+                             urlSessionConfiguration: URLSessionConfiguration.background(withIdentifier: "com.icapps.\(UUID().uuidString)"))
+
+        // Your other setup code ...
+
+        return true
+    }
+
+}
+```
+*/
+//: In the case of the playground there is a convenience function that we have to use on every page.
+StubbedFaroURLSession.setup()
 //: # Fetch Data from Array
 //:
 //: Faro has switched to use the native `Decoder` and `Encoder` in Swift 4. We use the playground Apple provide in [WWDC2017 session: Whats new in Foundation](https://developer.apple.com/videos/play/wwdc2017/212/)

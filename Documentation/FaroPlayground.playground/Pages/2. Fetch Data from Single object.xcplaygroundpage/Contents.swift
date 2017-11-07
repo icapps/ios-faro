@@ -3,11 +3,12 @@ import Faro
 import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
-
 /*:
+ # Fetch Data from Single object
  As we did most of the work before this this page will be short. You just have to change the type parameter!
  > `[Type].self` -> `Type.self` and interpret the result
  */
+StubbedFaroURLSession.setup()
 
 let jsonSingle = """
 {

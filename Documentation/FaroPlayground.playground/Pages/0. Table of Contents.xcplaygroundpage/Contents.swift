@@ -17,7 +17,13 @@
  ## WARNING
 
  Sometimes playground does not compile the Stubbing.swift file in sources folder. This is because the import of Faro does not work. As a workaround comment `import Faro` build and uncomment and build.
- 
+
+ ## Why use Faro
+
+ 1. You do not have to write parsing code thanks to Swift 4 Codable protocol
+ 2. You get background request out of the box
+ 3. If you have a service providers that requires you to reset a token after some time and you have a lot of paralell requests you will find page 9 a blizz!
+
  ****
  */
 //: [Next](@next)

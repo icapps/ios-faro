@@ -4,6 +4,7 @@ import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 /*:
+ # Handle differen JSON formats
  Depending on the data provider different json can be provided. Most of the cases are covered in Apples playground(see [Table of Contents](0.%20Table%20of%20Contents)).
  Here we disuss 2 common cases:
  1. The object to be decoded is nested in the JSON
@@ -15,6 +16,7 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 /*:
  Many approaches are possible. We suggest to use a `Type` that mimics the nested json as an *intermediate* object.
  */
+StubbedFaroURLSession.setup()
 
 let jsonNested = """
 {
