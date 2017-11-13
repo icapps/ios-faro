@@ -25,7 +25,7 @@ class CallSpec: QuickSpec {
 
             it("should use POST method") {
                 let request = call.request(with: configuration)
-                expect(request!.httpMethod) == "POST"
+                expect(request.httpMethod) == "POST"
             }
         }
 
@@ -40,12 +40,12 @@ class CallSpec: QuickSpec {
                 }
 
                 it("should default to .GET") {
-                    let request = call.request(with: configuration)!
+                    let request = call.request(with: configuration)
                     expect(request.httpMethod).to(equal("GET"))
                 }
 
                 it("should configuration should make up request") {
-                    let request = call.request(with: configuration)!
+                    let request = call.request(with: configuration)
                     expect(request.url?.absoluteString) == "http://someURL/path"
                 }
             }
@@ -58,19 +58,19 @@ class CallSpec: QuickSpec {
             func allHTTPHeaderFields(_ parameter: Parameter) -> [String: String] {
                 let call = Call(path: "path", parameter: [parameter])
                 let request = call.request(with: configuration)
-                return request!.allHTTPHeaderFields!
+                return request.allHTTPHeaderFields!
             }
 
             func componentString(_ parameter: Parameter) -> String {
                 let call = Call(path: "path", parameter: [parameter])
                 let request = call.request(with: configuration)
-                return request!.url!.absoluteString
+                return request.url!.absoluteString
             }
 
             func body(_ parameter: Parameter, method: HTTPMethod) -> Data? {
                 let call = Call(path: "path", method: method, parameter: [parameter])
                 let request = call.request(with: configuration)
-                return request!.httpBody
+                return request.httpBody
             }
 
             it("should insert http headers into the request") {
@@ -205,7 +205,7 @@ class CallSpec: QuickSpec {
 			it("has authorization header") {
 				let request = call.request(with: BackendConfiguration(baseURL: ""))
 
-				let header = request?.allHTTPHeaderFields?.filter {$0.key == "Authorization"}
+				let header = request.allHTTPHeaderFields?.filter {$0.key == "Authorization"}
 
 				expect(header?.first?.value) == AuthorizableCall.fakeHeader.first?.value
 			}

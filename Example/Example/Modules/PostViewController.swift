@@ -29,8 +29,10 @@ class PostViewController: UIViewController {
         var postCall = Call(path: "posts", parameter: [.httpHeader(["token": authentication.token])])
         let retryCall = Call(path: "retry")
 
-        postCall.stub(statusCode: 401, data: nil, waitingTime: 0.1)
-        retryCall.stub(statusCode: 200, dictionary: ["token": "refreshed token for header"], waitingTime: 0.1)
+        let waitingOffset: TimeInterval = 2 // Change this if you want request to go faster
+        postCall.stub(statusCode: 401, data: nil, waitingTime: waitingOffset)
+        retryCall.stub(statusCode: 200, dictionary: ["token": "refreshed token for header"], waitingTime: waitingOffset)
+        postCall.stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 5) // Should return much later then all others because it should be fixed before returning
 
         FaroURLSession.shared().enableRetry(with: { (_, _, response, _) -> Bool in
             guard let response = response as? HTTPURLResponse else {
@@ -40,39 +42,53 @@ class PostViewController: UIViewController {
         }, fixCancelledRequest: {[weak self] (originalRequest) -> URLRequest in
 
             guard let token = self?.authentication.token else {return originalRequest}
-
+            print("Fixing \(String(describing: originalRequest.url)) with token \(token)")
             var fixedRequest = originalRequest
             // Add the token we refreshed to the header field (this will override the previous value)
             fixedRequest.addValue(token, forHTTPHeaderField: "token")
 
             return fixedRequest
-        }, performRetry: { [weak self] done in
-            self?.retryService = Service(call: retryCall)
-            self?.retryService?.perform(Authentication.self, complete: { (authenticationDone) in
+        }, performRetry: { [unowned self] done in
+            self.retryService = Service(call: retryCall)
+            print("Invalid \(self.authentication.token)")
+            return self.retryService!.perform(Authentication.self, complete: { (authenticationDone) in
                 done {
-                    self?.authentication = try authenticationDone()
+                    self.authentication = try authenticationDone()
 
-                    guard let token = self?.authentication.token else {return}
-
+                    let token = self.authentication.token
                     // Because we are stubbing the requests for this example the following lines are needed. In your code this is not needed.
+                    RequestStub.removeAllStubs() // We remove the old long waiting post response. With a real service this is not needed.
                     postCall = Call(path: "posts", method: .GET, parameter: [.httpHeader(["token": token])])
-                    postCall.stub(statusCode: 200, data: postsData, waitingTime: 0.1)
+                    postCall.stub(statusCode: 200, data: postsData, waitingTime: waitingOffset)
+                    postCall.stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 2)
+
                     // end stubbing code
                 }
 
             })
-
         })
 
         postService = Service(call: postCall)
 
-        postService?.perform(Post.self, complete: { (done) in
-            print("⁉️ This should not succeed because of failure of other \(String(describing: try? done()))")
+        postService?.perform([Post].self, complete: { [weak self] (done) in
+            let posts = try? done()
+            self?.handlePosts(posts, service: "A")
         })
-//        self.postService?.perform([Post].self, complete: { (done) in
-//            print("⁉️ This should not succeed because of failure of other \(String(describing: try? done()))")
-//        })
 
+        postService?.perform([Post].self, complete: { [weak self] (done) in
+            let posts = try? done()
+            self?.handlePosts(posts, service: "B")
+        })
+
+    }
+
+    private func handlePosts(_ posts: [Post]?, service: String) {
+        guard let posts = posts else {return}
+        print("👌🏻 --- \(service) post received some posts")
+        DispatchQueue.main.async {
+            self.posts.append(contentsOf: posts)
+            self.label.text = "Recieved posts \(self.posts.count)"
+        }
     }
 
     fileprivate func showError() {

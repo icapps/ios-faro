@@ -70,6 +70,7 @@ class FaroSecureURLSessionSpec: QuickSpec {
                         // throw errors inside this
                         // in this test everyting succeeds
                     }
+                    return URLSessionDataTask()
                 })
 
                 call.stub(statusCode: 401, data: mockData1, waitingTime: 0.1)

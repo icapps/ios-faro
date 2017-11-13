@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 /*:
  Create a service instance to perform all kinds of requests. You can chose to use Service or its subclasses:
 
@@ -61,26 +62,22 @@ extension Service {
             - parameter type: Generic type to decode the returend data to. If service returns no response data use type `Service.NoResponseData`
      */
     @discardableResult
-    open func perform<M>(_ type: M.Type, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionTask?  where M: Decodable {
+    open func perform<M>(_ type: M.Type, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionTask  where M: Decodable {
         let call = self.call
         let config = self.session.backendConfiguration
+        let request = call.request(with: config)
 
-        guard let request = call.request(with: config) else {
-            let error = CallError.invalidUrl("\(config.baseURL)/\(call.path)", call: call)
-            self.handleError(error)
-            complete { throw error }
-            return nil
-        }
 
 
         var task: URLSessionTask!
+        let urlSession = FaroURLSession.shared().urlSession
 
         if call.httpMethod == .GET  {
-            task = FaroURLSession.urlSession?.downloadTask(with: request)
+            task = urlSession.downloadTask(with: request)
         } else if let body = request.httpBody {
-            task = FaroURLSession.urlSession?.uploadTask(with: request, from: body)
+            task = urlSession.uploadTask(with: request, from: body)
         } else {
-            task = FaroURLSession.urlSession?.dataTask(with:request)
+            task = urlSession.dataTask(with:request)
         }
 
         session.tasksDone[task] = { [weak self] (data, response, error) in

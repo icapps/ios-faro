@@ -33,24 +33,17 @@ open class ServiceQueue {
     @discardableResult
     open func perform<M>(_ type: M.Type, call: Call, autoStart: Bool = false, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionTask?  where M: Decodable {
         let config = session.backendConfiguration
-
-        guard let request = call.request(with: config) else {
-            complete {
-                let error = CallError.invalidUrl("\(config.baseURL)/\(call.path)", call: call)
-                self.handleError(error)
-                throw error
-            }
-            return nil
-        }
+        let request = call.request(with: config)
 
         var task: URLSessionTask!
-
+        // TODO: move to session or something else
+        let urlSession = FaroURLSession.shared().urlSession
         if call.httpMethod == .GET  {
-            task = FaroURLSession.urlSession?.downloadTask(with: request)
+            task = urlSession.downloadTask(with: request)
         } else if let body = request.httpBody {
-            task = FaroURLSession.urlSession?.uploadTask(with: request, from: body)
+            task = urlSession.uploadTask(with: request, from: body)
         } else {
-            task = FaroURLSession.urlSession?.dataTask(with:request)
+            task = urlSession.dataTask(with:request)
         }
 
         session.tasksDone[task] = {[weak self] (data, response, error) in

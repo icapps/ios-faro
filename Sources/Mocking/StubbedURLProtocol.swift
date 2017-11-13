@@ -62,7 +62,6 @@ public class StubbedURLProtocol: URLProtocol {
     }
     
     override open func stopLoading() {
-        print("Stub is requested to stop loading")
         finishLoading = nil
     }
     
