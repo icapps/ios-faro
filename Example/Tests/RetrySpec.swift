@@ -32,45 +32,46 @@ class FaroSecureURLSessionSpec: QuickSpec {
                 FaroURLSession.setup(backendConfiguration: backendConfiguration, urlSessionConfiguration: urlConfiguration)
             }
 
-//            it("on 200 slow and fast task both succeed") {
-//
-//                call.stub(statusCode: 200, data: mockData1, waitingTime: 0.1)
-//                call.stub(statusCode: 200, data: mockData2, waitingTime: 2.0)
-//
-//                // Second call should not call the completion block because
-//                let service = Service(call: call, autoStart: false)
-//
-//                var task1: URLSessionTask!
-//                var task2: URLSessionTask!
-//
-//                var task1Done = false
-//                var task2Done = false
-//
-//                task1 = service.perform(MockModel.self) { _ in
-//                    task1Done = true
-//                }
-//                task2 = service.perform(MockModel.self) { _ in
-//                    task2Done = true
-//                }
-//                let session = service.session
-//                task1.resume()
-//                task2.resume()
-//
-//                expect(task1Done && task2Done).toEventually(equal(true), timeout: 5.0)
-//
-//            }
+            it("on 200 slow and fast task both succeed") {
 
-            fit("slow call should not succeed on 401") {
-                FaroURLSession.shared().enableRetry(with: { (_,_, response, _) -> Bool in
+                call.stub(statusCode: 200, data: mockData1, waitingTime: 0.1)
+                call.stub(statusCode: 200, data: mockData2, waitingTime: 2.0)
+
+                // Second call should not call the completion block because
+                let service = Service(call: call, autoStart: false)
+
+                var task1: URLSessionTask!
+                var task2: URLSessionTask!
+
+                var task1Done = false
+                var task2Done = false
+
+                task1 = service.perform(MockModel.self) { _ in
+                    task1Done = true
+                }
+                task2 = service.perform(MockModel.self) { _ in
+                    task2Done = true
+                }
+
+                task1.resume()
+                task2.resume()
+
+                expect(task1Done && task2Done).toEventually(equal(true), timeout: 5.0)
+
+            }
+
+            it("slow call should not succeed on 401") {
+                FaroURLSession.shared().enableRetry(with: { (_, _, response, _) -> Bool in
                     return (response as? HTTPURLResponse)?.statusCode == 401
-                })
+                }, fixCancelledRequests: {
+                    return $0
+                }, performRetry: {(_, _)in })
 
                 call.stub(statusCode: 401, data: mockData1, waitingTime: 0.1)
                 call.stub(statusCode: 200, data: mockData2, waitingTime: 2.0)
 
                 // Second call should not call the completion block because
                 let service = Service(call: call, autoStart: false)
-                let session = service.session
                 var task1: URLSessionTask!
                 var task2: URLSessionTask!
 
@@ -88,6 +89,7 @@ class FaroSecureURLSessionSpec: QuickSpec {
                 task2.resume()
 
                 expect(task1Done).toEventually(equal(false))
+                expect(task2Done).toNotEventually(equal(true))
             }
         }
 

@@ -3,16 +3,21 @@ import Faro
 import Stella
 import Foundation
 
+struct Authentication: Decodable {
+    let token: String
+}
+
 class PostViewController: UIViewController {
     @IBOutlet var label: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
 	/// !! It is important to retain the service until you have a result.!!
-    private var postService: PostService?
+    private var postService: Service?
     private var serviceHandler: PostServiceHandler?
     private var serviceQueue: PostServiceQueue?
     private var retryService: Service?
     private var posts = [Post]()
+    private var authentication: Authentication = Authentication(token: "old token")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,23 +26,54 @@ class PostViewController: UIViewController {
     }
 
     @IBAction func testRetry(_ sender: UIButton) {
-        let failingCall = Call(path: "blaBla")
+        var postCall = Call(path: "posts", parameter: [.httpHeader(["token": authentication.token])])
+        let retryCall = Call(path: "retry")
 
-        failingCall.stub(statusCode: 401, data: nil, waitingTime: 0.1)
+        postCall.stub(statusCode: 401, data: nil, waitingTime: 0.1)
+        retryCall.stub(statusCode: 200, dictionary: ["token": "refreshed token for header"], waitingTime: 0.1)
 
-        let postCall = Call(path: "posts")
-        postCall.stub(statusCode: 200, data: postsData, waitingTime: 3.0)
-
-        FaroURLSession.shared().enableRetry { (_, _, response, _) -> Bool in
+        FaroURLSession.shared().enableRetry(with: { (_, _, response, _) -> Bool in
             guard let response = response as? HTTPURLResponse else {
                 return false
             }
             return response.statusCode == 401
-        }
+        }, fixCancelledRequests: {[weak self] (orginalRequestsDict) -> [String : URLRequest] in
 
-        retryService = Service(call: failingCall)
+            var fixedRequestsDict = orginalRequestsDict
+            fixedRequestsDict.forEach { [weak self] requestDict in
+                guard let token = self?.authentication.token else {return}
+                var fixedRequest = requestDict.value
 
-        retryService?.perform(Post.self, complete: { (done) in
+                // Add the token we refreshed to the header field (this will override the previous value)
+                fixedRequest.addValue(token, forHTTPHeaderField: "token")
+
+                // Because we are stubbing the requests for this example the following lines are needed. In your code this is not needed.
+                postCall = Call(path: "posts", method: .GET, parameter: [.httpHeader(["token": token])])
+                postCall.stub(statusCode: 200, data: postsData, waitingTime: 0.1)
+                // end stubbing code
+
+                // link the key of the original request to the fixedRequest.
+                // It is important that you reuse the same key!
+                fixedRequestsDict[requestDict.key] = fixedRequest
+            }
+            return fixedRequestsDict
+        }, performRetry: { [weak self] (_, done) in
+            self?.retryService = Service(call: retryCall)
+            self?.retryService?.perform(Authentication.self, complete: { (done) in
+                do {
+                    self?.authentication = try done()
+                } catch {
+                    print(error)
+                }
+
+            })
+
+            done()
+        })
+
+        postService = Service(call: postCall)
+
+        postService?.perform(Post.self, complete: { (done) in
             print("⁉️ This should not succeed because of failure of other \(String(describing: try? done()))")
         })
         self.postService?.perform([Post].self, complete: { (done) in

@@ -56,10 +56,11 @@ open class FaroURLSession: NSObject {
      - Parameters:
          - retryCheck: check if this request indicates you should fire a retry, for example on statusCode == 401
          - fixCancelledRequests: You should make these requests valid again. For example replace a token.
-         - performRetry: In this asynchronous call you should do your retry task and call done when finished. When you call done we call fixCancelledRequests and fire them again.
+         - performRetry: In this asynchronous call you should do your retry task and call done when finished. When you call done we call fixCancelledRequests and perform the fixed requests that you return  again.
+     TODO: Add failure case.
      */
     open func enableRetry(with retryCheck: @escaping (URLSessionTask, Data?, URLResponse?, Error?) -> Bool,
-                          fixCancelledRequests: @escaping ([[String: URLRequest]]) -> [String: URLRequest],
+                          fixCancelledRequests: @escaping ([String: URLRequest]) -> [String: URLRequest],
                           performRetry: @escaping (URLRequest, _ done: () -> Void) -> Void) {
         self.retryCheck = retryCheck
         self.fixCancelledRequests = fixCancelledRequests
