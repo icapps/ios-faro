@@ -37,38 +37,31 @@ class PostViewController: UIViewController {
                 return false
             }
             return response.statusCode == 401
-        }, fixCancelledRequests: {[weak self] (orginalRequestsDict) -> [String : URLRequest] in
+        }, fixCancelledRequest: {[weak self] (originalRequest) -> URLRequest in
 
-            var fixedRequestsDict = orginalRequestsDict
-            fixedRequestsDict.forEach { [weak self] requestDict in
-                guard let token = self?.authentication.token else {return}
-                var fixedRequest = requestDict.value
+            guard let token = self?.authentication.token else {return originalRequest}
 
-                // Add the token we refreshed to the header field (this will override the previous value)
-                fixedRequest.addValue(token, forHTTPHeaderField: "token")
+            var fixedRequest = originalRequest
+            // Add the token we refreshed to the header field (this will override the previous value)
+            fixedRequest.addValue(token, forHTTPHeaderField: "token")
 
-                // Because we are stubbing the requests for this example the following lines are needed. In your code this is not needed.
-                postCall = Call(path: "posts", method: .GET, parameter: [.httpHeader(["token": token])])
-                postCall.stub(statusCode: 200, data: postsData, waitingTime: 0.1)
-                // end stubbing code
-
-                // link the key of the original request to the fixedRequest.
-                // It is important that you reuse the same key!
-                fixedRequestsDict[requestDict.key] = fixedRequest
-            }
-            return fixedRequestsDict
-        }, performRetry: { [weak self] (_, done) in
+            return fixedRequest
+        }, performRetry: { [weak self] done in
             self?.retryService = Service(call: retryCall)
-            self?.retryService?.perform(Authentication.self, complete: { (done) in
-                do {
-                    self?.authentication = try done()
-                } catch {
-                    print(error)
+            self?.retryService?.perform(Authentication.self, complete: { (authenticationDone) in
+                done {
+                    self?.authentication = try authenticationDone()
+
+                    guard let token = self?.authentication.token else {return}
+
+                    // Because we are stubbing the requests for this example the following lines are needed. In your code this is not needed.
+                    postCall = Call(path: "posts", method: .GET, parameter: [.httpHeader(["token": token])])
+                    postCall.stub(statusCode: 200, data: postsData, waitingTime: 0.1)
+                    // end stubbing code
                 }
 
             })
 
-            done()
         })
 
         postService = Service(call: postCall)
@@ -76,9 +69,9 @@ class PostViewController: UIViewController {
         postService?.perform(Post.self, complete: { (done) in
             print("⁉️ This should not succeed because of failure of other \(String(describing: try? done()))")
         })
-        self.postService?.perform([Post].self, complete: { (done) in
-            print("⁉️ This should not succeed because of failure of other \(String(describing: try? done()))")
-        })
+//        self.postService?.perform([Post].self, complete: { (done) in
+//            print("⁉️ This should not succeed because of failure of other \(String(describing: try? done()))")
+//        })
 
     }
 
@@ -152,7 +145,7 @@ class PostViewController: UIViewController {
             self?.showError()
             printAction("🎉 queued call finished with failedTasks \(String(describing: failedTasks)))")
         }
-        
+
         serviceQueue?.perform([Post].self, call: call, complete: { [weak self] (done) in
             self?.show(try? done())
             printAction("ServiceQueue Task 1 finished")

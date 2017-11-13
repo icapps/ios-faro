@@ -63,9 +63,14 @@ class FaroSecureURLSessionSpec: QuickSpec {
             it("slow call should not succeed on 401") {
                 FaroURLSession.shared().enableRetry(with: { (_, _, response, _) -> Bool in
                     return (response as? HTTPURLResponse)?.statusCode == 401
-                }, fixCancelledRequests: {
+                }, fixCancelledRequest: {
                     return $0
-                }, performRetry: {(_, _)in })
+                }, performRetry: {(done)in
+                    done {
+                        // throw errors inside this
+                        // in this test everyting succeeds
+                    }
+                })
 
                 call.stub(statusCode: 401, data: mockData1, waitingTime: 0.1)
                 call.stub(statusCode: 200, data: mockData2, waitingTime: 2.0)

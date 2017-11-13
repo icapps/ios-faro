@@ -1,6 +1,15 @@
 import Foundation
+/*:
+ This sesssion sets itself as the URLSessionDelegate. This is done so thissession singleton can all check all responses of tasks before the closure to report to the service is called.
+
+ After the response is checked  the closures you provide on a Service that uses this session are called. This is all very abract but this is done for the following reasons:
+
+ 1. If one of the tasks responds with a authentication problem that would result in an error for all other ongoing concurent tasks then those tasks are paused until the authentication problem is fixed
+ 2. In case of a retry only one retry request is fired and other tasks are suspended. Not using a single session would make writing that code difficult.
+ 3. If you like you can easily write a general error handler that checks all repsonses before the closures of the service are called. Just subclass and override the delegate function you need.
 
 
+ */
 open class FaroURLSession: NSObject {
     private static var faroUrlSession: FaroURLSession?
 
@@ -18,11 +27,14 @@ open class FaroURLSession: NSObject {
     static var urlSession: URLSession?
     public let backendConfiguration: BackendConfiguration
 
-    var tasksDone = [URLSessionTask:(Data?, URLResponse?, Error?) -> Void]()
+    /*:
+     Stores a map of ongoing urlsessionTasks and there done closures.
+     */
+    var tasksDone = [URLSessionTask: (Data?, URLResponse?, Error?) -> Void]()
 
     private var retryCheck: ((URLSessionTask, Data?, URLResponse?, Error?) -> Bool)?
-    private var fixCancelledRequests: (([String: URLRequest]) -> [String: URLRequest])?
-    private var performRetry: ((URLRequest, _ done: () -> Void) -> Void)?
+    private var fixCancelledRequest: ((URLRequest) -> URLRequest)?
+    private var performRetry: ((@escaping (() throws -> Void) -> Void) -> URLSessionTask)?
 
     /*:
      This will create in internal URLSession that sets this instance as its URLSessionDelegate.
@@ -55,21 +67,22 @@ open class FaroURLSession: NSObject {
 
      - Parameters:
          - retryCheck: check if this request indicates you should fire a retry, for example on statusCode == 401
-         - fixCancelledRequests: You should make these requests valid again. For example replace a token.
-         - performRetry: In this asynchronous call you should do your retry task and call done when finished. When you call done we call fixCancelledRequests and perform the fixed requests that you return  again.
+         - fixCancelledRequest: You should make these request valid again. For example replace a token in the header and return the fixed request.
+         - performRetry: In this asynchronous call you should do your retry task and call done when finished. Return the retry task immediattally so we do not cancel it. All other tasks on this session are suspended until you call done.
+     After done we call fixCancelledRequest so you can fix the requests. When that is done all requests are fired again.
      TODO: Add failure case.
      */
     open func enableRetry(with retryCheck: @escaping (URLSessionTask, Data?, URLResponse?, Error?) -> Bool,
-                          fixCancelledRequests: @escaping ([String: URLRequest]) -> [String: URLRequest],
-                          performRetry: @escaping (URLRequest, _ done: () -> Void) -> Void) {
+                          fixCancelledRequest: @escaping (URLRequest) -> URLRequest,
+                          performRetry: @escaping (@escaping (() throws -> Void) -> URLSessionTask) -> Void) {
         self.retryCheck = retryCheck
-        self.fixCancelledRequests = fixCancelledRequests
+        self.fixCancelledRequest = fixCancelledRequest
         self.performRetry = performRetry
     }
 
     open func disableRety() {
         self.retryCheck = nil
-        self.fixCancelledRequests = nil
+        self.fixCancelledRequest = nil
         self.performRetry = nil
     }
 }
@@ -121,17 +134,52 @@ extension FaroURLSession: URLSessionDownloadDelegate {
         tasksDone.map {$0.key}.forEach { $0.cancel()}
         print("📡 \(tasksDone.count) ongoing tasks suspended")
 
-        // 2. Fix the task
+        // 2. Fix the task and fire the fixed task
 
-        // TODO: no forced unwrapping
-        performRetry?(downloadTask.currentRequest!) {
+        // TODO: retry should be allowed to proceed and not stopped like it does now. Timing issue?
+        
+        performRetry? {[weak self] done in
+            guard let `self` = self else {return}
 
-            // 1. Map the requests to the task identifiers
-            // 2. Send this to the request map to the client
-            // 3. Make new tasks from the requests and link them to the current done closures
-            // 4. Fire they all and prey for success
-//            let fixedRequests = fixCancelledRequests(tasksDone.map {[$0.task ]})
-            // link them to the tasks
+            do {
+                // Check if retry succeeded
+                try done()
+                // Nothing was thrown so retry succeeded and we can fix all requests now and continue
+                self.tasksDone.forEach {
+                    guard let originalRequest = $0.key.originalRequest,
+                        let fixedRequest = self.fixCancelledRequest?(originalRequest) else {return}
+
+                    // 3. Make new tasks from the request and link them to the current done closures
+                    var fixedTask: URLSessionTask!
+
+                    if fixedRequest.httpMethod == HTTPMethod.GET.rawValue  {
+                        fixedTask = FaroURLSession.urlSession?.downloadTask(with: fixedRequest)
+                    } else if let body = fixedRequest.httpBody {
+                        fixedTask = FaroURLSession.urlSession?.uploadTask(with: fixedRequest, from: body)
+                    } else {
+                        fixedTask = FaroURLSession.urlSession?.dataTask(with:fixedRequest)
+                    }
+
+                    // 4. link them to the original tasks done closure
+                    guard let originalClosure = self.tasksDone[downloadTask] else {return}
+                    // remove task from tasksDone and insert the fixedTask
+                    self.tasksDone[downloadTask] = nil
+                    self.tasksDone[fixedTask] = originalClosure
+
+                    // 5. Fire fixedTask again
+                    fixedTask.resume()
+                }
+            } catch {
+                // TODO: Thoroughly check this case
+                print("📡🔥 Retry failed with \(error)")
+                print("📡 performing failure on all tasks")
+                self.tasksDone.forEach({ (taskDict) in
+                    // Pass the retry error failure
+                    taskDict.value(nil, nil, error)
+                })
+                // remove all tasks from the session
+                self.tasksDone.removeAll()
+            }
         }
 
     }
