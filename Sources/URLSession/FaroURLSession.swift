@@ -117,7 +117,7 @@ extension FaroURLSession: URLSessionDownloadDelegate {
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
 
         guard retryTask == nil || downloadTask == retryTask else {
-            print("📡 Cancel task \(downloadTask) because retry is ongoing.")
+            print("📡 Cancel task \(downloadTask) response because retry is ongoing.")
             downloadTask.cancel()
             return
         }

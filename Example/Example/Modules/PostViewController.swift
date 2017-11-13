@@ -30,9 +30,10 @@ class PostViewController: UIViewController {
         let retryCall = Call(path: "retry")
 
         let waitingOffset: TimeInterval = 2 // Change this if you want request to go faster
-        postCall.stub(statusCode: 401, data: nil, waitingTime: waitingOffset)
-        retryCall.stub(statusCode: 200, dictionary: ["token": "refreshed token for header"], waitingTime: waitingOffset)
-        postCall.stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 5) // Should return much later then all others because it should be fixed before returning
+        postCall.stub(statusCode: 401, data: nil, waitingTime: 0.01)
+        retryCall.stub(statusCode: 200, dictionary: ["token": "refreshed token for header"], waitingTime: waitingOffset + 5)
+        postCall.stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 10) // Should return much later then all others because it should be fixed before returning
+        postCall.stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 1)  // will be performed while the retry is ongoing
 
         FaroURLSession.shared().enableRetry(with: { (_, _, response, _) -> Bool in
             guard let response = response as? HTTPURLResponse else {
@@ -61,6 +62,8 @@ class PostViewController: UIViewController {
                     postCall = Call(path: "posts", method: .GET, parameter: [.httpHeader(["token": token])])
                     postCall.stub(statusCode: 200, data: postsData, waitingTime: waitingOffset)
                     postCall.stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 2)
+                    // TODO: Check if we get errors by adding error reponsenses
+                    postCall.stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 3)
 
                     // end stubbing code
                 }
@@ -72,12 +75,19 @@ class PostViewController: UIViewController {
 
         postService?.perform([Post].self, complete: { [weak self] (done) in
             let posts = try? done()
-            self?.handlePosts(posts, service: "A")
+            self?.handlePosts(posts, service: "A - causes retry")
         })
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            self.postService?.perform([Post].self, complete: { [weak self] (done) in
+                let posts = try? done()
+                self?.handlePosts(posts, service: "B - During retry")
+            })
+        }
 
         postService?.perform([Post].self, complete: { [weak self] (done) in
             let posts = try? done()
-            self?.handlePosts(posts, service: "B")
+            self?.handlePosts(posts, service: "C - Before Retry but after ")
         })
 
     }
