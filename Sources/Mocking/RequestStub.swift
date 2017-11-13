@@ -84,7 +84,8 @@ public class RequestStub {
     /// - Parameters:
     ///   - path: The path of the request, should be prefixid with "/"
     /// - Returns: The stubbed reponse if found
-    internal func removeStub(for path: String?) -> StubbedResponse? {
+    @discardableResult
+    public func removeStub(for path: String?) -> StubbedResponse? {
         var pathNoSlash = path
         pathNoSlash?.removeFirst()
         guard let path = pathNoSlash else { return nil }
