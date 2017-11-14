@@ -8,136 +8,159 @@
 
 import Foundation
 
-public enum Result<T> {
-	case success(T)
-	case fail(ServiceError)
-}
-
-public  enum ServiceError: Error {
-	case fail(FaroError)
-}
-
-let json = [String: Any]()
-
-/// We will always try to instantiate models using `JSONDeserializable`. 
-/// `Deserializable` is for legacy reasons and will be removed in version 3.0
-open class Service<T> where T: JSONDeserializable {
+open class Service {
 
 	open var call: Call
 	open var autoStart: Bool
 
-	let deprecatedService: DeprecatedService
+    public let session: FaroURLSession
 
-	public init(call: Call, autoStart: Bool = true, deprecatedService: DeprecatedService = FaroSingleton.shared) {
-		self.deprecatedService = deprecatedService
-		self.call = call
-		self.autoStart = autoStart
-	}
+    /**
+     Init a servcie instance to perform calls
 
-	// MARK: Requests that expect a JSON response and CREATE instances
-
-	open func single(complete: @escaping(@escaping () throws -> (T)) -> Void) {
-		let call = self.call
-
-		deprecatedService.performJsonResult(call, autoStart: autoStart) {[weak self] (result: DeprecatedResult<T>) in
-			switch result {
-
-			case .json(let json):
-				let rootNode = call.rootNode(from: json)
-
-				switch rootNode {
-				case .nodeObject(let node):
-					// Convert node to model of type T. When this is not possible an error is thrown.
-					complete {[weak self] in
-						do {
-							return try T(node)
-						} catch {
-							let faroError = FaroError.couldNotCreateInstance(ofType: "\(T.self)", call: call, error: error)
-							self?.handleError(faroError)
-							throw faroError
-						}
-					}
-				default:
-					complete { [weak self] in
-						let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
-						self?.handleError(error)
-						throw error
-					}
-				}
-			case .failure(let error):
-				complete { [weak self] in
-					self?.handleError(error)
-					throw error
-				}
-			default:
-				complete { [weak self] in
-					let error = FaroError.invalidDeprecatedResult(resultString: "\(result)", call: call)
-					self?.handleError(error)
-					throw error
-				}
-			}
-		}
-	}
-
-	/// Converts every node in the json to T. When one of the nodes has invalid json conversion is stopped and an error is trhown.
-	open func collection(complete: @escaping ( @escaping() throws -> [T]) -> Void) {
-		let call = self.call
-		deprecatedService.performJsonResult(call, autoStart: autoStart) { [weak self] (result: DeprecatedResult<T>) in
-			switch result {
-
-			case .json(let json):
-				let rootNode = call.rootNode(from: json)
-
-				switch rootNode {
-				case .nodeArray(let nodeArray):
-					guard let nodeArray = nodeArray as? [[String: Any]] else {
-						complete { [weak self] in
-							let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
-							self?.handleError(error)
-							throw error
-						}
-						return
-					}
-
-					// Convert every node to model of type T. When this is not possible an error is thrown.
-
-					complete {
-						do {
-							return try nodeArray.map {try T($0)}
-						} catch {
-							let faroError = FaroError.couldNotCreateInstance(ofType: "\(T.self)", call: call, error: error)
-							self?.handleError(faroError)
-							throw faroError
-						}
-					}
-				default:
-					complete { [weak self] in
-						let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
-						self?.handleError(error)
-						throw error
-					}
-				}
-			case .failure(let error):
-				complete { [weak self] in
-					self?.handleError(error)
-					throw error
-				}
-			default:
-				complete { [weak self] in
-					let error = FaroError.invalidDeprecatedResult(resultString: "\(result)", call: call)
-					self?.handleError(error)
-					throw error
-				}
-			}
-		}
-	}
+     - Parameters:
+        - call: points to the request you want to perform
+        - autoStart: from the call a task is made. This task is returned by the perform function. The task is started automatically unless you set autoStart to no.
+        - configuration: describes the base url to from a request with from the provided call.
+        - faroSession: is a session that is derived from `URLSession`. By default this becomes an instance of `FaroSession`
+    */
+    public init(call: Call, autoStart: Bool = true, session: FaroURLSession) {
+        self.session = session
+        self.autoStart = autoStart
+        self.call = call
+    }
 
 	// MARK: Error
 
 	/// Prints the error and throws it
 	/// Possible to override this to have custom behaviour for your app.
-	open func handleError(_ error: FaroError) {
-		printFaroError(error)
+	open func handleError(_ error: Error) {
+		print(error)
 	}
 
+}
+
+// MARK: - Perform Call and decode
+
+extension Service {
+
+    /// Gets a model(s) from the service and decodes it using native `Decodable` protocol.
+    /// Provide a type, that can be an array, to decode the data received from the service into type 'M'
+    /// - parameter type: Generic type to decode the returend data to. If service returns no response data use type `Service.NoResponseData`
+    @discardableResult
+    open func perform<M>(_ type: M.Type, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionDataTask?  where M: Decodable {
+        let call = self.call
+        let config = self.session.backendConfiguration
+
+        guard let request = call.request(with: config) else {
+            let error = CallError.invalidUrl("\(config.baseURL)/\(call.path)", call: call)
+            self.handleError(error)
+            complete { throw error }
+            return nil
+        }
+
+        let task = session.session.dataTask(with: request, completionHandler: {(data, response, error) in
+            let error = raisesServiceError(data: data, urlResponse: response, error: error, for: request)
+
+            guard error == nil else {
+                self.handleError(error!)
+                complete { throw error! }
+                return
+            }
+
+            guard type.self != Service.NoResponseData.self else {
+                complete {
+                    // Constructing a no data data with an empty response
+                    let data = """
+                    {}
+                    """.data(using: .utf8)!
+                    return try config.decoder.decode(M.self, from: data)
+                }
+                return
+            }
+            guard let returnData = data else {
+                let error = ServiceError.invalidResponseData(data, call: call)
+                self.handleError(error)
+                complete { throw error }
+                return
+            }
+
+            complete {
+                do {
+                    return  try config.decoder.decode(M.self, from: returnData)
+                } catch let error as DecodingError {
+                    let error = ServiceError.decodingError(error, inData: returnData, call: call)
+                    self.handleError(error)
+                    throw error
+                }
+            }
+        })
+
+        guard autoStart else {
+            return task
+        }
+
+        task.resume()
+        return task
+    }
+
+    // MARK: - Update model instead of create
+
+    open func performUpdate<M>(model: M, complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionDataTask?  where M: Decodable & Updatable {
+        let task = perform(M.self) { (resultFunction) in
+            complete {
+                let serviceModel = try resultFunction()
+                try  model.update(serviceModel)
+                return
+            }
+        }
+        return task
+    }
+
+    open func performUpdate<M>(array: [M], complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionDataTask?  where M: Decodable & Updatable {
+        let task = perform([M].self) { (resultFunction) in
+            complete {
+                var serviceModels = Set(try resultFunction())
+                try array.forEach { element in
+                    try element.update(array: Array(serviceModels))
+                    serviceModels.remove(element)
+                }
+                return
+            }
+        }
+        return task
+    }
+    // MARK - No response data Type
+
+    /// Use this type for `perform` when service returns no data
+    public struct NoResponseData: Decodable {
+
+    }
+
+}
+
+// MARK: - Global error functions
+
+func raisesServiceError(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest) -> Error? {
+    guard error == nil else {
+        return error
+    }
+
+    guard let httpResponse = urlResponse as? HTTPURLResponse else {
+        let returnError = ServiceError.networkError(0, data: data, request: request)
+        return returnError
+    }
+
+    let statusCode = httpResponse.statusCode
+    guard statusCode < 400 else {
+        let returnError = ServiceError.networkError(statusCode, data: data, request: request)
+        return returnError
+    }
+
+    guard 200...204 ~= statusCode else {
+        let returnError = ServiceError.networkError(statusCode, data: data, request: request)
+        return returnError
+    }
+
+    return nil
 }

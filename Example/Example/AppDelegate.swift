@@ -19,18 +19,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 	func setupFaroWithoutSecurity() {
-		let baseURL = "http://jsonplaceholder.typicode.com"
 		// Optionally create your own FaroSession to handle for example security.
-		FaroSingleton.setup(with: baseURL, session: FaroSession())
+		//Pass it to your singleton of the Service class
+        //Example: FaroSingleton.setup(with: "http://jsonplaceholder.typicode.com", session: FaroSession())
 	}
 
 	func setupFaroWithSecurity() {
-		let baseURL = "http://jsonplaceholder.typicode.com"
-
-		let sessionSessionDelegate = FaroURLSessionDelegate(allowUntrustedCertificates: false)
-		let secureSession = FaroSecureURLSession(urlSessionDelegate: sessionSessionDelegate)
-		FaroSingleton.setup(with: baseURL, session: secureSession)
-
+        // let sessionSessionDelegate = FaroURLSessionDelegate(allowUntrustedCertificates: false)
+        // let secureSession = FaroSecureURLSession(urlSessionDelegate: sessionSessionDelegate)
+        //Pass it to your singleton of the Service class
+        //Example: FaroSingleton.setup(with: "http://jsonplaceholder.typicode.com", session: secureSession)
 	}
 
 }

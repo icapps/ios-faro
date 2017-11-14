@@ -14,93 +14,140 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-class Uuid: JSONDeserializable, JSONUpdatable {
+class Uuid: Decodable, Hashable, Updatable {
+
 	var uuid: String
 
-	required init(_ raw: [String: Any]) throws {
-		self.uuid = try create("uuid", from: raw)
-	}
+    enum UuidError: Error {
+        case updateError
+    }
+    // MARK: - Hashable
+    var hashValue: Int {return uuid.hashValue}
+    static func == (lhs: Uuid, rhs: Uuid) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
 
-}
+    func update(_ model: AnyObject) throws {
+        guard let model = model as? Uuid else {
+            throw Uuid.UuidError.updateError
+        }
+        uuid = model.uuid
+    }
 
-extension Uuid {
+    func update(array: [AnyObject]) throws {
+        guard let array = array as? [Uuid] else {
+            throw Uuid.UuidError.updateError
+        }
 
-	func update(_ raw: [String : Any]) throws {
-		self.uuid = try create("uuid", from: raw)
-	}
+        let set = Set(array)
 
+        guard let model = (set.first {$0 == self}) else {
+            return
+        }
+        try update(model)
+    }
 }
 
 class ServiceSpec: QuickSpec {
 
 	override func spec() {
+        var session: FaroURLSession!
 
 		describe("Succes") {
+            beforeEach {
+                // Config should have a vaild url
+                let config = BackendConfiguration(baseURL:"http://www.google.com")
+                let urlSessionConfig = URLSessionConfiguration.default
+                urlSessionConfig.protocolClasses = [StubbedURLProtocol.self]
+                session = FaroURLSession(backendConfiguration: config, session: URLSession(configuration:urlSessionConfig))
+                RequestStub.shared = RequestStub()
+            }
 
 			it("return valid single model for valid json") {
-				let mock = MockDeprecatedService(mockDictionary: ["uuid": "mock ok"])
-				let service = Service<Uuid>(call: Call(path: ""), deprecatedService: mock)
+                let data = """
+                    {"uuid": "mock ok"}
+                """.data(using: .utf8)!
 
-				service.single { resultFunction in
-					expect {try resultFunction().uuid} == "mock ok"
-				}
+                let call = Call(path: "single")
+
+                call.path.stub(statusCode: 200, data: data)
+
+                let service = Service(call: call, session: session)
+
+                waitUntil(action: { (done) in
+                    service.perform (Uuid.self) { resultFunction in
+                        expect {try resultFunction().uuid} == "mock ok"
+                        done()
+                    }
+                })
 			}
 
 			it("return valid collection model for valid json") {
-				let mock = MockDeprecatedService(mockDictionary: [["uuid": "mock ok 1"], ["uuid": "mock ok 2"]])
-				let service = Service<Uuid>(call: Call(path: ""), deprecatedService: mock)
+                let data = """
+                    [{"uuid": "mock ok 1"},
+                     {"uuid": "mock ok 2"}]
+                """.data(using: .utf8)!
 
-				service.collection { resultFunction in
-					expect {try resultFunction().flatMap {$0.uuid}} == ["mock ok 1", "mock ok 2"]
-				}
+                let call = Call(path: "collection")
+                call.path.stub(statusCode: 200, data: data)
+
+                let service = Service(call: call, session: session)
+
+                waitUntil(action: { (done) in
+                    service.perform ([Uuid].self) { resultFunction in
+                        expect {try resultFunction().flatMap {$0.uuid}} == ["mock ok 1", "mock ok 2"]
+                        done()
+                    }
+                })
 			}
 
 		}
 
 		describe("Error") {
 
-			it("single model for invalid json") {
-				let invalidMock = MockDeprecatedService(mockDictionary: ["bullshit": "mock ok"])
-				let service = Service<Uuid>(call: Call(path: ""), deprecatedService: invalidMock)
+			it("single model with invalid json") {
+                let data = """
+                    {"bullshit": "mock ok"}
+                """.data(using: .utf8)!
 
-				service.single { resultFunction in
-					expect {try resultFunction()}.to(throwError(closure: { (error) in
-						if let faroError = error as? FaroError {
-							switch faroError {
-							case .couldNotCreateInstance(ofType: let type, call: _, error: let error):
-								expect(type) == "Uuid"
-								expect( (error as? FaroDeserializableError)?.emptyValueKey) == "uuid"
-							default:
-								XCTFail("\(faroError)")
-							}
-						} else {
-							XCTFail("\(error)")
-						}
+                // Stub with bullshit data
+                let call = Call(path: "singleError")
 
-					}))
-				}
+                call.path.stub(statusCode: 200, data: data)
+
+                let service = Service(call: call, session: session)
+
+                waitUntil { done in
+                    service.perform(Uuid.self) { resultFunction in
+                        expect {try resultFunction()}.to(throwError {
+                            expect(($0 as? ServiceError)?.decodingErrorMissingKey) == "uuid"
+                            done()
+                        })
+                    }
+                }
+
 			}
 
 			it("collection model for invalid json") {
-				let mock = MockDeprecatedService(mockDictionary: [["bullshit": "mock ok 1"], ["uuid": "mock ok 2"]])
-				let service = Service<Uuid>(call: Call(path: ""), deprecatedService: mock)
+                let data = """
+                    [{"bullshit": "mock ok 1"},
+                     {"uuid": "mock ok 2"}]
+                """.data(using: .utf8)!
 
-				service.collection { resultFunction in
-					expect {try resultFunction()}.to(throwError(closure: { (error) in
-						if let faroError = error as? FaroError {
-							switch faroError {
-							case .couldNotCreateInstance(ofType: let type, call: _, error: let error):
-								expect(type) == "Uuid"
-								expect( (error as? FaroDeserializableError)?.emptyValueKey) == "uuid"
-							default:
-								XCTFail("\(faroError)")
-							}
-						} else {
-							XCTFail("\(error)")
-						}
+                let call = Call(path: "collectionError")
+                call.path.stub(statusCode: 200, data: data)
 
-					}))
-				}
+                let service = Service(call: call, session: session)
+
+                waitUntil { done in
+                    service.perform([Uuid].self) { resultFunction in
+                        expect {try resultFunction()}.to(throwError {
+                            expect(($0 as? ServiceError)?.decodingErrorMissingKey) == "uuid"
+                            done()
+                        })
+                    }
+                }
+
 			}
 
 		}

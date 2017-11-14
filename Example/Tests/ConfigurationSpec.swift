@@ -8,11 +8,11 @@ class ConfigurationSpec: QuickSpec {
     override func spec() {
         describe("Configuration") {
             let expected = "http://www.something.be"
-            let configuration = Configuration(baseURL: expected)
+            let configuration = BackendConfiguration(baseURL: expected)
 
             context("initialisation") {
                 it("should have a baseURL") {
-                    expect(configuration.baseURL).to(equal(expected))
+                    expect(configuration.baseURLString).to(equal(expected))
                 }
             }
         }
