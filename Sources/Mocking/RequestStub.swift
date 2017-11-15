@@ -23,10 +23,8 @@ public struct StubbedResponse {
 /// The `RequestStub` handles everything that has to do with stubbing the requests, from swizzling the 
 /// `URLSessionConfiguration` to registering the different stubs.
 public class RequestStub {
-
-    // MARK: - Internals
     
-    private var responses = [String: [StubbedResponse]]()
+    public var responses = [String: [StubbedResponse]]()
     
     // MARK: - Init
     
@@ -89,12 +87,13 @@ public class RequestStub {
         var pathNoSlash = path
         pathNoSlash?.removeFirst()
         guard let path = pathNoSlash else { return nil }
-        
-        if self.responses[path]?.count ?? 0 > 0 {
+
+        if let count = self.responses[path]?.count, count > 1 {
             return self.responses[path]?.removeFirst()
         } else {
+            let response = self.responses[path]?.first
             self.responses.removeValue(forKey: path)
-            return nil
+            return response
         }
     }
     

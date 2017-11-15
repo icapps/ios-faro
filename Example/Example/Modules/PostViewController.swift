@@ -12,12 +12,13 @@ class PostViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
 	/// !! It is important to retain the service until you have a result.!!
-    private var postService = [Service]()
+    private var postServices = [String: Service]()
     private var serviceHandler: PostServiceHandler?
     private var serviceQueue: PostServiceQueue?
-    private var retryService: Service?
+    private var retryService = [String: Service]()
     private var posts = [Post]()
     private var authentication: Authentication = Authentication(token: "old token")
+    private var retryCount = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,15 +27,18 @@ class PostViewController: UIViewController {
     }
 
     @IBAction func testRetry(_ sender: UIButton) {
-        let retryCall = Call(path: "retry")
+        self.retryCount += 1
+        let retryCount = self.retryCount
+        let retryCall = Call(path: "retry_\(retryCount)")
 
         let waitingOffset: TimeInterval = 2 // Change this if you want request to go faster/slower
-        "posts_A".stub(statusCode: 401, data: nil, waitingTime: 0.01)
+        let paths = ["posts_A_\(retryCount)", "posts_B_\(retryCount)", "posts_C_\(retryCount)", "posts_D_\(retryCount)", "posts_E_\(retryCount)"]
+        paths[0].stub(statusCode: 401, data: nil, waitingTime: 0.01)
         retryCall.stub(statusCode: 200, dictionary: ["token": "refreshed token for header"], waitingTime: waitingOffset + 10)
-        "posts_B".stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 1)
-        "posts_C".stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 2)
-        "posts_D".stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 3)
-        "posts_E".stub(statusCode: 400, dictionary: ["message": "this suspended task fails after retry fixed the request."], waitingTime: waitingOffset + 4)  // we add this but it is removed arter
+        paths[1].stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 1)
+        paths[2].stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 2)
+        paths[3].stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 3)
+        paths[4].stub(statusCode: 400, dictionary: ["message": "this suspended task fails after retry fixed the request."], waitingTime: waitingOffset + 4)
 
         FaroURLSession.shared().enableRetry(with: { (_, _, response, _) -> Bool in
             guard let response = response as? HTTPURLResponse else {
@@ -51,56 +55,67 @@ class PostViewController: UIViewController {
 
             return fixedRequest
         }, performRetry: { [unowned self] done in
-            self.retryService = Service(call: retryCall)
+            self.retryService[retryCall.path] = Service(call: retryCall)
 
-            return self.retryService!.perform(Authentication.self, complete: { (authenticationDone) in
+            //: - Because of stub
+            //: We remove the old long waiting post response. With a real service this is not needed.
+            paths.forEach {RequestStub.shared.removeStub(for: $0)}
+            //: - end stubbing code
+
+            return self.retryService[retryCall.path]!.perform(Authentication.self, complete: { (authenticationDone) in
                 done {
                     self.authentication = try authenticationDone()
 
                     //: - Because of stub
-                    //: We remove the old long waiting post response. With a real service this is not needed.
-                    RequestStub.removeAllStubs()
-                    "posts_A".stub(statusCode: 200, data: postsData, waitingTime: 0.01)
-                    "posts_B".stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 1)
-                    "posts_C".stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 2)
-                    "posts_D".stub(statusCode: 400, dictionary: ["message": "this suspended task fails after retry fixed the request."], waitingTime: waitingOffset + 3)
+                    paths[0].stub(statusCode: 200, data: postsData, waitingTime: 0.01)
+                    paths[1].stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 1)
+                    paths[2].stub(statusCode: 200, data: postsData, waitingTime: waitingOffset + 2)
+                    paths[3].stub(statusCode: 400, dictionary: ["message": "this suspended task fails after retry fixed the request."], waitingTime: waitingOffset + 3)
                     //: - end stubbing code
+
+                    RequestStub.shared.removeStub(for: retryCall.path)
+                    self.retryService[retryCall.path] = nil
                 }
 
             })
         })
 
-        postService.append(Service(call: Call(path:"posts_A")))
-
-        postService[0].perform([Post].self, complete: { [weak self] (done) in
+        postServices[paths[0]] = Service(call: Call(path:paths[0]))
+        postServices[paths[0]]?.perform([Post].self, complete: { [weak self] (done) in
             let posts = try? done()
             self?.handlePosts(posts, service: "A - causes retry")
+            self?.postServices[paths[0]] = nil
+            RequestStub.shared.removeStub(for: paths[0])
         })
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-            self.postService.append(Service(call: Call(path: "posts_C")))
-            self.postService[2].perform([Post].self, complete: { [weak self] (done) in
+            self.postServices[paths[2]] = Service(call: Call(path:paths[2]))
+            self.postServices[paths[2]]?.perform([Post].self, complete: { [weak self] (done) in
                 let posts = try? done()
-                self?.handlePosts(posts, service: "B - During retry")
+                self?.handlePosts(posts, service: "B - During retry \(retryCount)")
+                self?.postServices[paths[2]] = nil
+                RequestStub.shared.removeStub(for: paths[2])
             })
 
-            self.postService.append(Service(call: Call(path: "posts_D")))
-            self.postService[3].perform([Post].self, complete: { (done) in
+            self.postServices[paths[3]] = Service(call: Call(path:paths[3]))
+            self.postServices[paths[3]]?.perform([Post].self, complete: { (done) in
                 do {
                     _ = try done()
                     print("--- ⁉️ We should not get any posts for this. Should fail")
                 } catch {
-                    print("👌🏻 --- D -  During retry but response fails")
+                    print("👌🏻 --- D -  During retry but response fails \(retryCount)")
                 }
-
+                self.postServices[paths[3]] = nil
+                RequestStub.shared.removeStub(for: paths[3])
             })
 
         }
 
-        postService.append(Service(call: Call(path: "posts_B")))
-        postService[1].perform([Post].self, complete: { [weak self] (done) in
+        self.postServices[paths[1]] = Service(call: Call(path:paths[1]))
+        self.postServices[paths[1]]?.perform([Post].self, complete: { [weak self] (done) in
             let posts = try? done()
-            self?.handlePosts(posts, service: "C - Before Retry but after ")
+            self?.handlePosts(posts, service: "C - Before Retry but after \(retryCount)")
+            RequestStub.shared.removeStub(for: paths[1])
         })
 
     }
@@ -144,13 +159,13 @@ class PostViewController: UIViewController {
 
     @IBAction func getPostsWithClosure(_ sender: UIButton) {
         let call = Call(path: "post")
-        postService.removeAll()
-        postService.append(Service(call: call))
+        postServices.removeAll()
+        self.postServices["post"] = Service(call: call)
         RequestStub.removeAllStubs()
         call.stub(statusCode: 200, data: postsData, waitingTime: 0.5)
 
         start(#function)
-        postService[0].perform([Post].self) { [weak self] (done) in
+        self.postServices["post"]?.perform([Post].self) { [weak self] (done) in
             self?.show(try? done())
         }
     }
@@ -208,6 +223,7 @@ class PostViewController: UIViewController {
     // MARK: - Clear
 
     @IBAction func clearPosts(_ sender: Any) {
+        RequestStub.removeAllStubs()
         print(#function)
         posts.removeAll()
     }
