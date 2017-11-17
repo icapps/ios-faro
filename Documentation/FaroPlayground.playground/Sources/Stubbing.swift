@@ -16,22 +16,3 @@ public class StubbedFaroURLSession: FaroURLSession {
         FaroURLSession.setup(backendConfiguration: backendConfiguration, urlSessionConfiguration: urlConfiguration)
     }
 }
-
-public class StubService: Service {
-
-    //: Convienience init that stubs the service for a specific call.
-    public init(call: Call) {
-        //: **AutoStart??** meand that whenever you use the function `perform` the request is immediately fired. If you want to create multiple service instances and fire the request later put **autoStart** to false.
-        super.init(call: call, autoStart: true)
-    }
-}
-
-public class StubServiceHandler<M: Decodable>: ServiceHandler<M> {
-
-    public override init(call: Call, autoStart: Bool = true,
-                complete: ((() throws -> (M)) -> Void)? = nil,
-                completeArray: ((() throws -> ([M])) -> Void)? = nil) {
-
-        super.init(call: call, autoStart: autoStart, complete: complete, completeArray: completeArray)
-    }
-}
