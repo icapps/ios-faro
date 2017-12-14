@@ -2,19 +2,19 @@
 
 [![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=57ea1d04856a610100f8208a&branch=develop&build=latest)](https://dashboard.buddybuild.com/apps/57ea1d04856a610100f8208a/build/latest)
  [![Version](https://img.shields.io/cocoapods/v/Faro.svg?style=flat)](http://cocoapods.org/pods/Faro) [![License](https://img.shields.io/cocoapods/l/Faro.svg?style=flat)](http://cocoapods.org/pods/Faro) [![Platform](https://img.shields.io/cocoapods/p/Faro.svg?style=flat)](http://cocoapods.org/pods/Faro)
-[![Language Swift 4.0](https://img.shields.io/badge/Language-Swift%203.0-orange.svg?style=flat)](https://swift.org)
+[![Language Swift 4.0](https://img.shields.io/badge/Language-Swift%204.0-orange.svg?style=flat)](https://swift.org)
 
 ======
 
-A commen place for our Networking code. On iOS this can be tricky. Since Swift 4.0 this can be very straight forward with the `Codable` protocol. More info on [WWWDC 2017 session video: New in Founcation](https://developer.apple.com/videos/play/wwdc2017/212/)
+A common place for our Networking code. On iOS this can be tricky. Since Swift 4.0 this can be very straight forward with the `Codable` protocol. More info on [WWWDC 2017 session video: New in Founcation](https://developer.apple.com/videos/play/wwdc2017/212/)
 
 Our goal with Faro is:
 
 * Decode objects from JSON data returned from any service.
 * Easy to debug errors and logs in the console
-* Simplify securty setup
+* Simplify security setup
 
-So far 3 versions have been made and they are all very different. But version 3 is the one that is becomming logical and simple. You can verify this claim by reading and using the FaroPlayground.
+Go play in the *FaroPlayground*.
 
 ## Get started
 
