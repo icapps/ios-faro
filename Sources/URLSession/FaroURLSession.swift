@@ -16,9 +16,9 @@ import Foundation
 open class FaroURLSession: NSObject {
     private static var faroUrlSession: FaroURLSession?
 
-    private var retryTask: URLSessionTask?
+    var retryTask: URLSessionTask?
 
-    // Setup by using static fuction setupFaroURLSession
+    // Setup by using static function setupFaroURLSession
     public static func shared() -> FaroURLSession {
         guard  let shared = FaroURLSession.faroUrlSession else {
             print("📡 \(FaroURLSession.self) returns invalid session in \(#function), please use setup first!")
