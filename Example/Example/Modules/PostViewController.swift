@@ -22,8 +22,28 @@ class PostViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        postService.appPostService()
         setupHandlers()
+    }
+
+    @IBAction func testUpload( _ sender: UIButton) {
+         print("--- 📡 upload requested ---")
+        let call = Call(path: "uploadTask", method: .PUT, parameter: [.jsonNode(["user": "Jhon Do"])])
+
+        let uploadService = Service(call: call)
+        postServices[call.path] = uploadService
+
+        call.stub(statusCode: 200, dictionary: nil)
+
+        uploadService.perform(Service.NoResponseData.self) { [weak self] uploadResponse in
+            guard let `self` = self else { return }
+            do {
+                _ = try uploadResponse()
+                print("🎉 upload success.")
+            } catch {
+                print(error)
+            }
+            self.postServices[call.path] = nil
+        }
     }
 
     @IBAction func testRetry(_ sender: UIButton) {

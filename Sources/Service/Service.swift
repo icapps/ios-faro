@@ -55,7 +55,8 @@ extension Service {
         This task can be:
 
          1. DownloadTask for httpMethod GET (will finish in the background)
-         2. UploadTask for httpMethod PUT, POST, PATCH (will finish in the background)
+         2. DownloadTask for httpMethod PUT, POST, PATCH (will finish in the background) but if you Provide `Service.NoResponseData` as an expected return type the upload does not expect data returned
+                * It is a bit wierd but otherwise response data should be there
          3. DataTask for all others (NO finish in the background)
 
         Provide a type, that can be an array, to decode the data received from the service into type 'M'
@@ -72,13 +73,7 @@ extension Service {
         var task: URLSessionTask!
         let urlSession = FaroURLSession.shared().urlSession
 
-        if call.httpMethod == .GET  {
-            task = urlSession.downloadTask(with: request)
-        } else if let body = request.httpBody {
-            task = urlSession.uploadTask(with: request, from: body)
-        } else {
-            task = urlSession.dataTask(with:request)
-        }
+         task = urlSession.downloadTask(with: request)
 
         session.tasksDone[task] = { [weak self] (data, response, error) in
             guard let `self` = self else {return}

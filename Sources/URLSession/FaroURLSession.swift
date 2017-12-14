@@ -1,6 +1,6 @@
 import Foundation
 /*:
- This sesssion sets itself as the URLSessionDelegate. This is done so thissession singleton can all check all responses of tasks before the closure to report to the service is called.
+ This session sets itself as the URLSessionDelegate. This is done so thissession singleton can all check all responses of tasks before the closure to report to the service is called.
 
  After the response is checked  the closures you provide on a Service that uses this session are called. This is all very abract but this is done for the following reasons:
 
@@ -83,7 +83,6 @@ open class FaroURLSession: NSObject {
          - performRetry: In this asynchronous call you should do your retry task and call done when finished. Return the retry task immediattally so we do not cancel it.
      All other tasks on this session, exept for the task you return, are suspended until you call done.
      After done we call fixCancelledRequest so you can fix the requests. When that is done all requests are fired again.
-     TODO: Add handle cases of request
      */
     open func enableRetry(with retryCheck: @escaping (URLSessionTask, Data?, URLResponse?, Error?) -> Bool,
                           fixCancelledRequest: @escaping (URLRequest) -> URLRequest,
@@ -106,14 +105,8 @@ extension FaroURLSession: URLSessionDelegate {
 
 }
 
-extension FaroURLSession: URLSessionTaskDelegate {
-
-    // TODO: Why the hell do we need these delegates
-}
-
 extension FaroURLSession: URLSessionDownloadDelegate {
 
-    // TODO: Upload task!
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
 
         guard retryTask == nil || downloadTask == retryTask else {
@@ -202,6 +195,23 @@ extension FaroURLSession: URLSessionDownloadDelegate {
                 self.tasksDone.removeAll()
             }
         }
-
     }
+
+}
+
+extension URLSessionTask.State: CustomDebugStringConvertible {
+
+    public var debugDescription: String {
+        switch self {
+        case .canceling:
+            return "cancelling"
+        case .completed:
+            return "completed"
+        case .running:
+            return "running"
+        case .suspended:
+            return "suspended"
+        }
+    }
+
 }
