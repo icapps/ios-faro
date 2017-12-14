@@ -1,6 +1,6 @@
 # Faro
 
-## Version 4.0
+## Version 3.0
 
 Swift 4.0 and `JSONDeserialisable` is removed in favor of `Decodable`
 
