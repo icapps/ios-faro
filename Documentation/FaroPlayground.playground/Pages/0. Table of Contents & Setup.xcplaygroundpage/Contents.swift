@@ -8,12 +8,12 @@ import Faro
 
  1. [Data received as an array](1.%20Data%20received%20as%20an%20array)
  2. [Data received as a Single object](2.%20Data%20received%20as%20a%20Single%20object)
- - [Single Complete Handler or multiple Closure Parameters](3.%20Single%20Complete%20Handler%20or%20multiple%20Closure%20Parameters)
- - [Handle different JSON formats](4.%20Handle%20different%20JSON%20formats)
- - [Write to the Service](5.%20Write%20to%20the%20service)
- - [Update existing objects](6.%20Update%20existing%20object)
- - [Multi Part Post](7.%20Multi%20Part%20Post)
- - [Retry](9.%20Retry)
+ 3. [Single Completion Handler or multiple Closure Parameters](3.%20Single%20Completion%20Handler%20or%20multiple%20Closure%20Parameters)
+ 4. [Handle different JSON formats](4.%20Handle%20different%20JSON%20formats)
+ 5. [Write to the Service](5.%20Write%20to%20the%20service)
+ 6. [Update existing objects](6.%20Update%20existing%20object)
+ 7. [Multi Part Post](7.%20Multi%20Part%20Post)
+ 8. [Retry](9.%20Retry)
 
  */
 /*: # Setup your application

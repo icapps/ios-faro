@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<playground version='6.0' target-platform='ios' display-mode='rendered'>
+<playground version='6.0' target-platform='ios' display-mode='raw'>
     <pages>
         <page name='0. Table of Contents &amp; Setup'/>
         <page name='1. Data received as an array'/>
         <page name='2. Data received as a Single object'/>
-        <page name='3. Single Complete Handler or multiple Closure Parameters'/>
+        <page name='3. Single Completion Handler or multiple Closure Parameters'/>
         <page name='4. Handle different JSON formats'/>
         <page name='5. Write to the service'/>
         <page name='6. Update existing object'/>
