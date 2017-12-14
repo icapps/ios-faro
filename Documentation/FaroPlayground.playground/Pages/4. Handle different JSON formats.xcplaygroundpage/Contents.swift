@@ -1,10 +1,9 @@
-//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
 import Faro
 import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 /*:
- # Handle differen JSON formats
+ # Handle different JSON formats
  Depending on the data provider different json can be provided. Most of the cases are covered in Apples playground(see [Table of Contents](0.%20Table%20of%20Contents)).
  Here we disuss 2 common cases:
  1. The object to be decoded is nested in the JSON
@@ -43,15 +42,12 @@ let call = Call(path: "products")
 
 call.stub(statusCode: 200, data: jsonNested)
 
-let service = StubService(call: call)
+let service = Service(call: call)
 
 service.perform(ProductService.self) { print((try? $0())?.products ?? "No valid initialization of products possible") }
 
 /*:
- > **(try? $0())?** What is this. This is shoret hand notation for closures. The parameter that in the [Array example](1.%20Fetch%20Data%20from%20Array) was called `resultFunction` is now `$0`. The error that could be thrown is converted into `nil` with `try?`.
- */
-/*:
-> **Can we ignore the error** The error can be ignored because it is printed anyway. So if an error from the server does not result in a change in program flow you can just write this and ignore the error.
+> **(try? $0())?** What is this. This is short hand notation for closures. The parameter that in the [Array example](1.%20Data%20received%20as%20an%20array) was called `done` is now `$0`. The error that could be thrown is converted into `nil` with `try?`.
  */
 //: ### Different naming in received JSON
 
@@ -103,4 +99,7 @@ service.perform(ProductRenamedService.self) {
     print((try? $0()) ?? "Renamed products could not be initialized")
 }
 
-//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
+/*:
+ ---
+ [Previous](@previous) / [Next](@next)
+ */

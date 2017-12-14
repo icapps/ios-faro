@@ -1,5 +1,3 @@
-//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
-
 import Faro
 import PlaygroundSupport
 
@@ -9,7 +7,6 @@ PlaygroundPage.current.needsIndefiniteExecution = true
  It would be lame if we could not change some remote data. Depending on the data provider you choose they can respond with data or without data.
  */
 StubbedFaroURLSession.setup()
-
 //: ## Encode Product
 struct Product: Encodable {
     let name: String
@@ -30,18 +27,21 @@ struct Product: Encodable {
 let product = Product(name: "Melon", points: 100)
 let parameters = [Parameter.jsonNode(product.jsonDict!)]
 let call = Call(path: "products", method: .POST, parameter: parameters)
-let service = StubService(call: call)
+let service = Service(call: call)
 
 call.stub(statusCode: 200, data: nil)
 
 //: Use `Service.NoResponseData.self` as the type of the response. This is to allow no response data.
-service.perform(Service.NoResponseData.self) { postSuccess in
+service.perform(Service.NoResponseData.self) { done in
     do {
-        _ = try postSuccess()
+        _ = try done()
         // Anyting after this will be executed on success
         print("🐦 message received!")
     } catch {}
 }
-//: [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
+/*:
+ ---
+ [Previous](@previous) / [Next](@next)
+ */
 
 

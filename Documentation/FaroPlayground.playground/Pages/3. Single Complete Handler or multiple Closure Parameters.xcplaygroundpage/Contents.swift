@@ -31,5 +31,5 @@ let service = ServiceHandler<Product>(call: call, complete: { (done) in
 service.perform()
 /*:
  ---
- [Table of Contents](0.%20Table%20of%20Contents)   [Previous](@previous) / [Next](@next)
+ [Previous](@previous) / [Next](@next)
  */

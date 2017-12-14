@@ -39,7 +39,7 @@ let call = Call(path: "products")
 //: A call can be handled by a service object. In your code you are encouraged to created subclasses per call.
 let service = Service(call: call)
 //: Now we will stub the call with the data from above. We will call 4 times wo me need to stub 3 times.
-call.stub(statusCode: 200, data: jsonArray)
+call. (statusCode: 200, data: jsonArray)
 call.stub(statusCode: 200, data: jsonArray)
 call.stub(statusCode: 200, data: jsonArray)
 call.stub(statusCode: 200, data: jsonArray)
