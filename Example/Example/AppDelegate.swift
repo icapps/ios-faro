@@ -10,7 +10,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let config = URLSessionConfiguration.default
         config.protocolClasses = [StubbedURLProtocol.self] // allow stubbing
-        FaroURLSession.setup(backendConfiguration: BackendConfiguration(baseURL:  "http://jsonplaceholder.typicode.com"),
+        FaroURLSession.setup(backendConfiguration: BackendConfiguration(baseURL: "http://jsonplaceholder.typicode.com"),
                              urlSessionConfiguration: config)
         BuddyBuildSDK.setup()
 

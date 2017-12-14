@@ -80,7 +80,7 @@ class PostViewController: UIViewController {
             })
         })
 
-        postServices[paths[0]] = Service(call: Call(path:paths[0]))
+        postServices[paths[0]] = Service(call: Call(path: paths[0]))
         postServices[paths[0]]?.perform([Post].self, complete: { [weak self] (done) in
             let posts = try? done()
             self?.handlePosts(posts, service: "A - causes retry")
@@ -89,7 +89,7 @@ class PostViewController: UIViewController {
         })
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-            self.postServices[paths[2]] = Service(call: Call(path:paths[2]))
+            self.postServices[paths[2]] = Service(call: Call(path: paths[2]))
             self.postServices[paths[2]]?.perform([Post].self, complete: { [weak self] (done) in
                 let posts = try? done()
                 self?.handlePosts(posts, service: "B - During retry \(retryCount)")
@@ -97,7 +97,7 @@ class PostViewController: UIViewController {
                 RequestStub.shared.removeStub(for: paths[2])
             })
 
-            self.postServices[paths[3]] = Service(call: Call(path:paths[3]))
+            self.postServices[paths[3]] = Service(call: Call(path: paths[3]))
             self.postServices[paths[3]]?.perform([Post].self, complete: { (done) in
                 do {
                     _ = try done()
@@ -111,7 +111,7 @@ class PostViewController: UIViewController {
 
         }
 
-        self.postServices[paths[1]] = Service(call: Call(path:paths[1]))
+        self.postServices[paths[1]] = Service(call: Call(path: paths[1]))
         self.postServices[paths[1]]?.perform([Post].self, complete: { [weak self] (done) in
             let posts = try? done()
             self?.handlePosts(posts, service: "C - Before Retry but after \(retryCount)")
@@ -173,7 +173,7 @@ class PostViewController: UIViewController {
     // MARK: - Handlers
 
     private func setupHandlers() {
-        serviceHandler = PostServiceHandler(completeArray : {[weak self] (done) in
+        serviceHandler = PostServiceHandler(completeArray: {[weak self] (done) in
                self?.show(try? done())
         })
     }

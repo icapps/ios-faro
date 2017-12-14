@@ -55,7 +55,7 @@ class ServiceSpec: QuickSpec {
 		describe("Succes") {
             beforeEach {
                 // Config should have a vaild url
-                let config = BackendConfiguration(baseURL:"http://www.google.com")
+                let config = BackendConfiguration(baseURL: "http://www.google.com")
                 let urlSessionConfig = URLSessionConfiguration.default
                 urlSessionConfig.protocolClasses = [StubbedURLProtocol.self]
                 FaroURLSession.setup(backendConfiguration: config, urlSessionConfiguration: urlSessionConfig)

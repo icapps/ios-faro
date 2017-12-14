@@ -97,7 +97,7 @@ class CallSpec: QuickSpec {
             }
 
             let bodyJson = ["a string": "good day i am a string",
-                            "a number": 123] as [String : Any]
+                            "a number": 123] as [String: Any ]
 
             context("should add JSON into httpBody for") {
 
@@ -107,7 +107,7 @@ class CallSpec: QuickSpec {
 
 						expect(dataString) == "key=value%20with%20spaces"
 					} else {
-						XCTFail()
+						XCTFail("PUT or POST with urlComponents Body")
 					}
 				}
 
@@ -118,7 +118,7 @@ class CallSpec: QuickSpec {
 
                             expect(jsonDict?.keys.flatMap {$0}.sorted(by: >)) == ["a string", "a number"]
 						} else {
-							XCTFail()
+							XCTFail("PUT")
 						}
 						return true
 					}.toNot(throwError())
@@ -131,7 +131,7 @@ class CallSpec: QuickSpec {
 
 							expect(jsonDict?.keys.flatMap {$0}.sorted(by: >)) == ["a string", "a number"]
 						} else {
-							XCTFail()
+							XCTFail("POST")
 						}
 						return true
 					}.toNot(throwError())
@@ -144,7 +144,7 @@ class CallSpec: QuickSpec {
 
 							expect(jsonDict?.keys.count).to(equal(2))
 						} else {
-							XCTFail()
+							XCTFail("DElETE")
 						}
 						return true
 					}.toNot(throwError())
@@ -164,7 +164,7 @@ class CallSpec: QuickSpec {
                         let httpBody = body(.encodedData(data), method: .POST) {
                         expect(String(data: httpBody, encoding: .utf8)) == "{\"name\":\"Melon\",\"points\":100}"
                     } else {
-                        XCTFail()
+                        XCTFail("add from data")
                     }
                 }
 

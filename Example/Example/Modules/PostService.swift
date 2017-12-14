@@ -11,7 +11,7 @@ import Faro
 class PostService: Service {
 
     init() {
-        super.init(call:  Call(path:"posts"))
+        super.init(call: Call(path: "posts"))
     }
 
 }
@@ -19,7 +19,7 @@ class PostService: Service {
 class PostServiceHandler: ServiceHandler<Post> {
 
     init(completeArray: @escaping (() throws -> ([Post])) -> Void) {
-        super.init(call:  Call(path:"posts"), completeArray: completeArray)
+        super.init(call: Call(path: "posts"), completeArray: completeArray)
     }
 }
 
