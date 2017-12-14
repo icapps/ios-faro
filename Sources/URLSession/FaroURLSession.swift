@@ -80,8 +80,8 @@ open class FaroURLSession: NSObject {
      - Parameters:
          - retryCheck: check if this request indicates you should fire a retry, for example on statusCode == 401
          - fixCancelledRequest: You should make these request valid again. For example replace a token in the header and return the fixed request.
-         - performRetry: In this asynchronous call you should do your retry task and call done when finished. Return the retry task immediattally so we do not cancel it.
-     All other tasks on this session, exept for the task you return, are suspended until you call done.
+         - performRetry: In this asynchronous call you should do your retry task and call done when finished. Return the retry task immediatly so we do not cancel it.
+     All other tasks on this session, except for the task you return, are suspended until you call done.
      After done we call fixCancelledRequest so you can fix the requests. When that is done all requests are fired again.
      */
     open func enableRetry(with retryCheck: @escaping (URLSessionTask, Data?, URLResponse?, Error?) -> Bool,
@@ -130,9 +130,6 @@ extension FaroURLSession: URLSessionDownloadDelegate {
             return
         }
 
-        // At this stage you can have an error or a retry
-        // TODO: separate for retry
-
         // Begin retry procedure
         print("📡 Beginning retry for \(downloadTask.currentRequest)")
 
@@ -142,8 +139,6 @@ extension FaroURLSession: URLSessionDownloadDelegate {
         print("📡 \(tasksDone.count) ongoing tasks suspended")
 
         // 2. Fix the task and fire the fixed task
-
-        // TODO: retry should be allowed to proceed and not stopped like it does now. Timing issue?
 
         guard let performRetry = performRetry else {return}
 
@@ -184,7 +179,6 @@ extension FaroURLSession: URLSessionDownloadDelegate {
                 }
 
             } catch {
-                // TODO: Thoroughly check this case
                 print("📡🔥 Retry failed with \(error)")
                 print("📡 performing failure on all tasks")
                 self.tasksDone.forEach({ (taskDict) in

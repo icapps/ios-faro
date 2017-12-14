@@ -36,15 +36,8 @@ open class ServiceQueue {
         let request = call.request(with: config)
 
         var task: URLSessionTask!
-        // TODO: move to session or something else
         let urlSession = FaroURLSession.shared().urlSession
-        if call.httpMethod == .GET  {
-            task = urlSession.downloadTask(with: request)
-        } else if let body = request.httpBody {
-            task = urlSession.uploadTask(with: request, from: body)
-        } else {
-            task = urlSession.dataTask(with:request)
-        }
+        task = urlSession.downloadTask(with: request)
 
         session.tasksDone[task] = {[weak self] (data, response, error) in
             guard let task = task else {
