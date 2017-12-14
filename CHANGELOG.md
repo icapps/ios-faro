@@ -1,5 +1,20 @@
 # Faro
 
+## Version 3.0
+
+Swift 4.0 and `JSONDeserialisable` is removed in favor of `Decodable`
+
+Unfortunately it was not possible to make this version backwards compatible.
+
+What will you get if you switch:
+
+* Faro contains less code
+* Do not write any parsing code thanks to Apple's `Decodable`
+* Retry mechanism that actually works
+* Easily let all your request continue in the background
+
+---
+
 ## Version 2.2
 !! Warning minor breaking change !!
 

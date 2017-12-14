@@ -21,7 +21,7 @@ open class DefaultsKeys {}
 /// The `DefaulesKey` defines the key and the value type for a certain user default value.
 open class DefaultsKey<ValueType>: DefaultsKeys {
     fileprivate let key: String
-
+    
     /// Initialize the key in your `DefaultsKeys` extension.
     ///
     /// ```
@@ -33,7 +33,7 @@ open class DefaultsKey<ValueType>: DefaultsKeys {
 }
 
 public extension UserDefaults {
-
+    
     /// Get the defaults String value for the given `DefaultsKey`. The preferred way to do this is to pass the static key variable defined in the `DefaultsKeys` extension.
     ///
     /// ```
@@ -47,7 +47,7 @@ public extension UserDefaults {
             set(newValue, forKey: key.key)
         }
     }
-
+    
     /// Get the defaults Int value for the given `DefaultsKey`. The preferred way to do this is to pass the static key variable defined in the `DefaultsKeys` extension.
     ///
     /// ```
@@ -65,7 +65,7 @@ public extension UserDefaults {
             }
         }
     }
-
+    
     /// Get the defaults Float value for the given `DefaultsKey`. The preferred way to do this is to pass the static key variable defined in the `DefaultsKeys` extension.
     ///
     /// ```
@@ -83,7 +83,7 @@ public extension UserDefaults {
             }
         }
     }
-
+    
     /// Get the defaults Double value for the given `DefaultsKey`. The preferred way to do this is to pass the static key variable defined in the `DefaultsKeys` extension.
     ///
     /// ```
@@ -101,7 +101,7 @@ public extension UserDefaults {
             }
         }
     }
-
+    
     /// Get the defaults Bool value for the given `DefaultsKey`. The preferred way to do this is to pass the static key variable defined in the `DefaultsKeys` extension.
     ///
     /// ```
@@ -115,7 +115,7 @@ public extension UserDefaults {
             set(newValue, forKey: key.key)
         }
     }
-
+    
     /// Get the defaults NSDate value for the given `DefaultsKey`. The preferred way to do this is to pass the static key variable defined in the `DefaultsKeys` extension.
     ///
     /// ```
@@ -129,7 +129,7 @@ public extension UserDefaults {
             set(newValue, forKey: key.key)
         }
     }
-
+    
     /// Get the defaults [String] value for the given `DefaultsKey`. The preferred way to do this is to pass the static key variable defined in the `DefaultsKeys` extension.
     ///
     /// ```

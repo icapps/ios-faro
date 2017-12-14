@@ -10,112 +10,196 @@ import Foundation
 
 open class ServiceQueue {
 
-	private let deprecatedServiceQueue: DeprecatedServiceQueue
+    var taskQueue: Set<URLSessionTask>
+    var failedTasks: Set<URLSessionTask>?
 
-	public init (deprecatedServiceQueue: DeprecatedServiceQueue) {
-		self.deprecatedServiceQueue = deprecatedServiceQueue
+    let session: FaroURLSession
+
+    private let final: (_ failedTasks: Set<URLSessionTask>?)->()
+
+    /// Creates a queue that lasts until final is called. When all request in the queue are finished the session becomes invalid.
+    /// For future queued request you have to create a new DeprecatedServiceQueue instance.
+    /// - parameter session: a session must have a backendConfiguration set.
+    /// - parameter final: closure is callen when all requests are performed.
+	public init (session: FaroURLSession, final: @escaping(_ failedTasks: Set<URLSessionTask>?)->()) {
+        taskQueue = Set<URLSessionTask>()
+        self.final = final
+        self.session = session
 	}
 
-	// MARK: Requests that expect a JSON response
+    /// Gets a model(s) from the service and decodes it using native `Decodable` protocol.
+    /// Provide a type, that can be an array, to decode the data received from the service into type 'M'
+    /// - parameter type: Generic type to decode the returend data to. If service returns no response data use type `Service.NoResponseData`
+    @discardableResult
+    open func perform<M>(_ type: M.Type, call: Call, autoStart: Bool = false, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionTask?  where M: Decodable {
+        let config = session.backendConfiguration
+        let request = call.request(with: config)
 
-	open func single<T>(call: Call, autoStart: Bool, complete: @escaping(@escaping () throws -> (T)) -> Void) where T: JSONDeserializable {
-		deprecatedServiceQueue.performJsonResult(call, autoStart: autoStart) { [unowned self] (result: DeprecatedResult<T>) in
-			switch result {
+        var task: URLSessionTask!
+        // TODO: move to session or something else
+        let urlSession = FaroURLSession.shared().urlSession
+        if call.httpMethod == .GET  {
+            task = urlSession.downloadTask(with: request)
+        } else if let body = request.httpBody {
+            task = urlSession.uploadTask(with: request, from: body)
+        } else {
+            task = urlSession.dataTask(with:request)
+        }
 
-			case .json(let json):
-				let rootNode = call.rootNode(from: json)
+        session.tasksDone[task] = {[weak self] (data, response, error) in
+            guard let task = task else {
+                let error = ServiceError.networkError(-1, data: data, request: request)
+                self?.handleError(error)
+                complete {throw error}
+                return
+            }
 
-				switch rootNode {
-				case .nodeObject(let node):
-					// Convert node to model of type T. When this is not possible an error is thrown.
-					complete {try T(node)}
-				default:
-					complete { [unowned self] in
-						let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
-						self.handleError(error)
-						throw error
-					}
-				}
-			case .failure(let error):
-				complete {
-					self.handleError(error)
-					throw error
-				}
-			default:
-				complete {
-					let error = FaroError.invalidDeprecatedResult(resultString: "\(result)", call: call)
-					self.handleError(error)
-					throw error
-				}
-			}
-		}
-	}
+            let error = raisesServiceError(data: data, urlResponse: response, error: error, for: request)
+            guard let `self` = self else {
+                print("📡⁉️ \(ServiceQueue.self) was released before all taks completed")
+                complete {throw ServiceError.networkError(-1, data: data, request: request)}
+                return
+            }
 
-	/// Converts every node in the json to T. When one of the nodes has invalid json conversion is stopped and an error is trhown.
-	open func collection<T>(call: Call, autoStart: Bool, complete: @escaping ( @escaping() throws -> [T]) -> Void) where T: JSONDeserializable {
-		deprecatedServiceQueue.performJsonResult(call, autoStart: autoStart) { [unowned self] (result: DeprecatedResult<T>) in
-			switch result {
+            guard error == nil else {
+                complete {
+                    self.handleError(error)
+                    self.cleanupQueue(for: task, didFail: true)
+                    self.shouldCallFinal()
+                    throw error!
+                }
+                return
+            }
 
-			case .json(let json):
-				let rootNode = call.rootNode(from: json)
+            guard type.self != Service.NoResponseData.self else {
+                complete {
+                    // Constructing a no data data with an empty response
+                    let data = """
+                    {}
+                    """.data(using: .utf8)!
+                    return try config.decoder.decode(M.self, from: data)
+                }
+                self.cleanupQueue(for: task, didFail: true)
+                self.shouldCallFinal()
+                return
+            }
 
-				switch rootNode {
-				case .nodeArray(let nodeArray):
-					guard let nodeArray = nodeArray as? [[String: Any]] else {
-						complete { [unowned self] in
-							let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
-							throw error
-						}
-						return
-					}
+            guard let returnData = data else {
+                complete {
+                    let error = ServiceError.invalidResponseData(data, call: call)
+                    self.handleError(error)
+                    self.cleanupQueue(for: task, didFail: true)
+                    self.shouldCallFinal()
+                    throw error
+                }
+                return
+            }
+            complete {
+                do {
+                    let result =  try config.decoder.decode(M.self, from: returnData)
+                    self.cleanupQueue(for: task)
+                    self.shouldCallFinal()
+                    return result
+                } catch let error as DecodingError {
+                    let error = ServiceError.decodingError(error, inData: returnData, call: call)
+                    self.handleError(error)
+                    self.cleanupQueue(for: task, didFail: true)
+                    self.shouldCallFinal()
+                    throw error
+                }
+            }
+        }
 
-					// Convert every node to model of type T. When this is not possible an error is thrown.
+        // Add task to queue if it could be created
 
-					complete { try nodeArray.map {try T($0)} }
-				default:
-					complete {
-						let error = FaroError.noModelOf(type: "\(T.self)", inJson: rootNode, call: call)
-						self.handleError(error)
-						throw error
-					}
-				}
-			case .failure(let error):
-				complete {
-					self.handleError(error)
-					throw error
-				}
-			default:
-				complete {
-					let error = FaroError.invalidDeprecatedResult(resultString: "\(result)", call: call)
-					self.handleError(error)
-					throw error
-				}
-			}
-		}
-	}
+        guard let taskForQueue = task else {
+            print("📡⁉️ no task created")
+            return nil
+        }
+
+        add(taskForQueue)
+
+        guard autoStart else {
+            return task
+        }
+
+        // At this point we always have a task, force unwrap is then allowed.
+        task?.resume()
+        return task
+    }
+
+    // MARK: - Update model instead of create
+
+    open func performUpdate<M>(on model: M, call: Call, autoStart: Bool = false, complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionTask?  where M: Decodable & Updatable {
+        let task = perform(M.self, call: call, autoStart: autoStart) { (resultFunction) in
+            complete {
+                let serviceModel = try resultFunction()
+                try  model.update(serviceModel)
+                return
+            }
+        }
+        return task
+    }
+
+    open func performUpdate<M>(on modelArray: [M],call: Call, autoStart: Bool = false, complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionTask?  where M: Decodable & Updatable {
+        let task = perform([M].self, call: call, autoStart: autoStart) { (resultFunction) in
+            complete {
+                var serviceModels = Set(try resultFunction())
+                try modelArray.forEach { element in
+                    try element.update(array: Array(serviceModels))
+                    serviceModels.remove(element)
+                }
+                return
+            }
+        }
+        return task
+    }
 
 	// MARK: Error
 
 	/// Prints the error and throws it
 	/// Possible to override this to have custom behaviour for your app.
-	open func handleError(_ error: FaroError) {
-		printFaroError(error)
+	open func handleError(_ error: Error?) {
+		print(error)
 	}
 
-	// MARK: - Interact with tasks
+    // MARK: - Interact with tasks
 
-	open var hasOustandingTasks: Bool {
-		get {
-			return deprecatedServiceQueue.hasOustandingTasks
-		}
-	}
+    open var hasOustandingTasks: Bool {
+        get {
+            return taskQueue.count > 0
+        }
+    }
 
-	open func resume(_ task: URLSessionDataTask) {
-		deprecatedServiceQueue.faroSession.resume(task)
-	}
+    open func resumeAll() {
+        taskQueue.filter { $0.state != .running || $0.state != .completed}.forEach { $0.resume()}
+    }
 
-	open func resumeAll() {
-		deprecatedServiceQueue.resumeAll()
-	}
+    // MARK: - Private
+
+    private func add(_ task: URLSessionTask?) {
+        guard let createdTask = task else {
+            return
+        }
+        taskQueue.insert(createdTask)
+    }
+
+    private func cleanupQueue(for task: URLSessionTask?, didFail: Bool = false) {
+        if let task = task {
+            let _ = taskQueue.remove(task)
+            if(didFail) {
+                if failedTasks == nil {
+                    failedTasks = Set<URLSessionTask>()
+                }
+                failedTasks?.insert(task)
+            }
+        }
+    }
+
+    private func shouldCallFinal() {
+        if !hasOustandingTasks {
+            final(failedTasks)
+        }
+    }
 
 }

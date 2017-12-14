@@ -8,29 +8,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let config = URLSessionConfiguration.default
+        config.protocolClasses = [StubbedURLProtocol.self] // allow stubbing
+        FaroURLSession.setup(backendConfiguration: BackendConfiguration(baseURL: "http://jsonplaceholder.typicode.com"),
+                             urlSessionConfiguration: config)
         BuddyBuildSDK.setup()
-
-		// Optionally setup a singleton
-
-		setupFaroWithoutSecurity()
-//		setupFaroWithSecurity()
 
         return true
     }
-
-	func setupFaroWithoutSecurity() {
-		let baseURL = "http://jsonplaceholder.typicode.com"
-		// Optionally create your own FaroSession to handle for example security.
-		FaroSingleton.setup(with: baseURL, session: FaroSession())
-	}
-
-	func setupFaroWithSecurity() {
-		let baseURL = "http://jsonplaceholder.typicode.com"
-
-		let sessionSessionDelegate = FaroURLSessionDelegate(allowUntrustedCertificates: false)
-		let secureSession = FaroSecureURLSession(urlSessionDelegate: sessionSessionDelegate)
-		FaroSingleton.setup(with: baseURL, session: secureSession)
-
-	}
 
 }

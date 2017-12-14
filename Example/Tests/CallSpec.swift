@@ -4,14 +4,6 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-class Car: Serializable {
-    var uuid: String!
-    var json: [String : Any] {
-        return ["uuid": uuid]
-    }
-
-}
-
 private class AuthorizableCall: Call, Authenticatable {
 	static let fakeHeader = ["Authorization": "super secret stuff"]
 
@@ -25,40 +17,22 @@ class CallSpec: QuickSpec {
 
     override func spec() {
 
-        describe("Call .POST with serialize") {
-            let expected = "path"
-            let o1 = Car()
-            o1.uuid = "123"
-            let call = Call(path: expected, method: .POST, serializableModel: o1)
-            let configuration = Faro.Configuration(baseURL: "http://someURL")
-
-            it("should use POST method") {
-                let request = call.request(with: configuration)
-                expect(request!.httpMethod).to(equal("POST"))
-            }
-
-            it("should use Serialize object as parameter in call") {
-                let request = call.request(with:configuration)
-                expect(request?.httpBody).toNot(beNil())
-            }
-        }
-
         describe("Call .POST with parameters") {
             let expected = "path"
             let parameters: Parameter = .jsonNode(["id": "someId"])
             let call = Call(path: expected, method: .POST, parameter: [parameters])
-            let configuration = Faro.Configuration(baseURL: "http://someURL")
+            let configuration = Faro.BackendConfiguration(baseURL: "http://someURL")
 
             it("should use POST method") {
                 let request = call.request(with: configuration)
-                expect(request!.httpMethod) == "POST"
+                expect(request.httpMethod) == "POST"
             }
         }
 
         describe("Call .GET") {
             let expected = "path"
             let call = Call(path: expected)
-            let configuration = Faro.Configuration(baseURL: "http://someURL")
+            let configuration = Faro.BackendConfiguration(baseURL: "http://someURL")
 
             context("setup") {
                 it("should have a path") {
@@ -66,84 +40,48 @@ class CallSpec: QuickSpec {
                 }
 
                 it("should default to .GET") {
-                    let request = call.request(with: configuration)!
+                    let request = call.request(with: configuration)
                     expect(request.httpMethod).to(equal("GET"))
                 }
 
                 it("should configuration should make up request") {
-                    let request = call.request(with: configuration)!
-                    expect(request.url!.absoluteString).to(equal("http://someURL/path"))
-                }
-            }
-
-            context("Root JSON node extraction") {
-                it("should return an object if JSON is single node") {
-
-                    let node = call.rootNode(from: ["key": "value"])
-                    switch node {
-                    case .nodeObject(let node):
-                        expect(node["key"] as? String).to(equal("value"))
-                    default:
-                        XCTFail("should fetch node")
-                    }
-                }
-            }
-        }
-
-        describe("Call .Get with RootNode") {
-
-            let expected = "path"
-            let call = Call(path: expected, rootNode: "rootNode")
-
-            it("should extract single object from a rootNode") {
-                let node = call.rootNode(from: ["rootNode": ["key": "value"]])
-                switch node {
-                case .nodeObject(let node):
-                    expect(node["key"] as? String).to(equal("value"))
-                default:
-                    XCTFail("should fetch node")
-                }
-            }
-
-            it("should extract Array of objects from a rootNode") {
-                let node = call.rootNode(from: ["rootNode": [["key": "value"]]])
-                switch node {
-                case .nodeArray(let nodes):
-                    expect(nodes.count).to(equal(1))
-                default:
-                    XCTFail("should fetch node")
+                    let request = call.request(with: configuration)
+                    expect(request.url?.absoluteString) == "http://someURL/path"
                 }
             }
 
         }
 
         describe("Call with parameters") {
-            let configuration = Faro.Configuration(baseURL: "http://someURL")
+            let configuration = Faro.BackendConfiguration(baseURL: "http://someURL")
 
             func allHTTPHeaderFields(_ parameter: Parameter) -> [String: String] {
                 let call = Call(path: "path", parameter: [parameter])
                 let request = call.request(with: configuration)
-                return request!.allHTTPHeaderFields!
+                return request.allHTTPHeaderFields!
             }
 
             func componentString(_ parameter: Parameter) -> String {
                 let call = Call(path: "path", parameter: [parameter])
                 let request = call.request(with: configuration)
-                return request!.url!.absoluteString
+                return request.url!.absoluteString
             }
 
             func body(_ parameter: Parameter, method: HTTPMethod) -> Data? {
                 let call = Call(path: "path", method: method, parameter: [parameter])
                 let request = call.request(with: configuration)
-                return request!.httpBody
+                return request.httpBody
             }
 
             it("should insert http headers into the request") {
 
                 let headers = allHTTPHeaderFields(.httpHeader(["Accept-Language": "en-US",
                                                                                   "Accept-Charset": "utf-8"]))
-                expect(headers.keys).to(contain("Accept-Language"))
-                expect(headers.values).to(contain("utf-8"))
+                let keys = Array(headers.keys)
+                let values = Array(headers.values)
+
+                expect(keys).to(contain("Accept-Language"))
+                expect(values).to(contain("utf-8"))
             }
 
             context("\(Parameter.urlComponentsInURL(["": ""]))") {
@@ -159,7 +97,7 @@ class CallSpec: QuickSpec {
             }
 
             let bodyJson = ["a string": "good day i am a string",
-                            "a number": 123] as [String : Any]
+                            "a number": 123] as [String: Any ]
 
             context("should add JSON into httpBody for") {
 
@@ -169,7 +107,7 @@ class CallSpec: QuickSpec {
 
 						expect(dataString) == "key=value%20with%20spaces"
 					} else {
-						XCTFail()
+						XCTFail("PUT or POST with urlComponents Body")
 					}
 				}
 
@@ -180,7 +118,7 @@ class CallSpec: QuickSpec {
 
                             expect(jsonDict?.keys.flatMap {$0}.sorted(by: >)) == ["a string", "a number"]
 						} else {
-							XCTFail()
+							XCTFail("PUT")
 						}
 						return true
 					}.toNot(throwError())
@@ -193,7 +131,7 @@ class CallSpec: QuickSpec {
 
 							expect(jsonDict?.keys.flatMap {$0}.sorted(by: >)) == ["a string", "a number"]
 						} else {
-							XCTFail()
+							XCTFail("POST")
 						}
 						return true
 					}.toNot(throwError())
@@ -206,11 +144,28 @@ class CallSpec: QuickSpec {
 
 							expect(jsonDict?.keys.count).to(equal(2))
 						} else {
-							XCTFail()
+							XCTFail("DElETE")
 						}
 						return true
 					}.toNot(throwError())
 
+                }
+
+                it("add from data") {
+                    struct Product: Encodable {
+                        let name: String
+                        let points: Int
+                    }
+
+                    //: What you write to the service will be in the body. In this case send with httpMethod 'POST' but 'PUT' or any other httpMethod is similar.
+                    //: Change call to include your post
+                    let product = Product(name: "Melon", points: 100)
+                    if let data = try? JSONEncoder().encode(product),
+                        let httpBody = body(.encodedData(data), method: .POST) {
+                        expect(String(data: httpBody, encoding: .utf8)) == "{\"name\":\"Melon\",\"points\":100}"
+                    } else {
+                        XCTFail("add from data")
+                    }
                 }
 
             }
@@ -223,19 +178,19 @@ class CallSpec: QuickSpec {
             it("should not produce invalid URL's when given empty parameters") {
                 let parameters = [String: String]()
                 let callString: String = componentString(.urlComponentsInURL(parameters))
-                expect(callString.characters.last) != "?"
+                expect(callString.last) != "?"
             }
 
             it("should not produce invalid URL's when given parameters with missing keys") {
                 let parameters = ["": "aValue"]
                 let callString: String = componentString(.urlComponentsInURL(parameters))
-                expect(callString.characters.last) != "?"
+                expect(callString.last) != "?"
             }
 
             it("should not produce invalid URL's when given parameters with missing values") {
                 let parameters = ["aKey": ""]
                 let callString: String = componentString(.urlComponentsInURL(parameters))
-                expect(callString.characters.last) != "?"
+                expect(callString.last) != "?"
             }
         }
 
@@ -244,13 +199,13 @@ class CallSpec: QuickSpec {
 			var call: AuthorizableCall!
 
 			beforeEach {
-				call = AuthorizableCall(path: "", method: .GET, rootNode: nil, parameter: nil)
+				call = AuthorizableCall(path: "", method: .GET, parameter: nil)
 			}
 
 			it("has authorization header") {
-				let request = call.request(with: Configuration(baseURL: ""))
+				let request = call.request(with: BackendConfiguration(baseURL: ""))
 
-				let header = request?.allHTTPHeaderFields?.filter {$0.key == "Authorization"}
+				let header = request.allHTTPHeaderFields?.filter {$0.key == "Authorization"}
 
 				expect(header?.first?.value) == AuthorizableCall.fakeHeader.first?.value
 			}
