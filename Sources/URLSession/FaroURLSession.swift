@@ -16,7 +16,7 @@ import Foundation
 open class FaroURLSession: NSObject {
     private static var faroUrlSession: FaroURLSession?
 
-    var retryTask: URLSessionTask?
+    public var retryTask: URLSessionTask?
 
     // Setup by using static function setupFaroURLSession
     public static func shared() -> FaroURLSession {
