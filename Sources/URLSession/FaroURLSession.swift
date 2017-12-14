@@ -19,7 +19,7 @@ open class FaroURLSession: NSObject {
     /*
      Task will be performed when something happens that requires a call to be made that gets informations hat all other ongoing tasks need.
     */
-    public var retryUrlSessionTask: URLSessionTask?
+    fileprivate var retryUrlSessionTask: URLSessionTask?
 
     // Setup by using static function setupFaroURLSession
     public static func shared() -> FaroURLSession {
@@ -46,10 +46,10 @@ open class FaroURLSession: NSObject {
     var tasksDone = [URLSessionTask: (Data?, URLResponse?, Error?) -> Void]()
 
     // MARK: - Private
-    private static var _urlSession: URLSession?
-    private var retryCheck: ((URLSessionTask, Data?, URLResponse?, Error?) -> Bool)?
-    private var fixCancelledRequest: ((URLRequest) -> URLRequest)?
-    private var performRetry: ((@escaping (() throws -> Void) -> Void) -> URLSessionTask)?
+    fileprivate static var _urlSession: URLSession?
+    fileprivate var retryCheck: ((URLSessionTask, Data?, URLResponse?, Error?) -> Bool)?
+    fileprivate var fixCancelledRequest: ((URLRequest) -> URLRequest)?
+    fileprivate var performRetry: ((@escaping (() throws -> Void) -> Void) -> URLSessionTask)?
 
     /*:
      This will create in internal URLSession that sets this instance as its URLSessionDelegate.
