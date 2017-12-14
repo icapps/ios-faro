@@ -16,7 +16,10 @@ import Foundation
 open class FaroURLSession: NSObject {
     private static var faroUrlSession: FaroURLSession?
 
-    public var retryTask: URLSessionTask?
+    /*
+     Task will be performed when something happens that requires a call to be made that gets informations hat all other ongoing tasks need.
+    */
+    public var retryUrlSessionTask: URLSessionTask?
 
     // Setup by using static function setupFaroURLSession
     public static func shared() -> FaroURLSession {
@@ -109,7 +112,7 @@ extension FaroURLSession: URLSessionDownloadDelegate {
 
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
 
-        guard retryTask == nil || downloadTask == retryTask else {
+        guard retryTask == nil || downloadTask == retryUrlSessionTask else {
             print("📡 Cancel task \(downloadTask) response because retry is ongoing.")
             downloadTask.cancel()
             return
@@ -142,15 +145,15 @@ extension FaroURLSession: URLSessionDownloadDelegate {
 
         guard let performRetry = performRetry else {return}
 
-        retryTask = performRetry {[weak self] done in
-            guard let `self` = self, let retryTask = self.retryTask else {return}
+        retryUrlSessionTask = performRetry {[weak self] done in
+            guard let `self` = self, let retryTask = self.retryUrlSessionTask else {return}
 
             do {
                 // Check if retry succeeded
                 try done()
                 // remove retry from tasks
                 self.tasksDone.removeValue(forKey: retryTask)
-                self.retryTask = nil
+                self.retryUrlSessionTask = nil
                 // Nothing was thrown so retry succeeded and we can fix all requests now and continue
                 self.tasksDone.forEach {
                     guard let originalRequest = $0.key.originalRequest,
