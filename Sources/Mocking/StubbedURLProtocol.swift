@@ -54,7 +54,11 @@ public class StubbedURLProtocol: URLProtocol {
                 self.finishLoading?()
             }
         } else {
-            print("⁉️ No STUB for \(request.url) in \(RequestStub.shared)")
+            guard let url = request.url else {
+                print("⁉️ No STUB in \(RequestStub.shared)")
+                return
+            }
+            print("⁉️ No STUB for \(url) in \(RequestStub.shared)")
             self.client?.urlProtocolDidFinishLoading(self)
         }
 

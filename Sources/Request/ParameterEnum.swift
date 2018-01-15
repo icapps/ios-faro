@@ -28,7 +28,7 @@ public enum Parameter: CustomDebugStringConvertible {
 			do {
 				let array = try JSONSerialization.data(withJSONObject: jsonArray, options: .prettyPrinted)
 				let arrayString = String(data: array, encoding: .utf8)
-				return ".jsonArray:\n\(array)"
+				return ".jsonArray:\n\(arrayString ?? "No data")"
 			} catch {
 				return "\(error)"
 			}
@@ -36,7 +36,7 @@ public enum Parameter: CustomDebugStringConvertible {
 			do {
 				let array = try JSONSerialization.data(withJSONObject: jsonNode, options: .prettyPrinted)
 				let arrayString = String(data: array, encoding: .utf8)
-				return "• .jsonNode:\n\(jsonNode)"
+				return "• .jsonNode:\n\(arrayString ?? "No data")"
 			} catch {
 				return "•\(error)"
 			}
@@ -54,7 +54,6 @@ public enum Parameter: CustomDebugStringConvertible {
             } catch {
                 return "• .bodyData:\n\(String(data: data, encoding: .utf8) ?? "no data")"
             }
-            return "• .bodyData:\n\(String(data: data, encoding: .utf8) ?? "no data")"
 		}
 	}
 

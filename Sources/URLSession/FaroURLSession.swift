@@ -113,11 +113,9 @@ extension FaroURLSession: URLSessionDownloadDelegate {
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
 
         guard retryUrlSessionTask == nil || downloadTask == retryUrlSessionTask else {
-            print("📡 Cancel task \(downloadTask) response because retry is ongoing.")
             downloadTask.cancel()
             return
         }
-        print("📡 Received something for \(downloadTask.response)")
 
         let data = try? Data(contentsOf: location, options: .alwaysMapped)
 
@@ -133,13 +131,9 @@ extension FaroURLSession: URLSessionDownloadDelegate {
             return
         }
 
-        // Begin retry procedure
-        print("📡 Beginning retry for \(downloadTask.currentRequest)")
-
         // 1. Suspend all ongoing tasks
 
         tasksDone.map {$0.key}.forEach { $0.cancel()}
-        print("📡 \(tasksDone.count) ongoing tasks suspended")
 
         // 2. Fix the task and fire the fixed task
 
@@ -183,7 +177,7 @@ extension FaroURLSession: URLSessionDownloadDelegate {
 
             } catch {
                 print("📡🔥 Retry failed with \(error)")
-                print("📡 performing failure on all tasks")
+                print("📡🔥 performing failure on all tasks")
                 self.tasksDone.forEach({ (taskDict) in
                     // Pass the retry error failure
                     taskDict.value(nil, nil, error)

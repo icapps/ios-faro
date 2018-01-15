@@ -49,7 +49,6 @@ open class ServiceQueue {
 
             let error = raisesServiceError(data: data, urlResponse: response, error: error, for: request)
             guard let `self` = self else {
-                print("📡⁉️ \(ServiceQueue.self) was released before all taks completed")
                 complete {throw ServiceError.networkError(-1, data: data, request: request)}
                 return
             }
@@ -153,7 +152,10 @@ open class ServiceQueue {
 	/// Prints the error and throws it
 	/// Possible to override this to have custom behaviour for your app.
 	open func handleError(_ error: Error?) {
-		print(error)
+        guard let error = error else {
+            return
+        }
+		print("📡🔥 \(error)")
 	}
 
     // MARK: - Interact with tasks

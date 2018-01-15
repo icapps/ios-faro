@@ -14,7 +14,7 @@ public enum ServiceError: Error, Equatable, CustomDebugStringConvertible {
 
         case .invalidResponseData(let data, call: let call):
             let dataString = String(data: data ?? Data(), encoding: .utf8)
-            return "📡🔥 Invalid response data: \(dataString))\nin \(call)"
+            return "📡🔥 Invalid response data: \(dataString ?? "No data"))\nin \(call)"
         case .invalidAuthentication:
             return "📡🔥 Invalid authentication"
         case .networkError(let networkError, let data, let request):
