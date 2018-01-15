@@ -37,7 +37,7 @@ Faro is available through [CocoaPods](http://cocoapods.org) and the [Swift Packa
 To install it with CocoaPods, add the following line to your Podfile:
 
 ```ruby
-pod "Faro" "~>3.0"
+pod "Faro", "~>3.0"
 ```
 
 ## Contribution
