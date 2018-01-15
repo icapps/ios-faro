@@ -1,5 +1,8 @@
 # Faro
 
+## Version 3.0.1
+* Improved documentation about inner throwing functions by pointing to blog https://appventure.me/2015/06/19/swift-try-catch-asynchronous-closures/
+
 ## Version 3.0
 
 Swift 4.0 and `JSONDeserialisable` is removed in favor of `Decodable`
