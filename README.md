@@ -20,6 +20,11 @@ Open the `./Example/Faro.xcworkspace` and open the FaroPlayground. You will be g
 
 As always feedback more then welcome. (🍻 also!)
 
+### Asynchronous Throwing
+Faro makes heavy use of Asynchronous Throwing. Why this is can be found a a super post from 2015 from @terhechte https://appventure.me/2015/06/19/swift-try-catch-asynchronous-closures/
+
+
+
 ## Requirements
 
 - iOS 10 and Swift 4.0 or higher
