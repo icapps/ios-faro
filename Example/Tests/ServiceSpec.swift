@@ -14,53 +14,19 @@ import Nimble
 import Faro
 @testable import Faro_Example
 
-class Uuid: Decodable, Hashable, Updatable {
-
-	var uuid: String
-
-    enum UuidError: Error {
-        case updateError
-    }
-    // MARK: - Hashable
-    var hashValue: Int {return uuid.hashValue}
-    static func == (lhs: Uuid, rhs: Uuid) -> Bool {
-        return lhs.uuid == rhs.uuid
-    }
-
-    func update(_ model: AnyObject) throws {
-        guard let model = model as? Uuid else {
-            throw Uuid.UuidError.updateError
-        }
-        uuid = model.uuid
-    }
-
-    func update(array: [AnyObject]) throws {
-        guard let array = array as? [Uuid] else {
-            throw Uuid.UuidError.updateError
-        }
-
-        let set = Set(array)
-
-        guard let model = (set.first {$0 == self}) else {
-            return
-        }
-        try update(model)
-    }
-}
-
 class ServiceSpec: QuickSpec {
 
 	override func spec() {
+        beforeEach {
+            // Config should have a valid url
+            let config = BackendConfiguration(baseURL: "http://www.google.com")
+            let urlSessionConfig = URLSessionConfiguration.default
+            urlSessionConfig.protocolClasses = [StubbedURLProtocol.self]
+            FaroURLSession.setup(backendConfiguration: config, urlSessionConfiguration: urlSessionConfig)
+            RequestStub.shared = RequestStub()
+        }
 
 		describe("Succes") {
-            beforeEach {
-                // Config should have a vaild url
-                let config = BackendConfiguration(baseURL: "http://www.google.com")
-                let urlSessionConfig = URLSessionConfiguration.default
-                urlSessionConfig.protocolClasses = [StubbedURLProtocol.self]
-                FaroURLSession.setup(backendConfiguration: config, urlSessionConfiguration: urlSessionConfig)
-                RequestStub.shared = RequestStub()
-            }
 
 			it("return valid single model for valid json") {
                 let data = """
@@ -74,7 +40,7 @@ class ServiceSpec: QuickSpec {
                 let service = Service(call: call)
 
                 waitUntil(action: { (done) in
-                    service.perform (Uuid.self) { resultFunction in
+                    service.perform (DecodableMock.self) { resultFunction in
                         expect {try resultFunction().uuid} == "mock ok"
                         done()
                     }
@@ -93,7 +59,7 @@ class ServiceSpec: QuickSpec {
                 let service = Service(call: call)
 
                 waitUntil(action: { (done) in
-                    service.perform ([Uuid].self) { resultFunction in
+                    service.perform ([DecodableMock].self) { resultFunction in
                         expect {try resultFunction().flatMap {$0.uuid}} == ["mock ok 1", "mock ok 2"]
                         done()
                     }
@@ -117,7 +83,7 @@ class ServiceSpec: QuickSpec {
                 let service = Service(call: call)
 
                 waitUntil { done in
-                    service.perform(Uuid.self) { resultFunction in
+                    service.perform(DecodableMock.self) { resultFunction in
                         expect {try resultFunction()}.to(throwError {
                             expect(($0 as? ServiceError)?.decodingErrorMissingKey) == "uuid"
                             done()
@@ -139,7 +105,7 @@ class ServiceSpec: QuickSpec {
                 let service = Service(call: call)
 
                 waitUntil { done in
-                    service.perform([Uuid].self) { resultFunction in
+                    service.perform([DecodableMock].self) { resultFunction in
                         expect {try resultFunction()}.to(throwError {
                             expect(($0 as? ServiceError)?.decodingErrorMissingKey) == "uuid"
                             done()

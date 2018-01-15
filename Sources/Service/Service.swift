@@ -10,7 +10,7 @@ import Foundation
 
 
 /*:
- Create a service instance to perform all kinds of requests. You can chose to use Service or its subclasses:
+ Create a service instance to perform all kinds of requests. You can choose to use Service or its subclasses:
 
     1. ServiceHandler -> can be used for a single type and single handler
     2. ServicQueue -> can be used when you want to fire requests in paralel but want to know when all are done.
@@ -61,9 +61,10 @@ extension Service {
 
         Provide a type, that can be an array, to decode the data received from the service into type 'M'
             - parameter type: Generic type to decode the returend data to. If service returns no response data use type `Service.NoResponseData`
+            - parameter complete: Is an inner function that is returned and that can throw. Why this is can be read on blog https://appventure.me/2015/06/19/swift-try-catch-asynchronous-closures/
      */
     @discardableResult
-    open func perform<M>(_ type: M.Type, complete: @escaping(@escaping () throws -> (M)) -> Void) -> URLSessionTask  where M: Decodable {
+    open func perform<M>(_ type: M.Type, complete: @escaping(_ inner: @escaping () throws -> (M)) -> Void) -> URLSessionTask  where M: Decodable {
         let call = self.call
         let config = self.session.backendConfiguration
         let request = call.request(with: config)
@@ -124,6 +125,10 @@ extension Service {
 
     // MARK: - Update model instead of create
 
+    /*: Simular to norma perform but the properties on the provided model will be updated.
+     - parameter model: The model object whose properties will be updated with the json from the service.
+     - parameter complete: Is an inner function that is returned and that can throw. Why this is can be read on blog https://appventure.me/2015/06/19/swift-try-catch-asynchronous-closures/
+     */
     open func performUpdate<M>(model: M, complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionTask?  where M: Decodable & Updatable {
         let task = perform(M.self) { (resultFunction) in
             complete {
@@ -135,6 +140,10 @@ extension Service {
         return task
     }
 
+    /*: Simular to norma perform but the properties on the provided model will be updated.
+     - parameter model: The array with model objects whose properties will be updated with the json from the service.
+     - parameter complete: Is an inner function that is returned and that can throw. Why this is can be read on blog https://appventure.me/2015/06/19/swift-try-catch-asynchronous-closures/
+     */
     open func performUpdate<M>(array: [M], complete: @escaping(@escaping () throws -> ()) -> Void) -> URLSessionTask?  where M: Decodable & Updatable {
         let task = perform([M].self) { (resultFunction) in
             complete {
@@ -157,7 +166,7 @@ extension Service {
 
 }
 
-// MARK: - Global error functions
+// MARK: - Internal error functions
 
 func raisesServiceError(data: Data?, urlResponse: URLResponse?, error: Error?, for request: URLRequest) -> Error? {
     guard error == nil else {

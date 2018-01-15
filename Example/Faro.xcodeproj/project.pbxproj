@@ -21,7 +21,7 @@
 		C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02ADF781D8823F800FA5B32 /* CallSpec.swift */; };
 		C03281451D76EB590047825C /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* PostViewController.swift */; };
 		C032815F1D77319B0047825C /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C032815E1D77319B0047825C /* Model.swift */; };
-		C048567B200CB0280008BB05 /* PostServiceWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C048567A200CB0280008BB05 /* PostServiceWrapper.swift */; };
+		C0485682200CBC9C0008BB05 /* DecodableMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0485681200CBC9C0008BB05 /* DecodableMock.swift */; };
 		C04CFABD1DE48486001C05CF /* PostCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04CFABC1DE48486001C05CF /* PostCodable.swift */; };
 		C0514FA51EA90322005409E5 /* ServiceSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0514FA31EA90300005409E5 /* ServiceSpec.swift */; };
 		C098A9FB1FB20B5200EB4DD3 /* PostResponseJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = C098A9FA1FB20B5200EB4DD3 /* PostResponseJSON.swift */; };
@@ -67,7 +67,7 @@
 		C02ADF7A1D8823F800FA5B32 /* ConfigurationSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationSpec.swift; sourceTree = "<group>"; };
 		C02E5B361F75756E00C8858D /* FaroPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = FaroPlayground.playground; path = ../Documentation/FaroPlayground.playground; sourceTree = "<group>"; };
 		C032815E1D77319B0047825C /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Model.swift; path = Model/Model.swift; sourceTree = "<group>"; };
-		C048567A200CB0280008BB05 /* PostServiceWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostServiceWrapper.swift; sourceTree = "<group>"; };
+		C0485681200CBC9C0008BB05 /* DecodableMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableMock.swift; sourceTree = "<group>"; };
 		C04CFABC1DE48486001C05CF /* PostCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCodable.swift; sourceTree = "<group>"; };
 		C0514FA31EA90300005409E5 /* ServiceSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceSpec.swift; sourceTree = "<group>"; };
 		C052960A1CB6629E007E1111 /* Faro_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Faro_Example-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -165,6 +165,7 @@
 				C0D9E9221E6D7197003972DD /* RetrySpec.swift */,
 				C05EBF731D4B8E3000B950EB /* Info.plist */,
 				C0514FA31EA90300005409E5 /* ServiceSpec.swift */,
+				C0485681200CBC9C0008BB05 /* DecodableMock.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 				C03281571D7722F40047825C /* TestHelpers */,
 				C0C7E18C1ED2E5DB00025CEA /* ParameterSpec.swift */,
@@ -205,7 +206,6 @@
 			isa = PBXGroup;
 			children = (
 				607FACD71AFB9204008FA782 /* PostViewController.swift */,
-				C048567A200CB0280008BB05 /* PostServiceWrapper.swift */,
 				C04CFABC1DE48486001C05CF /* PostCodable.swift */,
 				C0AA8DA11FAC7B3B00EF6F37 /* PostService.swift */,
 				C098A9FA1FB20B5200EB4DD3 /* PostResponseJSON.swift */,
@@ -491,7 +491,6 @@
 				C0AA8DA21FAC7B3B00EF6F37 /* PostService.swift in Sources */,
 				C032815F1D77319B0047825C /* Model.swift in Sources */,
 				C098A9FB1FB20B5200EB4DD3 /* PostResponseJSON.swift in Sources */,
-				C048567B200CB0280008BB05 /* PostServiceWrapper.swift in Sources */,
 				C03281451D76EB590047825C /* PostViewController.swift in Sources */,
 				C04CFABD1DE48486001C05CF /* PostCodable.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
@@ -508,6 +507,7 @@
 				C02ADF821D88243A00FA5B32 /* CallSpec.swift in Sources */,
 				C0D9E9231E6D7197003972DD /* RetrySpec.swift in Sources */,
 				C0ACDE651D79B65A00064801 /* MockModel.swift in Sources */,
+				C0485682200CBC9C0008BB05 /* DecodableMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
