@@ -5,7 +5,6 @@ import Stella
 import Faro
 @testable import Faro_Example
 
-//swiftlint:disable file_length
 class DeserializeOperatorsSpec: QuickSpec {
 
 	override func spec() {
@@ -307,7 +306,6 @@ class DeserializeOperatorsSpec: QuickSpec {
 						}
 
 						it("updates") {
-							//swiftlint:disable force_cast
 							let originalTooMany = parent.setToMany
 
 							setRelation[.price] = 100.0
