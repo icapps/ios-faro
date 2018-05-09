@@ -22,9 +22,11 @@ extension Dictionary : URLQueryParameterStringConvertible {
 	public var queryParameters: String {
 		var parts: [String] = []
 		for (key, value) in self {
+            let allowedCharacterSet = CharacterSet(charactersIn: "!*'();:@&=+$,/?%#[] ").inverted
+
 			let part = String(format: "%@=%@",
-			                  String(describing: key).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!,
-			                  String(describing: value).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
+			                  String(describing: key).addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)!,
+			                  String(describing: value).addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)!)
 			parts.append(part as String)
 		}
 		return parts.joined(separator: "&")
