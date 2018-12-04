@@ -1,6 +1,5 @@
 import Quick
 import Nimble
-import Stella
 
 import Faro
 @testable import Faro_Example
@@ -202,8 +201,8 @@ class DeserializeOperatorsSpec: QuickSpec {
 
 					beforeEach {
 						toMany.removeAll()
-						for i in 0..<3 {
-							relation["uuid"] = allUUIDs[i]
+						for index in 0..<3 {
+							relation["uuid"] = allUUIDs[index]
 							toMany.append(relation)
 						}
 						json["toMany"] = toMany

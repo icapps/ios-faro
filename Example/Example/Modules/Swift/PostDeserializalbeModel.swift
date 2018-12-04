@@ -1,6 +1,5 @@
 import Foundation
 import Faro
-import Stella
 
 class Post: JSONDeserializable {
     let uuid: Int

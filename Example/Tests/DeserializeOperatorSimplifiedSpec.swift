@@ -2,7 +2,6 @@ import Quick
 import Nimble
 
 import Faro
-import Stella
 
 class Foo: JSONDeserializable {
 	var stringLink: DeserializableObject

@@ -8,7 +8,6 @@
 
 import Foundation
 import Faro
-import Stella
 
 // MARK: - Example Models
 
@@ -82,7 +81,7 @@ class Parent: JSONDeserializable, JSONUpdatable, Linkable {
 			try toMany |< raw[.toMany]
 			try setToMany |< raw[.setToMany]
 		} catch {
-			printError(error)
+			print(error)
 		}
 	}
 
